@@ -1,0 +1,528 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>ShareThis</title>
+		<link rel="stylesheet" href="css/share.css" type="text/css" media="screen" />
+		<script type="text/javascript">
+		<!-- //
+
+		function handleError() {
+			return true;
+		}
+
+		//window.onerror = handleError;
+		//-->
+		</script>
+		
+		<script type="text/javascript">
+			var glo_initFrag=document.location.hash;
+		</script>
+
+		<script src="js/mootools-1.2.1-core-nc.js" type="text/javascript"></script>
+		<script src="js/all.js?stv=3-4-0RC7" type="text/javascript"></script>
+		<!--[if IE]>
+			<style type="text/css">/*<![CDATA[*/ @import "css/ie.css?stv=3-3-1RC2"; /*]]>*/</style>
+		<![endif]-->
+		<!--[if IE 6]>
+			<style type="text/css">/*<![CDATA[*/ @import "css/ie6.css?stv=3-3-1RC2"; /*]]>*/</style>
+		<![endif]-->
+		<style type="text/css">
+			@import url(css/override.css);
+			#example {
+				background:#EFE7D3;
+				padding:10px;
+				position:absolute;
+				right:20px;
+				top:20px;
+			}
+			#example th {
+				text-align:left;
+			}
+		</style>
+	</head>
+	<body id="or">
+		<div id="close_button" style="height:10px;width:10px;top:6px;left:331px;position:absolute;z-index:10000;">
+			<img src="/images/close-button.gif" alt="" style="height:12px;width:12px;"/> 
+		</div>
+		<div id="container" class="border-color">
+			<div id="header" class="header-color">
+				<h1 id="header_title" class="hidden"></h1>
+				<div class="clear"></div>
+			</div>
+			<div id="sub_header">
+				<span id="contacts_info"><a href="#" id="contacts_header_link">Import Contacts</a></span>
+				<span><a id="home_button" href="#">Home</a></span>
+				<span id="greeting">Hello.</span>
+			</div>
+			<div class="ad watermark hidden" id="ad-watermark"></div>
+			<div class="ad w340 header hidden" id="ad-340x40"></div>
+			<div class="ad w300 overlay hidden" id="ad-300x250"></div>
+			<div class="ad w300 overlay hidden" id="ad-300x60"></div>
+			<div class="ad w300 overlay hidden" id="ad-300x40"></div>
+			<div id="home_page">
+				<div id="send_section">
+					<h2>Send</h2>
+					<ul class="hor">
+						<li><a id="send_email" class="email" href="#">Email</a></li>
+						<li style="display:none"><a id="send_myspace" class="myspace" href="#">Myspace</a></li>
+						<li><a id="send_aim" class="aim" href="#">AIM</a></li>
+						<li><a id="send_sms" class="sms" href="#">Text</a></li>
+					</ul>
+					<div id="recent_recipients" class="hidden">
+						<h4>Recent:</h4>
+					</div>
+				</div>
+				<div class="carousel">
+					<a href="#" class="back">&laquo; back</a>
+					<div class="carousel-box">
+						<h2>Post</h2>
+						<div id="moreorless" class="small">
+							<span class="link" id="linkWebMore">More</span>
+							<span class="link hidden" id="linkWebLess">Less</span>
+						</div>
+						<div id="swcontainer" class="view">
+							<div id="swdiv" class="groups"></div>
+						</div>
+					</div>
+					<a href="#" class="fwd">fwd &raquo;</a>
+				</div>
+				<div id="save_section">
+					<h2>Save</h2>
+					<a class="sharebox" href="#">Save to ShareBox</a>
+					<div class="clear"></div>
+				</div>
+				<ul id="myspace_menu" class="hidden">
+					<li><a id="myspace_send_to_friend" href="#">Send to a Friend</a></li>
+					<li><a id="myspace_post_to_profile" href="#">Post to Profile</a></li>
+				</ul>
+				<ul id="twitter_menu" class="hidden">
+					<li><a id="twitter_update_status" href="#">Update Status</a></li>
+					<li><a id="twitter_direct_message" href="#">Direct Message</a></li>
+				</ul>
+			</div>
+			<div id="send_page" class="panel">
+				<h1>Send to a Friend</h1>
+				<p>Make sending simple: <a href="javascript:widget.showPage('import');">Import your contacts</a>.</p>
+				<div id="boxAddressList"></div>
+				<dl class="col" id="send_container">
+					<dt><label for="txtTo" title="Type the name or address of a contact we previously gathered and matches will appear below. Click to add to recipients. You can also send to email addresses, AIM screen names and SMS numbers that are not in your contacts by entering the address and pressing enter.">To:</label></dt>
+					<dd>
+						<div class="addresses">
+							<a id="addressbook_button" class="addressbook_button" href="#">Address Book</a>
+							<div class="to_field" id="send_to_field">
+
+							</div>
+							<!--<input type="text" class="text" name="sharethisTo" id="txtTo"  onkeyup="searchContacts();" value=""/>-->
+						</div>
+						<div id="boxToInfo" class="small">Enter emails, screen names, or numbers</div>
+					</dd>					
+					<dt id="boxToFromLabel">
+						<label>From:</label>
+					</dt>
+					<dd id="boxToYourAddr">
+						<input type="text" class="text" id="txtYourAddr"/>
+						<div id="boxToYourAddrInfo" class="small">(email address associated with account)</div>
+					</dd>
+					<dt><label>Message:</label></dt>
+					<dd id="boxToMessage">
+						<textarea id="txtMessage" cols="10" rows="3"></textarea>
+						<div>Characters remaining: <span id="spanMessageCounter"></span></div>
+						<div id="textToPreview" class="small">
+							<span class="link" id="linkPreview">Preview</span>
+							<span class="link hidden" id="previewCloseLink">Close Preview</span>
+						</div>
+						<div id="preview" class="preview_container hidden">
+							<div id="previewThumb" class="preview_thumb_container"></div>
+							<div id="previewTextContainer" class="preview_text_container">
+								<div id="previewTitle" class="preview_title"></div>
+								<div id="previewUrl" class="preview_url"></div>	
+								<div id="previewDescription" class="preview_description"></div>	
+							</div>
+							<div class="clear"></div>
+						</div>
+					</dd>
+				</dl>
+				<div class="col_foot">
+					<div class="col_act"><input class="button" type="button" value="Send" id="btnShareSend"/></div>
+					<span class="link" onclick="widget.showPreviousPage();">Go back</span>
+				</div>
+			</div>
+			<div id="import_page" class="panel">
+				<h1>Import Contacts</h1>
+				<p>Choose a service, import and all your contacts will be a click away.</p>
+				<p id="import_contact_status" class="error"></p>
+				<div class="mbox">
+					<dl class="col">
+						<div id="oauthImport">
+							<label></label>
+						</div>
+						<div id='regAuth' style="display:none">						
+						<dt><label>Username:</label></dt>
+						<dd><input id="import_contacts_username" type="text" class="text" value="" /></dd>
+						<dt><label>Password:</label></dt>
+						<dd><input id="import_contacts_password" type="password" class="text" value="" /></dd>
+						</div>
+					</dl>
+					<div class="col_foot">
+						<div class="col_act">
+							<div class="loading hidden"></div>
+							<input id="import_contacts_submit" class="button" type="submit" value="Import" />
+						</div>
+						<h4 class="gmail">GMail</h4>
+					</div>
+					<div class="mboxpoint"></div>
+				</div>
+				<ul id="import_list">
+					<li><a href="#" class="gmail">GMail</a></li>
+					<li><a href="#" class="yahoo">Yahoo</a></li>
+					<li><a href="#" class="msn">MSN</a></li>
+					<li><a href="#" class="aol">AOL</a></li>
+					<li><a href="#" class="aim">AIM</a></li>
+					<li style="visibility: hidden"><a href="#" class="myspace">MySpace</a></li>
+					<!-- Once Twitter contact importing re-implementation goes live.
+					<li><a href="#" class="twitter">Twitter</a></li> -->                    
+				</ul>
+				<div class="clear"></div>
+				<p><a target="_blank" href="http://sharethis.com/account/import/" onclick="if(glo_options_popup==true){popupOpen2(this);return false;}">Import from Outlook, Outlook Express, ACT and CSV</a></p>
+				
+				<div class="col_foot">
+					<div class="col_act">
+						<input id="import_contacts_done" type="submit" class="button" value="Done" />
+					</div>
+					<span class="link" onclick="widget.showPreviousPage();">Go back</span>
+				</div>
+			</div>
+			<div id="register_page" class="panel"> 	
+				<div id="registerText">
+					<h1>Register for ShareThis</h1>
+					<p>Save contacts, create groups, set up your ShareBox and more.</p>
+				</div>
+				<dl class="col_w">
+					<dt><label>Full Name:</label></dt>
+					<dd><input class="text" type="text" value="" id="registerNameInput" name="yourname"/></dd>
+					<dt><label>Email:</label></dt>
+					<dd><input class="text" type="text" id="registerEmailInput" value="" name="email"/></dd>
+					<dt><label>Username:</label></dt>
+					<dd><input class="text" type="text" id="registerNickInput" value="" /></dd>
+					<dt><label>Password:</label></dt>
+					<dd><input class="text" type="password" id="registerPasswordInput" name="password"/></dd>
+					<dt><label>Password, again:</label></dt>
+					<dd><input class="text" type="password" id="registerPassword2Input" name="cpassword"/></dd>
+					<dd id="registerLegal">By clicking Register, you agree electronically to our <span class="link" onclick="window.open('http://sharethis.com/terms/','terms','resizable=1,location=1,status=1,scrollbars=1,toolbar=1'); return false;">terms of use</span> and <span class="link" onclick="window.open('http://sharethis.com/privacy/','privacy','resizable=1,location=1,status=1,scrollbars=1,toolbar=1'); return false;">privacy policy</span>, and are at least 13 years old.</dd>
+				</dl>
+				<div class="col_foot">
+					<div id="registerButtons" class="col_act">
+						<input type="submit" class="button" value="Register" id="registerSubmit"/>
+						<span class="hidden" id="regOK"><input type="submit" value="OK" id="registerOK"/></span>
+					</div>
+					<span class="link" onclick="widget.showPreviousPage();">Go back</span>
+				</div>
+				<div id="registerStatus">
+					<div class="loading hidden">Creating account...</div>
+					<div class="success hidden" id="registerSuccess">Account created successfully.</div>
+					<div class="error hidden" id="registerError"></div>
+				</div>
+			</div>
+			<div id="addressbook_page" class="panel">
+				<h1>Address Book</h1>
+				<p>Select those you want to send to.</p>
+				<p>Sort by: <a href="#" id="addressbook_sort_by_name" class="sort_switch">Name</a> | <a href="#" id="addressbook_sort_by_service" class="sort_switch">Service</a><span id="abLoading" style="background:#FFF1A8;display:none;font:14px;margin-left:115px;">Loading...</span></p>
+				<ul class="scroll" id="addressbook_container">
+				</ul>
+				<p>
+					<a href="#" id="addressbook_goto_import">Import Contacts</a>
+				</p>
+				<div class="col_foot">
+					<div class="col_act">
+						<input onclick="javascript:widget.showPage('send');" id="addressbook_next" value="Next" type="button" class="button"/>
+					</div>
+					<span class="link" onclick="widget.showPreviousPage();">Go back</span>
+				</div>
+			</div>
+			<div id="sharebox_page" class="panel hidden">
+				<h2>Save To ShareBox</h2>
+				<p>Stuff this in your ShareBox and check it out whenever you want.</p>
+				<dl class="col">
+					<dt><label for="sharebox_tags">Tags:</label></dt>
+					<dd><input class="text" id="sharebox_tags" type="text" value=""/></dd>
+					<dt><label></label></dt>
+					<dd>
+						<div id="sharebox_preview" class="preview_container hidden">
+							<div class="preview_thumb_container"><img id="sharebox_previewThumb" src="" width="100" /></div>
+							<div id="sharebox_previewTextContainer" class="preview_text_container">
+								<div id="sharebox_previewTitle" class="preview_title"></div>
+								<div id="sharebox_previewUrl" class="preview_url"></div>
+								<div id="sharebox_previewDescription" class="preview_description"></div>
+							</div>
+							<div style="clear:both"></div>
+						</div>
+					</dd>
+				</dl>
+				<div class="col_foot">
+					<div class="col_act">
+						<input class="button" id="sharebox_submit" value="Save" type="button"/>
+					</div>
+					<span class="link" onclick="widget.showPreviousPage();">Go back</span>
+				</div>
+			</div>
+			<div id="post_page" class="panel hidden">
+				<div class="clear"></div>
+				<div id="post_blogger">
+					<h2 class="blogger">Blogger</h2>
+					<p>Post this to your blog.</p>
+					<form action="#" id ="bloggerForm" class="postForm" method="post">
+						<dl class="col">
+							<dt><label for="inputBloggerUsername">Username:</label></dt>
+							<dd><input class="text" id="inputBloggerUsername" type="text"/></dd>
+							<dt><label for="inputBloggerPassword">Password:</label></dt>
+							<dd><input class="text" id="inputBloggerPassword" type="password"/></dd>
+							<dt id="bloggerSelectLabel" class="hidden"><label for="bloggerSelect">Select Blog:</label></dt>
+							<dd id="bloggerSelectContainer" class="hidden"></dd>
+							<dd><input class="remember_toggle" id="bloggerRememberMe" type="checkbox"/>&nbsp;Remember Me</dd>
+						</dl>
+						<input class="forgetme" id="bloggerForgetMe" value="false" type="hidden"/>
+					</form>
+					<div class="col_foot">
+						<div id="bloggerButton" class="col_act">
+							<input class="button" id="btnBloggerPost" value="Save as Draft" type="button"/>
+							<input class="button hidden" id="btnBloggerDone" value="Done" type="button" />
+							<input class="button hidden" id="btnBloggerSubmit" value="Submit" type="button" />
+							<input class="button" id="btnBloggerPublish" value="Post" type="button"/>
+						</div>
+						<span class="link" onclick="widget.showPreviousPage();">Go back</span>
+					</div>
+				</div>
+				<div id="post_friendster">
+					<h2 class="friendster">Friendster</h2>
+					<p>Post this to your Friendster profile.</p>
+					<form action="#" id ="friendsterForm" class="postForm" method="post">
+						<dl class="col">
+							<dt><label for="inputFriendsterUsername">Email:</label></dt>
+							<dd><input class="text" id="inputFriendsterUsername" type="text"/></dd>
+							<dt><label for="inputFriendsterPassword">Password:</label></dt>
+							<dd><input class="text" id="inputFriendsterPassword" type="password"/></dd>
+							<dt><label for="txtFriendster">Section:</label></dt>
+							<dd>
+								<select name="FriendsterCategory" id="txtFriendster">
+									<option value="Media">Media</option>
+									<option value="AboutMe">About Me</option>
+									<option value="LikeToMeet">I’d like to meet</option>
+								</select>
+							</dd>
+							<dt><label for="txtFriendsterComment">Comment:</label></dt>
+							<dd><textarea id="txtFriendsterComment"></textarea></dd>
+							<dd><input class="remember_toggle" id="friendsterRememberMe" type="checkbox"/>&nbsp;Remember Me</dd>
+						</dl>
+						<input class="forgetme" id="friendsterForgetMe" value="false" type="hidden"/>
+					</form>
+					<div class="col_foot">
+						<div class="col_act">
+							<input class="button" id="btnFriendsterSubmit" value="Submit" type="button"/>
+						</div>
+						<span class="link" onclick="widget.showPreviousPage();">Go back</span>
+					</div>
+				</div>
+				<div id="post_livejournal">
+					<h2 class="livejournal">Livejournal</h2>
+					<p>Post this to Livejournal.</p>
+					<form action="#" id ="livejournalForm" class="postForm" method="post">
+						<dl class="col">
+							<dt><label for="inputLive_journalUsername">Username:</label></dt>
+							<dd><input class="text" id="inputLive_journalUsername" type="text"/></dd>
+							<dt><label for="inputLive_journalPassword">Password:</label></dt>
+							<dd><input class="text" id="inputLive_journalPassword" type="password"/></dd>
+							<dt><label for="txtLive_journalComment">Comment:</label></dt>
+							<dd><textarea id="txtLive_journalComment"></textarea></dd>
+							<dd><input class="remember_toggle" id="livejournalRememberMe" type="checkbox"/>&nbsp;Remember Me</dd>
+						</dl>
+						<input class="forgetme" id="livejournalForgetMe" value="false" type="hidden"/>
+					</form>
+					<div class="col_foot">
+						<div class="col_act">
+							<input class="button" id="btnLive_journalSubmit" value="Submit" type="button"/>
+						</div>
+						<span class="link" onclick="widget.showPreviousPage();">Go back</span>
+					</div>
+				</div>
+				<div id="post_orkut">
+					<h2 class="orkut">Orkut</h2>
+					<p>Post this to Orkut.</p>
+					<form action="#" id ="orkutForm" class="postForm" method="post">
+						<dl id="orkutPostData" class="col">
+							<dt><label for="inputOrkutUsername">Email:</label></dt>
+							<dd><input class="text" id="inputOrkutUsername" type="text"/></dd>
+							<dt><label for="inputOrkutPassword">Password:</label></dt>
+							<dd><input class="text" id="inputOrkutPassword" type="password"/></dd>
+							<dt><label for="txtOrkutComment">Comment:</label></dt>
+							<dd><textarea id="txtOrkutComment"></textarea></dd>
+							<dd><input class="remember_toggle" id="orkutRememberMe" type="checkbox"/>&nbsp;Remember Me</dd>
+						</dl>
+						<input class="forgetme" id="orkutForgetMe" value="false" type="hidden"/>
+					</form>
+					<dl id="orkutCaptcha" class="hidden">
+						<dt><label for="inputOrkutCaptcha">Please enter the text from the image</label></dt>
+						<dd>
+							<div id="orkutCaptchaImage" class="hidden"></div>
+							<input type="text" id="inputOrkutCaptcha"/>
+						</dd>
+					</dl>
+					<div class="col_foot">
+						<div class="col_act">
+							<input class="button" id="btnOrkutSubmit" value="Submit" type="button"/>
+						</div>
+						<span class="link" onclick="widget.showPreviousPage();">Go back</span>
+					</div>
+				</div>
+				<div id="post_twitter">
+					<h2 class="twitter">Twitter</h2>
+					<p>Post this to your Twitter status.</p>
+					<form action="#" id ="twitterForm" class="postForm" method="post">
+						<dl class="col">
+							<dt><label for="twitterUsername">Username:</label></dt>
+							<dd><input class="text" id="twitterUsername" type="text"/></dd>
+							<dt><label for="twitterPassword">Password:</label></dt>
+							<dd><input class="text" id="twitterPassword" type="password"/></dd>
+							<dt><label for="twitterStatus">Message:</label></dt>
+							<dd><textarea id="twitterStatus"></textarea></dd>
+							<dd>Characters remaining: <span id="spanTwitterCounter"></span></dd>
+							<dd><input class="remember_toggle" id="twitterRememberMe" type="checkbox"/>&nbsp;Remember Me</dd>
+						</dl>
+						<input class="forgetme" id="twitterForgetMe" value="false" type="hidden"/>
+					</form>
+					<div class="col_foot">
+						<div class="col_act">
+							<input class="button" id="btnTwitterSubmit" value="Post" type="button"/>
+						</div>
+						<span class="link" onclick="widget.showPreviousPage();">Go back</span>
+					</div>
+				</div>
+				<div id="post_typepad">
+					<h2 class="typepad">Typepad</h2>
+					<p>Post this to your Typepad blog.</p>
+					<form action="#" id ="typepadForm" class="postForm" method="post">
+						<dl class="col">
+							<dt><label for="inputTpUsername">Username:</label></dt>
+							<dd><input class="text" id="inputTpUsername" type="text"/></dd>
+							<dt><label for="inputTpPassword">Password:</label></dt>
+							<dd><input class="text" id="inputTpPassword" type="password"/></dd>
+							<dt id="typepadSelectLabel" class="hidden"><label for="typepadSelect">Select Blog:</label></dt>
+							<dd id="typepadSelectContainer" class="hidden"></dd>
+							<dd><input class="remember_toggle" id="typepadRememberMe" type="checkbox"/>&nbsp;Remember Me</dd>
+						</dl>
+						<input class="forgetme" id="typepadForgetMe" value="false" type="hidden"/>
+					</form>
+					<div class="col_foot">
+						<div class="col_act">
+							<input class="button" id="btnTpPost" value="Save as Draft" type="button"/>
+							<input class="button hidden" id="btnTpDone" value="Done" type="button"/>
+							<input class="button hidden" id="btnTpSubmit" value="Submit" type="button"/>
+							<input class="button" id="btnTpPublish" value="Post" type="button"/>
+						</div>
+						<span class="link" onclick="widget.showPreviousPage();">Go back</span>
+					</div>
+				</div>
+				<div id="post_wordpress">	
+					<h2 class="wordpress">WordPress</h2>
+					<p>Post this to your WordPress blog.</p>
+					<form action="#" id="wordpressForm" class="postForm" method="post">
+						<dl class="col">
+							<dt><label for="inputWpURL">Blog URL:</label></dt>
+							<dd><input class="text" id="inputWpURL" type="text"/></dd>
+							<dt><label for="inputWpUsername">Username:</label></dt>
+							<dd><input class="text" id="inputWpUsername" type="text"/></dd>
+							<dt><label for="inputWpPassword">Password:</label></dt>
+							<dd><input class="text" id="inputWpPassword" type="password"/></dd>
+							<dd><input class="remember_toggle" id="wordpressRememberMe" type="checkbox"/>&nbsp;Remember Me</dd>
+						</dl>
+						<input class="forgetme" id="wordpressForgetMe" value="false" type="hidden"/>
+					</form>
+					<div class="col_foot">
+						<div class="col_act">
+							<input class="button" id="btnWpSubmit" value="Post" type="button"/>
+						</div>
+						<span class="link" onclick="widget.showPreviousPage();">Go back</span>
+					</div>
+				</div>
+			</div>
+			<div id="done_page" class="panel">
+				<p id="done_message" class="success">Your message was successfully shared!</p>
+				
+				<h1>Thanks for Sharing!</h1>
+				<div class="ad overlay hidden" id="ad-done-300x100"></div>
+				<div class="ad overlay hidden" id="ad-done-300x160"></div>
+				<div class="ad overlay hidden" id="ad-done-300x200"></div>
+				<div class="ad overlay hidden" id="ad-done-300x250"></div>
+				<p>Here's what you can do next:</p>
+				<div id="doneToolbar" class="doneText">
+					<img alt="" width="120" height="55" src="./images/bullet_6.gif"/>
+					<h2>Add to Toolbar</h2>
+					<p id="doneRegIE" class="hidden">Right click this <a class="bookmark" onclick="javascript:alert('Right-click on this and add it to your favorites.'); return false;" href="javascript:var%20e=document.createElement('script');e.setAttribute('language','javascript');e.setAttribute('src','http://sharethis.com/share/load');document.body.appendChild(e);void(0);">ShareThis</a> link add it to your Favorites and start sharing.</p>
+					<p id="doneRegOther">Drag this <a class="bookmark" onclick="javascript:alert('Drag this to your bookmarks bar.'); return false;" href="javascript:var%20e=document.createElement('script');e.setAttribute('language','javascript');e.setAttribute('src','http://sharethis.com/share/load');document.body.appendChild(e);void(0);">ShareThis</a> link to your browser to share from any website.</p>
+				</div>
+				<div class="doneText guest" id="doneRegister">
+					<span class="link" onclick="window.open('http://sharethis.com/users/register/','register','resizable=1,location=1,status=1,scrollbars=1,toolbar=1'); return false;"><img alt="" width="120" height="45" src="./images/bullet_3.gif"/></span>
+					<h2><span class="link" onclick="window.open('http://sharethis.com/users/register/','register','resizable=1,location=1,status=1,scrollbars=1,toolbar=1'); return false;">Register Now!</span></h2>
+					<p>Instantly Share with your friends using Email, AIM, MySpace and more.</p>
+				</div>
+				<div class="doneText">
+					<span class="link" onclick="window.open('http://sharethis.com/publishers/getbutton/','getthebutton','resizable=1,location=1,status=1,scrollbars=1,toolbar=1'); return false;"><img alt="" width="120" height="45" src="./images/bullet_2.gif"/></span>
+					<h2><span class="link" onclick="window.open('http://sharethis.com/publishers/getbutton/ ','getthebutton','resizable=1,location=1,status=1,scrollbars=1,toolbar=1'); return false;">Get the Button!</span></h2>
+					<p>Put ShareThis on your website or blog in minutes!</p>
+				</div>
+				<div class="col_act">
+					<button onClick="javascript:widget.showPage('home')" id="doneScreenOk" class="button">&#171; Send to more friends</button>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="ad w300 hidden" id="icad-300x250"></div>
+			<div class="ad w300 hidden" id="icad-300x60"></div>
+			<div class="ad w340 hidden" id="icad-340x60"></div>
+			<div class="ad w340 hidden" id="icad-340x40"></div>
+			<div class="ad w300 hidden" id="icad-300x40"></div>
+			<div id="footer">
+				<div id="loginBox" class="overlay hidden">
+					<div class="panel">
+						<dl id="loginContainer" class="col_w"> 
+							<dt><label id="labelUsername">Email/Username</label></dt>
+							<dd><input type="text" name="username" id="textAuthUsername" class="text" /></dd>
+							<dt><label id="labelPassword">Password</label></dt>
+							<dd>
+								<input type="password" name="password" id="textAuthPassword" class="text"/>
+								<div id="textAuthPassword_forgot"><a rel="external" target="_blank" href="http://sharethis.com/account/lostpassword/" id="linkForgotPassword" onclick="if(glo_options_popup==true){popupOpen2(this);return false;}">Forgot?</a></div>
+							</dd>
+						</dl>
+						<div class="col_foot">
+							<div id="loginButton" class="col_act">
+								<span class="link" id="loginClose">Cancel</span>&nbsp;<input type="submit" value="Sign in" class="button" id="linkAuthSignIn"/>
+							</div>
+							<span class="link" id="createAccount">Create an Account</span>
+						</div>
+						<!--<div class="loading hidden"><img src="images/loading2.gif" alt=""/></div>-->
+					</div>
+				</div>
+				<div id="colophon" class="border-color">
+					<div id="colophon_user" class="opposite">
+						<div class="hidden opposite_left" id="privacyLink"><a target="_blank" href="http://sharethis.com/privacy">Privacy Policy</a></div>
+						<div id="textAuthInfoEmail" class="opposite_right"></div>
+					</div>
+					<div id="colophon_st" class="opposite">
+						<div id="boxFooterPowered" class="opposite_left">
+							Powered by <a id="poweredByImg" rel="external" target="_blank" href="http://www.sharethis.com" onclick="if(glo_options_popup==true){popupOpen2(this);return false;}">ShareThis</a>
+						</div>
+						<div id="footerReg" class="opposite_right">
+							<a id="linkLearnMore" target="_blank" onclick="if(glo_options_popup==true){popupOpen2(this);return false;}" href="http://sharethis.com/users/">Learn More</a> | <span class="link" id="linkSignIn">Sign In</span>
+						</div>
+						<div id="signedInFooter" class="opposite_right">
+							<span id="myAcct"><a id="myAccLink" rel="external" target="_blank" href="http://sharethis.com/account" onclick="if(glo_options_popup==true){popupOpen2(this);return false;}">My Account</a> | <span class="link" id="linkSignOut">Sign Out</span></span>
+						</div>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>
+			<span class="link" id="close_widget">close</span>
+		</div>
+	</body>
+</html>

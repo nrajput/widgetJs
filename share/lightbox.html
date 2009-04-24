@@ -1,0 +1,541 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>ShareThis</title>
+		<link rel="stylesheet" href="css/share.css" type="text/css" media="screen" />
+		<script type="text/javascript">
+		<!-- //
+
+		function handleError() {
+			return true;
+		}
+
+		//window.onerror = handleError;
+		//-->
+		</script>
+		
+		<script type="text/javascript">
+			var glo_initFrag=document.location.hash;	
+		</script>
+		
+		<script src="js/mootools-1.2-core.js" type="text/javascript"></script>
+		<script src="js/widget.js" type="text/javascript"></script>
+		
+		
+	
+		
+	</head>
+	<body>
+
+		<div id="container" class="border-color">
+			<div id="greyout"></div>
+			<div id="header" class="header-color">
+				<div class="clear"></div>
+				<div id="nav">
+					<span id="nav_web" class="nav-inactive-color">Social Web</span>
+					<span id="nav_post" class="nav-inactive-color">Post</span>
+					<span id="nav_send" class="nav-inactive-color">Send/Email</span>
+				</div>
+				<div id="whatsThis">
+					<a id="whatsThisLink" rel="external" href="http://sharethis.com/" onclick="if(glo_options_popup==true){popupOpen2(this);return false;}">what's this?</a>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div id="web_tab" class="web_tab">
+				<div class="messaging">To ShareThis, click on a service below:</div>
+				<div id="swcontainer">
+					<div class="clear"></div>
+					<div id="swdiv"></div>
+					<div class="clear"></div>
+				</div>
+				<div class="clear"></div>
+				<div id="moreorless">
+					<span class="link" id="linkWebMore">more</span>
+					<span class="link" id="linkWebLess">less</span>
+				</div>			
+			</div>
+			<div class="clear"></div>
+			<div id="post_tab">
+				<div class="messaging" >To ShareThis to your profile or blog, click a service below:</div>
+				<div id="postto" >
+					<div id="post_facebook" class="poster_item"><span id="facebook_poster"></span></div>
+					<div id="post_myspace" class="poster_item"><span id="myspace_poster"></span></div>
+					<div id="post_blogger" class="poster_item"><a href="javascript:void(0);">Blogger</a></div>
+					<div id="post_wordpress" class="poster_item"><a href="javascript:void(0);">WordPress</a></div>
+					<div id="post_live_journal" class="poster_item"><a href="javascript:void(0);">LiveJournal</a></div>														
+					<div id="post_typepad" class="poster_item"><a href="javascript:void(0);">TypePad</a></div>
+					<div id="post_orkut" class="poster_item"><a href="javascript:void(0);">Orkut</a></div>
+					<div id="post_hi5" class="poster_item" style="display:none;"><a href="javascript:void(0);">Hi5</a></div>
+					<div id="post_friendster" class="poster_item"><a href="javascript:void(0);">Friendster</a></div>
+					<div id="post_twitter" class="poster_item"></div>
+					<div class="clear"></div>
+				</div>
+				<div id="posterBox" style="display:none;">
+					<div class="clear"></div>
+					<div id="posterBoxClose"><a id="linkPosterBoxClose" href="javascript:void(0);">&#171; back</a></div>
+					<div class="clear"></div>
+					<div id="PosterBoxStatus">
+						<div class="postTabWorking"><img alt="" src="/images/spinner.gif" height="16" width="16" /><br/>Posting your share...</div>
+						<div class="postTabSuccess"><br/>Your share has been posted successfully.<br/><br/><br/><input id="btnPosterDone" value="Done" type="button"/></div>
+						<div class="postTabError">Error while trying to post to your blog.</div>
+						<div class="postTabDomain">You have successfully signed on.</div>
+					</div>			
+					<div class="clear"></div>		
+					<div id="tpPoster" style="display:none;" >	
+						<div id="tpContainer" class="posterContainer">
+							<div class="posterRow" id="tpUsername">
+								<label class="posterLabel" id="labelTpUsername">TypePad Username:</label>
+								<input class="posterInputBox" id="inputTpUsername" type="text"/>
+							</div>
+							<div class="posterRow" id="tpPassword">
+								<label class="posterLabel" id="labelTpPassword">TypePad Password:</label>
+								<input class="posterInputBox" id="inputTpPassword" type="password"/>
+							</div>
+							<div style="display: none;" id="tpBlogId"><br/><br/>Select Blog: 
+								<span id="tpSelect_span"></span>
+							</div>
+						</div>	
+						<div id="tpDraftStatus">
+							<div id="tpButton" class="posterButton">
+								<input id="btnTpPost" value="Save as Draft" type="button"/>
+								<input id="btnTpDone" value="Done" type="button" style="display:none;"/>
+								<input id="btnTpSubmit" value="Submit" type="button" style="display:none;"/>
+								<input style="display: inline;" id="btnTpPublish" value="Publish" type="button"/>
+							</div>
+						</div>
+						<div class="clear"></div>
+						<div class="privacyLink"><a href="http://sharethis.com/privacy" target="_blank" id="tpPrivacyLink">Privacy Policy</a></div>
+						<div class="clear"></div>	
+					</div>
+					<div id="wpPoster" style="display:none;" class="wpPosterClass">	
+						<div id="wpContainer" class="posterContainer">
+							<div class="wpPosterRow" id="wpURL">
+								<label class="posterLabel" id="labelWpURL">Blog URL:</label>
+								<input class="posterInputBox" id="inputWpURL" type="text"/>
+							</div>
+							<div class="wpPosterRow" id="wpUsername">
+								<label class="posterLabel" id="labelWpUsername">WordPress Username:</label>
+								<input class="posterInputBox" id="inputWpUsername" type="text"/>
+							</div>
+							<div class="wpPosterRow" id="wpPassword">
+								<label class="posterLabel" id="labelWpPassword">WordPress Password:</label>
+								<input class="posterInputBox" id="inputWpPassword" type="password"/>
+							</div>			
+						</div>	
+						<div id="wpButton" class="wpPosterButton">
+							<input id="btnWpSubmit" value="Submit" type="button"/>
+						</div>
+						<div class="clear"></div>
+						<div class="privacyLink"><a href="http://sharethis.com/privacy" rel="external" id="tpPrivacyLink" onclick="if(glo_options_popup==true){popupOpen2(this);return false;}">Privacy Policy</a></div>
+						<div class="clear"></div>
+					</div>
+					<div id="bloggerPoster" style="display:none;">
+						<div id="bloggerContainer" class="bloggerContainer">
+							<div class="posterRow" id="bloggerUsername">
+								<label class="posterLabel" id="labelBloggerUsername">Blogger Username:</label>
+								<input class="posterInputBox" id="inputBloggerUsername" type="text"/>
+							</div>
+							<div class="posterRow" id="bloggerPassword">
+								<label class="posterLabel" id="labelBloggerPassword">Blogger Password:</label>
+								<input class="posterInputBox" id="inputBloggerPassword" type="password"/>
+							</div>
+							<div style="display:none;" id="bloggerBlogId"><br /><br />Select Blog: 
+								<span id="bloggerSelect_span"></span>
+							</div>
+						</div>	
+						<div id="bloggerDraftStatus">
+							<div id="bloggerButton" class="posterButton">
+								<input id="btnBloggerPost" value="Save as Draft" type="button"/>
+								<input id="btnBloggerDone" value="Done" type="button" style="display:none;"/>
+								<input id="btnBloggerSubmit" value="Submit" type="button" style="display:none;"/>
+								<input style="display: inline;" id="btnBloggerPublish" value="Publish" type="button"/>
+							</div>
+							<div class="clear"></div>
+							<div class="privacyLink"><a href="http://sharethis.com/privacy" target="_blank" id="tpPrivacyLink">Privacy Policy</a></div>
+							<div class="clear"></div>	
+						</div>
+						<div id="twitterPoster" style="display:none;"></div>
+					</div>	
+					<div class="clear"></div>
+				</div>
+				<div id="biggerPosters" style="display:none;">
+					<div class="clear"></div>
+					<div id="posterBoxClose"><a id="linkPosterBoxClose2" href="javascript:void(0);">&#171; back</a></div>
+					<div class="clear"></div>
+					<div id="PosterBoxStatus">
+						<div class="postTabWorking"><img src="/images/spinner.gif" height="16" width="16" alt=""/><br/>Posting your share...</div>
+						<div class="postTabSuccess"><br/>Your share has been posted successfully.<br/><br/><br/><input id="btnPosterDone2" value="Done" type="button"/></div>
+						<div class="postTabError">Error while trying to post to your blog.</div>
+						<div class="postTabDomain">You have successfully signed on.</div>
+					</div>	
+					<div id="hi5Poster" style="display:none;" class="bigPosterClass">	
+						<div id="hi5Container" class="hi5_container">
+							<div class="posterRow3" id="hi5Username">
+								<label class="posterLabel" id="labelHi5Username">Hi5 Email:</label>
+								<input class="posterInputBox2" id="inputHi5Username" type="text"/>
+							</div>
+							<div class="posterRow3" id="hi5Password">
+								<label class="posterLabel" id="labelHi5Password">Hi5 Password:</label>
+								<input class="posterInputBox2" id="inputHi5Password" type="password"/>
+							</div>
+							<div class="posterRow3" id="hi5Select">
+								<label id="labelHi5Select" class="posterLabel">Section:</label>						
+								<select id="txtHi5" name="Hi5category">
+									<option value="AboutMe">About Me</option>
+									<option value="Interests">Interests</option>
+									<option value="FavMusic">Fav. Music</option>
+									<option value="FavTVShows">Fav. T.V. Shows</option>
+									<option value="FavMovies">Fav. Movies</option>
+									<option value="FavBooks">Fav. Books</option>
+									<option value="FavQuote">Fav. Quote</option>								
+								</select>
+							</div>
+							<div class="posterRow5" id="hi5Comment">
+								<label id="labelHi5Comment" class="posterLabel">Comment:</label>
+								<textarea id="txtHi5Comment" class="commentText"></textarea>
+							</div>			
+						</div>
+						<div id="hi5Button" class="hi5PosterButton">
+							<input id="btnHi5Submit" value="Submit" type="button"/>
+						</div>
+						<div class="clear"></div>
+						<div class="privacyLink"><a href="http://sharethis.com/privacy" rel="external" id="tpPrivacyLink" onclick="if(glo_options_popup==true){popupOpen2(this);return false;}">Privacy Policy</a></div>
+						<div class="clear"></div>
+					</div>
+					<div id="orkutPoster" style="display:none;" class="bigPosterClass">
+						<div id="orkutContainer" class="orkut_container">
+							<div class="posterRow3" id="orkutUsername" style="display:none;">
+								<label class="posterLabel" id="labelOrkutUsername">Orkut Email:</label>
+								<input class="posterInputBox2" id="inputOrkutUsername" type="text"/>
+							</div>
+							<div class="posterRow3" id="orkutPassword" style="display:none;">
+								<label class="posterLabel" id="labelOrkutPassword">Orkut Password:</label>
+								<input class="posterInputBox2" id="inputOrkutPassword" type="password"/>
+							</div>
+							<div class="posterRow5" id="orkutComment" style="display:none;">
+								<label id="labelOrkutComment" class="posterLabel">Comment:</label>
+								<textarea id="txtOrkutComment" class="commentText"></textarea>
+							</div>			
+							<div id="orkutCaptchaImage" style="display:none;"></div>
+							<div id="orkutCaptcha" style="display:none;">
+								<label id="labelOrkutCaptcha">Please enter the text from the image</label><br/>
+								<input type="text" id="inputOrkutCaptcha"/>
+							</div>
+						</div>
+						<div id="orkutButton" class="orkutPosterButton">
+							<input id="btnOrkutSubmit" value="Submit" type="button"/>
+						</div>
+						<div class="clear"></div>
+						<div class="privacyLink"><a href="http://sharethis.com/privacy" rel="external" id="tpPrivacyLink" onclick="if(glo_options_popup==true){popupOpen2(this);return false;}">Privacy Policy</a></div>
+						<div class="clear"></div>
+					</div>
+					<div id="friendsterPoster" style="display:none;" class="bigPosterClass">
+						<div id="friendsterContainer" class="friendster_container">
+							<div class="posterRow3" id="friendsterUsername">
+								<label class="posterLabel" id="labelFriendsterUsername">Friendster Email:</label>
+								<input class="posterInputBox2" id="inputFriendsterUsername" type="text"/>
+							</div>
+							<div class="posterRow3" id="friendsterPassword">
+								<label class="posterLabel" id="labelFriendsterPassword">Friendster Password:</label>
+								<input class="posterInputBox2" id="inputFriendsterPassword" type="password"/>
+							</div>
+							<div class="posterRow3" id="friendsterSelect">
+								<label id="labelFriendsterSelect" class="posterLabel">Section:</label>						
+								<select name="FriendsterCategory" id="txtFriendster">
+									<option value="Media">Media</option>
+									<option value="AboutMe">About Me</option>
+									<option value="LikeToMeet">I’d like to meet</option>
+								</select>
+							</div>
+							<div class="posterRow5" id="friendsterComment">
+								<label id="labelFriendsterComment" class="posterLabel">Comment:</label>
+								<textarea id="txtFriendsterComment" class="commentText"></textarea>
+							</div>			
+						</div>
+						<div id="friendsterButton" class="friendsterPosterButton">
+							<input id="btnFriendsterSubmit" value="Submit" type="button"/>
+						</div>
+						<div class="clear"></div>
+						<div class="privacyLink"><a href="http://sharethis.com/privacy" rel="external" id="tpPrivacyLink" onclick="if(glo_options_popup==true){popupOpen2(this);return false;}">Privacy Policy</a></div>
+						<div class="clear"></div>
+					</div>
+					<div id="live_journalPoster" style="display:none;" class="bigPosterClass">
+						<div id="live_journalContainer" class="lj_container" >
+							<div class="posterRow3" id="live_journalUsername">
+								<label class="posterLabel" id="labelLive_journalUsername">LiveJournal Username:</label>
+								<input class="posterInputBox2" id="inputLive_journalUsername" type="text"/>
+							</div>
+							<div class="posterRow3" id="live_journalPassword">
+								<label class="posterLabel" id="labelLive_journalPassword">LiveJournal Password:</label>
+								<input class="posterInputBox2" id="inputLive_journalPassword" type="password"/>
+							</div>
+							<div class="posterRow5" id="live_journalComment">
+								<label id="labelLive_journalComment" class="posterLabel">Comment:</label>
+								<textarea id="txtLive_journalComment" class="commentText"></textarea>
+							</div>			
+						</div>
+						<div id="live_journalButton" class="live_journalPosterButton">
+							<input id="btnLive_journalSubmit" value="Submit" type="button"/>
+						</div>
+						<div class="clear"></div>
+						<div class="privacyLink"><a href="http://sharethis.com/privacy" rel="external" id="tpPrivacyLink">Privacy Policy</a></div>
+						<div class="clear"></div>
+					</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div id="send_tab">
+				<div id="send_container">
+					<div id="boxToContainer">
+						<div class="messaging">To ShareThis, type in each contact and hit enter.</div>
+						<div id="boxAddressList"></div>
+						<div id="boxUsingTo">
+							<div id="boxUsing">
+								<label for="txtUsing" title="Type the name or address of a contact we previously gathered and matches will appear below. Click to add to recipients. You can also send to email addresses, AIM screen names and SMS numbers that are not in your contacts by entering the address and pressing enter.">Using:</label><br/>
+								<select name="nameTxtUsing" id="txtUsing">
+									<option value="EMAIL">Email</option>
+									<option value="AIM">AIM</option>
+									<option value="SMS">SMS</option>
+									<option value="MYSPACE">MySpace</option>
+									<option value="ALL">View All</option>
+								</select>
+							</div>
+							<div id="boxTo">
+								<label for="txtTo" title="Type the name or address of a contact we previously gathered and matches will appear below. Click to add to recipients. You can also send to email addresses, AIM screen names and SMS numbers that are not in your contacts by entering the address and pressing enter.">To:</label>
+								<br/>
+								<input type="text" class="text" name="sharethisTo" id="txtTo"  onkeyup="searchContacts();" value=""/>								
+							</div>
+						</div>
+						<div class="clear"></div>
+						<div id="boxToInfo"></div>
+						<div class="clear"></div>
+						<div class="guest" id="boxToYourAddr" style="display:none;">
+							<label>Your Address:</label>
+							<input type="text" id="txtYourAddr"/>
+						</div>					
+						<div id="boxToMessage">
+							<label>Message:</label>
+							<textarea id="txtMessage"></textarea>
+						</div>
+						<div id="textToPreview"><a id="linkPreview" href="javascript:void(0);">Preview</a></div>				
+					</div>
+					<div style="text-align:right; margin-right:10px;"><input type="button" value="Share" id="btnShareSend"/></div>
+					<div class="privacyLink"><a id="emailPrivacyLink" target="_blank" href="http://sharethis.com/privacy">Privacy Policy</a></div>
+					<div class="clear"></div>
+					<div class="clear"></div>
+					<div id="preview" style="display:none;">
+						<div class="clear"></div>
+						<div id="previewClose">
+							<a href="javascript:void(0);" id="previewCloseLink">close</a>
+						</div>
+						<div id="previewThumb"></div>
+						<div id="previewTextContainer">
+							<div id="previewTitle"></div>
+							<div id="previewUrl"></div>	
+							<div id="previewDescription"></div>	
+						</div>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div id="doneScreen">
+					<div id="doneScreenStatus">
+						<div class="working" style="display: none;"><img alt="" width="16" height="16" src="/images/spinner.gif"/><br/>Sharing...</div>
+						<div class="success" style="display: block;">Your message was successfully shared!</div>
+						<div class="error" style="display: none;">Unable to share at this time, we have logged the error.</div>
+					</div>
+					<hr class="sendHR"/>
+					<div class="doneTextInfo">Here's what you can do next:</div>
+					<div class="doneTextCnt">
+						<div class="doneText" id="doneRegIE" style="display: none;"><img alt="" width="120" height="55" src="/share/images/bullet_6.gif"/><span style="color: rgb(0, 0, 0); font-weight: bold; font-size: 13px; line-height: 18px;">Add to Toolbar</span><br/>Right click this <a class="bookmark" onclick="javascript:alert('Right-click on this and add it to your favorites.'); return false;" href="javascript:var%20e=document.createElement('script');e.setAttribute('language','javascript');e.setAttribute('src','http://sharethis.com/share/load');document.body.appendChild(e);void(0);">ShareThis</a> link add it to your Favorites and start sharing.</div>
+						<div class="doneText" id="doneRegOther"><img alt="" width="120" height="55" src="/share/images/bullet_6.gif"/><span style="color: rgb(0, 0, 0); font-weight: bold; font-size: 13px; line-height: 18px;">Add to Toolbar</span><br/>Drag this <a class="bookmark" onclick="javascript:alert('Drag this to your bookmarks bar.'); return false;" href="javascript:var%20e=document.createElement('script');e.setAttribute('language','javascript');e.setAttribute('src','http://sharethis.com/share/load');document.body.appendChild(e);void(0);">ShareThis</a> link to your browser to share from any website.</div>
+						<div class="doneText guest" id="doneRegister" style="display: block;"><a onclick="window.open('http://sharethis.com/users/register/','register','resizable=1,location=1,status=1,scrollbars=1,toolbar=1'); return false;" href="javascript:void(0);"><img alt="" width="120" height="45" src="/share/images/bullet_3.gif"/></a><a onclick="window.open('http://sharethis.com/users/register/','register','resizable=1,location=1,status=1,scrollbars=1,toolbar=1'); return false;" href="javascript:void(0);">Register Now!</a><br/>Instantly Share with your friends using Email, AIM, MySpace and more.</div>
+						<div class="doneText"><a onclick="window.open('http://sharethis.com/publishers/getbutton/','getthebutton','resizable=1,location=1,status=1,scrollbars=1,toolbar=1'); return false;" href="javascript:void(0);"><img alt="" width="120" height="45" src="/share/images/bullet_2.gif"/></a><a onclick="window.open('http://sharethis.com/publishers/getbutton/','getthebutton','resizable=1,location=1,status=1,scrollbars=1,toolbar=1'); return false;" href="javascript:void(0);">Get the Button!</a><br/>Put ShareThis on your website or blog in minutes!</div>
+					</div>
+					<div id="doneScreenButtons">
+						<input type="button" value="&#171; Share Again" id="doneScreenOk" style="display: inline;"/>
+					</div>
+				</div>
+				<div id="importMyspace" class="importFriends">
+					<div id="importFriendsClose">
+						<a href="javascript:void(0);" id="importMyspaceCloseLink">close</a>
+					</div>
+					<div class="titleText" id="importFriendsText">
+						<h3>Get your <img alt="" width="16" height="16" src="/images/ico_myspace.gif"/> <span>MySpace</span> friends list:</h3>
+					</div>				
+					<div id="importFriendsUsername">
+						<div>
+							<label>User Name:</label>
+							<input type="text" name="username" id="myspaceUserNameInput"/>
+						</div>
+					</div>
+					<div id="importFriendsPassword">
+						<div>
+							<label>Password:</label>
+							<input type="password" name="password" id="myspacePasswordInput"/>
+						</div>
+					</div>
+					<div id="importFriendsStatus">
+						<div class="working" style="display: none;"><img alt="" width="16" height="16" src="/images/spinner.gif"/><br/>Getting friends...</div>
+						<div class="success" style="display: none;" id="myspaceSuccess"></div>
+						<div class="error" id="myspaceError" style="display: none;">Invalid username and/or password.</div>
+					</div>
+					<div id="importMyspaceCheckbox" style="display: none;">
+						<input type="checkbox" value="" name="importFriendsRememberMe"id="myspaceRememberMe"/> Remember my contacts for the next time I share
+					</div>
+					<div id="importFriendsButtons">
+						<span id="myspaceGet">
+							<input type="submit" value="Get" id="importMyspaceSubmit"/>
+							<input type="button" value="Cancel" id="importMyspaceCancel"/>
+						</span>
+						<span id="myspaceOK" style="display:none;">
+							<input type="submit" value="OK" id="importMyspaceOK"/>
+						</span>
+					</div>
+					<div class="privacyLink importerPrivacyLink"><a id="emailPrivacyLink" target="_blank" href="http://sharethis.com/privacy">Privacy Policy</a></div>
+				</div>
+				<div id="addAnother" class="importFriends">
+					<div id="addAnotherClose">
+						<a id="addAnotherCloseLink" href="javascript:void(0);">close</a>
+					</div>
+					<div id="addAnotherTitle">Add contact to ShareThis address book.</div>
+					<div id="addAnotherAddr">
+						<label>Address:</label> 
+						<span id="addAnotherAddress"></span>
+					</div>
+					<div id="addAnotherName">
+						<label>Name:</label> 
+						<input class="text" id="addTextArea" type="text" />
+					</div>
+					<div id='saveAddressId' style="display:none"></div>
+					<div class="clear"></div>
+					<input id="btnAddAnother" value="Save" type="submit" />
+				</div>	
+				<div id="importAim" class="importFriends">
+					<div id="importFriendsClose">
+						<a href="javascript:void(0);" id="importAimCloseLink">close</a>
+					</div>
+					<div class="titleText" id="importFriendsText">
+						<h3>Get your <img alt="" width="16" height="16" src="/images/ico_aim.gif"/> <span>AIM</span> friends list:</h3>
+					</div>				
+					<div id="importFriendsUsername">
+						<div>
+							<label>Screen Name:</label>
+							<input type="text" name="username" id="aimScreenNameInput"/>
+						</div>
+					</div>
+					<div id="importFriendsPassword">
+						<div>
+							<label>Password:</label>
+							<input type="password" name="password" id="aimPasswordInput"/>
+						</div>
+					</div>
+					<div id="importFriendsStatus">
+						<div class="working" style="display: none;"><img alt="" width="16" height="16" src="/images/spinner.gif"/><br/>Getting friends...</div>
+						<div class="success" style="display: none;" id="aimSuccess" ></div>
+						<div class="error" id="aimError" style="display: none;">Invalid username and/or password.</div>
+					</div>
+					<div id="importAimCheckbox" style="display: none;">
+						<input type="checkbox" value="" name="importFriendsRememberMe" id="aimRememberMe"/> Remember my contacts for the next time I share
+					</div>
+					<div id="importFriendsButtons">
+						<span id="aimGet">	
+							<input type="submit" value="Get" id="importAimSubmit"/>
+							<input type="button" value="Cancel" id="importAimCancel"/>
+						</span>
+						<span id="aimOK" style="display:none">
+							<input type="submit" value="OK" id="importAimOK"/>
+						</span>
+					</div>
+					<div class="privacyLink importerPrivacyLink"><a id="emailPrivacyLink" target="_blank" href="http://sharethis.com/privacy">Privacy Policy</a></div>
+				</div>
+			</div>
+			<div id="register" style="display: none;"> 
+				<div id="registerClose">
+					<a href="javascript:void(0);" id="registerCloseLink">close</a>
+				</div>			
+				<div id="registerText">
+					<h2>Create your ShareThis Account</h2>
+				</div>
+				<div id="registerEmail">
+					<div>
+						<label>Email:</label>
+						<input type="text" id="registerEmailInput" value="" name="email"/>
+					</div>
+					<div class="mt6">
+						<label>Full Name:</label>
+						<input type="text" value="" id="registerNameInput" name="yourname"/>
+					</div>
+					<div class="mt6">
+						<label>Nickname:</label>
+						<input type="text" value="" id="registerNickNameInput" name="nickname"/>
+					</div>
+				</div>
+				<div id="registerPassword">
+					<div>
+						<label>Password:</label>
+						<input type="password" id="registerPasswordInput" name="password"/>
+					</div>
+					<div class="mt6">
+						<label>Confirm Password:</label>
+						<input type="password" id="registerPassword2Input" name="cpassword"/>
+					</div>
+				</div>
+				<div id="registerStatus">
+					<div class="working" style="display: none;"><img alt="" width="16" height="16" src="/images/spinner.gif"/><br/>Creating account...</div>
+					<div class="success" style="display: none;">Account created successfully.</div>
+					<div class="error" id="registerError" style="display: none;"> </div>
+				</div>
+				<div id="registerButtons">
+					<input type="submit" value="Create Account" id="registerSubmit"/>
+					<span style="display:none" id="regOK"><input type="submit" value="OK" id="registerOK"/></span>
+				</div>
+				<div id="registerLegal">By clicking Create Account, you agree electronically to our <span class="link" onclick="window.open('http://sharethis.com/terms','terms','resizable=1,location=1,status=1,scrollbars=1,toolbar=1'); return false;">terms of use</span> and <span class="link" onclick="window.open('http://sharethis.com/privacy','privacy','resizable=1,location=1,status=1,scrollbars=1,toolbar=1'); return false;">privacy policy</span>, and are at least 13 years old.</div>
+			</div>
+			<div id="loginBox">
+				<div style="margin:5px;">
+					<div id="loginClose">
+						<a href="javascript:void(0);" id="linkSignInClose">close</a>
+					</div>
+					<div id="loginErr" style="display:none" class="error"></div>
+					<div id="loginContainer"> 
+						<div id="loginUsername">
+							<label id="labelUsername">Email</label>
+							<span style="overflow:auto;"><input type="text" name="username" id="textAuthUsername" class="posterInputBox"/></span>
+						</div>
+						<div id="loginPassword">
+							<label id="labelPassword">Password</label>
+							<input type="password" name="password" id="textAuthPassword" class="posterInputBox"/>
+						</div>
+						<div id="loginButton">
+							<a href="javascript:void(0);" id="linkRegister">Register</a>&nbsp;&nbsp;
+							<a rel="external" href="http://sharethis.com/account/lostpassword/" id="linkForgotPassword" onclick="if(glo_options_popup==true){popupOpen2(this);return false;}">Forgot?</a>
+							<input type="submit" value="Sign In" id="linkAuthSignIn"/>
+						</div>  
+					</div>
+					<div class="privacyLink"><a id="loginPrivacyLink" rel="external" href="http://sharethis.com/privacy" onclick="if(glo_options_popup==true){popupOpen2(this);return false;}">Privacy Policy</a></div>
+					<div id="regLoading"><img src="images/loading2.gif" alt=""/></div>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div id="footer" class="border-color">
+				<div class="clear"></div>
+				<div id="boxFooterPowered"><a id="poweredByImg" rel="external" href="http://sharethis.com/" onclick="if(glo_options_popup==true){popupOpen2(this);return false;}"><img src="images/powered-by.gif" alt=""/></a></div>		
+				<div id="footerReg">
+					<span id="myAcct">
+						<a id="linkSignIn" href="javascript:void(0);">Sign In</a>
+					</span>
+				</div>
+				<div id="signedInFooter">
+					<span id="textAuthInfoEmail"></span><br/>
+					<span id="myAcct"><a id="myAccLink" rel="external" href="http://sharethis.com/account" onclick="if(glo_options_popup==true){popupOpen2(this);return false;}">My Account</a> | <a id="linkSignOut" href="javascript:void(0);">Sign Out</a></span>
+				</div>
+				<div class="clear"></div>
+			</div>
+		</div>
+		<script type="text/javascript">
+		var widget=new Widget();
+		</script>		
+	</body>
+</html>
