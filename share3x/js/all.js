@@ -1,6 +1,6 @@
 /*!
- * ShareThis Widget Version 3.4.0-rc1
- * 4/17/09 ShareThis.com 
+ * ShareThis Widget Version 3.5.0-rc1
+ * 4/24/09 ShareThis.com 
  */
 
 //widget-class.js
@@ -484,7 +484,7 @@ var Widget = new Class({ Implements: Events,
 		var resp = JSON.decode(responseText);
 		
 		if (resp.status && resp.status.toLowerCase() == 'success') {
-			this.fireEvent('postToServiceSucceeded', 'twitter');
+			this.fireEvent('postToServiceSucceeded', 'twitter.com');
 		}
 		else {
 			if (resp.errorMessage) {
@@ -1069,6 +1069,7 @@ if (!window.console || !console.firebug) {
 	var bufferValue=[];
 	var bufferRunArgs=[];
 	var glo_sessionID=null;
+	var glo_fpc=null;
 	var glo_thumbImageTag="";
 	var glo_browser="";
 	var glo_toolbar=false;
@@ -1334,6 +1335,9 @@ if (!window.console || !console.firebug) {
 			case "sessionID":
 				glo_sessionID=value;
 				break;
+			case "fpc":
+				glo_fpc=value;
+				break;	
 			case 'headerTitle':
 				glo_headerTitle = value;
 				widget.fireEvent('headerTitleChanged', value);
@@ -1686,7 +1690,8 @@ if (!window.console || !console.firebug) {
 				+ "&ts" + (new Date()).getTime()
 				+ "&title=" + glo_title
 				+ "&url=" + glo_url
-				+ "&sessionID="+glo_sessionID;
+				+ "&sessionID="+glo_sessionID
+				+ "&fpc="+glo_fpc;
 		var logger2 = new Image(1,1);
 		logger2.src = url2;
 		logger2.onload = function(){return;};
@@ -1720,6 +1725,7 @@ if (!window.console || !console.firebug) {
 			url2+= "&title="+encodeURIComponent(glo_title);
 			url2+= "&url="+encodeURIComponent(glo_url);
 			url2+= "&sessionID="+glo_sessionID;
+			url2+= "&fpc="+glo_fpc;
 		var logger2 = new Image(1,1);
 		logger2.src = url2;
 		logger2.onload = function(){return;};

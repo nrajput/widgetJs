@@ -1,9 +1,9 @@
 /*
-ShareThis Loader Version 3.4.0-rc1
-4/17/09 ShareThis.com
+ShareThis Loader Version 3.5.0-rc1
+4/24/09 ShareThis.com
 */
 
-var STV="3-4-0RC1";
+var STV="3-5-0RC1";
 
 ST_JSON = new function(){
 
@@ -274,6 +274,10 @@ try{
 			this.sessionID=(new Date()).getTime();
 			this.sessionID+=Math.random();
 			options['sessionID']=this.sessionID;
+			this.fpc=_stFpc();
+			options['fpc']=this.fpc;
+			options['pUrl']=document.location.href;
+			options['pTitle']=document.title;
 			this.widgetCalled=false;
 			this.lastUrl='blank';
 			this.logFlag=true;
@@ -704,7 +708,9 @@ try{
 		            + "&location=" + encodeURIComponent(SHARETHIS.meta.location)
 		            + "&url=" + encodeURIComponent(url)
 		            + "&sessionID="+SHARETHIS.sessionID
+		            + "&fpc="+SHARETHIS.fpc
 		            + "&ts" + (new Date()).getTime() + "." + SHARETHIS.counter++;		        		         
+		                    		         
 		        var logger2 = new Image(1,1);
 		        logger2.src = lurl;
 				// N.B. This onload function is required for IE.
@@ -935,7 +941,7 @@ try{
 		}
 		
 		function SHARETHIS_tstOptions(tstStr){
-			var opt_arr=['type','title','summary','content','url','icon','category','updated','published','author','button','onmouseover','buttonText','popup','offsetLeft','offsetTop','embeds','autoclose','publisher','tabs','services','charset','headerbg','inactivebg','inactivefg','linkfg','style','send_services','post_services','headerfg','headerType','headerTitle','sessionID','tracking'];
+			var opt_arr=['type','title','summary','content','url','icon','category','updated','published','author','button','onmouseover','buttonText','popup','offsetLeft','offsetTop','embeds','autoclose','publisher','tabs','services','charset','headerbg','inactivebg','inactivefg','linkfg','style','send_services','post_services','headerfg','headerType','headerTitle','sessionID','tracking','fpc','pUrl','pTitle'];
 			var retVal=false;
 				for(var i=0;i<opt_arr.length;i++){
 					if(tstStr===opt_arr[i]){
@@ -949,9 +955,82 @@ try{
 		function SHARETHIS_TEST(){
 			SHARETHIS.mainstframe.src = SHARETHIS.frameUrl+"#test";
 		}
+		//main function for fpc cookie handling
+		function _stFpc(){
+			var cVal=_stGetFpc("__unam");
+			if(cVal==false){
+				var bigRan=Math.round(Math.random() * 2147483647);
+				bigRan=bigRan.toString(16);
+				var time=(new Date()).getTime();
+				time=time.toString(16);
+				var guid="";
+				var hashD=_stGetD()
+				hashD=hashD.split(/\./)[1];
+				guid=_stdHash(hashD)+"-"+time+"-"+bigRan+"-1";
+				cVal=guid;
+				_stSetFpc(cVal);
+				console.log("cookie is not there, setting new one: "+cVal);
+			}else{
+				var cv=cVal;
+				var cvArray = cv.split(/\-/);
+				if(cvArray.length==4){
+					var num=Number(cvArray[3]);
+					num++;
+					cv=cvArray[0]+"-"+cvArray[1]+"-"+cvArray[2]+"-"+num;
+					cVal=cv;
+					_stSetFpc(cVal);
+					console.log("cookie found: "+cVal);
+				}
+			}			
+			return cVal;
+		}
+		//sets fpc with value and exires in 9 months
+		function _stSetFpc(value) {
+			var name="__unam";
+			var current_date = new Date;
+			var exp_y = current_date.getFullYear();
+			var exp_m = current_date.getMonth() + 9;// set cookie for 9 months into future
+			var exp_d = current_date.getDate();
+			var cookie_string = name + "=" + escape(value);
+			if (exp_y) {
+				var expires = new Date (exp_y,exp_m,exp_d);
+				cookie_string += "; expires=" + expires.toGMTString();
+			}
+			var domain=_stGetD();
+			cookie_string += "; domain=" + escape (domain)+";path=/";
+			document.cookie = cookie_string;
+		}
+		//resolves domain for use in cookie
+		function _stGetD(){
+			var str = document.domain.split(/\./)
+			var domain="";
+			if(str.length>1){
+			    domain="."+str[str.length-2]+"."+str[str.length-1];
+			}
+			console.log("domain is: "+domain);
+			return domain;
+		}
+		//gets cookie value with name or returns false
+		function _stGetFpc(cookie_name) {
+			var results = document.cookie.match('(^|;) ?' + cookie_name + '=([^;]*)(;|$)');
+			if (results)
+				return (unescape(results[2]));
+			else
+				return false;
+		}
+		//hashes dd and returns value
+		function _stdHash(dd) {
+		console.log("value to hash: "+dd);
+			var hash=0,salt=0;
+		 	for (var i=dd.length-1;i>=0;i--) {
+			  var charCode=parseInt(dd.charCodeAt(i));
+			  hash=((hash << 8) & 268435455) + charCode + (charCode << 12);
+			  if ((salt=hash & 161119850)!=0){hash=(hash ^ (salt >> 20))};
+			}
+		 return hash.toString(16);
+		}
 		
 		var _thisScript=null;
-
 		function getShareThisScript(){
 			var _slist = document.getElementsByTagName('script');
 			var rScript=null;
