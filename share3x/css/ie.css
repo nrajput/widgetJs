@@ -1,1 +1,36 @@
-ul.scroll,ul.scroll li,.contact_search_field,.opposite{zoom:1;}.col dd .addresses input.text,.col dd .addresses textarea,.col dd .addresses .to_field{width:175px;}.to_field input.contact_search_field{width:150px;}.col dd input.text,.col dd textarea{width:203px;}.mbox .col dd input.text,.mbox .col dd textarea{width:97px;}button,.button{padding-left:7px;padding-right:7px;}.contact_search_field{left:0;position:relative;}.col dd{margin-left:80px;}
+/* hasLayout fixes */
+ul.scroll,
+ul.scroll li,
+.contact_search_field,
+.opposite {zoom:1;}
+
+.col dd .addresses input.text,
+.col dd .addresses textarea,
+.col dd .addresses .to_field {
+	width:175px;
+}
+.to_field input.contact_search_field {
+	width:150px;
+}
+.col dd input.text,
+.col dd textarea {
+	width:203px;
+}
+.mbox .col dd input.text,
+.mbox .col dd textarea{
+	width:97px;
+}
+button,
+.button {
+	padding-left:7px;
+	padding-right:7px;
+}
+
+.contact_search_field {
+	left:0;
+	position:relative;
+}
+
+.col dd {
+	margin-left:80px;
+}

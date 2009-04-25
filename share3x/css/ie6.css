@@ -1,1 +1,28 @@
-.carousel,.carousel .view a,.carousel .view a:visited,.col_foot,.hor,.token,#sub_header,#home_button,#recent_recipients{zoom:1;}#sub_header #greeting{float:left;}ul.scroll{width:293px;}ul.scroll li label{width:231px;}#import_page #import_list li{zoom:1;line-height:13px;}.mbox{height:101px;}
+/* hasLayout fixes */
+.carousel,
+.carousel .view a,
+.carousel .view a:visited,
+.col_foot,
+.hor,
+.token,
+#sub_header,
+#home_button,
+#recent_recipients {
+	zoom:1;
+}
+#sub_header #greeting {
+	float:left; /* workaround for peekaboo bug */
+}
+ul.scroll {
+	width:293px;
+}
+ul.scroll li label {
+	width:231px;
+}
+#import_page #import_list li {
+	zoom:1;
+	line-height:13px;
+}
+.mbox {
+	height:101px;
+}
