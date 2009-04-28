@@ -597,7 +597,7 @@ a.addressbook_button {
 	background: white;
 	border:6px solid #666;
 	position:relative;
-	width:337px; 
+	width:340px; 
 	z-index: 999;
 }
 #header {
@@ -733,6 +733,22 @@ span.active a#home_button {
 }
 .ad {
 	margin:0 auto;
+}
+#header_ad {
+	width: 340px;
+}
+#footer_ad {
+	width: 340px;
+	border-top: 1px solid #B6B6B6;
+	z-index: -1;
+}
+#footer_ad_header {
+	font-size: 9px;
+	margin-bottom: 0;
+	text-align: center;
+}
+#footer_ad_body {
+	width: 340px;
 }
 #registerStatus {
 	clear:both;

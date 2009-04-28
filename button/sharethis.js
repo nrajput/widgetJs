@@ -518,7 +518,7 @@ try{
 							}
 					        if(o.options.popup) {
 					        	var newwinurl = SHARETHIS.frameUrl + SHARETHIS.newwinfrag +"/guid_index=" + oidx +"/guid=" + SHARETHIS.guid;	
-								window.open(newwinurl, "newstframe","status=1,toolbar=0,width=350,height=462");
+					        	window.open(newwinurl, "newstframe","status=1,toolbar=0,width=353,height=558");
 						} 
 						else{
 								if(st_showing == false) {		
@@ -836,8 +836,8 @@ try{
 					this.mainstframe.name = 'stframe';
 					this.mainstframe.frameBorder = '0';
 					this.mainstframe.scrolling = 'no';
-					this.mainstframe.width = '350px';
-					this.mainstframe.height = '462px';
+					this.mainstframe.width = '353px';
+					this.mainstframe.height = '558px';
 					this.mainstframe.style.top = '0px';
 					this.mainstframe.style.left = '0px';
 					 //this works in ff and safari
@@ -941,7 +941,7 @@ try{
 		}
 		
 		function SHARETHIS_tstOptions(tstStr){
-			var opt_arr=['type','title','summary','content','url','icon','category','updated','published','author','button','onmouseover','buttonText','popup','offsetLeft','offsetTop','embeds','autoclose','publisher','tabs','services','charset','headerbg','inactivebg','inactivefg','linkfg','style','send_services','post_services','headerfg','headerType','headerTitle','sessionID','tracking','fpc','pUrl','pTitle'];
+			var opt_arr=['type','title','summary','content','url','icon','category','updated','published','author','button','onmouseover','buttonText','popup','offsetLeft','offsetTop','embeds','autoclose','publisher','tabs','services','charset','headerbg','inactivebg','inactivefg','linkfg','style','send_services','post_services','headerfg','headerType','headerTitle','sessionID','tracking','fpc','pUrl','pTitle','ads'];
 			var retVal=false;
 				for(var i=0;i<opt_arr.length;i++){
 					if(tstStr===opt_arr[i]){
