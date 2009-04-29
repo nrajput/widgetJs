@@ -1,9 +1,9 @@
 /*
-ShareThis Loader Version 3.5.0-rc1
-4/24/09 ShareThis.com
+ShareThis Loader Version 3.5.0-rc7
+4/29/09 ShareThis.com
 */
 
-var STV="3-5-0RC1";
+var STV="3-5-0RC5";
 
 ST_JSON = new function(){
 
@@ -135,9 +135,9 @@ ST_JSON = new function(){
 	catch(z){rc=/^(true|false|null|\[.*\]|\{.*\}|".*"|\d+|\d+\.\d+)$/}
 };
 
-/*
+
 try{
-*/
+
 	if (!SHARETHIS) {
 		if(!SHARETHIS_TOOLBAR){
 			var SHARETHIS_TOOLBAR=false;
@@ -276,8 +276,6 @@ try{
 			options['sessionID']=this.sessionID;
 			this.fpc=_stFpc();
 			options['fpc']=this.fpc;
-			options['pUrl']=document.location.href;
-			options['pTitle']=document.title;
 			this.widgetCalled=false;
 			this.lastUrl='blank';
 			this.logFlag=true;
@@ -941,7 +939,7 @@ try{
 		}
 		
 		function SHARETHIS_tstOptions(tstStr){
-			var opt_arr=['type','title','summary','content','url','icon','category','updated','published','author','button','onmouseover','buttonText','popup','offsetLeft','offsetTop','embeds','autoclose','publisher','tabs','services','charset','headerbg','inactivebg','inactivefg','linkfg','style','send_services','post_services','headerfg','headerType','headerTitle','sessionID','tracking','fpc','pUrl','pTitle'];
+			var opt_arr=['type','title','summary','content','url','icon','category','updated','published','author','button','onmouseover','buttonText','popup','offsetLeft','offsetTop','embeds','autoclose','publisher','tabs','services','charset','headerbg','inactivebg','inactivefg','linkfg','style','send_services','post_services','headerfg','headerType','headerTitle','sessionID','tracking','fpc'];
 			var retVal=false;
 				for(var i=0;i<opt_arr.length;i++){
 					if(tstStr===opt_arr[i]){
@@ -1061,8 +1059,8 @@ try{
 		var obj = SHARETHIS.addEntry();
 	}
 
-/*
+
 }
 catch(err){
-}*/
+}
 
