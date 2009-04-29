@@ -1083,6 +1083,7 @@ if (!window.console || !console.firebug) {
 	var glo_ads=false;
 	var glo_adtag_header="";
 	var glo_adtag_footer="";
+	var glo_page="";
 	
 	function css_browser_selector(u){var ua = u.toLowerCase(),is=function(t){return ua.indexOf(t)>-1;},g='gecko',w='webkit',s='safari',h=document.getElementsByTagName('html')[0],b=[(!(/opera|webtv/i.test(ua))&&/msie\s(\d)/.test(ua))?('ie ie'+RegExp.$1):is('firefox/2')?g+' ff2':is('firefox/3')?g+' ff3':is('gecko/')?g:/opera(\s|\/)(\d+)/.test(ua)?'opera opera'+RegExp.$2:is('konqueror')?'konqueror':is('chrome')?w+' '+s+' chrome':is('applewebkit/')?w+' '+s+(/version\/(\d+)/.test(ua)?' '+s+RegExp.$1:''):is('mozilla/')?g:'',is('j2me')?'mobile':is('iphone')?'iphone':is('ipod')?'ipod':is('mac')?'mac':is('darwin')?'mac':is('webtv')?'webtv':is('win')?'win':is('freebsd')?'freebsd':(is('x11')||is('linux'))?'linux':'','js']; c = b.join(' '); h.className += ' '+c; return c;}; 
 	var glo_browser=css_browser_selector(navigator.userAgent);
@@ -1381,6 +1382,14 @@ if (!window.console || !console.firebug) {
 				break;
 			case "adtag_footer":
 				glo_adtag_footer=value;
+				break;
+			case "page":
+				glo_page=value;
+				if (glo_page == "send" || glo_page == "post|twitter") {
+					widget.showPage(glo_page);
+				} else {
+					widget.showPage('home');
+				}
 				break;
 			default: 
 				// do nothing
@@ -2926,7 +2935,7 @@ Widget.implement({
 					event.stop();
 				}).bind(this));
 				$('twitter_update_status').addEvent('click', function(event) {
-					widget.showPage('post/twitter');
+					widget.showPage('post|twitter');
 					event.stop();
 				});
 				widget.addEvent('shareableValuesUpdated', function() {
@@ -3055,7 +3064,11 @@ Widget.implement({
 				widget.user.removeEvent('signedOut', this.runAway.bind(this));
 			},
 			runAway: function() {
-				widget.showPage('home');
+				if (glo_page == "send" || glo_page == "post|twitter") {
+					widget.showPage(glo_page);
+				} else {
+					widget.showPage('home');
+				}
 			}
 		},
 		register: {
@@ -3073,7 +3086,11 @@ Widget.implement({
 				widget.addEvent('registerUserSucceeded', function() {
 					widget.popModalWorkingSheet();
 					setTimeout(function() {
-						widget.showPage('home');
+						if (glo_page == "send" || glo_page == "post|twitter") {
+							widget.showPage(glo_page);
+						} else {
+							widget.showPage('home');
+						}
 					}, 10);
 				});
 				widget.addEvent('registerUserFailed', function(message) {
@@ -3454,7 +3471,11 @@ Widget.implement({
 				$('doneScreenOk').addEvent('click',function(event) {
 					widget.user.deselectContacts();
 					clearMsgQueue();
-					widget.showPage('home');
+					if (glo_page == "send" || glo_page == "post|twitter") {
+						widget.showPage(glo_page);
+					} else {
+						widget.showPage('home');
+					}
 					event.stop();
 				});
 				this.parent();
@@ -3714,7 +3735,7 @@ Widget.implement({
 	_currentPage: null,
 	
 	/**
-	 * @param 	string|array path: slash-delimited path to the page to show using 
+	 * @param 	string|array path: pipe-delimited path to the page to show using 
 	 * 			property names in structure above. eg, 'post/wordpress' or just 'done'. 
 	 * 			during internal recursion the argument is an array, so that'll work too.
 	 * @param	[object obj]: only used during internal recursion.
@@ -3723,7 +3744,7 @@ Widget.implement({
 		if (!obj && path != this.pageHistory.getLast()) { 
 			this.pageHistory.push(path); 
 		}
-		path = (typeof path == 'string' ? path.split('/') : path);
+		path = (typeof path == 'string' ? path.split('|') : path);
 		obj = (obj ? obj : widget);
 		var page = path.shift();
 		for (var name in obj.pages) {
@@ -3946,7 +3967,7 @@ Widget.implement({
 		},
 		blogger:  {
 			title: 'Blogger',
-			onClick: function(event) { widget.showPage('post/blogger'); event.stop(); },
+			onClick: function(event) { widget.showPage('post|blogger'); event.stop(); },
 			type: 'post'
 		},
 		bus_exchange: {
@@ -4025,7 +4046,7 @@ Widget.implement({
 		},
 		friendster: {
 			title: 'Friendster',
-			onClick: function(event) { widget.showPage('post/friendster'); event.stop(); },
+			onClick: function(event) { widget.showPage('post|friendster'); event.stop(); },
 			type: 'post'
 		},
 		funp: {
@@ -4045,7 +4066,7 @@ Widget.implement({
 		},
 		hi5: {
 			title: 'Hi5',
-			onClick: function(event) { widget.showPage('post/hi5'); event.stop(); },
+			onClick: function(event) { widget.showPage('post|hi5'); event.stop(); },
 			type: 'post'
 		},
 		kirtsy: {
@@ -4060,7 +4081,7 @@ Widget.implement({
 		},
 		livejournal: {
 			title: 'LiveJournal',
-			onClick: function(event) { widget.showPage('post/livejournal'); event.stop(); },
+			onClick: function(event) { widget.showPage('post|livejournal'); event.stop(); },
 			type: 'post'
 		},
 		/*
@@ -4107,7 +4128,7 @@ Widget.implement({
 		},
 		orkut: {
 			title: 'Orkut',
-			onClick: function(event) { widget.showPage('post/orkut'); event.stop(); },
+			onClick: function(event) { widget.showPage('post|orkut'); event.stop(); },
 			type: 'post'
 		},
 		propeller: {
@@ -4169,18 +4190,18 @@ Widget.implement({
 				}
 				*/
 				/*
-				 * This next line "widget.showPage('post/twitter');"
+				 * This next line "widget.showPage('post|twitter');"
 				 * should be removed when we uncomment the above code
 				 * for re-implement of Twitter direct messageing. -- KJW
 				 */
-				widget.showPage('post/twitter');
+				widget.showPage('post|twitter');
 				event.stop();
 			},
 			type: 'post'			
 		},
 		typepad:  {
 			title: 'TypePad',
-			onClick: function(event) { widget.showPage('post/typepad'); event.stop(); },
+			onClick: function(event) { widget.showPage('post|typepad'); event.stop(); },
 			type: 'post'
 		},
 		windows_live: {
@@ -4194,7 +4215,7 @@ Widget.implement({
 		},
 		wordpress:  {
 			title: 'WordPress',
-			onClick: function(event) { widget.showPage('post/wordpress'); event.stop(); },
+			onClick: function(event) { widget.showPage('post|wordpress'); event.stop(); },
 			type: 'post'
 		},
 		xanga: {
@@ -6250,7 +6271,11 @@ window.addEvent('domready', function() {
 		widget.openLoginBox();
 	});
 	$('linkSignOut').addEvent('click', function(){
-		widget.showPage('home');
+		if (glo_page == "send" || glo_page == "post|twitter") {
+			widget.showPage(glo_page);
+		} else {
+			widget.showPage('home');
+		}
 		widget.signOut();
 	});
 	
@@ -6413,6 +6438,10 @@ window.addEvent('domready', function() {
 		});
 	});
 
-	widget.showPage('home');
+	if (glo_page == "send" || glo_page == "post|twitter") {
+		widget.showPage(glo_page);
+	} else {
+		widget.showPage('home');
+	}
 });
 
