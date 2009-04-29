@@ -750,6 +750,9 @@ span.active a#home_button {
 #footer_ad_body {
 	width: 340px;
 }
+#footer_ad_body img {
+	margin: auto;
+}
 #registerStatus {
 	clear:both;
 }

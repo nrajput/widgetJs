@@ -276,8 +276,8 @@ try{
 			options['sessionID']=this.sessionID;
 			this.fpc=_stFpc();
 			options['fpc']=this.fpc;
-			options['pUrl']=document.location.href;
-			options['pTitle']=document.title;
+			//options['pUrl']=document.location.href;
+			//options['pTitle']=document.title;
 			this.widgetCalled=false;
 			this.lastUrl='blank';
 			this.logFlag=true;
@@ -518,7 +518,7 @@ try{
 							}
 					        if(o.options.popup) {
 					        	var newwinurl = SHARETHIS.frameUrl + SHARETHIS.newwinfrag +"/guid_index=" + oidx +"/guid=" + SHARETHIS.guid;	
-					        	window.open(newwinurl, "newstframe","status=1,toolbar=0,width=353,height=558");
+					        	window.open(newwinurl, "newstframe","status=1,toolbar=0,width=353,height=598");
 						} 
 						else{
 								if(st_showing == false) {		
@@ -837,7 +837,7 @@ try{
 					this.mainstframe.frameBorder = '0';
 					this.mainstframe.scrolling = 'no';
 					this.mainstframe.width = '353px';
-					this.mainstframe.height = '558px';
+					this.mainstframe.height = '598px';
 					this.mainstframe.style.top = '0px';
 					this.mainstframe.style.left = '0px';
 					 //this works in ff and safari
