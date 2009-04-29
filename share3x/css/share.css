@@ -350,14 +350,29 @@ a.addressbook_button {
 .carousel .fwd {
 	background-position:-13px 0;
 }
+.carousel .back:hover {
+	background-position:0 -175px;
+}
+.carousel .fwd:hover {
+	background-position:-13px -175px;
+}
+
 .carousel .back-big {
 	background-position:0 -66px;
 }
 .carousel .fwd-big {
 	background-position:-13px -66px;
 }
+.carousel .back-big:hover {
+	background-position:0 -241px;
+}
+.carousel .fwd-big:hover {
+	background-position:-13px -241px;
+}
+
+
 .carousel .view {
-	height:44px;
+	height:87px;
 	margin:0 5px;
 	overflow:hidden;
 	position:relative;
@@ -384,10 +399,30 @@ a.addressbook_button {
 	padding:20px;
 	position:relative;
 }
-#send_section,
-#save_section {
+#send_section{
 	padding:10px 20px;
 }
+
+#save_section {
+	padding:0px 20px;
+	margin-bottom:10px;
+}
+#whatpage{
+	position:absolute;
+	top:3px;
+	left:34px;
+	font-size:10px;
+}
+#paginator{
+	text-align:center;
+	margin-top:5px;
+	font-size:11.5px;
+}
+#paginator a:hover{
+	text-decoration:underline;
+	color:red;
+}
+
 .overlay {
 	background:#eee;
 	border-top:3px solid #999;

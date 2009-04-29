@@ -4443,6 +4443,18 @@ Widget.Carousel = new Class({ Implements: Events,
 			}
 			event.stop();
 		});
+		this.domContainer.getElement('.fwd').addEvent('mouseover', function(event) {
+			if (poppet.getNumPages() > 1) {
+				poppet.advance();
+			}
+			event.stop();
+		});
+		this.domContainer.getElement('.back').addEvent('mouseover', function(event) {
+			if (poppet.getNumPages() > 1) {
+				poppet.rewind();
+			}
+			event.stop();
+		});
 		
 		this.domContainer.getElement('#linkWebMore').addEvent('click', function(event) {
 			poppet.showMore();
@@ -4458,11 +4470,12 @@ Widget.Carousel = new Class({ Implements: Events,
 		else {
 			this.showMore();
 		}
+			
 	},
 	
 	
 	showMore: function() {
-		this.setNumRows(4);
+		/*this.setNumRows(4);
 		this.domContainer.getElement('#linkWebMore').addClass('hidden');
 		this.domContainer.getElement('#linkWebLess').removeClass('hidden');
 		var poppet = this;
@@ -4472,11 +4485,12 @@ Widget.Carousel = new Class({ Implements: Events,
 			poppet.domContainer.getElement('.back').addClass('back-big');
 			poppet.render();
 		});
-		this.domContainer.getElement('.view').tween('height', 87);
+		this.domContainer.getElement('.view').tween('height', 87);*/
+		this.advance();
 	},
 	
 	showLess: function() {
-		this.setNumRows(2);
+	/*	this.setNumRows(2);
 		this.domContainer.getElement('#linkWebMore').removeClass('hidden');
 		this.domContainer.getElement('#linkWebLess').addClass('hidden');
 		var poppet = this;
@@ -4486,7 +4500,18 @@ Widget.Carousel = new Class({ Implements: Events,
 			poppet.domContainer.getElement('.back').removeClass('back-big');
 			poppet.render();
 		});
-		this.domContainer.getElement('.view').tween('height', 44);
+		this.domContainer.getElement('.view').tween('height', 44);*/
+	},
+	
+	autoSize: function(){
+		//console.log("autosize dummies are: "+this.totalDummies);
+		if(this.totalDummies>6){
+			this.nRows=2;
+			$$(".fwd")[0].removeClass('fwd-big');
+			$$(".back")[0].removeClass('back-big');
+			this.createPaginator();
+			this.domContainer.getElement('.view').setStyle('height', '44px');
+		}
 	},
 	
 	/**
@@ -4494,6 +4519,7 @@ Widget.Carousel = new Class({ Implements: Events,
 	setDataSource: function(contents) {
 		this.data = contents;
 		this.page = 0;
+		this.paginatorExists=false;
 		// sort by user preference, then by publisher preference
 		this.data.sort(function(a, b) { 
 			if (a.hasUserPref && b.hasUserPref) {
@@ -4530,6 +4556,13 @@ Widget.Carousel = new Class({ Implements: Events,
 	},
 	
 	_buildPage: function(pageNum) {
+		//console.log("butilpage "+pageNum+1);
+		//console.log("build page");
+		if(this.paginatorExists==false){this.createPaginator()};
+		
+		this.autoSize();
+		//console.log(this.getVisibleData().length);
+		this.highlightNum(pageNum+1);
 		pageNum = this.getEffectivePageNum(pageNum);
 		var data = this.getVisibleData();
 		var groupDiv = new Element('div', { 'class': 'group' });
@@ -4563,6 +4596,7 @@ Widget.Carousel = new Class({ Implements: Events,
 			var itemsPerPage = (this.nRows * this.nCols);
 			var startsWithPref = (this.data.length && (this.data[0].hasPublisherPref || this.data[0].hasUserPref));
 			var dummiesDeployed = false;
+			this.totalDummies=0;
 			
 			for (var i = 0; i < this.data.length; i++) {
 				var previousHadPublisherPref = (i > 1) && (this.data[i - 1].hasPublisherPref);
@@ -4575,6 +4609,7 @@ Widget.Carousel = new Class({ Implements: Events,
 							getContent: function() { return widget.getDummyServiceLink(); }
 						});
 						j++;
+						this.totalDummies++;
 					}
 					dummiesDeployed = true;
 				}
@@ -4597,8 +4632,8 @@ Widget.Carousel = new Class({ Implements: Events,
 	},
 	
 	render: function() {
+		if(this.paginatorExists==false){this.createPaginator()};
 		this.fireEvent('renderBegin');
-
 		var view = this.domContainer.getElement('div.view').getElement('div.groups');
 		$each(view.getChildren(), function(child) { 
 			child.dispose(); 
@@ -4607,6 +4642,50 @@ Widget.Carousel = new Class({ Implements: Events,
 		view.grab(this._buildPage(this.page));
 				
 		this.fireEvent('renderComplete');
+		//if(this.paginatorExists==false){this.createPaginator()};
+	},
+	
+	createPaginator: function(){
+	//	console.log("create paginator");
+		var pages=this.getNumPages();
+		var html="<span style='margin:auto;'>";
+		for(var i=0;i<pages;i++){
+			var num=i+1;
+			//html+='<a href="javascript:void(0);" onclick="widget.carousel.goToPage('+num+');"  onmouseover="widget.carousel.goToPage('+num+');" title="Go To Page # '+num+'">'+num+'</a> ';
+			html+='<a href="javascript:void(0);" onclick="widget.carousel.goToPage('+num+');"  title="Go To Page # '+num+'">'+num+'</a> ';
+		}
+		html+="</span>";
+		$("paginator").set('html',html);
+		this.highlightNum(this.page+1);
+		this.paginatorExists=true;
+	},
+	highlightNum: function(num){
+		var maxSize=this.getNumPages();
+		if(num>maxSize){
+			num=1;
+		}
+		if(num<1){
+			num=4;
+		}
+	//	console.log("here "+maxSize);
+	//	console.log("highlight num "+num);
+		var i=num-1;
+		var a=$('paginator').getChildren()[0].getChildren();
+		a.setStyle('margin-left','2px');
+		a.setStyle('hover','2px');
+		a.setStyle('margin-right','2px');
+		a.setStyle('font-weight','normal');
+		a.setStyle('text-decoration','none');
+		a[i].setStyle('font-weight','bold');
+		a[i].setStyle('text-decoration','underline');
+		var pgInfo="("+num+"/"+this.getNumPages()+")";
+		$("whatpage").set("html",pgInfo);
+	},
+	goToPage: function(num){
+		this.page=num-1;
+	//	console.log("page is "+this.page);
+		this.render();
+		this.highlightNum(num);
 	},
 	
 	advance: function() {
@@ -4626,12 +4705,12 @@ Widget.Carousel = new Class({ Implements: Events,
 			currentGroup.dispose();
 			groups.setStyle('left', 0);
 			poppet.page = poppet.getEffectivePageNum(poppet.page + 1);
-			if (poppet.page == 0) {
+	/*		if (poppet.page == 0) {
 				poppet.domContainer.getElement('#moreorless').fade('in');
 			}
 			else {
 				poppet.domContainer.getElement('#moreorless').fade('out');
-			}
+			}*/
 			poppet.fireEvent('advanceComplete');
 			poppet.rotating = false;
 		});
@@ -4670,7 +4749,7 @@ Widget.Carousel = new Class({ Implements: Events,
 	},
 	
 	domContainer: null,
-	nRows: 2,
+	nRows: 4,
 	nCols: 3,
 	page: 0,
 	isShowingMore: false,
