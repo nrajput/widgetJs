@@ -24,7 +24,7 @@ function submitOauth(service) {
 					+ escape(base_url + "share3x/import.php");
 				} else {
 					var oauth_url = resp.data.auth_url 
-					+ escape(base_url + "share3x/import.php?widget=1&callback=1&")
+					+ escape(base_url + "share3x/import.php?widget=1&callback=1&guid=" + guid + "&")
 					+ escape(resp.data.callback);
 				}
 				//var oauth_url = resp.data.auth_url 
@@ -75,7 +75,7 @@ function setImportFailedCookie() {
 
 function setMemcacheKey(contact_url) {
 	if(guid) {
-		var json_obj = { "contact_url" : contact_url,
+		var json_obj = { "contact_url" : escape(contact_url),
 						   "delt" : delt };
 		var json_str = JSON.encode(json_obj);
 		
