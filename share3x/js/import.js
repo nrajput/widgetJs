@@ -45,7 +45,7 @@ function submitDelauth() {
 	var request = new Request({
 		method: 'post',
 		url:'/api/handle_delauth_ws.php',
-		data: 'reqtype=request&widget=1&callback_url='
+		data: 'reqtype=request&widget=1' + '&guid=' + guid + '&callback_url='
 			+ escape(base_url + "share3x/import.php"),
 		onFailure: function(msg) {
 			setImportFailedCookie();
