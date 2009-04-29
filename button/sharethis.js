@@ -135,9 +135,9 @@ ST_JSON = new function(){
 	catch(z){rc=/^(true|false|null|\[.*\]|\{.*\}|".*"|\d+|\d+\.\d+)$/}
 };
 
-
+/*
 try{
-
+*/
 	if (!SHARETHIS) {
 		if(!SHARETHIS_TOOLBAR){
 			var SHARETHIS_TOOLBAR=false;
@@ -969,7 +969,6 @@ try{
 				guid=_stdHash(hashD)+"-"+time+"-"+bigRan+"-1";
 				cVal=guid;
 				_stSetFpc(cVal);
-				console.log("cookie is not there, setting new one: "+cVal);
 			}else{
 				var cv=cVal;
 				var cvArray = cv.split(/\-/);
@@ -979,7 +978,6 @@ try{
 					cv=cvArray[0]+"-"+cvArray[1]+"-"+cvArray[2]+"-"+num;
 					cVal=cv;
 					_stSetFpc(cVal);
-					console.log("cookie found: "+cVal);
 				}
 			}			
 			return cVal;
@@ -1007,7 +1005,6 @@ try{
 			if(str.length>1){
 			    domain="."+str[str.length-2]+"."+str[str.length-1];
 			}
-			console.log("domain is: "+domain);
 			return domain;
 		}
 		//gets cookie value with name or returns false
@@ -1020,7 +1017,6 @@ try{
 		}
 		//hashes dd and returns value
 		function _stdHash(dd) {
-		console.log("value to hash: "+dd);
 			var hash=0,salt=0;
 		 	for (var i=dd.length-1;i>=0;i--) {
 			  var charCode=parseInt(dd.charCodeAt(i));
@@ -1065,8 +1061,8 @@ try{
 		var obj = SHARETHIS.addEntry();
 	}
 
-
+/*
 }
 catch(err){
-}
+}*/
 

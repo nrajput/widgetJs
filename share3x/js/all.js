@@ -2443,7 +2443,9 @@ if (!window.console || !console.firebug) {
 				data: data,
 				onSuccess:getTinyURL_onSuccess
 			});
+			request.options.async=false;
 			glo_last_url2=url;
+			
 			request.send();
 		}
 	}
