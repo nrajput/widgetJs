@@ -3140,6 +3140,13 @@ Widget.implement({
 				});
 				$('btnShareSend').addEvent('click', (function(){
 					var recipients = widget.user.getSelectedContacts();
+					
+					if($('contact_search_field')){
+						if($('contact_search_field').value.length>0){
+							widget.pages.send.toField._selectHighlightedResult();
+							widget.pages.send.toField.hideSearchResults();
+						}
+					}					
 					if(recipients.length<1){
 						alert("Please enter a recipient in the 'To' field ");
 					}
@@ -5875,14 +5882,14 @@ Widget.ToField = new Class({ Implements: Events,
 		this.resultsElement.addEvent('mouseenter', (function(event) {
 			this._mouseOverSearchResultsList = true;
 		}).bind(this));
-		this.resultsElement.addEvent('mouseleave', (function(event) {
+/*		this.resultsElement.addEvent('mouseleave', (function(event) {
 			this._mouseOverSearchResultsList = false;
 			if (Browser.Engine.trident) {
 				setTimeout((function() {
 					this.inputElement.focus();
 				}).bind(this), 10);
 			}
-		}).bind(this));
+		}).bind(this));*/
 		// note: there doesn't appear to be a way to detect a click on the scroll bar itself.
 		// soo... we're kind of screwed here. using the scroll bar without generating a mouseleave event
 		// will keep the input blurred, so keyboard commands won't work. ie is teh awesomeness.
@@ -5898,15 +5905,15 @@ Widget.ToField = new Class({ Implements: Events,
 		this.inputElement.addEvent('keydown', (function(event) {
 			switch (event.key) {
 				case 'up':
-					this._highlightPrevResult();
+					widget.pages.send.toField._highlightPrevResult();
 					event.stop();
 				break;
 				case 'down':
-					this._highlightNextResult();
+					widget.pages.send.toField._highlightNextResult();
 					event.stop();
 				break;
 				case 'enter':
-					this._selectHighlightedResult();
+					widget.pages.send.toField._selectHighlightedResult();
 					event.stop();
 				break;
 				case 'esc':
@@ -5916,7 +5923,7 @@ Widget.ToField = new Class({ Implements: Events,
 			}
 			switch (event.code) {
 				case 188: 	// comma
-					this._selectHighlightedResult();
+					widget.pages.send.toField._selectHighlightedResult();
 					event.stop();
 				break;
 			}
@@ -5932,18 +5939,19 @@ Widget.ToField = new Class({ Implements: Events,
 		}).bind(this.inputElement));
 	
 		this.inputElement.addEvent('blur', (function() {
-			if(this._mouseOverSearchResultsList==false && this.inputElement.get('value').length){
-				this._selectHighlightedResult();
-				this.hideSearchResults();
+			if($('contact_search_field').value.length){
+				widget.pages.send.toField._selectHighlightedResult();
+				widget.pages.send.toField.hideSearchResults();
 			}
-		}).bind(this));
+		}),this);
 		
 		this.inputElement.addEvent('focus', (function() {
 			//this._deselectTokens();
-			if (this.searchText.length) {
-				this.showSearchResults();
+		//	console.log("in focus");
+			if (widget.pages.send.toField.searchText.length) {
+				widget.pages.send.toField.showSearchResults();
 			}
-		}).bind(this));
+		}),this);
 		this.inputElementContainer.grab(this.inputElement);
 		return this.inputElement;
 	},
@@ -6225,6 +6233,11 @@ Widget.ToField = new Class({ Implements: Events,
 			}).bind(this);
 		}
 		document.addEvent('keydown', this._windowKeyDownHandler);
+		*/
+		
+		/*setTimeout((function() {
+			this._insertInputField();
+		}).bind(this), 100);
 		*/
 		setTimeout((function() {
 			this._insertInputField();
