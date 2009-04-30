@@ -4636,7 +4636,6 @@ Widget.Carousel = new Class({ Implements: Events,
 		for (var i = (pageNum * itemsPerPage); i < (pageNum * itemsPerPage) + itemsPerPage; i++) {
 			if (i < data.length) {
 				var element = data[i].getContent();
-				console.log(element);
 				if (i % this.nCols == 0) {
 					element.addClass('first');
 				}

@@ -207,6 +207,7 @@ try{
 			this.frameUrl="";
 			this.element=null;
 			this.trigger=null;
+			this.page="";
 			this.properties={
 				type:       '',
 				title:      encodeURIComponent(document.title),
@@ -516,8 +517,8 @@ try{
 		        o.popup = function(e){
 		        	if(SHARETHIS_TOOLBAR===true){
 		        		if(st_showing===false){
-						 		SHARETHIS.log('widget',o);
-						 	}
+		        			SHARETHIS.log('widget',o);
+		        		}
 						st_showing=true;
 						clearInterval(stVisibleInterval);
 						added_tool="/glo_toolbar=true";
@@ -525,24 +526,38 @@ try{
 						SHARETHIS.mainstframe.src = SHARETHIS.frameUrl + SHARETHIS.newwinfrag +"/guid_index=" + oidx +"/guid=" + SHARETHIS.guid+added_tool;	
 						SHARETHIS.wrapper.style.visibility="visible";
 						SHARETHIS.mainstframe.style.visibility = 'visible';
-		        	}
-		        	else{
-				 	if( (SHARETHIS.ready===true && SHARETHIS.frameReady===true) || (SHARETHIS.popupExists===true && SHARETHIS.ready==true && SHARETHIS.widgetExists===false) || (SHARETHIS.popupExists===true && SHARETHIS.ready==true && SHARETHIS.frameReady===true) ){
-					 	
-					 	if(st_showing===false){
-					 		SHARETHIS.log('widget',o);
-					 	}
-						clearInterval(stVisibleInterval);
+		        	} else {
+		        		if( (SHARETHIS.ready===true && SHARETHIS.frameReady===true) || (SHARETHIS.popupExists===true && SHARETHIS.ready==true && SHARETHIS.widgetExists===false) || (SHARETHIS.popupExists===true && SHARETHIS.ready==true && SHARETHIS.frameReady===true) ){
+						 	if(st_showing===false){
+						 		SHARETHIS.log('widget',o);
+						 	}
+							clearInterval(stVisibleInterval);
 						
-						if (e.target) {
-							o.trigger = e.target
-						} else if (e.srcElement) {
-							o.trigger = e.srcElement;
-						}
-						if(o.trigger!==null){
-								id=o.trigger.id;
-								SHARETHIS.current_element=o.trigger;
-							} 			 	
+							if (e) {
+								if (e.target) {
+									o.trigger = e.target
+								}
+								else if (e.srcElement) {
+									o.trigger = e.srcElement;
+								}
+								if (o.trigger !== null) {
+									id=o.trigger.id;
+									SHARETHIS.current_element=o.trigger;
+									o.page = o.trigger.getAttribute('st_page');
+								}
+								else {
+									o.page = "home";
+								}
+							}
+							else {
+								if (o.element != null) {
+									id=o.element.id;
+									SHARETHIS.current_element=o.element;
+									o.page = "home";
+								}
+								o.page = "home";
+							}
+							var pageFrag = "/page=" + o.page;
 							SHARETHIS.curr_offsetTop=Number(o.options.offsetTop);
 							SHARETHIS.curr_offsetLeft=Number(o.options.offsetLeft);
 							SHARETHIS.curr_id=id;
@@ -551,17 +566,17 @@ try{
 					        		if(res == false) return false;
 							}
 					        if(o.options.popup) {
-					        	var newwinurl = SHARETHIS.frameUrl + SHARETHIS.newwinfrag +"/guid_index=" + oidx +"/guid=" + SHARETHIS.guid + "/page=" + SHARETHIS.current_element.getAttribute("st_page");	
+					        	var newwinurl = SHARETHIS.frameUrl + SHARETHIS.newwinfrag +"/guid_index=" + oidx +"/guid=" + SHARETHIS.guid + pageFrag;	
 					        	window.open(newwinurl, "newstframe","status=1,toolbar=0,width=353,height=598");
-						} 
-						else{
+					        }
+					        else{
 								if(st_showing == false) {		
 									if(o.options.embeds == false) {
 										SHARETHIS.hideEmbeds();
 									}
 									stautoclose = o.options.autoclose;
 									if(SHARETHIS.sendNum<SHARETHIS.sendArray.length){
-										SHARETHIS.sendArray.push("#show" + "/guid_index=" + oidx + "/page=" + SHARETHIS.current_element.getAttribute("st_page"));
+										SHARETHIS.sendArray.push("#show" + "/guid_index=" + oidx + pageFrag);
 										if(SHARETHIS.delayShow===true){
 											sendDataInt=setTimeout(SHARETHIS.sendData,1000);
 										}
@@ -571,13 +586,13 @@ try{
 									}
 									else{
 										//SHARETHIS.mainstframe.src = SHARETHIS.frameUrl + "#show" + "/guid_index=" + oidx;
-										window.frames['stframe'].location.replace(SHARETHIS.frameUrl + "#show" + "/guid_index=" + oidx + "/page=" + SHARETHIS.current_element.getAttribute("st_page"));
-											if(SHARETHIS.delayShow===true){
-												sendDataInt=setTimeout(SHARETHIS.sendData,1000);
-											}
-											else{
-												sendDataInt=setTimeout(SHARETHIS.sendData,20);
-											}
+										window.frames['stframe'].location.replace(SHARETHIS.frameUrl + "#show" + "/guid_index=" + oidx + pageFrag);
+										if(SHARETHIS.delayShow===true){
+											sendDataInt=setTimeout(SHARETHIS.sendData,1000);
+										}
+										else{
+											sendDataInt=setTimeout(SHARETHIS.sendData,20);
+										}
 									}
 									SHARETHIS.positionWidget();
 									st_showing = true;
@@ -586,12 +601,12 @@ try{
 								stcloseWidget();
 								}
 							}
-					}
-					else{
-						SHARETHIS.st_clicked=true;
-						SHARETHIS.delayShow=true;
-						SHARETHIS.st_clicked_o=o;
-					}
+		        		}
+		        		else{
+							SHARETHIS.st_clicked=true;
+							SHARETHIS.delayShow=true;
+							SHARETHIS.st_clicked_o=o;
+		        		}
 					}//end else for SHARETHIS_TOOLBAR===true
 				};
 		        var a = document.createElement("a");
