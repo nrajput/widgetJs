@@ -976,7 +976,7 @@ if (!window.console || !console.firebug) {
 	glo_tabArray=glo_tabs.split(",");
 	var glo_charset='utf-8';
 	var glo_services="";
-	var glo_default_services='facebook,myspace,digg,reddit,windows_live,twitter,google_bmarks,delicious,stumbleupon,yahoo_bmarks,linkedin,ybuzz,technorati,mixx,blogger,friendfeed,blinklist,furl,xanga,newsvine,propeller,wordpress,diigo,typepad,bus_exchange,fark,mister_wong,current,kirtsy,blogmarks,oknotizie,faves,livejournal,slashdot,care2,n4g,meneame,sphinn,simpy,orkut,friendster,hugg,dealsplus,fresqui,yigg,funp';
+	var glo_default_services='facebook,myspace,digg,reddit,windows_live,twitter,google_bmarks,delicious,stumbleupon,yahoo_bmarks,linkedin,ybuzz,technorati,mixx,blogger,friendfeed,blinklist,furl,xanga,newsvine,propeller,wordpress,diigo,typepad,bus_exchange,fark,mister_wong,current,kirtsy,blogmarks,oknotizie,faves,livejournal,slashdot,care2,n4g,meneame,sphinn,simpy,orkut,friendster,dealsplus,fresqui,yigg,funp';
 	var glo_default_swArray=[];
 		glo_default_swArray = glo_default_services.split(',');
 	var glo_style='default';
@@ -3010,7 +3010,7 @@ Widget.implement({
 					if (!tabsContainer.tabs.contains('email')) {
 						$('send_section').getChildren().each(function(child) { child.addClass('hidden') });
 						$('contacts_info').addClass('hidden');
-						widget.carousel.showMore();
+						//widget.carousel.showMore();
 					}
 				});
 				this.parent();
@@ -4531,10 +4531,10 @@ Widget.Carousel = new Class({ Implements: Events,
 			event.stop();
 		});
 		if (initialState == undefined || initialState == Widget.Carousel.initialState_less) {
-			this.showLess();
+			//this.showLess();
 		}
 		else {
-			this.showMore();
+			//this.showMore();
 		}
 			
 	},
@@ -4736,20 +4736,22 @@ Widget.Carousel = new Class({ Implements: Events,
 	//	console.log("here "+maxSize);
 	//	console.log("highlight num "+num);
 		var i=num-1;
-		var a=$('paginator').getChildren()[0].getChildren();
-		a.setStyle('margin-left','2px');
-		a.setStyle('border','none');
-		a.setStyle('hover','2px');
-		a.setStyle('font-size','11px');
-		a.setStyle('margin-right','2px');
-		a.setStyle('font-weight','normal');
-		a.setStyle('text-decoration','none');
-		a[i].setStyle('font-weight','bold');
-		a[i].setStyle('font-size','12px');
-	//	a[i].setStyle('border','1px solid #666');
-		//a[i].setStyle('color','blue');
-		var pgInfo="("+num+"/"+this.getNumPages()+")";
-		//$("whatpage").set("html",pgInfo);
+		if($('paginator')){
+			var a=$('paginator').getChildren()[0].getChildren();
+			a.setStyle('margin-left','2px');
+			a.setStyle('border','none');
+			a.setStyle('hover','2px');
+			a.setStyle('font-size','11px');
+			a.setStyle('margin-right','2px');
+			a.setStyle('font-weight','normal');
+			a.setStyle('text-decoration','none');
+			a[i].setStyle('font-weight','bold');
+			a[i].setStyle('font-size','12px');
+		//	a[i].setStyle('border','1px solid #666');
+			//a[i].setStyle('color','blue');
+			var pgInfo="("+num+"/"+this.getNumPages()+")";
+			//$("whatpage").set("html",pgInfo);
+		}
 	},
 	goToPage: function(num){
 		this.page=num-1;
