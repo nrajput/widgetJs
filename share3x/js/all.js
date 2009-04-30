@@ -976,7 +976,7 @@ if (!window.console || !console.firebug) {
 	glo_tabArray=glo_tabs.split(",");
 	var glo_charset='utf-8';
 	var glo_services="";
-	var glo_default_services='facebook,myspace,digg,delicious,ybuzz,twitter,stumbleupon,reddit,technorati,mixx,blogger,wordpress,typepad,google_bmarks,windows_live,fark,bus_exchange,propeller,newsvine,linkedin,friendfeed,blinklist,furl,blogmarks,yahoo_bmarks,slashdot,n4g,mister_wong,faves,current,simpy,meneame,yigg,oknotizie,fresqui,diigo,care2,funp,kirtsy,xanga,sphinn,dealsplus,orkut,friendster,livejournal';
+	var glo_default_services='facebook,myspace,digg,reddit,windows_live,twitter,google_bmarks,delicious,stumbleupon,yahoo_bmarks,linkedin,ybuzz,technorati,mixx,blogger,friendfeed,blinklist,furl,xanga,newsvine,propeller,wordpress,diigo,typepad,bus_exchange,fark,mister_wong,current,kirtsy,blogmarks,oknotizie,faves,livejournal,slashdot,care2,n4g,meneame,sphinn,simpy,orkut,friendster,hugg,dealsplus,fresqui,yigg,funp';
 	var glo_default_swArray=[];
 		glo_default_swArray = glo_default_services.split(',');
 	var glo_style='default';
@@ -4450,19 +4450,7 @@ Widget.Carousel = new Class({ Implements: Events,
 			}
 			event.stop();
 		});
-		this.domContainer.getElement('.fwd').addEvent('mouseover', function(event) {
-			if (poppet.getNumPages() > 1) {
-				poppet.advance();
-			}
-			event.stop();
-		});
-		this.domContainer.getElement('.back').addEvent('mouseover', function(event) {
-			if (poppet.getNumPages() > 1) {
-				poppet.rewind();
-			}
-			event.stop();
-		});
-		
+
 		this.domContainer.getElement('#linkWebMore').addEvent('click', function(event) {
 			poppet.showMore();
 			event.stop();
@@ -4577,6 +4565,7 @@ Widget.Carousel = new Class({ Implements: Events,
 		for (var i = (pageNum * itemsPerPage); i < (pageNum * itemsPerPage) + itemsPerPage; i++) {
 			if (i < data.length) {
 				var element = data[i].getContent();
+				console.log(element);
 				if (i % this.nCols == 0) {
 					element.addClass('first');
 				}
@@ -4659,7 +4648,7 @@ Widget.Carousel = new Class({ Implements: Events,
 		for(var i=0;i<pages;i++){
 			var num=i+1;
 			//html+='<a href="javascript:void(0);" onclick="widget.carousel.goToPage('+num+');"  onmouseover="widget.carousel.goToPage('+num+');" title="Go To Page # '+num+'">'+num+'</a> ';
-			html+='<a href="javascript:void(0);" onclick="widget.carousel.goToPage('+num+');"  title="Go To Page # '+num+'">'+num+'</a> ';
+			html+='<a href="javascript:void(0);" onclick="widget.carousel.goToPage('+num+');"  title="Go To Page # '+num+'">&#8226;</a> ';
 		}
 		html+="</span>";
 		$("paginator").set('html',html);
@@ -4679,14 +4668,18 @@ Widget.Carousel = new Class({ Implements: Events,
 		var i=num-1;
 		var a=$('paginator').getChildren()[0].getChildren();
 		a.setStyle('margin-left','2px');
+		a.setStyle('border','none');
 		a.setStyle('hover','2px');
+		a.setStyle('font-size','11px');
 		a.setStyle('margin-right','2px');
 		a.setStyle('font-weight','normal');
 		a.setStyle('text-decoration','none');
 		a[i].setStyle('font-weight','bold');
-		a[i].setStyle('text-decoration','underline');
+		a[i].setStyle('font-size','12px');
+	//	a[i].setStyle('border','1px solid #666');
+		//a[i].setStyle('color','blue');
 		var pgInfo="("+num+"/"+this.getNumPages()+")";
-		$("whatpage").set("html",pgInfo);
+		//$("whatpage").set("html",pgInfo);
 	},
 	goToPage: function(num){
 		this.page=num-1;
