@@ -976,7 +976,7 @@ if (!window.console || !console.firebug) {
 	glo_tabArray=glo_tabs.split(",");
 	var glo_charset='utf-8';
 	var glo_services="";
-	var glo_default_services='facebook,myspace,digg,delicious,ybuzz,twitter,stumbleupon,reddit,technorati,mixx,blogger,wordpress,typepad,google_bmarks,windows_live,fark,bus_exchange,propeller,newsvine,linkedin,friendfeed,blinklist,furl,blogmarks,yahoo_bmarks,slashdot,n4g,mister_wong,faves,current,simpy,meneame,yigg,oknotizie,fresqui,diigo,care2,funp,kirtsy,xanga,sphinn,dealsplus,orkut,friendster,livejournal';
+	var glo_default_services='facebook,myspace,digg,reddit,windows_live,twitter,google_bmarks,delicious,stumbleupon,yahoo_bmarks,linkedin,ybuzz,technorati,mixx,blogger,friendfeed,blinklist,furl,xanga,newsvine,propeller,wordpress,diigo,typepad,bus_exchange,fark,mister_wong,current,kirtsy,blogmarks,oknotizie,faves,livejournal,slashdot,care2,n4g,meneame,sphinn,simpy,orkut,friendster,hugg,dealsplus,fresqui,yigg,funp';
 	var glo_default_swArray=[];
 		glo_default_swArray = glo_default_services.split(',');
 	var glo_style='default';
@@ -2502,7 +2502,9 @@ if (!window.console || !console.firebug) {
 				data: data,
 				onSuccess:getTinyURL_onSuccess
 			});
+			request.options.async=false;
 			glo_last_url2=url;
+			
 			request.send();
 		}
 	}
@@ -3205,6 +3207,13 @@ Widget.implement({
 				});
 				$('btnShareSend').addEvent('click', (function(){
 					var recipients = widget.user.getSelectedContacts();
+					
+					if($('contact_search_field')){
+						if($('contact_search_field').value.length>0){
+							widget.pages.send.toField._selectHighlightedResult();
+							widget.pages.send.toField.hideSearchResults();
+						}
+					}					
 					if(recipients.length<1){
 						alert("Please enter a recipient in the 'To' field ");
 					}
@@ -4512,7 +4521,7 @@ Widget.Carousel = new Class({ Implements: Events,
 			}
 			event.stop();
 		});
-		
+
 		this.domContainer.getElement('#linkWebMore').addEvent('click', function(event) {
 			poppet.showMore();
 			event.stop();
@@ -4527,11 +4536,12 @@ Widget.Carousel = new Class({ Implements: Events,
 		else {
 			this.showMore();
 		}
+			
 	},
 	
 	
 	showMore: function() {
-		this.setNumRows(4);
+		/*this.setNumRows(4);
 		this.domContainer.getElement('#linkWebMore').addClass('hidden');
 		this.domContainer.getElement('#linkWebLess').removeClass('hidden');
 		var poppet = this;
@@ -4541,11 +4551,12 @@ Widget.Carousel = new Class({ Implements: Events,
 			poppet.domContainer.getElement('.back').addClass('back-big');
 			poppet.render();
 		});
-		this.domContainer.getElement('.view').tween('height', 87);
+		this.domContainer.getElement('.view').tween('height', 87);*/
+		this.advance();
 	},
 	
 	showLess: function() {
-		this.setNumRows(2);
+	/*	this.setNumRows(2);
 		this.domContainer.getElement('#linkWebMore').removeClass('hidden');
 		this.domContainer.getElement('#linkWebLess').addClass('hidden');
 		var poppet = this;
@@ -4555,7 +4566,18 @@ Widget.Carousel = new Class({ Implements: Events,
 			poppet.domContainer.getElement('.back').removeClass('back-big');
 			poppet.render();
 		});
-		this.domContainer.getElement('.view').tween('height', 44);
+		this.domContainer.getElement('.view').tween('height', 44);*/
+	},
+	
+	autoSize: function(){
+		//console.log("autosize dummies are: "+this.totalDummies);
+		if(this.totalDummies>6){
+			this.nRows=2;
+			$$(".fwd")[0].removeClass('fwd-big');
+			$$(".back")[0].removeClass('back-big');
+			this.createPaginator();
+			this.domContainer.getElement('.view').setStyle('height', '44px');
+		}
 	},
 	
 	/**
@@ -4563,6 +4585,7 @@ Widget.Carousel = new Class({ Implements: Events,
 	setDataSource: function(contents) {
 		this.data = contents;
 		this.page = 0;
+		this.paginatorExists=false;
 		// sort by user preference, then by publisher preference
 		this.data.sort(function(a, b) { 
 			if (a.hasUserPref && b.hasUserPref) {
@@ -4599,6 +4622,13 @@ Widget.Carousel = new Class({ Implements: Events,
 	},
 	
 	_buildPage: function(pageNum) {
+		//console.log("butilpage "+pageNum+1);
+		//console.log("build page");
+		if(this.paginatorExists==false){this.createPaginator()};
+		
+		this.autoSize();
+		//console.log(this.getVisibleData().length);
+		this.highlightNum(pageNum+1);
 		pageNum = this.getEffectivePageNum(pageNum);
 		var data = this.getVisibleData();
 		var groupDiv = new Element('div', { 'class': 'group' });
@@ -4606,6 +4636,7 @@ Widget.Carousel = new Class({ Implements: Events,
 		for (var i = (pageNum * itemsPerPage); i < (pageNum * itemsPerPage) + itemsPerPage; i++) {
 			if (i < data.length) {
 				var element = data[i].getContent();
+				console.log(element);
 				if (i % this.nCols == 0) {
 					element.addClass('first');
 				}
@@ -4632,6 +4663,7 @@ Widget.Carousel = new Class({ Implements: Events,
 			var itemsPerPage = (this.nRows * this.nCols);
 			var startsWithPref = (this.data.length && (this.data[0].hasPublisherPref || this.data[0].hasUserPref));
 			var dummiesDeployed = false;
+			this.totalDummies=0;
 			
 			for (var i = 0; i < this.data.length; i++) {
 				var previousHadPublisherPref = (i > 1) && (this.data[i - 1].hasPublisherPref);
@@ -4644,6 +4676,7 @@ Widget.Carousel = new Class({ Implements: Events,
 							getContent: function() { return widget.getDummyServiceLink(); }
 						});
 						j++;
+						this.totalDummies++;
 					}
 					dummiesDeployed = true;
 				}
@@ -4666,8 +4699,8 @@ Widget.Carousel = new Class({ Implements: Events,
 	},
 	
 	render: function() {
+		if(this.paginatorExists==false){this.createPaginator()};
 		this.fireEvent('renderBegin');
-
 		var view = this.domContainer.getElement('div.view').getElement('div.groups');
 		$each(view.getChildren(), function(child) { 
 			child.dispose(); 
@@ -4676,6 +4709,54 @@ Widget.Carousel = new Class({ Implements: Events,
 		view.grab(this._buildPage(this.page));
 				
 		this.fireEvent('renderComplete');
+		//if(this.paginatorExists==false){this.createPaginator()};
+	},
+	
+	createPaginator: function(){
+	//	console.log("create paginator");
+		var pages=this.getNumPages();
+		var html="<span style='margin:auto;'>";
+		for(var i=0;i<pages;i++){
+			var num=i+1;
+			//html+='<a href="javascript:void(0);" onclick="widget.carousel.goToPage('+num+');"  onmouseover="widget.carousel.goToPage('+num+');" title="Go To Page # '+num+'">'+num+'</a> ';
+			html+='<a href="javascript:void(0);" onclick="widget.carousel.goToPage('+num+');"  title="Go To Page # '+num+'">&#8226;</a> ';
+		}
+		html+="</span>";
+		$("paginator").set('html',html);
+		this.highlightNum(this.page+1);
+		this.paginatorExists=true;
+	},
+	highlightNum: function(num){
+		var maxSize=this.getNumPages();
+		if(num>maxSize){
+			num=1;
+		}
+		if(num<1){
+			num=4;
+		}
+	//	console.log("here "+maxSize);
+	//	console.log("highlight num "+num);
+		var i=num-1;
+		var a=$('paginator').getChildren()[0].getChildren();
+		a.setStyle('margin-left','2px');
+		a.setStyle('border','none');
+		a.setStyle('hover','2px');
+		a.setStyle('font-size','11px');
+		a.setStyle('margin-right','2px');
+		a.setStyle('font-weight','normal');
+		a.setStyle('text-decoration','none');
+		a[i].setStyle('font-weight','bold');
+		a[i].setStyle('font-size','12px');
+	//	a[i].setStyle('border','1px solid #666');
+		//a[i].setStyle('color','blue');
+		var pgInfo="("+num+"/"+this.getNumPages()+")";
+		//$("whatpage").set("html",pgInfo);
+	},
+	goToPage: function(num){
+		this.page=num-1;
+	//	console.log("page is "+this.page);
+		this.render();
+		this.highlightNum(num);
 	},
 	
 	advance: function() {
@@ -4695,12 +4776,12 @@ Widget.Carousel = new Class({ Implements: Events,
 			currentGroup.dispose();
 			groups.setStyle('left', 0);
 			poppet.page = poppet.getEffectivePageNum(poppet.page + 1);
-			if (poppet.page == 0) {
+	/*		if (poppet.page == 0) {
 				poppet.domContainer.getElement('#moreorless').fade('in');
 			}
 			else {
 				poppet.domContainer.getElement('#moreorless').fade('out');
-			}
+			}*/
 			poppet.fireEvent('advanceComplete');
 			poppet.rotating = false;
 		});
@@ -4739,7 +4820,7 @@ Widget.Carousel = new Class({ Implements: Events,
 	},
 	
 	domContainer: null,
-	nRows: 2,
+	nRows: 4,
 	nCols: 3,
 	page: 0,
 	isShowingMore: false,
@@ -5865,14 +5946,14 @@ Widget.ToField = new Class({ Implements: Events,
 		this.resultsElement.addEvent('mouseenter', (function(event) {
 			this._mouseOverSearchResultsList = true;
 		}).bind(this));
-		this.resultsElement.addEvent('mouseleave', (function(event) {
+/*		this.resultsElement.addEvent('mouseleave', (function(event) {
 			this._mouseOverSearchResultsList = false;
 			if (Browser.Engine.trident) {
 				setTimeout((function() {
 					this.inputElement.focus();
 				}).bind(this), 10);
 			}
-		}).bind(this));
+		}).bind(this));*/
 		// note: there doesn't appear to be a way to detect a click on the scroll bar itself.
 		// soo... we're kind of screwed here. using the scroll bar without generating a mouseleave event
 		// will keep the input blurred, so keyboard commands won't work. ie is teh awesomeness.
@@ -5888,15 +5969,15 @@ Widget.ToField = new Class({ Implements: Events,
 		this.inputElement.addEvent('keydown', (function(event) {
 			switch (event.key) {
 				case 'up':
-					this._highlightPrevResult();
+					widget.pages.send.toField._highlightPrevResult();
 					event.stop();
 				break;
 				case 'down':
-					this._highlightNextResult();
+					widget.pages.send.toField._highlightNextResult();
 					event.stop();
 				break;
 				case 'enter':
-					this._selectHighlightedResult();
+					widget.pages.send.toField._selectHighlightedResult();
 					event.stop();
 				break;
 				case 'esc':
@@ -5906,7 +5987,7 @@ Widget.ToField = new Class({ Implements: Events,
 			}
 			switch (event.code) {
 				case 188: 	// comma
-					this._selectHighlightedResult();
+					widget.pages.send.toField._selectHighlightedResult();
 					event.stop();
 				break;
 			}
@@ -5922,18 +6003,19 @@ Widget.ToField = new Class({ Implements: Events,
 		}).bind(this.inputElement));
 	
 		this.inputElement.addEvent('blur', (function() {
-			if(this._mouseOverSearchResultsList==false && this.inputElement.get('value').length){
-				this._selectHighlightedResult();
-				this.hideSearchResults();
+			if($('contact_search_field').value.length){
+				widget.pages.send.toField._selectHighlightedResult();
+				widget.pages.send.toField.hideSearchResults();
 			}
-		}).bind(this));
+		}),this);
 		
 		this.inputElement.addEvent('focus', (function() {
 			//this._deselectTokens();
-			if (this.searchText.length) {
-				this.showSearchResults();
+		//	console.log("in focus");
+			if (widget.pages.send.toField.searchText.length) {
+				widget.pages.send.toField.showSearchResults();
 			}
-		}).bind(this));
+		}),this);
 		this.inputElementContainer.grab(this.inputElement);
 		return this.inputElement;
 	},
@@ -6215,6 +6297,11 @@ Widget.ToField = new Class({ Implements: Events,
 			}).bind(this);
 		}
 		document.addEvent('keydown', this._windowKeyDownHandler);
+		*/
+		
+		/*setTimeout((function() {
+			this._insertInputField();
+		}).bind(this), 100);
 		*/
 		setTimeout((function() {
 			this._insertInputField();
