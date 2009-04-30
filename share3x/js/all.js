@@ -2951,7 +2951,7 @@ Widget.implement({
 					if (!tabsContainer.tabs.contains('email')) {
 						$('send_section').getChildren().each(function(child) { child.addClass('hidden') });
 						$('contacts_info').addClass('hidden');
-						widget.carousel.showMore();
+						//widget.carousel.showMore();
 					}
 				});
 				this.parent();
@@ -4460,10 +4460,10 @@ Widget.Carousel = new Class({ Implements: Events,
 			event.stop();
 		});
 		if (initialState == undefined || initialState == Widget.Carousel.initialState_less) {
-			this.showLess();
+			//this.showLess();
 		}
 		else {
-			this.showMore();
+			//this.showMore();
 		}
 			
 	},
