@@ -4046,7 +4046,7 @@ Widget.implement({
 		fresqui: {
 			title: 'Fresqui',
 			submitUrl: 'http://ocio.fresqui.com/post?url={url}&title={title}',
-			destination: 'digg.com'
+			destination: 'ocio.fresqui.com'
 		},
 		friendfeed: {
 			title: 'FriendFeed',

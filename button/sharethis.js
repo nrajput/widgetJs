@@ -257,13 +257,16 @@ try{
 			this.attachChicklet=function(type, chicklet) {
 				switch (type) {
 					case "facebook":
-						chicklet.onclick = function() { alert("click"); };
+						chicklet.setAttribute("st_dest", "facebook.com");
+						chicklet.onclick = this.chicklet;
 						break;
 					case "digg":
-						chicklet.onclick = function() { alert("click"); };
+						chicklet.setAttribute("st_dest", "digg.com");
+						chicklet.onclick = this.chicklet;
 						break;
 					case "yahoo_buzz":
-						chicklet.onclick = function() { alert("click"); };
+						chicklet.setAttribute("st_dest", "buzz.yahoo.com");
+						chicklet.onclick = this.chicklet;
 						break;
 					case "email":
 						chicklet.setAttribute("st_page", "send");
@@ -513,6 +516,21 @@ try{
 				}
 				else{
 					this.logFlag=false;
+				}
+				o.chicklet = function(e){
+					if (e.target) {
+						o.trigger = e.target
+					}
+					else if (e.srcElement) {
+						o.trigger = e.srcElement;
+					}
+					var dest = o.trigger.getAttribute("st_dest");
+					var url  = "http://" + SHARETHIS.script_host + "/button/redirect.php";
+					url += "?d="  + dest;
+					url += "&pk=" + SHARETHIS.options.publisher;
+					url += "&s="  + SHARETHIS.options.sessionID;
+					url += "&p="  + encodeURIComponent(ST_JSON.encode(o.properties));
+					top.location.href = url;
 				}
 		        o.popup = function(e){
 		        	if(SHARETHIS_TOOLBAR===true){
