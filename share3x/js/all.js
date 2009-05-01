@@ -1731,6 +1731,7 @@ if (!window.console || !console.firebug) {
 	//creates a social web log event
 	function logSW(network) {
 		var url2 = "http://l.sharethis.com/log?event=click"
+				+ "&source=widget"
 				+ "&publisher=" + encodeURIComponent(glo_publisher)
 				+ "&hostname=" + encodeURIComponent(glo_hostname)
 				+ "&location=" + encodeURIComponent(glo_location)
@@ -1996,11 +1997,11 @@ if (!window.console || !console.firebug) {
 			if (glo_ads == true) {
 				if (glo_adtag_header != "") {
 					$("header_title").addClass("hidden");
-					$("header_ad").set("html", glo_adtag_header);
+					$("header_ad").set("html", glo_adtag_header.replace('[timestamp]', (new Date()).getTime()));
 					$("header_ad").removeClass("hidden");
 				}
 				if (glo_adtag_footer != "") {
-					$("footer_ad_body").set("html", glo_adtag_footer);
+					$("footer_ad_body").set("html", glo_adtag_footer.replace('[timestamp]', (new Date()).getTime()));
 					$("footer_ad").removeClass("hidden");
 				}
 			}

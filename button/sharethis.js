@@ -525,17 +525,35 @@ try{
 						o.trigger = e.srcElement;
 					}
 					var dest = o.trigger.getAttribute("st_dest");
+					
+					var loggerUrl = "http://l.sharethis.com/log?event=click"
+						+ "&source=chicklet"
+						+ "&publisher=" + encodeURIComponent(SHARETHIS.options.publisher)
+						+ "&hostname=" + encodeURIComponent(SHARETHIS.meta.hostname)
+						+ "&location=" + encodeURIComponent(SHARETHIS.meta.location)
+						+ "&destinations=" + dest
+						+ "&ts" + (new Date()).getTime()
+						+ "&title=" + encodeURIComponent(o.properties.title)
+						+ "&url=" + encodeURIComponent(o.properties.url)
+						+ "&sessionID=" + SHARETHIS.options.sessionID
+						+ "&fpc=" + SHARETHIS.options.fpc;
+					var logger = new Image(1,1);
+					logger.src = loggerUrl;
+					logger.onload = function(){return;};
+					
 					var url  = "http://" + SHARETHIS.script_host + "/button/redirect.php";
 					url += "?d="  + dest;
 					url += "&pk=" + SHARETHIS.options.publisher;
 					url += "&s="  + SHARETHIS.options.sessionID;
 					url += "&p="  + encodeURIComponent(ST_JSON.encode(o.properties));
-					top.location.href = url;
+					//top.location.href = url;
+					alert(url);
 				}
 		        o.popup = function(e){
 		        	if(SHARETHIS_TOOLBAR===true){
 		        		if(st_showing===false){
-		        			SHARETHIS.log('widget',o);
+		        			alert('here');
+		        			SHARETHIS.log('widget',o,'toolbar');
 		        		}
 						st_showing=true;
 						clearInterval(stVisibleInterval);
@@ -546,9 +564,6 @@ try{
 						SHARETHIS.mainstframe.style.visibility = 'visible';
 		        	} else {
 		        		if( (SHARETHIS.ready===true && SHARETHIS.frameReady===true) || (SHARETHIS.popupExists===true && SHARETHIS.ready==true && SHARETHIS.widgetExists===false) || (SHARETHIS.popupExists===true && SHARETHIS.ready==true && SHARETHIS.frameReady===true) ){
-						 	if(st_showing===false){
-						 		SHARETHIS.log('widget',o);
-						 	}
 							clearInterval(stVisibleInterval);
 						
 							if (e) {
@@ -562,18 +577,30 @@ try{
 									id=o.trigger.id;
 									SHARETHIS.current_element=o.trigger;
 									o.page = o.trigger.getAttribute('st_page');
+									if(st_showing===false){
+										if (o.page == "home") {
+											SHARETHIS.log('widget',o,'button');
+										} else {
+											SHARETHIS.log('widget',o,'chicklet');
+										}
+								 	}
 								}
 								else {
 									o.page = "home";
+									if(st_showing===false){
+								 		SHARETHIS.log('widget',o,'button');
+								 	}
 								}
 							}
 							else {
 								if (o.element != null) {
 									id=o.element.id;
 									SHARETHIS.current_element=o.element;
-									o.page = "home";
 								}
 								o.page = "home";
+								if(st_showing===false){
+							 		SHARETHIS.log('widget',o,'button');
+							 	}
 							}
 							var pageFrag = "/page=" + o.page;
 							SHARETHIS.curr_offsetTop=Number(o.options.offsetTop);
@@ -653,7 +680,7 @@ try{
 		            	x.appendChild(a);
 					}
 		        }
-				if(this.logFlag){this.log('view', o);}
+				if(this.logFlag){this.log('view', o, null);}
 		        return o;
 		    },
 		
@@ -758,7 +785,7 @@ try{
 		            embeds[i].style.visibility = "visible";
 		        }
 		    },
-		    this.log=function(event, obj) {
+		    this.log=function(event, obj, source) {
 				if (obj && obj.properties && obj.properties.url) {
 					url = obj.properties.url;
 				} else {
@@ -769,8 +796,11 @@ try{
 				if(event=="pview"){
 					lurl = "http://l.sharethis.com/pview?event=";
 				}
-		        lurl+=event
-		            + "&publisher=" + encodeURIComponent(SHARETHIS.meta.publisher)
+		        lurl += event;
+		        if (source != null) {
+		        	lurl += "&source=" + source;
+		        }
+		        lurl+="&publisher=" + encodeURIComponent(SHARETHIS.meta.publisher)
 		            + "&hostname=" + encodeURIComponent(SHARETHIS.meta.hostname)
 		            + "&location=" + encodeURIComponent(SHARETHIS.meta.location)
 		            + "&url=" + encodeURIComponent(url)
@@ -1116,7 +1146,7 @@ try{
 		} else {
 			SHARETHIS = new ShareThis();
 		}
-		SHARETHIS.log('pview', null);
+		SHARETHIS.log('pview', null, null);
 
 	} // End !SHARETHIS
 
