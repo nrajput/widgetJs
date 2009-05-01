@@ -551,7 +551,6 @@ try{
 		        o.popup = function(e){
 		        	if(SHARETHIS_TOOLBAR===true){
 		        		if(st_showing===false){
-		        			alert('here');
 		        			SHARETHIS.log('widget',o,'toolbar');
 		        		}
 						st_showing=true;

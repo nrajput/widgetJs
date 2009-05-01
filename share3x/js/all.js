@@ -1733,8 +1733,16 @@ if (!window.console || !console.firebug) {
 
 	//creates a social web log event
 	function logSW(network) {
+		var source = "";
+		if (glo_toolbar != false) {
+			source = "toolbar";
+		} else if (glo_page != "home" && glo_page != "") {
+			source = "chicklet";
+		} else {
+			source = "button";
+		}
 		var url2 = "http://l.sharethis.com/log?event=click"
-				+ "&source=widget"
+				+ "&source=" + source;
 				+ "&publisher=" + encodeURIComponent(glo_publisher)
 				+ "&hostname=" + encodeURIComponent(glo_hostname)
 				+ "&location=" + encodeURIComponent(glo_location)
@@ -1768,8 +1776,16 @@ if (!window.console || !console.firebug) {
 	}
 
 	function logEvent(destination1,eventType) {
+		var source = "";
+		if (glo_toolbar != false) {
+			source = "toolbar";
+		} else if (glo_page != "home" && glo_page != "") {
+			source = "chicklet";
+		} else {
+			source = "button";
+		}
 		var url2 = "http://l.sharethis.com/log?event="+eventType;
-			url2+= "&source=widget";
+			url2+= "&source=" + source;
 			url2+= "&publisher="+ encodeURIComponent(glo_publisher);
 			url2+= "&hostname="+ encodeURIComponent(glo_hostname);
 			url2+= "&location="+ encodeURIComponent(glo_location);
