@@ -21,7 +21,7 @@ function submitOauth(service) {
 			if (resp.status==="SUCCESS" && resp.data) {
 				if(service == 'aim') {
 					var oauth_url = resp.data.auth_url 
-					+ escape(base_url + "share3x/import.php");
+					+ escape(base_url + "share3x/import.php" + "?guid=" + guid);
 				} else {
 					var oauth_url = resp.data.auth_url 
 					+ escape(base_url + "share3x/import.php?widget=1&callback=1&guid=" + guid + "&")
@@ -109,7 +109,7 @@ function doDelauth() {
 		method: 'post',
 		url:'/api/handle_delauth_ws.php',
 		data: 'reqtype=access'
-			+ "&consent_token=" + escape(delauth_token),
+			+ "&consent_token=" + escape(delauth_token) + "&guid=" + guid,
 		onFailure: function(msg) {
 			setImportFailedCookie();
 			setMemcacheKey(-1);
