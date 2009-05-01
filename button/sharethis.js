@@ -546,8 +546,7 @@ try{
 					url += "&pk=" + SHARETHIS.options.publisher;
 					url += "&s="  + SHARETHIS.options.sessionID;
 					url += "&p="  + encodeURIComponent(ST_JSON.encode(o.properties));
-					//top.location.href = url;
-					alert(url);
+					top.location.href = url;
 				}
 		        o.popup = function(e){
 		        	if(SHARETHIS_TOOLBAR===true){
@@ -565,13 +564,12 @@ try{
 		        	} else {
 		        		if( (SHARETHIS.ready===true && SHARETHIS.frameReady===true) || (SHARETHIS.popupExists===true && SHARETHIS.ready==true && SHARETHIS.widgetExists===false) || (SHARETHIS.popupExists===true && SHARETHIS.ready==true && SHARETHIS.frameReady===true) ){
 							clearInterval(stVisibleInterval);
-						
-							if (e) {
-								if (e.target) {
+							if (e || event) {
+								if (e) {
 									o.trigger = e.target
 								}
-								else if (e.srcElement) {
-									o.trigger = e.srcElement;
+								else if (event) {
+									o.trigger = event.srcElement;
 								}
 								if (o.trigger !== null) {
 									id=o.trigger.id;

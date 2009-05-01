@@ -1386,6 +1386,9 @@ if (!window.console || !console.firebug) {
 			case "page":
 				glo_page=value;
 				if (glo_page == "send" || glo_page == "post|twitter") {
+					if (glo_page == "post|twitter") {
+						if ( !widget.tinyURL ) getTinyURL(glo_url);
+					}
 					widget.showPage(glo_page);
 				} else {
 					widget.showPage('home');
