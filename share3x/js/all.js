@@ -4543,14 +4543,7 @@ Widget.Carousel = new Class({ Implements: Events,
 			event.stop();
 		});
 
-		this.domContainer.getElement('#linkWebMore').addEvent('click', function(event) {
-			poppet.showMore();
-			event.stop();
-		});
-		this.domContainer.getElement('#linkWebLess').addEvent('click', function(event) {
-			poppet.showLess();
-			event.stop();
-		});
+		
 		if (initialState == undefined || initialState == Widget.Carousel.initialState_less) {
 			//this.showLess();
 		}
@@ -4566,14 +4559,13 @@ Widget.Carousel = new Class({ Implements: Events,
 		this.domContainer.getElement('#linkWebMore').addClass('hidden');
 		this.domContainer.getElement('#linkWebLess').removeClass('hidden');
 		var poppet = this;
-		this.domContainer.getElement('.view').get('tween').removeEvents('complete').addEvent('complete', function() {
 			poppet.isShowingMore = true;
 			poppet.domContainer.getElement('.fwd').addClass('fwd-big');
 			poppet.domContainer.getElement('.back').addClass('back-big');
 			poppet.render();
 		});
 		this.domContainer.getElement('.view').tween('height', 87);*/
-		this.advance();
+		//this.advance();
 	},
 	
 	showLess: function() {
@@ -4735,13 +4727,14 @@ Widget.Carousel = new Class({ Implements: Events,
 	createPaginator: function(){
 	//	console.log("create paginator");
 		var pages=this.getNumPages();
-		var html="<span style='margin:auto;'>";
+		var html="<div id='circle_container' style='margin:auto;'>";
 		for(var i=0;i<pages;i++){
 			var num=i+1;
 			//html+='<a href="javascript:void(0);" onclick="widget.carousel.goToPage('+num+');"  onmouseover="widget.carousel.goToPage('+num+');" title="Go To Page # '+num+'">'+num+'</a> ';
-			html+='<a href="javascript:void(0);" onclick="widget.carousel.goToPage('+num+');"  title="Go To Page # '+num+'">&#8226;</a> ';
+			//html+='<a href="javascript:void(0);" onclick="widget.carousel.goToPage('+num+');"  class="circles" title="Go To Page # '+num+'">.</a> ';
+			html+='<div class="circles" onclick="widget.carousel.goToPage('+num+');" title="Go To Page # '+num+'"></div> ';			
 		}
-		html+="</span>";
+		html+="</div>";
 		$("paginator").set('html',html);
 		this.highlightNum(this.page+1);
 		this.paginatorExists=true;
@@ -4759,7 +4752,11 @@ Widget.Carousel = new Class({ Implements: Events,
 		var i=num-1;
 		if($('paginator')){
 			var a=$('paginator').getChildren()[0].getChildren();
-			a.setStyle('margin-left','2px');
+			a.removeClass('circles-selected');
+			a.addClass('circles');
+			a[i].addClass('circles-selected');
+			a[i].removeClass('circles');
+		/*	a.setStyle('margin-left','2px');
 			a.setStyle('border','none');
 			a.setStyle('hover','2px');
 			a.setStyle('font-size','11px');
@@ -4770,6 +4767,7 @@ Widget.Carousel = new Class({ Implements: Events,
 			a[i].setStyle('font-size','12px');
 		//	a[i].setStyle('border','1px solid #666');
 			//a[i].setStyle('color','blue');
+			*/
 			var pgInfo="("+num+"/"+this.getNumPages()+")";
 			//$("whatpage").set("html",pgInfo);
 		}
@@ -4829,10 +4827,10 @@ Widget.Carousel = new Class({ Implements: Events,
 			currentGroup.dispose();
 			poppet.page = poppet.getEffectivePageNum(poppet.page - 1);
 			if (poppet.page == 0) {
-				poppet.domContainer.getElement('#moreorless').fade('in');
+				//poppet.domContainer.getElement('#moreorless').fade('in');
 			}
 			else {
-				poppet.domContainer.getElement('#moreorless').fade('out');
+				//poppet.domContainer.getElement('#moreorless').fade('out');
 			}
 			poppet.fireEvent('rewindComplete');
 			poppet.rotating = false;
