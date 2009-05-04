@@ -1,0 +1,42 @@
+
+<IfModule mod_headers.c>
+#only for favicon.ico
+
+#all static files other than sharethis.js
+	<FilesMatch "\.(js|css|ico|jpg|jpeg|png|gif|html|htm)$">
+		Header set Cache-Control "public"
+		Header set Expires "Thu, 15 Apr 2010 20:00:00 GMT"
+		Header unset Last-Modified
+		Header unset Pragma
+		Header unset ETag
+	</FilesMatch>
+
+#only for loader cache for a day	
+	<FilesMatch sharethis.js>
+		Header set ETag "3.6.2"
+		Header set Cache-Control "max-age=86400, public"
+		Header unset Last-Modified
+		Header unset Expires
+	</FilesMatch>
+
+#sharethis.css /button  
+	<FilesMatch sharethis.css>
+		Header set Cache-Control "public"
+		Header unset Last-Modified
+		Header set Cache-Control "public"
+		Header set Expires "Thu, 15 Apr 2010 20:00:00 GMT"
+		Header unset Pragma
+		Header unset ETag
+	</FilesMatch>
+
+	<FilesMatch "\.(ico)$">
+		Header set Cache-Control "public"
+		Header set Expires "Thu, 15 Apr 2010 20:00:00 GMT"
+		Header set manu "icon file"
+		Header unset Last-Modified
+		Header unset Pragma
+		Header unset ETag
+	</FilesMatch>
+	
+#redirector for widget is in widget 
+</IfModule>
