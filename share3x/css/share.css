@@ -329,9 +329,35 @@ a.addressbook_button {
 .carousel .fwd,
 .carousel .back-big,
 .carousel .fwd-big {
-	background-image:url(../images/slider-btn-sprite.gif);
+	background-image:url(../images/slider-btn-sprite2.gif);
 	background-repeat:no-repeat;
 }
+
+.circles{
+	background-image:url(../images/circle_light.gif);
+	background-repeat:no-repeat;	
+	height:7px;
+	width:7px;
+	margin-left:5px;
+	margin-right:5px;	
+	text-indent:-32000px;
+	float:left;
+	cursor:pointer;
+}
+
+.circles-selected{
+	background-image:url(../images/circle_dark.gif);
+	background-repeat:no-repeat;
+	height:7px;
+	width:7px;
+	margin-left:5px;
+	margin-right:5px;	
+	text-indent:-32000px;
+	float:left;		
+	cursor:pointer;
+}
+
+
 .carousel .back,
 .carousel .fwd {
 	display:inline;
@@ -416,11 +442,16 @@ a.addressbook_button {
 #paginator{
 	text-align:center;
 	margin-top:5px;
+	height:10px;
 	font-size:11px;
 }
 #paginator a:hover{
 	text-decoration:underline;
 	color:red;
+}
+#circle_container{
+	width:70px;
+	height:10px;
 }
 
 .overlay {
