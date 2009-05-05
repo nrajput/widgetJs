@@ -1,6 +1,6 @@
 /*!
- * ShareThis Widget Version 3.7.0-rc1
- * 5/4/09 ShareThis.com 
+ * ShareThis Widget Version 3.7.0-rc2
+ * 5/5/09 ShareThis.com 
  */
 
 //widget-class.js
@@ -2015,13 +2015,14 @@ if (!window.console || !console.firebug) {
 			createSwList();
 			widget.fireEvent('shareableValuesUpdated');
 			if (glo_ads == true) {
+				var adtag_timestamp = (new Date()).getTime();
 				if (glo_adtag_header != "") {
 					$("header_title").addClass("hidden");
-					$("header_ad").set("html", glo_adtag_header.replace('[timestamp]', (new Date()).getTime()));
+					$("header_ad").set("html", glo_adtag_header.replace(/\[timestamp\]/g, adtag_timestamp));
 					$("header_ad").removeClass("hidden");
 				}
 				if (glo_adtag_footer != "") {
-					$("footer_ad_body").set("html", glo_adtag_footer.replace('[timestamp]', (new Date()).getTime()));
+					$("footer_ad_body").set("html", glo_adtag_footer.replace(/\[timestamp\]/g, adtag_timestamp));
 					$("footer_ad").removeClass("hidden");
 				}
 			}
