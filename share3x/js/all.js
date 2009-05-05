@@ -1,6 +1,6 @@
 /*!
- * ShareThis Widget Version 3.5.0-rc1
- * 4/24/09 ShareThis.com 
+ * ShareThis Widget Version 3.7.0-rc1
+ * 5/4/09 ShareThis.com 
  */
 
 //widget-class.js
@@ -1081,6 +1081,10 @@ if (!window.console || !console.firebug) {
 	var import_cookie="";
 	var import_cookie_tid;
 	var import_cookie_cycles = 0;
+	var glo_ads=false;
+	var glo_adtag_header="";
+	var glo_adtag_footer="";
+	var glo_page="";
 	
 	function css_browser_selector(u){var ua = u.toLowerCase(),is=function(t){return ua.indexOf(t)>-1;},g='gecko',w='webkit',s='safari',h=document.getElementsByTagName('html')[0],b=[(!(/opera|webtv/i.test(ua))&&/msie\s(\d)/.test(ua))?('ie ie'+RegExp.$1):is('firefox/2')?g+' ff2':is('firefox/3')?g+' ff3':is('gecko/')?g:/opera(\s|\/)(\d+)/.test(ua)?'opera opera'+RegExp.$2:is('konqueror')?'konqueror':is('chrome')?w+' '+s+' chrome':is('applewebkit/')?w+' '+s+(/version\/(\d+)/.test(ua)?' '+s+RegExp.$1:''):is('mozilla/')?g:'',is('j2me')?'mobile':is('iphone')?'iphone':is('ipod')?'ipod':is('mac')?'mac':is('darwin')?'mac':is('webtv')?'webtv':is('win')?'win':is('freebsd')?'freebsd':(is('x11')||is('linux'))?'linux':'','js']; c = b.join(' '); h.className += ' '+c; return c;}; 
 	var glo_browser=css_browser_selector(navigator.userAgent);
@@ -1367,7 +1371,31 @@ if (!window.console || !console.firebug) {
 				break;
 			case "omnitureURL":
 				glo_omnitureURL=value;
-				break;			
+				break;
+			case "ads":
+				if (value == "true") {
+					glo_ads = true;
+				} else {
+					glo_ads = false;
+				}
+				break;
+			case "adtag_header":
+				glo_adtag_header=value;
+				break;
+			case "adtag_footer":
+				glo_adtag_footer=value;
+				break;
+			case "page":
+				glo_page=value;
+				if (glo_page == "send" || glo_page == "post|twitter") {
+					if (glo_page == "post|twitter") {
+						if ( !widget.tinyURL ) getTinyURL(glo_url);
+					}
+					widget.showPage(glo_page);
+				} else {
+					widget.showPage('home');
+				}
+				break;
 			default: 
 				// do nothing
 				break;
@@ -1477,6 +1505,29 @@ if (!window.console || !console.firebug) {
 				});
 				request.send();
 				break;
+		}
+		if (glo_ads==true) {
+			var request=new Request({
+				method: "post",
+				url: "/api/getPublisherDomains_ws.php",
+				data: "publisher="+glo_publisher+"&return=json",
+				onSuccess: function(responseText,responseXML){
+					var response = JSON.decode(responseText);
+					if (response.status === "SUCCESS") {
+						var domainString = document.referrer;
+						var domainPattern = new RegExp("^(http|https)://([^/]*)");
+						var domainParsed = domainString.match(domainPattern);
+						var domain = domainParsed[2];
+						for (var i = 0; i < response.data.domain.length; i++) {
+							if (domain == response.data.domain[i].name) {
+								setGlobals("adtag_header", response.data.domain[i].adtag_widgetheader);
+								setGlobals("adtag_footer", response.data.domain[i].adtag_widgetfooter);
+							}
+						}
+					}
+				}
+			});
+			request.send();
 		}
 	}
 	function send_servicesChanged(services) {
@@ -1684,7 +1735,16 @@ if (!window.console || !console.firebug) {
 
 	//creates a social web log event
 	function logSW(network) {
+		var source = "";
+		if (glo_toolbar != false) {
+			source = "toolbar";
+		} else if (glo_page != "home" && glo_page != "") {
+			source = "chicklet";
+		} else {
+			source = "button";
+		}
 		var url2 = "http://l.sharethis.com/log?event=click"
+				+ "&source=" + source;
 				+ "&publisher=" + encodeURIComponent(glo_publisher)
 				+ "&hostname=" + encodeURIComponent(glo_hostname)
 				+ "&location=" + encodeURIComponent(glo_location)
@@ -1720,7 +1780,16 @@ if (!window.console || !console.firebug) {
 	}
 
 	function logEvent(destination1,eventType) {
+		var source = "";
+		if (glo_toolbar != false) {
+			source = "toolbar";
+		} else if (glo_page != "home" && glo_page != "") {
+			source = "chicklet";
+		} else {
+			source = "button";
+		}
 		var url2 = "http://l.sharethis.com/log?event="+eventType;
+			url2+= "&source=" + source;
 			url2+= "&publisher="+ encodeURIComponent(glo_publisher);
 			url2+= "&hostname="+ encodeURIComponent(glo_hostname);
 			url2+= "&location="+ encodeURIComponent(glo_location);
@@ -1951,6 +2020,17 @@ if (!window.console || !console.firebug) {
 			setGlobals("glo_description",glo_description_array[glo_guid_index]);
 			createSwList();
 			widget.fireEvent('shareableValuesUpdated');
+			if (glo_ads == true) {
+				if (glo_adtag_header != "") {
+					$("header_title").addClass("hidden");
+					$("header_ad").set("html", glo_adtag_header.replace('[timestamp]', (new Date()).getTime()));
+					$("header_ad").removeClass("hidden");
+				}
+				if (glo_adtag_footer != "") {
+					$("footer_ad_body").set("html", glo_adtag_footer.replace('[timestamp]', (new Date()).getTime()));
+					$("footer_ad").removeClass("hidden");
+				}
+			}
 		}
 	}
 
@@ -2865,7 +2945,7 @@ Widget.implement({
 					event.stop();
 				}).bind(this));
 				$('twitter_update_status').addEvent('click', function(event) {
-					widget.showPage('post/twitter');
+					widget.showPage('post|twitter');
 					event.stop();
 				});
 				widget.addEvent('shareableValuesUpdated', function() {
@@ -2994,7 +3074,11 @@ Widget.implement({
 				widget.user.removeEvent('signedOut', this.runAway.bind(this));
 			},
 			runAway: function() {
-				widget.showPage('home');
+				if (glo_page == "send" || glo_page == "post|twitter") {
+					widget.showPage(glo_page);
+				} else {
+					widget.showPage('home');
+				}
 			}
 		},
 		register: {
@@ -3012,7 +3096,11 @@ Widget.implement({
 				widget.addEvent('registerUserSucceeded', function() {
 					widget.popModalWorkingSheet();
 					setTimeout(function() {
-						widget.showPage('home');
+						if (glo_page == "send" || glo_page == "post|twitter") {
+							widget.showPage(glo_page);
+						} else {
+							widget.showPage('home');
+						}
 					}, 10);
 				});
 				widget.addEvent('registerUserFailed', function(message) {
@@ -3400,7 +3488,11 @@ Widget.implement({
 				$('doneScreenOk').addEvent('click',function(event) {
 					widget.user.deselectContacts();
 					clearMsgQueue();
-					widget.showPage('home');
+					if (glo_page == "send" || glo_page == "post|twitter") {
+						widget.showPage(glo_page);
+					} else {
+						widget.showPage('home');
+					}
 					event.stop();
 				});
 				this.parent();
@@ -3660,7 +3752,7 @@ Widget.implement({
 	_currentPage: null,
 	
 	/**
-	 * @param 	string|array path: slash-delimited path to the page to show using 
+	 * @param 	string|array path: pipe-delimited path to the page to show using 
 	 * 			property names in structure above. eg, 'post/wordpress' or just 'done'. 
 	 * 			during internal recursion the argument is an array, so that'll work too.
 	 * @param	[object obj]: only used during internal recursion.
@@ -3669,7 +3761,7 @@ Widget.implement({
 		if (!obj && path != this.pageHistory.getLast()) { 
 			this.pageHistory.push(path); 
 		}
-		path = (typeof path == 'string' ? path.split('/') : path);
+		path = (typeof path == 'string' ? path.split('|') : path);
 		obj = (obj ? obj : widget);
 		var page = path.shift();
 		for (var name in obj.pages) {
@@ -3892,7 +3984,7 @@ Widget.implement({
 		},
 		blogger:  {
 			title: 'Blogger',
-			onClick: function(event) { widget.showPage('post/blogger'); event.stop(); },
+			onClick: function(event) { widget.showPage('post|blogger'); event.stop(); },
 			type: 'post'
 		},
 		bus_exchange: {
@@ -3962,7 +4054,7 @@ Widget.implement({
 		fresqui: {
 			title: 'Fresqui',
 			submitUrl: 'http://ocio.fresqui.com/post?url={url}&title={title}',
-			destination: 'digg.com'
+			destination: 'ocio.fresqui.com'
 		},
 		friendfeed: {
 			title: 'FriendFeed',
@@ -3971,7 +4063,7 @@ Widget.implement({
 		},
 		friendster: {
 			title: 'Friendster',
-			onClick: function(event) { widget.showPage('post/friendster'); event.stop(); },
+			onClick: function(event) { widget.showPage('post|friendster'); event.stop(); },
 			type: 'post'
 		},
 		funp: {
@@ -3991,7 +4083,7 @@ Widget.implement({
 		},
 		hi5: {
 			title: 'Hi5',
-			onClick: function(event) { widget.showPage('post/hi5'); event.stop(); },
+			onClick: function(event) { widget.showPage('post|hi5'); event.stop(); },
 			type: 'post'
 		},
 		kirtsy: {
@@ -4006,7 +4098,7 @@ Widget.implement({
 		},
 		livejournal: {
 			title: 'LiveJournal',
-			onClick: function(event) { widget.showPage('post/livejournal'); event.stop(); },
+			onClick: function(event) { widget.showPage('post|livejournal'); event.stop(); },
 			type: 'post'
 		},
 		/*
@@ -4053,7 +4145,7 @@ Widget.implement({
 		},
 		orkut: {
 			title: 'Orkut',
-			onClick: function(event) { widget.showPage('post/orkut'); event.stop(); },
+			onClick: function(event) { widget.showPage('post|orkut'); event.stop(); },
 			type: 'post'
 		},
 		propeller: {
@@ -4115,18 +4207,18 @@ Widget.implement({
 				}
 				*/
 				/*
-				 * This next line "widget.showPage('post/twitter');"
+				 * This next line "widget.showPage('post|twitter');"
 				 * should be removed when we uncomment the above code
 				 * for re-implement of Twitter direct messageing. -- KJW
 				 */
-				widget.showPage('post/twitter');
+				widget.showPage('post|twitter');
 				event.stop();
 			},
 			type: 'post'			
 		},
 		typepad:  {
 			title: 'TypePad',
-			onClick: function(event) { widget.showPage('post/typepad'); event.stop(); },
+			onClick: function(event) { widget.showPage('post|typepad'); event.stop(); },
 			type: 'post'
 		},
 		windows_live: {
@@ -4140,7 +4232,7 @@ Widget.implement({
 		},
 		wordpress:  {
 			title: 'WordPress',
-			onClick: function(event) { widget.showPage('post/wordpress'); event.stop(); },
+			onClick: function(event) { widget.showPage('post|wordpress'); event.stop(); },
 			type: 'post'
 		},
 		xanga: {
@@ -6273,7 +6365,11 @@ window.addEvent('domready', function() {
 		widget.openLoginBox();
 	});
 	$('linkSignOut').addEvent('click', function(){
-		widget.showPage('home');
+		if (glo_page == "send" || glo_page == "post|twitter") {
+			widget.showPage(glo_page);
+		} else {
+			widget.showPage('home');
+		}
 		widget.signOut();
 	});
 	
@@ -6330,12 +6426,15 @@ window.addEvent('domready', function() {
 			$('header_title').addClass('hidden');
 		}
 		else {
-			$('header_title').removeClass('hidden');
+			if (glo_ads == false) {
+				$('header_title').removeClass('hidden');
+			}
 		}
 		// if header has collapsed, remove the top-border on the sub-header
 		if ($('header_title').getSize().y < 2) {
-			$('sub_header').addClass('headerless');
-			
+			if (glo_ads == false) {
+				$('sub_header').addClass('headerless');
+			}
 		}
 		else {
 			$('sub_header').removeClass('headerless');
@@ -6433,6 +6532,10 @@ window.addEvent('domready', function() {
 		});
 	});
 
-	widget.showPage('home');
+	if (glo_page == "send" || glo_page == "post|twitter") {
+		widget.showPage(glo_page);
+	} else {
+		widget.showPage('home');
+	}
 });
 
