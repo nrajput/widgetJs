@@ -2305,7 +2305,7 @@ if (!window.console || !console.firebug) {
 		if(!glo_summary || glo_summary==undefined || glo_summary=="undefined"){glo_summary="";}
 		if(!glo_tags){glo_tags="";}
 		var objects=[];
-		objects[0]={type:glo_type, url:getSharURL(), title:glo_title, thumbnail:glo_thumb, embed:glo_content, description:glo_summary, tags:glo_tags };
+		objects[0]={type:glo_type, url:glo_url, sharURL:getSharURL(), title:glo_title, thumbnail:glo_thumb, embed:glo_content, description:glo_summary, tags:glo_tags };
 		objects=JSON.encode(objects);
 		var	data= "sender="+encodeURIComponent(sender)+"&subject="+encodeURIComponent(subject)+"&comment="+encodeURIComponent(comment)+"&publisher="+publisher+"&objects="+encodeURIComponent(objects)+"&recipients="+encodeURIComponent(recipients)+"&sessionID="+glo_sessionID+"&return=JSON";
 	
@@ -2594,7 +2594,7 @@ if (!window.console || !console.firebug) {
 		if(!glo_tags || glo_tags==undefined){glo_tags="";}
 		var objects="";
 		var destination="";
-		objects=[ {type:glo_type, url:getSharURL(), title:decodeURIComponent(glo_title), thumbnail:glo_thumb, embed:glo_content, description:glo_description, tags:glo_tags}];
+		objects=[ {type:glo_type, url:glo_url, sharURL:getSharURL(), title:decodeURIComponent(glo_title), thumbnail:glo_thumb, embed:glo_content, description:glo_description, tags:glo_tags}];
 		objects=JSON.encode(objects);
 		destination=[{type:destination1 , address:destAddress}];
 		destination=JSON.encode(destination);
