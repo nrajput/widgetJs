@@ -1,4 +1,4 @@
-/*!
+/*!f
  * ShareThis Widget Version 3.7.0-rc1
  * 5/4/09 ShareThis.com 
  */
@@ -1389,7 +1389,7 @@ if (!window.console || !console.firebug) {
 				glo_page=value;
 				if (glo_page == "send" || glo_page == "post|twitter") {
 					if (glo_page == "post|twitter") {
-						if ( !widget.tinyURL ) getTinyURL(glo_url);
+						createSharURL(glo_url);
 					}
 					widget.showPage(glo_page);
 				} else {
