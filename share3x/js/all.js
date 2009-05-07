@@ -6123,8 +6123,8 @@ Widget.ToField = new Class({ Implements: Events,
 		
 		var retVal='<a class="token" href="javascript:void(0);" >';
 		retVal+='<span title= "' + contact.name + '<' + contact.address + '>' + '" class="' + (contact.service.length ? contact.service : 'email') + '">';
-		retVal+=widget.truncateText(contact.name, 130);
-		retVal+='</span></a>';
+		retVal+='<img class="token_x" id="token_img" src="">' + widget.truncateText(contact.name, 130);
+		retVal+='</span></span></a>';
 		return retVal;
 	
 		/*if (method == Widget.ToField.createToken_asHTML) {
@@ -6198,10 +6198,10 @@ Widget.ToField = new Class({ Implements: Events,
 		
 		var mouseMoveHandler = (function(event) {
 			if (element.pageCoordinateIsOverX(event.page.x)) {
-				element.addClass('token_hover');
+				//element.getElementById('token_img').addClass('token_hover');
 			}
 			else {
-				element.removeClass('token_hover');
+				//element.getElementById('token_img').removeClass('token_hover');
 			}
 		}).bind(this);
 		element.addEvent('mousemove', mouseMoveHandler);
