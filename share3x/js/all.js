@@ -1,6 +1,6 @@
 /*!
- * ShareThis Widget Version 3.7.0-rc1
- * 5/4/09 ShareThis.com 
+ * ShareThis Widget Version 3.8.0-rc1
+ * 5/6/09 ShareThis.com 
  */
 
 //widget-class.js
@@ -128,7 +128,7 @@ var Widget = new Class({ Implements: Events,
 				var blogid = $('bloggerSelect').get('value');
 			}
 			var data = "";
-			var atag = "<a href="+glo_url+">"+decodeURIComponent(glo_title)+"</a>";
+			var atag = "<a href="+getSharURL()+">"+decodeURIComponent(glo_title)+"</a>";
 		
 			if(glo_content!==""){
 				atag="";
@@ -213,7 +213,7 @@ var Widget = new Class({ Implements: Events,
 		}
 		else {
 			//"+atag+"
-			var atag="<a href="+glo_url+">"+decodeURIComponent(glo_title)+"</a>";
+			var atag="<a href="+getSharURL()+">"+decodeURIComponent(glo_title)+"</a>";
 			atag=encodeURIComponent(atag);
 			if(glo_content!==""){
 				atag="";
@@ -279,7 +279,7 @@ var Widget = new Class({ Implements: Events,
 			err_set=true;	
 			err+="Please enter a password.\n";	
 		}
-			var atag="<a href="+glo_url+">"+decodeURIComponent(glo_title)+"</a>";
+			var atag="<a href="+getSharURL()+">"+decodeURIComponent(glo_title)+"</a>";
 			if(glo_content!==""){
 				atag="";
 			}
@@ -336,7 +336,7 @@ var Widget = new Class({ Implements: Events,
 		var err_set=false;
 		var captcha="";
 
-		var atag="<a href="+glo_url+">"+decodeURIComponent(glo_title)+"</a>";
+		var atag="<a href="+getSharURL()+">"+decodeURIComponent(glo_title)+"</a>";
 		if(glo_content!==""){
 			atag="";
 		}
@@ -547,7 +547,7 @@ var Widget = new Class({ Implements: Events,
 			}
 			var data="";
 		
-			var atag="<a href="+glo_url+">"+decodeURIComponent(glo_title)+"</a>";
+			var atag="<a href="+getSharURL()+">"+decodeURIComponent(glo_title)+"</a>";
 			if(glo_content!==""){
 				atag="";
 			}
@@ -632,7 +632,7 @@ var Widget = new Class({ Implements: Events,
 			err_set=true;	
 			err+="Please enter a url.\n";	
 		}
-		var atag="<a href="+glo_url+">"+decodeURIComponent(glo_title)+"</a>";
+		var atag="<a href="+getSharURL()+">"+decodeURIComponent(glo_title)+"</a>";
 		if(glo_content!==""){
 			atag="";
 		}
@@ -811,7 +811,7 @@ var Widget = new Class({ Implements: Events,
 		if (!objects || !objects.length || objects.length == 0) {
 			objects = [{
 				'type': 'default',
-				url: glo_url,
+				url: getSharURL(),
 				title: decodeURIComponent(glo_title),
 				thumbnail: glo_thumb,
 				embed: encodeURIComponent(Url.decode(glo_content)),
@@ -1077,6 +1077,7 @@ if (!window.console || !console.firebug) {
 	var glo_googleProfileId="";
 	var googlePubTracker="";
 	var glo_omnitureURL="";
+	var glo_sharURL="";
 	var import_cookie="";
 	var import_cookie_tid;
 	var import_cookie_cycles = 0;
@@ -1216,6 +1217,7 @@ if (!window.console || !console.firebug) {
 					}
 					glo_thumbImageTag='http://sharethis.com/share/thumb?url='+glo_url;
 					$('previewUrl').set('text', widget.extractDomainFromURL(glo_url));
+					createSharURL(glo_url);
 					widget.fireEvent('shareableURLChanged', glo_url);
 				}
 				break;
@@ -1387,7 +1389,7 @@ if (!window.console || !console.firebug) {
 				glo_page=value;
 				if (glo_page == "send" || glo_page == "post|twitter") {
 					if (glo_page == "post|twitter") {
-						if ( !widget.tinyURL ) getTinyURL(glo_url);
+						createSharURL(glo_url);
 					}
 					widget.showPage(glo_page);
 				} else {
@@ -1751,7 +1753,9 @@ if (!window.console || !console.firebug) {
 				+ "&title=" + glo_title
 				+ "&url=" + glo_url
 				+ "&sessionID="+glo_sessionID
-				+ "&fpc="+glo_fpc;
+				+ "&fpc="+glo_fpc
+				+ "&sharURL="+glo_sharURL;
+		
 		var logger2 = new Image(1,1);
 		logger2.src = url2;
 		logger2.onload = function(){return;};
@@ -1795,6 +1799,8 @@ if (!window.console || !console.firebug) {
 			url2+= "&url="+encodeURIComponent(glo_url);
 			url2+= "&sessionID="+glo_sessionID;
 			url2+= "&fpc="+glo_fpc;
+			url2+= "&sharUrl="+encodeURIComponent(glo_sharURL);
+			
 		var logger2 = new Image(1,1);
 		logger2.src = url2;
 		logger2.onload = function(){return;};
@@ -2015,13 +2021,14 @@ if (!window.console || !console.firebug) {
 			createSwList();
 			widget.fireEvent('shareableValuesUpdated');
 			if (glo_ads == true) {
+				var adtag_timestamp = (new Date()).getTime();
 				if (glo_adtag_header != "") {
 					$("header_title").addClass("hidden");
-					$("header_ad").set("html", glo_adtag_header.replace('[timestamp]', (new Date()).getTime()));
+					$("header_ad").set("html", glo_adtag_header.replace(/\[timestamp\]/g, adtag_timestamp));
 					$("header_ad").removeClass("hidden");
 				}
 				if (glo_adtag_footer != "") {
-					$("footer_ad_body").set("html", glo_adtag_footer.replace('[timestamp]', (new Date()).getTime()));
+					$("footer_ad_body").set("html", glo_adtag_footer.replace(/\[timestamp\]/g, adtag_timestamp));
 					$("footer_ad").removeClass("hidden");
 				}
 			}
@@ -2299,7 +2306,7 @@ if (!window.console || !console.firebug) {
 		if(!glo_summary || glo_summary==undefined || glo_summary=="undefined"){glo_summary="";}
 		if(!glo_tags){glo_tags="";}
 		var objects=[];
-		objects[0]={type:glo_type, url:glo_url, title:glo_title, thumbnail:glo_thumb, embed:glo_content, description:glo_summary, tags:glo_tags };
+		objects[0]={type:glo_type, url:glo_url, sharURL:getSharURL(), title:glo_title, thumbnail:glo_thumb, embed:glo_content, description:glo_summary, tags:glo_tags };
 		objects=JSON.encode(objects);
 		var	data= "sender="+encodeURIComponent(sender)+"&subject="+encodeURIComponent(subject)+"&comment="+encodeURIComponent(comment)+"&publisher="+publisher+"&objects="+encodeURIComponent(objects)+"&recipients="+encodeURIComponent(recipients)+"&sessionID="+glo_sessionID+"&return=JSON";
 	
@@ -2513,59 +2520,40 @@ if (!window.console || !console.firebug) {
 		widget.fireEvent('nDiggCommentsAcquired', glo_digg_comments);
 	}
 
+    function createSharURL(url){
+    	if(url!=="" && url!==" " && url!==glo_last_url2 && url!==undefined && url!=="undefined"){
+    		var data="url="+url;
+            var request=new Request({
+            						method: "post",
+            						url: "/api/createSharURL_ws.php",
+            						data: data,
+            						onSuccess:createSharURL_onSuccess
+                					});
+            request.options.async = false;
+            glo_last_url2=url;
+            request.send();
+    	}
+    }
+    
+    function createSharURL_onSuccess(responseText, responseXML){
+        try {
+        	var resp=JSON.decode(responseText);
+            var sharURL=encodeURIComponent(resp.data.sharURL);
+        }
+        catch(err){
+                var sharURL=glo_url;
+        }
+        glo_sharURL = sharURL;
+        widget.fireEvent('sharURLAcquired');
+    }
 
-	function getTinyURL(url){
-		if(url!=="" && url!==" " && url!==glo_last_url2 && url!==undefined && url!=="undefined"){
-		  var data="url="+url;
-			var request=new Request({
-				method: "post",
-				url: "/api/getTinyURL_ws.php",
-				data: data,
-				onSuccess:getTinyURL_onSuccess
-			});
-			request.options.async=false;
-			glo_last_url2=url;
-			
-			request.send();
-		}
-	}
-	function getTinyURL_onSuccess(responseText, responseXML){
-		try{
-			var resp=JSON.decode(responseText);
-			var twitURL=encodeURIComponent(resp.data.tinyURL);
-		}
-		catch(err){
-			var twitURL=glo_url;
-		}
-		widget.tinyURL = twitURL;
-		widget.fireEvent('tinyURLAcquired', widget.tinyURL);
-	}
-
-
-	function getTinyST(url){
-		if(url!=="" && url!==" " && url!==glo_last_url2 && url!==undefined && url!=="undefined"){
-		  var data="url="+url;
-			var request=new Request({
-				method: "post",
-				url: "/api/getTinyST_ws.php",
-				data: data,
-				onSuccess:getTinyST_onSuccess
-			});
-			glo_last_url2=url;
-			request.send();
-		}
-	}
-	function getTinyST_onSuccess(responseText, responseXML){
-		try{
-			var resp=JSON.decode(responseText);
-			var tinyST=encodeURIComponent(resp.data.tinyST);
-		}
-		catch(err){
-			var tinyST=glo_url;
-		}
-		widget.tinyURL = tinyST;
-		widget.fireEvent('tinyURLAcquired');
-	}
+    function getSharURL() {
+    	if (!glo_sharURL || glo_sharURL==undefined || glo_sharURL=="undefined") {
+    		return glo_url;
+        } else {
+        	return glo_sharURL;
+        }
+    }
 
 	function HexToR(h) {return parseInt((cutHex(h)).substring(0,2),16)}
 	function HexToG(h) {return parseInt((cutHex(h)).substring(2,4),16)}
@@ -2607,7 +2595,7 @@ if (!window.console || !console.firebug) {
 		if(!glo_tags || glo_tags==undefined){glo_tags="";}
 		var objects="";
 		var destination="";
-		objects=[ {type:glo_type, url:glo_url, title:decodeURIComponent(glo_title), thumbnail:glo_thumb, embed:glo_content, description:glo_description, tags:glo_tags}];
+		objects=[ {type:glo_type, url:glo_url, sharURL:getSharURL(), title:decodeURIComponent(glo_title), thumbnail:glo_thumb, embed:glo_content, description:glo_description, tags:glo_tags}];
 		objects=JSON.encode(objects);
 		destination=[{type:destination1 , address:destAddress}];
 		destination=JSON.encode(destination);
@@ -2947,11 +2935,11 @@ Widget.implement({
 							widget.setImportContactService('twitter');
 						}, 1);
 					}
-					if (widget.tinyURL) {
-						var message = decodeURIComponent(glo_title + ' - ' + widget.tinyURL + ' via @ShareThis');
+					if (glo_sharURL) {
+						var message = decodeURIComponent(glo_title + ' - ' + getSharURL() + ' via @ShareThis');
 						var i=0
 						while ( message.length > 140 ) {
-							message = glo_title.substr(0, glo_title.length - i++) + '... ' + widget.tinyURL;
+							message = glo_title.substr(0, glo_title.length - i++) + '... ' + glo_sharURL;
 						}
 						$('txtMessage').value = message;
 					}
@@ -3252,7 +3240,7 @@ Widget.implement({
 					var retval = true;
 					var inputField = $('txtMessage');
 					var maxCharacterCount = widget.maxSendMessageLength;
-					if ( widget.tinyURL && this.hasTwitterRecipients() ) {
+					if ( glo_sharURL && this.hasTwitterRecipients() ) {
 						maxCharacterCount = 140;
 					}
 					var counterSpan = $('spanMessageCounter');
@@ -3654,11 +3642,11 @@ Widget.implement({
 					id: 'post_twitter',
 					statusMessage: null,
 					onReady: function() {
-						widget.addEvent('tinyURLAcquired', (function() {
-							this.statusMessage = decodeURIComponent(glo_title + ' - ' + widget.tinyURL);
+						widget.addEvent('sharURLAcquired', (function() {
+							this.statusMessage = decodeURIComponent(glo_title + ' - ' + getSharURL());
 							var i=0
 							while ( this.statusMessage.length > 140 ) {
-								this.statusMessage = glo_title.substr(0, glo_title.length - i++) + '... ' + widget.tinyURL;
+								this.statusMessage = glo_title.substr(0, glo_title.length - i++) + '... ' + getSharURL();
 							}
 							$('twitterStatus').value = this.statusMessage;
 							this.updateCharacterCounter();
@@ -4200,7 +4188,7 @@ Widget.implement({
 			title: 'Twitter',
 			onClick: function(event) {
 				page = widget.pages.home;
-				if ( !widget.tinyURL ) getTinyURL(glo_url);
+				createSharURL(glo_url);
 				$('twitter_menu').setStyles({
 					top: ($('post_twitter_link').getCoordinates().bottom - 6) + 'px',
 					left: ($('post_twitter_link').getCoordinates().left - 6) + 'px'
@@ -4331,7 +4319,7 @@ Widget.implement({
 			aTitle=service.aTitle;
 		}
 		if ('submitUrl' in service && service.submitUrl.length) {
-			link = service.submitUrl.replace('{title}', glo_title).replace('{url}', encodeURIComponent(glo_url)).replace('{content}', glo_content);
+			link = service.submitUrl.replace('{title}', glo_title).replace('{url}', encodeURIComponent(getSharURL())).replace('{content}', glo_content);
 		}
 		var a = new Element('a', {
 			'class': serviceTag,
