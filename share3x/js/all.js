@@ -1217,7 +1217,7 @@ if (!window.console || !console.firebug) {
 					}
 					glo_thumbImageTag='http://sharethis.com/share/thumb?url='+glo_url;
 					$('previewUrl').set('text', widget.extractDomainFromURL(glo_url));
-					createSharURL(glo_url);
+					createSharURL(glo_url, false);
 					widget.fireEvent('shareableURLChanged', glo_url);
 				}
 				break;
@@ -1389,7 +1389,7 @@ if (!window.console || !console.firebug) {
 				glo_page=value;
 				if (glo_page == "send" || glo_page == "post|twitter") {
 					if (glo_page == "post|twitter") {
-						createSharURL(glo_url);
+						createSharURL(glo_url, true);
 					}
 					widget.showPage(glo_page);
 				} else {
@@ -2520,7 +2520,7 @@ if (!window.console || !console.firebug) {
 		widget.fireEvent('nDiggCommentsAcquired', glo_digg_comments);
 	}
 
-    function createSharURL(url){
+    function createSharURL(url, sync){
     	if(url!=="" && url!==" " && url!==glo_last_url2 && url!==undefined && url!=="undefined"){
     		var data="url="+url;
             var request=new Request({
@@ -2529,7 +2529,9 @@ if (!window.console || !console.firebug) {
             						data: data,
             						onSuccess:createSharURL_onSuccess
                 					});
-            request.options.async = false;
+            if (sync) {
+            	request.options.async = false;
+            }
             glo_last_url2=url;
             request.send();
     	}
@@ -4191,7 +4193,7 @@ Widget.implement({
 			title: 'Twitter',
 			onClick: function(event) {
 				page = widget.pages.home;
-				createSharURL(glo_url);
+				createSharURL(glo_url, true);
 				$('twitter_menu').setStyles({
 					top: ($('post_twitter_link').getCoordinates().bottom - 6) + 'px',
 					left: ($('post_twitter_link').getCoordinates().left - 6) + 'px'
