@@ -4030,7 +4030,8 @@ Widget.implement({
 						element.set('text', 'Digg (' + widget.nDiggs + ')');
 					}).bind(this));
 				}
-			}
+			},
+			dontUseSharURL: 'Shar URLs are not allowed'
 		},
 		diigo: {
 			title: 'Diigo',
@@ -4127,7 +4128,8 @@ Widget.implement({
 		myspace: {
 			title: 'MySpace',
 			submitUrl: 'http://www.myspace.com/Modules/PostTo/Pages/?l=3&u={url}&t={title}&c={content}%3Cp%3EPowered+by+%3Ca+href%3D%22http%3A%2F%2Fsharethis.com%22%3EShareThis%3C%2Fa%3E%3C%2Fp%3E',
-			destination: 'myspace.com'
+			destination: 'myspace.com',
+			dontUseSharURL: 'Shar URLs are not allowed'
 		},
 		n4g: {
 			title: 'N4G',
@@ -4147,7 +4149,8 @@ Widget.implement({
 		orkut: {
 			title: 'Orkut',
 			onClick: function(event) { widget.showPage('post|orkut'); event.stop(); },
-			type: 'post'
+			type: 'post',
+			dontUseSharURL: 'Shar URLs are not allowed'
 		},
 		propeller: {
 			title: 'Propeller',
@@ -4318,8 +4321,13 @@ Widget.implement({
 		if(service.aTitle){
 			aTitle=service.aTitle;
 		}
+		
 		if ('submitUrl' in service && service.submitUrl.length) {
-			link = service.submitUrl.replace('{title}', glo_title).replace('{url}', encodeURIComponent(getSharURL())).replace('{content}', glo_content);
+			if (service.dontUseSharURL) {
+				link = service.submitUrl.replace('{title}', glo_title).replace('{url}', encodeURIComponent(glo_url)).replace('{content}', glo_content);				
+			} else {
+				link = service.submitUrl.replace('{title}', glo_title).replace('{url}', encodeURIComponent(getSharURL())).replace('{content}', glo_content);
+			}
 		}
 		var a = new Element('a', {
 			'class': serviceTag,
