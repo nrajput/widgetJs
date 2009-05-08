@@ -1,5 +1,5 @@
 /*!
- * ShareThis Widget Version 3.8.0-rc1
+ * ShareThis Widget Version 3.8.0-rc2
  * 5/6/09 ShareThis.com 
  */
 
@@ -1239,9 +1239,8 @@ if (!window.console || !console.firebug) {
 					}
 					glo_thumbImageTag='http://sharethis.com/share/thumb?url='+glo_url;
 					$('previewUrl').set('text', widget.extractDomainFromURL(glo_url));
-					createSharURL(glo_url);
 					getDiggs(glo_url);
-					console.log("here");
+					createSharURL(glo_url, false);
 					widget.fireEvent('shareableURLChanged', glo_url);
 				}
 				break;
@@ -1411,7 +1410,7 @@ if (!window.console || !console.firebug) {
 				glo_page=value;
 				if (glo_page == "send" || glo_page == "post|twitter") {
 					if (glo_page == "post|twitter") {
-						createSharURL(glo_url);
+						createSharURL(glo_url, true);
 					}
 					widget.showPage(glo_page);
 				} else {
@@ -1773,7 +1772,7 @@ if (!window.console || !console.firebug) {
 			source = "button";
 		}
 		var url2 = "http://l.sharethis.com/log?event=click"
-				+ "&source=" + source;
+				+ "&source=" + source
 				+ "&publisher=" + encodeURIComponent(glo_publisher)
 				+ "&hostname=" + encodeURIComponent(glo_hostname)
 				+ "&location=" + encodeURIComponent(glo_location)
@@ -1818,7 +1817,7 @@ if (!window.console || !console.firebug) {
 			source = "button";
 		}
 		var url2 = "http://l.sharethis.com/log?event="+eventType;
-			url2+= "&source=" + source;
+			url2+= "&source=" + source
 			url2+= "&publisher="+ encodeURIComponent(glo_publisher);
 			url2+= "&hostname="+ encodeURIComponent(glo_hostname);
 			url2+= "&location="+ encodeURIComponent(glo_location);
@@ -2560,7 +2559,7 @@ if (!window.console || !console.firebug) {
 		diggElement.set('text', 'Digg (' + widget.nDiggs + ')');
 	}
 
-    function createSharURL(url){
+    function createSharURL(url, sync){
     	if(url!=="" && url!==" " && url!==glo_last_url2 && url!==undefined && url!=="undefined"){
     		var data="url="+url;
             var request=new Request({
@@ -2570,7 +2569,9 @@ if (!window.console || !console.firebug) {
             						onFailure: function(){logError("get shareURL","Ajax Failure");},
             						onSuccess:createSharURL_onSuccess
                 					});
-            request.options.async = false;
+            if (sync) {
+            	request.options.async = false;
+            }
             glo_last_url2=url;
             request.send();
     	}
@@ -4178,6 +4179,7 @@ Widget.implement({
 			title: 'MySpace',
 			submitUrl: 'http://www.myspace.com/Modules/PostTo/Pages/?l=3&u={url}&t={title}&c={content}%3Cp%3EPowered+by+%3Ca+href%3D%22http%3A%2F%2Fsharethis.com%22%3EShareThis%3C%2Fa%3E%3C%2Fp%3E',
 			destination: 'myspace.com'
+//			dontUseSharURL: 'Shar URLs are not allowed'
 		},
 		n4g: {
 			title: 'N4G',
@@ -4198,6 +4200,7 @@ Widget.implement({
 			title: 'Orkut',
 			onClick: function(event) { widget.showPage('post|orkut'); event.stop(); },
 			type: 'post'
+//			dontUseSharURL: 'Shar URLs are not allowed'
 		},
 		propeller: {
 			title: 'Propeller',
@@ -4238,7 +4241,7 @@ Widget.implement({
 			title: 'Twitter',
 			onClick: function(event) {
 				page = widget.pages.home;
-				createSharURL(glo_url);
+				createSharURL(glo_url, true);
 				$('twitter_menu').setStyles({
 					top: ($('post_twitter_link').getCoordinates().bottom - 6) + 'px',
 					left: ($('post_twitter_link').getCoordinates().left - 6) + 'px'
@@ -4368,8 +4371,13 @@ Widget.implement({
 		if(service.aTitle){
 			aTitle=service.aTitle;
 		}
+		
 		if ('submitUrl' in service && service.submitUrl.length) {
-			link = service.submitUrl.replace('{title}', glo_title).replace('{url}', encodeURIComponent(getSharURL())).replace('{content}', glo_content);
+			if (service.dontUseSharURL) {
+				link = service.submitUrl.replace('{title}', glo_title).replace('{url}', encodeURIComponent(glo_url)).replace('{content}', glo_content);				
+			} else {
+				link = service.submitUrl.replace('{title}', glo_title).replace('{url}', encodeURIComponent(getSharURL())).replace('{content}', glo_content);
+			}
 		}
 		var a = new Element('a', {
 			'class': serviceTag,
@@ -6168,8 +6176,8 @@ Widget.ToField = new Class({ Implements: Events,
 		
 		var retVal='<a class="token" href="javascript:void(0);" >';
 		retVal+='<span title= "' + contact.name + '<' + contact.address + '>' + '" class="' + (contact.service.length ? contact.service : 'email') + '">';
-		retVal+=widget.truncateText(contact.name, 130);
-		retVal+='</span></a>';
+		retVal+='<img class="token_x" id="token_img" src="">' + widget.truncateText(contact.name, 130);
+		retVal+='</span></span></a>';
 		return retVal;
 	
 		/*if (method == Widget.ToField.createToken_asHTML) {
@@ -6243,10 +6251,10 @@ Widget.ToField = new Class({ Implements: Events,
 		
 		var mouseMoveHandler = (function(event) {
 			if (element.pageCoordinateIsOverX(event.page.x)) {
-				element.addClass('token_hover');
+				//element.getElementById('token_img').addClass('token_hover');
 			}
 			else {
-				element.removeClass('token_hover');
+				//element.getElementById('token_img').removeClass('token_hover');
 			}
 		}).bind(this);
 		element.addEvent('mousemove', mouseMoveHandler);
