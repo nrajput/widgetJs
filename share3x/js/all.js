@@ -1240,7 +1240,7 @@ if (!window.console || !console.firebug) {
 					glo_thumbImageTag='http://sharethis.com/share/thumb?url='+glo_url;
 					$('previewUrl').set('text', widget.extractDomainFromURL(glo_url));
 					getDiggs(glo_url);
-					createSharURL(glo_url, false);
+					createSharURL(glo_url, true);
 					widget.fireEvent('shareableURLChanged', glo_url);
 				}
 				break;
