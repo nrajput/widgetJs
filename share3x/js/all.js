@@ -1,5 +1,5 @@
 /*!
- * ShareThis Widget Version 3.8.0-rc1
+ * ShareThis Widget Version 3.8.0-rc2
  * 5/6/09 ShareThis.com 
  */
 
@@ -4032,8 +4032,8 @@ Widget.implement({
 						element.set('text', 'Digg (' + widget.nDiggs + ')');
 					}).bind(this));
 				}
-			},
-			dontUseSharURL: 'Shar URLs are not allowed'
+			}
+//			dontUseSharURL: 'Shar URLs are not allowed'
 		},
 		diigo: {
 			title: 'Diigo',
@@ -4130,8 +4130,8 @@ Widget.implement({
 		myspace: {
 			title: 'MySpace',
 			submitUrl: 'http://www.myspace.com/Modules/PostTo/Pages/?l=3&u={url}&t={title}&c={content}%3Cp%3EPowered+by+%3Ca+href%3D%22http%3A%2F%2Fsharethis.com%22%3EShareThis%3C%2Fa%3E%3C%2Fp%3E',
-			destination: 'myspace.com',
-			dontUseSharURL: 'Shar URLs are not allowed'
+			destination: 'myspace.com'
+//			dontUseSharURL: 'Shar URLs are not allowed'
 		},
 		n4g: {
 			title: 'N4G',
@@ -4151,8 +4151,8 @@ Widget.implement({
 		orkut: {
 			title: 'Orkut',
 			onClick: function(event) { widget.showPage('post|orkut'); event.stop(); },
-			type: 'post',
-			dontUseSharURL: 'Shar URLs are not allowed'
+			type: 'post'
+//			dontUseSharURL: 'Shar URLs are not allowed'
 		},
 		propeller: {
 			title: 'Propeller',
