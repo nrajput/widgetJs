@@ -1744,7 +1744,7 @@ if (!window.console || !console.firebug) {
 			source = "button";
 		}
 		var url2 = "http://l.sharethis.com/log?event=click"
-				+ "&source=" + source;
+				+ "&source=" + source
 				+ "&publisher=" + encodeURIComponent(glo_publisher)
 				+ "&hostname=" + encodeURIComponent(glo_hostname)
 				+ "&location=" + encodeURIComponent(glo_location)
@@ -1789,7 +1789,7 @@ if (!window.console || !console.firebug) {
 			source = "button";
 		}
 		var url2 = "http://l.sharethis.com/log?event="+eventType;
-			url2+= "&source=" + source;
+			url2+= "&source=" + source
 			url2+= "&publisher="+ encodeURIComponent(glo_publisher);
 			url2+= "&hostname="+ encodeURIComponent(glo_hostname);
 			url2+= "&location="+ encodeURIComponent(glo_location);

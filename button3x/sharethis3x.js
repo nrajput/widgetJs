@@ -655,10 +655,12 @@ try{
 		        a.className = 'stbutton stico_' + (o.options.style ? o.options.style : (SHARETHIS.options.style ? SHARETHIS.options.style : 'default'));
 			    a.title = "ShareThis via email, AIM, social bookmarking and networking sites, etc.";
 		        a.href = "javascript:void(0)";
+		        a.setAttribute("st_page", "home");
 		        if(o.options.onmouseover == false || o.options.onmouseover == "false") a.onclick = o.popup;
 		        if(o.options.onmouseover == true) a.onmouseover = o.popup;
 		        var t = document.createElement("span");
 		        t.className = 'stbuttontext';
+		        t.setAttribute("st_page", "home");
 		        t.appendChild(document.createTextNode(o.options.buttonText));
 		        a.appendChild(t);
 		        o.button = a;
