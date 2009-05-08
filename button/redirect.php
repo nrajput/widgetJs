@@ -6,6 +6,7 @@
 	$properties  = isset($_REQUEST["p"])  ? $_REQUEST["p"]  : "";
 	if ($destination != "" && $publisher != "" && $session != "" && $properties != "") {
 		$properties = json_decode(stripslashes($properties));
+		$properties->sharURL = get_sharURL($properties->url);
 		
 		$destinationsJSON[0] = array(
 			"type" => $destination,
@@ -16,6 +17,7 @@
 		$objectsJSON[0] = array(
 			"type" => "default",
 			"url" => $properties->url,
+			"sharURL" => $properties->sharURL,
 			"title" => $properties->title,
 			"thumbnail" => $properties->icon,
 			"embed" => $properties->content,
@@ -56,7 +58,7 @@
 				break;
 		}
 		if ($url !== "") {
-			$url = str_replace("{url}", urlencode($properties->url), $url);
+			$url = str_replace("{url}", urlencode($properties->sharURL), $url);
 			$url = str_replace("{title}", urlencode($properties->title), $url);
 			header("Location: $url");
 		}
@@ -112,5 +114,30 @@
 			return FALSE;
 		}
 		return FALSE;
+	}
+	
+	function get_sharURL($url) {
+		$token = isset($_COOKIE["ShareUT"]) ? $_COOKIE["ShareUT"] : "";
+		$cookie = isset($_COOKIE["__stid"]) ? $_COOKIE["__stid"] : "";
+		$params = array(
+			"url" => $url,
+			"token" => $token,
+			"clicookie" => $cookie
+		);
+		$response = call_api("createSharURL", $params);
+		if ($response !== FALSE) {
+				switch ($response["status"]) {
+					case "SUCCESS":
+						return $response["data"]["sharURL"];
+						break;
+					case "FAILURE":
+						return $url;
+						break;
+					default:
+						return $url;
+				}
+		} else {
+			return $url;
+		}
 	}
 ?>
