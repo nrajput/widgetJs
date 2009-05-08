@@ -144,6 +144,7 @@ var Widget = new Class({ Implements: Events,
 				method: "post",
 				url: "/api/postBlogger_ws.php",
 				data: data,
+				onFailure: function(){logError("postblogger","Ajax Failure");},
 				onSuccess:this.postBlogger_onSuccess.bind(this)
 			});
 			this.fireEvent('postToServiceRequested', 'blogger');
@@ -170,6 +171,7 @@ var Widget = new Class({ Implements: Events,
 				]);
 			}
 			else {
+				logError("get contacts",resp);
 				this.fireEvent('postToServiceFailed', [
 					'blogger', 
 					'Unable to connect to your blog.'
@@ -225,6 +227,7 @@ var Widget = new Class({ Implements: Events,
 				method: "post",
 				url: "/api/postFriendster_ws.php",
 				data: data,
+				onFailure: function(){logError("postFriendster","Ajax Failure");},
 				onSuccess:this.postFriendster_onSuccess.bind(this)
 			});
 			this.fireEvent('postToServiceRequested', 'friendster');
@@ -243,6 +246,7 @@ var Widget = new Class({ Implements: Events,
 			]);
 		}	
 		else {
+			logError("postFriendster",resp);
 			this.fireEvent('postToServiceFailed', [
 				'friendster', 
 				resp.errorMessage || 'Could not post to Friendster.'
@@ -294,6 +298,7 @@ var Widget = new Class({ Implements: Events,
 				method: "post",
 				url: "/api/postLiveJournal_ws.php",
 				data: data,
+				onFailure: function(){logError("postLiveJournal","Ajax Failure");},
 				onSuccess:this.postLive_journal_onSuccess.bind(this)
 			});
 			this.fireEvent('postToServiceRequested', 'livejournal');
@@ -306,6 +311,7 @@ var Widget = new Class({ Implements: Events,
 			this.fireEvent('postToServiceSucceeded', 'livejournal');
 		}
 		else {
+			logError("postLiveJournal",resp);
 			this.fireEvent('postToServiceFailed', [
 				'livejournal', 
 				"Error while trying to post to your blog."
@@ -375,6 +381,7 @@ var Widget = new Class({ Implements: Events,
 				method: "post",
 				url: "/api/postOrkut_ws.php",
 				data: data,
+				onFailure: function(){logError("postOrkut","Ajax Failure");},
 				onSuccess:this.postOrkut_onSuccess.bind(this)
 			});
 			this.fireEvent('postToServiceRequested', 'orkut');
@@ -415,6 +422,7 @@ var Widget = new Class({ Implements: Events,
 			]);
 		}
 		else {
+			logError("postOrkut",resp);
 			this.fireEvent('postToServiceFailed', [
 				'orkut', 
 				resp.statusMessage
@@ -474,6 +482,7 @@ var Widget = new Class({ Implements: Events,
 				method: "post",
 				url: "/api/postTwitter_ws.php",
 				data: data,
+				onFailure: function(){logError("postTwitter","Ajax Failure");},
 				onSuccess: this.postTwitter_onSuccess.bind(this)
 			});
 			this.fireEvent('postToServiceRequested', 'twitter');
@@ -503,6 +512,7 @@ var Widget = new Class({ Implements: Events,
 				}
 			}
 			else {
+				logError("postTwitter",resp);
 				this.fireEvent('postToServiceFailed', [
 					'twitter',
 					'Unable to connect to ShareThis server.'
@@ -564,6 +574,7 @@ var Widget = new Class({ Implements: Events,
 				method: "post",
 				url: "/api/postTypePad_ws.php",
 				data: data,
+				onFailure: function(){logError("postTypePad","Ajax Failure");},
 				onSuccess: this.postTypePad_onSuccess.bind(this)
 			});
 			this.fireEvent('postToServiceRequested', 'typepad');
@@ -591,6 +602,7 @@ var Widget = new Class({ Implements: Events,
 				]);
 			}
 			else {
+				logError("postTypePad",resp);
 				this.fireEvent('postToServiceFailed', [
 					'typepad',
 					'Unable to connect to your blog.'
@@ -648,6 +660,7 @@ var Widget = new Class({ Implements: Events,
 				method: "post",
 				url: "/api/postWordPress_ws.php",
 				data: data,
+				onFailure: function(){logError("postWordpress","Ajax Failure");},
 				onSuccess:this.postWordpress_onSuccess.bind(this)
 			});
 			this.fireEvent('postToServiceRequested', 'wordpress');
@@ -680,6 +693,7 @@ var Widget = new Class({ Implements: Events,
 					]);
 				}
 				else {
+					logError("postWordpress",resp);
 					this.fireEvent('postToServiceFailed', [
 						'wordpress',
 						'Unable to connect to your blog.'
@@ -721,6 +735,7 @@ var Widget = new Class({ Implements: Events,
 			method: "post",
 			url: "/api/importContacts_ws.php",
 			data: data,
+			onFailure: function(){logError("import contacts","Ajax Failure");},
 			onSuccess: (function(responseText, responseXML) {
 				var resp=JSON.decode(responseText);
 				if (resp.status==="SUCCESS" && resp.data) {
@@ -772,6 +787,7 @@ var Widget = new Class({ Implements: Events,
 					widget.pushModalErrorSheet('Invalid Username or password.');
 				}
 				else{
+					logError("import contacts",resp);
 					this.fireEvent('importContactsFailed');
 				}
 			}).bind(this)
@@ -832,6 +848,7 @@ var Widget = new Class({ Implements: Events,
 				'return': 'JSON',
 				sender: sender
 			},
+			onFailure: function(){logError("save to sharebox","Ajax Failure");},
 			onSuccess: (function(responseText, responseXML) {
 				var response = JSON.decode(responseText);
 				if (response.status) {
@@ -841,12 +858,14 @@ var Widget = new Class({ Implements: Events,
 						break;
 						case 'FAILURE':
 							widget.fireEvent('saveToShareBoxFailed');
+							logError("save to sharebox",response);
 						default:
 							
 						break;
 					}
 				}
 				else {
+					logError("save to sharebox",response);
 					widget.fireEvent('saveToShareBoxFailed');
 				}
 			}).bind(this)
@@ -1085,6 +1104,7 @@ if (!window.console || !console.firebug) {
 	var glo_adtag_header="";
 	var glo_adtag_footer="";
 	var glo_page="";
+	var glo_pUrl="";
 	
 	function css_browser_selector(u){var ua = u.toLowerCase(),is=function(t){return ua.indexOf(t)>-1;},g='gecko',w='webkit',s='safari',h=document.getElementsByTagName('html')[0],b=[(!(/opera|webtv/i.test(ua))&&/msie\s(\d)/.test(ua))?('ie ie'+RegExp.$1):is('firefox/2')?g+' ff2':is('firefox/3')?g+' ff3':is('gecko/')?g:/opera(\s|\/)(\d+)/.test(ua)?'opera opera'+RegExp.$2:is('konqueror')?'konqueror':is('chrome')?w+' '+s+' chrome':is('applewebkit/')?w+' '+s+(/version\/(\d+)/.test(ua)?' '+s+RegExp.$1:''):is('mozilla/')?g:'',is('j2me')?'mobile':is('iphone')?'iphone':is('ipod')?'ipod':is('mac')?'mac':is('darwin')?'mac':is('webtv')?'webtv':is('win')?'win':is('freebsd')?'freebsd':(is('x11')||is('linux'))?'linux':'','js']; c = b.join(' '); h.className += ' '+c; return c;}; 
 	var glo_browser=css_browser_selector(navigator.userAgent);
@@ -1108,6 +1128,8 @@ if (!window.console || !console.firebug) {
 		var answer="";
 		if(value===0){answer="No";}
 		if(value===1){answer="Yes";}
+		try{value=decodeURIComponent(value);}catch(err){}
+		try{value=decodeURIComponent(value);}catch(err){}
 	
 		switch(strArg) {
 			case "tabs":
@@ -1218,13 +1240,13 @@ if (!window.console || !console.firebug) {
 					glo_thumbImageTag='http://sharethis.com/share/thumb?url='+glo_url;
 					$('previewUrl').set('text', widget.extractDomainFromURL(glo_url));
 					createSharURL(glo_url);
+					getDiggs(glo_url);
+					console.log("here");
 					widget.fireEvent('shareableURLChanged', glo_url);
 				}
 				break;
 			case "title":
-				try{glo_title=value;value=decodeURIComponent(value);glo_title=value;}catch(err){}
-				glo_title=encodeURIComponent(glo_title);
-				value=encodeURIComponent(value);
+				glo_title=value;
 				if(glo_title=="" || glo_title=="undefined"){
 						glo_title=decodeURIComponent(glo_url);
 				}
@@ -1396,6 +1418,9 @@ if (!window.console || !console.firebug) {
 					widget.showPage('home');
 				}
 				break;
+			case "pUrl":
+				glo_pUrl=value;
+				//glo_url=value;
 			default: 
 				// do nothing
 				break;
@@ -1476,6 +1501,7 @@ if (!window.console || !console.firebug) {
 					method: "post",
 					url: "/api/getPublisherDomains_ws.php",
 					data: "publisher="+glo_publisher+"&return=json",
+					onFailure: function(){logError("glo_tracking","Ajax Failure");},
 					onSuccess: function(responseText,responseXML){
 						var response = JSON.decode(responseText);
 						if (response.status === "SUCCESS") {
@@ -1500,6 +1526,8 @@ if (!window.console || !console.firebug) {
 									}
 								}
 							}
+						}else{
+							logError("glo_tracking",response);
 						}
 					}
 				});
@@ -1511,6 +1539,7 @@ if (!window.console || !console.firebug) {
 				method: "post",
 				url: "/api/getPublisherDomains_ws.php",
 				data: "publisher="+glo_publisher+"&return=json",
+				onFailure: function(){logError("add Request","Ajax Failure");},
 				onSuccess: function(responseText,responseXML){
 					var response = JSON.decode(responseText);
 					if (response.status === "SUCCESS") {
@@ -1524,7 +1553,7 @@ if (!window.console || !console.firebug) {
 								setGlobals("adtag_footer", response.data.domain[i].adtag_widgetfooter);
 							}
 						}
-					}
+					}else{logError("add Request","Ajax Failure");}
 				}
 			});
 			request.send();
@@ -1684,9 +1713,9 @@ if (!window.console || !console.firebug) {
 			fragmentPump.startint();         
 			glo_jsonStr=glo_jsonArray.join('');
 			try{
+				/*glo_jsonStr=decodeURIComponent(glo_jsonStr);
 				glo_jsonStr=decodeURIComponent(glo_jsonStr);
-				glo_jsonStr=decodeURIComponent(glo_jsonStr);
-				glo_jsonStr=decodeURIComponent(glo_jsonStr);
+				glo_jsonStr=decodeURIComponent(glo_jsonStr);*/
 			}
 			catch(err){
 				//noop
@@ -1890,6 +1919,7 @@ if (!window.console || !console.firebug) {
 			method: "post",
 			url: "/api/getCache_ws.php",
 			data: "key="+glo_guid+"&return=json",
+			onFailure: function(){logError("getObjects","Ajax Failure");},
 			onSuccess:getObjects_onSuccess
 		});
 		request.send();
@@ -1919,34 +1949,35 @@ if (!window.console || !console.firebug) {
 			}
 			setValues();
 		
-		}
+		}else{logError("getObjects","Ajax Failure");}
 	}
 
 
 
 	function processFrag(){
+		
+		if(glo_browser.test("ff")==false){
 			try{glo_jsonStr=decodeURIComponent(glo_jsonStr);}catch(err){}
-			var tmp=glo_jsonStr;
-			var newResp=[];
-			try{tmp=decodeURIComponent(tmp);}catch(err){}
-			try{tmp=decodeURIComponent(tmp);}catch(err){}
-			newResp=eval(tmp);
-			for(var i=0;i<newResp.length;i++){
-				setGlobals("glo_title_array",newResp[i].title);
-				setGlobals("glo_type_array",newResp[i].type);
-				setGlobals("glo_summary_array",newResp[i].summary);
-				setGlobals("glo_content_array",newResp[i].content);
-				setGlobals("glo_url_array",newResp[i].url);
-				setGlobals("glo_icon_array",newResp[i].icon);
-				setGlobals("glo_category_array",newResp[i].category);
-				setGlobals("glo_updated_array",newResp[i].updated);
-				setGlobals("glo_published_array",newResp[i].published);
-				setGlobals("glo_author_array",newResp[i].author);
-				setGlobals("glo_thumb_array",newResp[i].icon);
-				if(newResp[i].tags){setGlobals("glo_tags_array",newResp[i].tags);}
-				if(newResp[i].description){setGlobals("glo_description_array",newResp[i].description);}
-			}
-			setValues();
+		}
+		var tmp=glo_jsonStr;
+		var newResp=[];
+		newResp=eval(tmp);
+		for(var i=0;i<newResp.length;i++){
+			setGlobals("glo_title_array",newResp[i].title);
+			setGlobals("glo_type_array",newResp[i].type);
+			setGlobals("glo_summary_array",newResp[i].summary);
+			setGlobals("glo_content_array",newResp[i].content);
+			setGlobals("glo_url_array",newResp[i].url);
+			setGlobals("glo_icon_array",newResp[i].icon);
+			setGlobals("glo_category_array",newResp[i].category);
+			setGlobals("glo_updated_array",newResp[i].updated);
+			setGlobals("glo_published_array",newResp[i].published);
+			setGlobals("glo_author_array",newResp[i].author);
+			setGlobals("glo_thumb_array",newResp[i].icon);
+			if(newResp[i].tags){setGlobals("glo_tags_array",newResp[i].tags);}
+			if(newResp[i].description){setGlobals("glo_description_array",newResp[i].description);}
+		}
+		setValues();
 	}
 
 	var Url = {
@@ -2294,6 +2325,9 @@ if (!window.console || !console.firebug) {
 		}
 		var sender=glo_userEmail;
 		var subject=decodeURIComponent(glo_title);
+		if(glo_url="" || glo_url=="undefined" || glo_url==undefined){
+			glo_url=glo_pUrl;
+		}
 		if(subject=="" || subject=="undefined"){
 			subject=decodeURIComponent(glo_url);
 		}
@@ -2315,6 +2349,7 @@ if (!window.console || !console.firebug) {
 				method: "post",
 				url: "/api/createMessage_ws.php",
 				data: data,
+				onFailure: function(){logError("createMessage","Ajax Failure");},
 				onSuccess:createMessage_onSuccess
 			});
 			request.send();			
@@ -2332,6 +2367,7 @@ if (!window.console || !console.firebug) {
 			widget.fireEvent('createMessageSucceeded');
 		}
 		else {
+			logError("createMessage",resp);
 			widget.fireEvent('createMessageFailed', resp.statusMessage);
 		}
 	}
@@ -2470,6 +2506,7 @@ if (!window.console || !console.firebug) {
 				method: "post",
 				url: "/api/createUser_ws.php",
 				data: data,
+				onFailure: function(){logError("register","Ajax Failure");},
 				onSuccess:register_OnSuccess.bind(this)
 			});
 			widget.fireEvent('registerUserRequested');
@@ -2494,6 +2531,7 @@ if (!window.console || !console.firebug) {
 			widget.fireEvent('registerUserFailed', 'E-mail address or Username is already in use.');
 		}
 		else {
+			logError("register","Ajax Failure");
 			widget.fireEvent('registerUserFailed', 'Could not complete registration.');
 		}
 	}
@@ -2505,6 +2543,7 @@ if (!window.console || !console.firebug) {
 				method: "post",
 				url: "/api/getDiggs_ws.php",
 				data: data,
+				onFailure: function(){logError("get diggs","Ajax Failure");},
 				onSuccess:getDiggs_onSuccess
 			});
 			glo_last_url=url;
@@ -2516,8 +2555,9 @@ if (!window.console || !console.firebug) {
 		var resp=JSON.decode(responseText);
 		glo_num_diggs = widget.nDiggs = resp.data.diggs;
 		glo_digg_comments = widget.nDiggComments = resp.data.comments;
-		widget.fireEvent('nDiggsAcquired', glo_num_diggs);
-		widget.fireEvent('nDiggCommentsAcquired', glo_digg_comments);
+		var diggElement=$('post_digg_link');
+		diggElement.set('title', widget.nDiggs + ' Diggs, ' + widget.nDiggComments + ' Comments');
+		diggElement.set('text', 'Digg (' + widget.nDiggs + ')');
 	}
 
     function createSharURL(url){
@@ -2527,6 +2567,7 @@ if (!window.console || !console.firebug) {
             						method: "post",
             						url: "/api/createSharURL_ws.php",
             						data: data,
+            						onFailure: function(){logError("get shareURL","Ajax Failure");},
             						onSuccess:createSharURL_onSuccess
                 					});
             request.options.async = false;
@@ -2541,6 +2582,7 @@ if (!window.console || !console.firebug) {
             var sharURL=encodeURIComponent(resp.data.sharURL);
         }
         catch(err){
+        		logError("get shareURL",responseText);
                 var sharURL=glo_url;
         }
         glo_sharURL = sharURL;
@@ -2591,6 +2633,9 @@ if (!window.console || !console.firebug) {
 		glo_type="default";
 		glo_content=Url.decode(glo_content);
 		glo_content=encodeURIComponent(glo_content);
+		if(glo_url="" || glo_url=="undefined" || glo_url==undefined){
+			glo_url=glo_pUrl;
+		}
 		if(!glo_description || glo_description==undefined || glo_description=="undefined"){glo_description="";}
 		if(!glo_tags || glo_tags==undefined){glo_tags="";}
 		var objects="";
@@ -2609,9 +2654,9 @@ if (!window.console || !console.firebug) {
 		var data="publisher="+glo_publisher+"&objects="+encodeURIComponent(objects)+"&destinations="+encodeURIComponent(destination)+"&destinationType="+glo_destinationType+"&sessionID="+glo_sessionID+"&return=json"+eml;
 		var url = "/api/createDestination_ws.php?"+data;
 
-			var logger = new Image(1,1);
-			logger.src = url;
-			logger.onload = function(){ console.dir(logger);return;};
+		var logger = new Image(1,1);
+		logger.src = url;
+		logger.onload = function(){return;};
 	
 	}
 	
@@ -2640,6 +2685,24 @@ if (!window.console || !console.firebug) {
 				}catch(err){}
 			}
 		}
+	}
+	
+	function logError(event,error){
+		var url = "http://l.sharethis.com/error?event="+event
+			+ "&publisher=" + encodeURIComponent(glo_publisher)
+			+ "&ts" + (new Date()).getTime()
+			+ "&title=" + encodeURIComponent(glo_title)
+			+ "&url=" + encodeURIComponent(glo_url)
+			+ "&pUrl="+encodeURIComponent(glo_pUrl)
+			+ "&error="+encodeURIComponent(error)
+			+ "&sessionID="+glo_sessionID
+			+ "&fpc="+glo_fpc
+			+ "&sharURL="+glo_sharURL;
+		
+		var logger = new Image(1,1);
+		logger.src = url;
+		logger.onload = function(){return;};
+	
 	}
 
 Widget.Page = new Class({ Implements: Events,
@@ -4018,19 +4081,6 @@ Widget.implement({
 			title: 'Digg',
 			submitUrl: 'http://digg.com/submit?phase=2&url={url}&title={title}',
 			destination: 'digg.com',
-			onCreate: function(element) {
-				if (widget.nDiggs) {
-					element.set('title', widget.nDiggs + ' Diggs, ' + widget.nDiggComments + ' Comments');
-					element.set('text', 'Digg (' + widget.nDiggs + ')');
-				}
-				else {
-					getDiggs(glo_url);
-					widget.addEvent('nDiggsAcquired', (function(nDiggs) {
-						element.set('title', widget.nDiggs + ' Diggs, ' + widget.nDiggComments + ' Comments');
-						element.set('text', 'Digg (' + widget.nDiggs + ')');
-					}).bind(this));
-				}
-			}
 		},
 		diigo: {
 			title: 'Diigo',
@@ -4352,11 +4402,6 @@ Widget.implement({
 		}).bind(a));
 
 		a.appendText(service.title);
-		
-		if (service.onCreate) {
-			service.onCreate(a);
-		}
-
 		return a;
 	},
 	getDummyServiceLink: function() {
@@ -5345,6 +5390,7 @@ Widget.User = new Class({ Implements: Events,
 			method: "post",
 			url: "/api/getAuth_ws.php",
 			data: "username=" + username + "&password=" + password + "&return=json",
+			onFailure: function(){logError("signin","Ajax Failure");},
 			onSuccess: (function(responseText) {
 				var response = JSON.decode(responseText);
 				if (response.status === "SUCCESS") {
@@ -5355,6 +5401,7 @@ Widget.User = new Class({ Implements: Events,
 				}
 				else if (response.statusMessage === "DATABASE_FAILED") {
 					this.fireEvent('signInFailed', 'Unable to connect to ShareThis authentication server.');
+					logError("signin","unable to connect to db");
 				}
 				else {
 					this.fireEvent('signInFailed', 'Email/Username or Password is incorrect. Please try again.');
@@ -5386,6 +5433,7 @@ Widget.User = new Class({ Implements: Events,
 				method: "post",
 				url: "/api/getUserInfo_ws.php",
 				data: "token=" + this.authToken + "&return=json",
+				onFailure: function(){logError("get user info","Ajax Failure");},
 				onSuccess: (function (responseText) {
 					var response = JSON.decode(responseText);
 					if (response.status === "SUCCESS") {
@@ -5417,6 +5465,7 @@ Widget.User = new Class({ Implements: Events,
 						this.fireEvent('infoChanged', this);
 					}
 					else {
+						logError("get user info",response);
 						setTimeout((function() {
 							this.signOut();
 						}).bind(this), 1);
@@ -5434,6 +5483,7 @@ Widget.User = new Class({ Implements: Events,
 			method: "post",
 			url: "/api/getContacts_ws.php",
 			data: "token=" + this.authToken + "&return=json",
+			onFailure: function(){logError("get contacts","Ajax Failure");},
 			onSuccess:(function(responseText,responseXML) {
 				//widget.pushProfiler('decoding response');
 				var response = JSON.decode(responseText);
@@ -5445,6 +5495,7 @@ Widget.User = new Class({ Implements: Events,
 					this.addContactsLocally(newContacts);
 					this.fireEvent('getContactsSucceeded', newContacts);
 				} else {
+					logError("get contacts",response);
 					this.fireEvent('getContactsFailed');
 				}
 			}).bind(this)
@@ -5459,6 +5510,7 @@ Widget.User = new Class({ Implements: Events,
 			method: 'post',
 			url: '/api/addContacts_ws.php',
 			data: 'token=' + this.authToken + '&contacts=' + c + '&return=json',
+			onFailure: function(){logError("add contacts","Ajax Failure");},
 			onSuccess: (function(responseText) {
 				var response = JSON.decode(responseText);
 				if (response.status == 'SUCCESS') {
@@ -5472,6 +5524,7 @@ Widget.User = new Class({ Implements: Events,
 					this.getContactsOnAccount();
 				}
 				else {
+					logError("add contacts",response);
 					this.fireEvent('addContactsToAccountFailed');
 				}
 			}).bind(this)

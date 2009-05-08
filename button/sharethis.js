@@ -1,9 +1,9 @@
 /*
-ShareThis Loader Version 3.8.0-rc1
+ShareThis Loader Version 3.8.0-rc2
 5/6/09 ShareThis.com
 */
 
-var STV="3-8-0RC1";
+var STV="3-8-0RC2";
 
 ST_JSON = new function(){
 
@@ -311,6 +311,7 @@ try{
 			options['sessionID']=this.sessionID;
 			this.fpc=_stFpc();
 			options['fpc']=this.fpc;
+			options['pUrl']=encodeURIComponent(document.location.href);
 			this.widgetCalled=false;
 			this.lastUrl='blank';
 			this.logFlag=true;
@@ -1035,7 +1036,7 @@ try{
 		}
 		
 		function SHARETHIS_tstOptions(tstStr){
-			var opt_arr=['type','title','summary','content','url','icon','category','updated','published','author','button','onmouseover','buttonText','popup','offsetLeft','offsetTop','embeds','autoclose','publisher','tabs','services','charset','headerbg','inactivebg','inactivefg','linkfg','style','send_services','post_services','headerfg','headerType','headerTitle','sessionID','tracking','fpc','ads'];
+			var opt_arr=['type','title','summary','content','url','icon','category','updated','published','author','button','onmouseover','buttonText','popup','offsetLeft','offsetTop','embeds','autoclose','publisher','tabs','services','charset','headerbg','inactivebg','inactivefg','linkfg','style','send_services','post_services','headerfg','headerType','headerTitle','sessionID','tracking','fpc','ads','pUrl'];
 			var retVal=false;
 				for(var i=0;i<opt_arr.length;i++){
 					if(tstStr===opt_arr[i]){
@@ -1159,4 +1160,3 @@ try{
 }
 catch(err){
 }
-
