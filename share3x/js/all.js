@@ -1241,7 +1241,6 @@ if (!window.console || !console.firebug) {
 					$('previewUrl').set('text', widget.extractDomainFromURL(glo_url));
 					getDiggs(glo_url);
 					createSharURL(glo_url, true);
-					widget.fireEvent('shareableURLChanged', glo_url);
 				}
 				break;
 			case "title":
@@ -3706,9 +3705,9 @@ Widget.implement({
 					id: 'post_twitter',
 					statusMessage: null,
 					onReady: function() {
-						widget.addEvent('sharURLAcquired', (function() {
+						widget.addEvent('twitterClicked', (function() {
 							this.statusMessage = decodeURIComponent(glo_title + ' - ' + getSharURL());
-							var i=0
+							var i=0;
 							while ( this.statusMessage.length > 140 ) {
 								this.statusMessage = glo_title.substr(0, glo_title.length - i++) + '... ' + getSharURL();
 							}
@@ -4246,6 +4245,7 @@ Widget.implement({
 					top: ($('post_twitter_link').getCoordinates().bottom - 6) + 'px',
 					left: ($('post_twitter_link').getCoordinates().left - 6) + 'px'
 				});
+				widget.fireEvent('twitterClicked', glo_url);
 				/*
 				 * The following if/else block has been commented out 
 				 * for now. It should be uncommented in the April/May Sprint
