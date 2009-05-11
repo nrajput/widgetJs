@@ -1,5 +1,5 @@
 /*!
- * ShareThis Widget Version 3.8.0-rc3
+ * ShareThis Widget Version 3.8.0-rc4
  * 5/11/09 ShareThis.com 
  */
 
@@ -2592,7 +2592,7 @@ if (!window.console || !console.firebug) {
     function createSharURL_onSuccess(responseText, responseXML){
         try {
         	var resp=JSON.decode(responseText);
-            var sharURL=encodeURIComponent(resp.data.sharURL);
+            var sharURL=resp.data.sharURL;
         }
         catch(err){
         		logError("get shareURL",responseText);

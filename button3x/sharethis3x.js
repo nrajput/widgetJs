@@ -1,5 +1,5 @@
 /*
-ShareThis Loader Version 3.8.0-rc3
+ShareThis Loader Version 3.8.0-rc4
 5/11/09 ShareThis.com
 */
 
