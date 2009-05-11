@@ -82,6 +82,7 @@ function setMemcacheKey(contact_url) {
 		var request = new Request({
 			method: 'post',
 			url:'/api/setCache_ws.php',
+			async: false,
 			data: 'key=' + guid
 				+ "&expire=60" + "&data=" + json_str,
 			onSuccess: (function(responseText, responseXML) {			
@@ -149,6 +150,7 @@ function doOauth(){
 		setImportCookie(unescape(contact_url));
 		setMemcacheKey(unescape(contact_url));
 		window.close();
+		return;
 	} 
 			
 	var req = new Request({
@@ -159,6 +161,7 @@ function doOauth(){
 			+ "&oauth_token_secret=" + getQueryParam('st_oauth_token_secret')
 			+ "&token_a=" + getQueryParam('token_a')
 			+ "&base_url=" + base_url
+			+ "&guid=" + guid
 			+ "&referer=share3x/import.php",
 		onFailure: function(msg) {
 			setImportFailedCookie();
