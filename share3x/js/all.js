@@ -2323,7 +2323,7 @@ if (!window.console || !console.firebug) {
 		}
 		var sender=glo_userEmail;
 		var subject=decodeURIComponent(glo_title);
-		if(glo_url="" || glo_url=="undefined" || glo_url==undefined){
+		if(glo_url=="" || glo_url=="undefined" || glo_url==undefined){
 			glo_url=glo_pUrl;
 		}
 		if(subject=="" || subject=="undefined"){
