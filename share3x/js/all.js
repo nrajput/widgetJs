@@ -152,7 +152,8 @@ var Widget = new Class({ Implements: Events,
 		}
 	},
 	postBlogger_onSuccess: function(responseText, responseXML) {
-		var resp = JSON.decode(responseText);
+		try{var resp = JSON.decode(responseText);}
+		catch(err){logError("post blogger",responseText);}
 		if (resp.status.toLowerCase() == 'success') {
 			this.fireEvent('postToServiceSucceeded', 'blogger');
 		}
@@ -235,7 +236,8 @@ var Widget = new Class({ Implements: Events,
 		}
 	},
 	postFriendster_onSuccess: function(responseText, responseXML) {
-		var resp = JSON.decode(responseText);
+		try{var resp = JSON.decode(responseText);}
+		catch(err){logError("post friendster",responseText);}
 		if(resp.status.toLowerCase()==="success"){
 			this.fireEvent('postToServiceSucceeded', 'friendster');
 		}
@@ -306,7 +308,8 @@ var Widget = new Class({ Implements: Events,
 		}
 	},
 	postLive_journal_onSuccess: function(responseText, responseXML) {
-		var resp = JSON.decode(responseText);
+		try{var resp = JSON.decode(responseText);}
+		catch(err){logError("post_live_journal",responseText);}
 		if(resp.status.toLowerCase()==="success"){
 			this.fireEvent('postToServiceSucceeded', 'livejournal');
 		}
@@ -390,7 +393,8 @@ var Widget = new Class({ Implements: Events,
 	},
 	postOrkut_onSuccess: function(responseText, responseXML) {	
 	
-		var resp = JSON.decode(responseText);
+		try{var resp = JSON.decode(responseText);}
+		catch(err){logError("postOrkut",responseText);}
 		if(resp.status.toLowerCase()==="success"){			
 			glo_Orkutcaptchaurl="";
 			glo_Orkutcookiefile="";
@@ -490,8 +494,8 @@ var Widget = new Class({ Implements: Events,
 		}
 	},	
 	postTwitter_onSuccess: function(responseText, responseXML) {
-		var resp = JSON.decode(responseText);
-		
+		try{var resp = JSON.decode(responseText);}
+		catch(err){logError("postTwitter",responseText);}
 		if (resp.status && resp.status.toLowerCase() == 'success') {
 			this.fireEvent('postToServiceSucceeded', 'twitter.com');
 		}
@@ -582,8 +586,8 @@ var Widget = new Class({ Implements: Events,
 		}
 	},	
 	postTypePad_onSuccess: function(responseText, responseXML) {
-		var resp = JSON.decode(responseText);
-		
+		try{var resp = JSON.decode(responseText);}
+		catch(err){logError("post typepad",responseText);}
 		if (resp.status.toLowerCase() == 'success') {
 			this.fireEvent('postToServiceSucceeded', 'typepad');
 		}
@@ -668,7 +672,8 @@ var Widget = new Class({ Implements: Events,
 		}
 	},
 	postWordpress_onSuccess: function(responseText, responseXML) {
-		var resp = JSON.decode(responseText);
+		try{var resp = JSON.decode(responseText);}
+		catch(err){logError("post wordpress",responseText);}
 		if(resp.status.toLowerCase()==="success"){
 			this.fireEvent('postToServiceSucceeded', 'wordpress');
 		}
@@ -737,7 +742,8 @@ var Widget = new Class({ Implements: Events,
 			data: data,
 			onFailure: function(){logError("import contacts","Ajax Failure");},
 			onSuccess: (function(responseText, responseXML) {
-				var resp=JSON.decode(responseText);
+				try{var resp = JSON.decode(responseText);}
+				catch(err){logError("import contacts",responseText);}
 				if (resp.status==="SUCCESS" && resp.data) {
 
 					// the api does not return the service on some contacts, apparently...
@@ -850,7 +856,8 @@ var Widget = new Class({ Implements: Events,
 			},
 			onFailure: function(){logError("save to sharebox","Ajax Failure");},
 			onSuccess: (function(responseText, responseXML) {
-				var response = JSON.decode(responseText);
+				try{var response = JSON.decode(responseText);}
+				catch(err){logError("save to sharebox",responseText);}
 				if (response.status) {
 					switch (response.status) {
 						case 'SUCCESS':
@@ -1501,7 +1508,8 @@ if (!window.console || !console.firebug) {
 					data: "publisher="+glo_publisher+"&return=json",
 					onFailure: function(){logError("glo_tracking","Ajax Failure");},
 					onSuccess: function(responseText,responseXML){
-						var response = JSON.decode(responseText);
+						try{var response = JSON.decode(responseText);}
+						catch(err){logError("glo_tracking",responseText);}
 						if (response.status === "SUCCESS") {
 							var domainString = document.referrer;
 							var domainPattern = new RegExp("^(http|https)://([^/]*)");
@@ -1539,7 +1547,8 @@ if (!window.console || !console.firebug) {
 				data: "publisher="+glo_publisher+"&return=json",
 				onFailure: function(){logError("add Request","Ajax Failure");},
 				onSuccess: function(responseText,responseXML){
-					var response = JSON.decode(responseText);
+					try{var response = JSON.decode(responseText);}
+					catch(err){logError("add request",responseText);}
 					if (response.status === "SUCCESS") {
 						var domainString = document.referrer;
 						var domainPattern = new RegExp("^(http|https)://([^/]*)");
@@ -1924,7 +1933,8 @@ if (!window.console || !console.firebug) {
 	}
 
 	function getObjects_onSuccess(responseText,responseXML){
-		var response = JSON.decode(responseText);
+		try{var response = JSON.decode(responseText);}
+		catch(err){logError("getObjects",responseText);}
 
 		if (response.status == "SUCCESS") {
 			var newJsonData=Url.decode(response.data);
@@ -2358,7 +2368,8 @@ if (!window.console || !console.firebug) {
 
 	function createMessage_onSuccess(responseText, responseXML) {
 		logEvent(glo_destinations,"share");	
-		var resp=JSON.decode(responseText);
+		try{var resp = JSON.decode(responseText);}
+		catch(err){logError("createMessage",responseText);}
 		if(resp.status==="SUCCESS"){
 			emptyInputs();
 			glo_msgArray=[];
@@ -2513,7 +2524,8 @@ if (!window.console || !console.firebug) {
 	}
 
 	function register_OnSuccess(responseText, responseXML){
-		var resp=JSON.decode(responseText);
+		try{var resp = JSON.decode(responseText);}
+		catch(err){logError("register",responseText);}
 		if(resp.status==="SUCCESS"){
 			widget.user.acquireAuth(resp.data.token);
 			$$('.working').addClass('hidden');
@@ -2550,7 +2562,8 @@ if (!window.console || !console.firebug) {
 	}
 
 	function getDiggs_onSuccess(responseText, responseXML){
-		var resp=JSON.decode(responseText);
+		try{var resp = JSON.decode(responseText);}
+		catch(err){logError("get diggs",responseText);}
 		glo_num_diggs = widget.nDiggs = resp.data.diggs;
 		glo_digg_comments = widget.nDiggComments = resp.data.comments;
 		var diggElement=$('post_digg_link');
@@ -5400,7 +5413,8 @@ Widget.User = new Class({ Implements: Events,
 			data: "username=" + username + "&password=" + password + "&return=json",
 			onFailure: function(){logError("signin","Ajax Failure");},
 			onSuccess: (function(responseText) {
-				var response = JSON.decode(responseText);
+				try{var response = JSON.decode(responseText);}
+				catch(err){logError("signin",responseText);}
 				if (response.status === "SUCCESS") {
 					this.acquireAuth(response.data.token)
 				} 
@@ -5443,7 +5457,8 @@ Widget.User = new Class({ Implements: Events,
 				data: "token=" + this.authToken + "&return=json",
 				onFailure: function(){logError("get user info","Ajax Failure");},
 				onSuccess: (function (responseText) {
-					var response = JSON.decode(responseText);
+					try{var response = JSON.decode(responseText);}
+					catch(err){logError("get user info",responseText);}
 					if (response.status === "SUCCESS") {
 						setGlobals("userName", response.data.name);
 						setGlobals("userEmail", response.data.email);
@@ -5494,7 +5509,8 @@ Widget.User = new Class({ Implements: Events,
 			onFailure: function(){logError("get contacts","Ajax Failure");},
 			onSuccess:(function(responseText,responseXML) {
 				//widget.pushProfiler('decoding response');
-				var response = JSON.decode(responseText);
+				try{var response = JSON.decode(responseText);}
+				catch(err){logError("get contacts",responseText);}
 				//widget.popProfiler();
 				if (response.status === "SUCCESS" && response.data) {
 					var newContacts = response.data;
@@ -5520,7 +5536,8 @@ Widget.User = new Class({ Implements: Events,
 			data: 'token=' + this.authToken + '&contacts=' + c + '&return=json',
 			onFailure: function(){logError("add contacts","Ajax Failure");},
 			onSuccess: (function(responseText) {
-				var response = JSON.decode(responseText);
+				try{var response = JSON.decode(responseText);}
+				catch(err){logError("add contacts",responseText);}
 				if (response.status == 'SUCCESS') {
 					// wipe local contacts; retrieve from api
 					var f = null;
