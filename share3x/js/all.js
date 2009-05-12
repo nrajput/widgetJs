@@ -4781,7 +4781,9 @@ Widget.Carousel = new Class({ Implements: Events,
 	createPaginator: function(){
 	//	console.log("create paginator");
 		var pages=this.getNumPages();
-		var html="<div style='clear:both'></div><div id='circle_container'>";
+		var div_size=pages*20;
+		div_size+="px";
+		var html="<div style='clear:both'></div><div id='circle_container' style='"+div_size+"' >";
 		for(var i=0;i<pages;i++){
 			var num=i+1;
 			//html+='<a href="javascript:void(0);" onclick="widget.carousel.goToPage('+num+');"  onmouseover="widget.carousel.goToPage('+num+');" title="Go To Page # '+num+'">'+num+'</a> ';
@@ -4789,6 +4791,8 @@ Widget.Carousel = new Class({ Implements: Events,
 			html+='<div class="circles" onclick="widget.carousel.goToPage('+num+');" title="Go To Page # '+num+'"></div> ';			
 		}
 		html+="</div><div style='clear:both'></div>";
+		
+	//	$('circle_container').set('style',div_size);
 		$("paginator").set('html',html);
 		this.highlightNum(this.page+1);
 		this.paginatorExists=true;
