@@ -883,14 +883,11 @@ span.active a#home_button {
 	background-position: -16px -177px;
 	background-repeat:no-repeat;
 	display:block;
-	height:11px;
-	margin:2px 0 0;
-	padding:4px 4px 4px 22px;
+	padding:3px 4px 2px 22px !important;
+	padding:2px 4px 2px 22px;
 	white-space:nowrap;
 }
- {
-	margin-top:2px;
-}
+ 
 #addressbook_goto_import {
 	float:right;
 }
