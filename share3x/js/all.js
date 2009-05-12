@@ -4093,7 +4093,7 @@ Widget.implement({
 		digg: {
 			title: 'Digg',
 			submitUrl: 'http://digg.com/submit?phase=2&url={url}&title={title}',
-			destination: 'digg.com',
+			destination: 'digg.com'
 		},
 		diigo: {
 			title: 'Diigo',
@@ -4781,14 +4781,14 @@ Widget.Carousel = new Class({ Implements: Events,
 	createPaginator: function(){
 	//	console.log("create paginator");
 		var pages=this.getNumPages();
-		var html="<div id='circle_container' style='margin:auto;'>";
+		var html="<div style='clear:both'></div><div id='circle_container'>";
 		for(var i=0;i<pages;i++){
 			var num=i+1;
 			//html+='<a href="javascript:void(0);" onclick="widget.carousel.goToPage('+num+');"  onmouseover="widget.carousel.goToPage('+num+');" title="Go To Page # '+num+'">'+num+'</a> ';
 			//html+='<a href="javascript:void(0);" onclick="widget.carousel.goToPage('+num+');"  class="circles" title="Go To Page # '+num+'">.</a> ';
 			html+='<div class="circles" onclick="widget.carousel.goToPage('+num+');" title="Go To Page # '+num+'"></div> ';			
 		}
-		html+="</div>";
+		html+="</div><div style='clear:both'></div>";
 		$("paginator").set('html',html);
 		this.highlightNum(this.page+1);
 		this.paginatorExists=true;
@@ -4805,7 +4805,8 @@ Widget.Carousel = new Class({ Implements: Events,
 	//	console.log("highlight num "+num);
 		var i=num-1;
 		if($('paginator')){
-			var a=$('paginator').getChildren()[0].getChildren();
+			//var a=$('paginator').getChildren()[0].getChildren();
+			var a=$('circle_container').getChildren();
 			a.removeClass('circles-selected');
 			a.addClass('circles');
 			a[i].addClass('circles-selected');

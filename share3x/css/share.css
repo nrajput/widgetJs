@@ -358,10 +358,15 @@ a.addressbook_button {
 	height:7px;
 	width:7px;
 	margin-left:5px;
-	margin-right:5px;	
-	text-indent:-32000px;
+	margin-right:5px;
+	margin-top:0px;
+	margin-bottom:0px;	
+	font-size:0px;
+	padding:0px;
 	float:left;
 	cursor:pointer;
+	display:inline;
+	
 }
 
 .circles-selected{
@@ -467,18 +472,19 @@ a.addressbook_button {
 	font-size:10px;
 }
 #paginator{
-	text-align:center;
 	margin-top:5px;
-	height:10px;
-	font-size:11px;
+	height:7px;
 }
 #paginator a:hover{
 	text-decoration:underline;
 	color:red;
 }
 #circle_container{
-	width:70px;
-	height:10px;
+	width:80px;
+	height:7px;
+	clear:both;
+	margin-left:auto;
+	margin-right:auto;
 }
 
 .overlay {
