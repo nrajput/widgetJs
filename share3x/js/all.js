@@ -172,7 +172,7 @@ var Widget = new Class({ Implements: Events,
 				]);
 			}
 			else {
-				logError("get contacts",resp);
+				logError("get contacts",JSON.encode(resp));
 				this.fireEvent('postToServiceFailed', [
 					'blogger', 
 					'Unable to connect to your blog.'
@@ -248,7 +248,7 @@ var Widget = new Class({ Implements: Events,
 			]);
 		}	
 		else {
-			logError("postFriendster",resp);
+			logError("postFriendster",JSON.encode(resp));
 			this.fireEvent('postToServiceFailed', [
 				'friendster', 
 				resp.errorMessage || 'Could not post to Friendster.'
@@ -314,7 +314,7 @@ var Widget = new Class({ Implements: Events,
 			this.fireEvent('postToServiceSucceeded', 'livejournal');
 		}
 		else {
-			logError("postLiveJournal",resp);
+			logError("postLiveJournal",JSON.encode(resp));
 			this.fireEvent('postToServiceFailed', [
 				'livejournal', 
 				"Error while trying to post to your blog."
@@ -426,7 +426,7 @@ var Widget = new Class({ Implements: Events,
 			]);
 		}
 		else {
-			logError("postOrkut",resp);
+			logError("postOrkut",JSON.encode(resp));
 			this.fireEvent('postToServiceFailed', [
 				'orkut', 
 				resp.statusMessage
@@ -516,7 +516,7 @@ var Widget = new Class({ Implements: Events,
 				}
 			}
 			else {
-				logError("postTwitter",resp);
+				logError("postTwitter",JSON.encode(resp));
 				this.fireEvent('postToServiceFailed', [
 					'twitter',
 					'Unable to connect to ShareThis server.'
@@ -606,7 +606,7 @@ var Widget = new Class({ Implements: Events,
 				]);
 			}
 			else {
-				logError("postTypePad",resp);
+				logError("postTypePad",JSON.encode(resp));
 				this.fireEvent('postToServiceFailed', [
 					'typepad',
 					'Unable to connect to your blog.'
@@ -698,7 +698,7 @@ var Widget = new Class({ Implements: Events,
 					]);
 				}
 				else {
-					logError("postWordpress",resp);
+					logError("postWordpress",JSON.encode(resp));
 					this.fireEvent('postToServiceFailed', [
 						'wordpress',
 						'Unable to connect to your blog.'
@@ -793,7 +793,7 @@ var Widget = new Class({ Implements: Events,
 					widget.pushModalErrorSheet('Invalid Username or password.');
 				}
 				else{
-					logError("import contacts",resp);
+					logError("import contacts",JSON.encode(resp));
 					this.fireEvent('importContactsFailed');
 				}
 			}).bind(this)
@@ -872,7 +872,7 @@ var Widget = new Class({ Implements: Events,
 					}
 				}
 				else {
-					logError("save to sharebox",response);
+					logError("save to sharebox",JSON.encode(response));
 					widget.fireEvent('saveToShareBoxFailed');
 				}
 			}).bind(this)
@@ -1533,7 +1533,7 @@ if (!window.console || !console.firebug) {
 								}
 							}
 						}else{
-							logError("glo_tracking",response);
+							logError("glo_tracking",JSON.encode(response));
 						}
 					}
 				});
@@ -2376,7 +2376,7 @@ if (!window.console || !console.firebug) {
 			widget.fireEvent('createMessageSucceeded');
 		}
 		else {
-			logError("createMessage",resp);
+			logError("createMessage",JSON.encode(resp));
 			widget.fireEvent('createMessageFailed', resp.statusMessage);
 		}
 	}
@@ -5493,7 +5493,7 @@ Widget.User = new Class({ Implements: Events,
 						this.fireEvent('infoChanged', this);
 					}
 					else {
-						logError("get user info",response);
+						logError("get user info",JSON.encode(response));
 						setTimeout((function() {
 							this.signOut();
 						}).bind(this), 1);
@@ -5524,7 +5524,7 @@ Widget.User = new Class({ Implements: Events,
 					this.addContactsLocally(newContacts);
 					this.fireEvent('getContactsSucceeded', newContacts);
 				} else {
-					logError("get contacts",response);
+					logError("get contacts",JSON.encode(response));
 					this.fireEvent('getContactsFailed');
 				}
 			}).bind(this)
@@ -5554,7 +5554,7 @@ Widget.User = new Class({ Implements: Events,
 					this.getContactsOnAccount();
 				}
 				else {
-					logError("add contacts",response);
+					logError("add contacts",JSON.encode(response));
 					this.fireEvent('addContactsToAccountFailed');
 				}
 			}).bind(this)
