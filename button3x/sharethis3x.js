@@ -540,14 +540,15 @@ try{
 						+ "&fpc=" + SHARETHIS.options.fpc;
 					var logger = new Image(1,1);
 					logger.src = loggerUrl;
-					logger.onload = function(){return;};
-					
-					var url  = "http://" + SHARETHIS.script_host + "/button/redirect.php";
-					url += "?d="  + dest;
-					url += "&pk=" + SHARETHIS.options.publisher;
-					url += "&s="  + SHARETHIS.options.sessionID;
-					url += "&p="  + encodeURIComponent(ST_JSON.encode(o.properties));
-					top.location.href = url;
+					logger.onload = function(){
+						var url  = "http://" + SHARETHIS.script_host + "/button/redirect.php";
+						url += "?d="  + dest;
+						url += "&pk=" + SHARETHIS.options.publisher;
+						url += "&s="  + SHARETHIS.options.sessionID;
+						url += "&p="  + encodeURIComponent(ST_JSON.encode(o.properties));
+						top.location.href = url;
+						return;
+					};
 				}
 		        o.popup = function(e){
 		        	if(SHARETHIS_TOOLBAR===true){
