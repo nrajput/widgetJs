@@ -519,6 +519,7 @@ try{
 					this.logFlag=false;
 				}
 				o.chicklet = function(e){
+					if (!e) var e = window.event;
 					if (e.target) {
 						o.trigger = e.target
 					}
