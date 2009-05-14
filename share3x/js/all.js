@@ -2346,7 +2346,7 @@ if (!window.console || !console.firebug) {
 		glo_content=encodeURIComponent(glo_content);
 		if(!glo_description || glo_description==undefined || glo_description=="undefined"){glo_description="";}
 		if(!glo_summary || glo_summary==undefined || glo_summary=="undefined"){glo_summary="";}
-		if(!glo_tags){glo_tags="";}
+		if(!glo_tags || glo_tags=="undefined"){glo_tags="";}
 		var objects=[];
 		objects[0]={type:glo_type, url:glo_url, sharURL:getSharURL(), title:glo_title, thumbnail:glo_thumb, embed:glo_content, description:glo_summary, tags:glo_tags };
 		objects=JSON.encode(objects);
@@ -2650,7 +2650,7 @@ if (!window.console || !console.firebug) {
 			glo_url=glo_pUrl;
 		}
 		if(!glo_description || glo_description==undefined || glo_description=="undefined"){glo_description="";}
-		if(!glo_tags || glo_tags==undefined){glo_tags="";}
+		if(!glo_tags || glo_tags=="undefined"){glo_tags="";}
 		var objects="";
 		var destination="";
 		objects=[ {type:glo_type, url:glo_url, sharURL:getSharURL(), title:decodeURIComponent(glo_title), thumbnail:glo_thumb, embed:glo_content, description:glo_description, tags:glo_tags}];
