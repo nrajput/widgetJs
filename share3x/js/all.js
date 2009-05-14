@@ -1,6 +1,6 @@
 /*!
- * ShareThis Widget Version 3.8.0-rc6
- * 5/13/09 ShareThis.com 
+ * ShareThis Widget Version 3.8.0-rc7
+ * 5/14/09 ShareThis.com 
  */
 
 //widget-class.js
@@ -2646,7 +2646,7 @@ if (!window.console || !console.firebug) {
 		glo_type="default";
 		glo_content=Url.decode(glo_content);
 		glo_content=encodeURIComponent(glo_content);
-		if(glo_url="" || glo_url=="undefined" || glo_url==undefined){
+		if(glo_url=="" || glo_url=="undefined" || glo_url==undefined){
 			glo_url=glo_pUrl;
 		}
 		if(!glo_description || glo_description==undefined || glo_description=="undefined"){glo_description="";}
