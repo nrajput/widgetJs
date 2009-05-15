@@ -1965,9 +1965,9 @@ if (!window.console || !console.firebug) {
 
 	function processFrag(){
 		
-		if(glo_browser.test("ff")==false){
-			try{glo_jsonStr=decodeURIComponent(glo_jsonStr);}catch(err){}
-		}
+		//if(glo_browser.test("ff")==false){
+		try{glo_jsonStr=decodeURIComponent(glo_jsonStr);}catch(err){}
+		//}
 		var tmp=glo_jsonStr;
 		var newResp=[];
 		newResp=eval(tmp);
