@@ -771,17 +771,29 @@ span.active a#home_button {
 	background-image:url(../images/sprite_main_1.gif);
 	background-repeat:no-repeat;
 	background-position: 0 -24px;
+	float:left;
+	display:inline;
+	width: 120px;
+	height: 45px;
 }
 
 #bullet_3 {
 	background-image:url(../images/sprite_main_1.gif);
 	background-repeat:no-repeat;
 	background-position: -120px -24px;
+	float:left;
+	display:inline;
+	width: 120px;
+	height: 45px;
 }
 #bullet_6 {
 	background-image:url(../images/sprite_main_1.gif);
 	background-repeat:no-repeat;
 	background-position: 0 -69px;
+	float:left;
+	display:inline;
+	width: 120px;
+	height: 55px;
 }
 #textAuthPassword_forgot {
 	padding:0 2px;

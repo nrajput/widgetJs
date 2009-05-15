@@ -3116,6 +3116,7 @@ Widget.implement({
 					var domain = widget.extractDomainFromURL(url);
 					$('sharebox_previewUrl').set('text', domain);
 					if (url.length) {
+    						$('sharebox_previewThumb').removeClass('hidden');
 						$('sharebox_previewThumb').set('src', glo_thumbImageTag);
 					}
 					else {
