@@ -1,9 +1,9 @@
 /*
-ShareThis Loader Version 3.8.0-rc6
-5/12/09 ShareThis.com
+ShareThis Loader Version 3.8.0-rc9
+5/14/09 ShareThis.com
 */
 
-var STV="3-8-0RC6";
+var STV="3-8-0RC9";
 
 ST_JSON = new function(){
 
@@ -519,6 +519,7 @@ try{
 					this.logFlag=false;
 				}
 				o.chicklet = function(e){
+					if (!e) var e = window.event;
 					if (e.target) {
 						o.trigger = e.target
 					}

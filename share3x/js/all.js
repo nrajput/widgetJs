@@ -1,6 +1,6 @@
 /*!
- * ShareThis Widget Version 3.8.0-rc6
- * 5/13/09 ShareThis.com 
+ * ShareThis Widget Version 3.8.0-rc9
+ * 5/14/09 ShareThis.com 
  */
 
 //widget-class.js
@@ -1417,6 +1417,7 @@ if (!window.console || !console.firebug) {
 				if (glo_page == "send" || glo_page == "post|twitter") {
 					if (glo_page == "post|twitter") {
 						createSharURL(glo_url, true);
+						widget.fireEvent('twitterClicked', getSharURL());
 					}
 					widget.showPage(glo_page);
 				} else {
@@ -1964,9 +1965,9 @@ if (!window.console || !console.firebug) {
 
 	function processFrag(){
 		
-		if(glo_browser.test("ff")==false){
-			try{glo_jsonStr=decodeURIComponent(glo_jsonStr);}catch(err){}
-		}
+		//if(glo_browser.test("ff")==false){
+		try{glo_jsonStr=decodeURIComponent(glo_jsonStr);}catch(err){}
+		//}
 		var tmp=glo_jsonStr;
 		var newResp=[];
 		newResp=eval(tmp);
@@ -2346,7 +2347,7 @@ if (!window.console || !console.firebug) {
 		glo_content=encodeURIComponent(glo_content);
 		if(!glo_description || glo_description==undefined || glo_description=="undefined"){glo_description="";}
 		if(!glo_summary || glo_summary==undefined || glo_summary=="undefined"){glo_summary="";}
-		if(!glo_tags){glo_tags="";}
+		if(!glo_tags || glo_tags=="undefined"){glo_tags="";}
 		var objects=[];
 		objects[0]={type:glo_type, url:glo_url, sharURL:getSharURL(), title:glo_title, thumbnail:glo_thumb, embed:glo_content, description:glo_summary, tags:glo_tags };
 		objects=JSON.encode(objects);
@@ -2646,11 +2647,11 @@ if (!window.console || !console.firebug) {
 		glo_type="default";
 		glo_content=Url.decode(glo_content);
 		glo_content=encodeURIComponent(glo_content);
-		if(glo_url="" || glo_url=="undefined" || glo_url==undefined){
+		if(glo_url=="" || glo_url=="undefined" || glo_url==undefined){
 			glo_url=glo_pUrl;
 		}
 		if(!glo_description || glo_description==undefined || glo_description=="undefined"){glo_description="";}
-		if(!glo_tags || glo_tags==undefined){glo_tags="";}
+		if(!glo_tags || glo_tags=="undefined"){glo_tags="";}
 		var objects="";
 		var destination="";
 		objects=[ {type:glo_type, url:glo_url, sharURL:getSharURL(), title:decodeURIComponent(glo_title), thumbnail:glo_thumb, embed:glo_content, description:glo_description, tags:glo_tags}];
