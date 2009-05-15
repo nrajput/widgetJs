@@ -1417,6 +1417,7 @@ if (!window.console || !console.firebug) {
 				if (glo_page == "send" || glo_page == "post|twitter") {
 					if (glo_page == "post|twitter") {
 						createSharURL(glo_url, true);
+						widget.fireEvent('twitterClicked', getSharURL());
 					}
 					widget.showPage(glo_page);
 				} else {
