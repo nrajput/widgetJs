@@ -2574,12 +2574,12 @@ if (!window.console || !console.firebug) {
 
     function createSharURL(url, sync){
     	if(url!=="" && url!==" " && url!==glo_last_url2 && url!==undefined && url!=="undefined"){
-    		var data="url="+url;
+    		var data="url="+encodeURIComponent(url);
             var request=new Request({
             						method: "post",
             						url: "/api/createSharURL_ws.php",
             						data: data,
-            						onFailure: function(){logError("get shareURL","Ajax Failure");},
+            						onFailure: function(){logError("createSharURL","Ajax Failure");},
             						onSuccess:createSharURL_onSuccess
                 					});
             if (sync) {
@@ -2596,7 +2596,7 @@ if (!window.console || !console.firebug) {
             var sharURL=resp.data.sharURL;
         }
         catch(err){
-        		logError("get shareURL",responseText);
+        		logError("createSharURL",responseText);
                 var sharURL=glo_url;
         }
         glo_sharURL = sharURL;
