@@ -4785,7 +4785,7 @@ Widget.Carousel = new Class({ Implements: Events,
 		var pages=this.getNumPages();
 		var div_size=pages*20;
 		div_size+="px";
-		var html="<div style='clear:both'></div><div id='circle_container' style='"+div_size+"' >";
+		var html="<div style='clear:both'></div><div id='circle_container' style='width:"+div_size+"' >";
 		for(var i=0;i<pages;i++){
 			var num=i+1;
 			//html+='<a href="javascript:void(0);" onclick="widget.carousel.goToPage('+num+');"  onmouseover="widget.carousel.goToPage('+num+');" title="Go To Page # '+num+'">'+num+'</a> ';
