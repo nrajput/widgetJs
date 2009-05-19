@@ -566,11 +566,11 @@ try{
 		        	} else {
 		        		if( (SHARETHIS.ready===true && SHARETHIS.frameReady===true) || (SHARETHIS.popupExists===true && SHARETHIS.ready==true && SHARETHIS.widgetExists===false) || (SHARETHIS.popupExists===true && SHARETHIS.ready==true && SHARETHIS.frameReady===true) ){
 							clearInterval(stVisibleInterval);
-							if (e || event) {
-								if (e) {
+							if (typeof(e) != "undefined" || typeof(event) != "undefined") {
+								if (typeof(e) != "undefined") {
 									o.trigger = e.target
 								}
-								else if (event) {
+								else if (typeof(event) != "undefined") {
 									o.trigger = event.srcElement;
 								}
 								if (o.trigger !== null) {
