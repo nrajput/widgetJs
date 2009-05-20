@@ -4095,7 +4095,8 @@ Widget.implement({
 		digg: {
 			title: 'Digg',
 			submitUrl: 'http://digg.com/submit?phase=2&url={url}&title={title}',
-			destination: 'digg.com'
+			destination: 'digg.com',
+			dontUseSharURL: 'Shar URLs are not allowed'
 		},
 		diigo: {
 			title: 'Diigo',
