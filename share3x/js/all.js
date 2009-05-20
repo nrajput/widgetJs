@@ -2574,7 +2574,7 @@ if (!window.console || !console.firebug) {
 
     function createSharURL(url, sync){
     	if(url!=="" && url!==" " && url!==glo_last_url2 && url!==undefined && url!=="undefined"){
-    		var data="url="+encodeURIComponent(url);
+    		var data="url="+encodeURIComponent(url)+"&sessionID="+glo_sessionID+"&fpc="+glo_fpc
             var request=new Request({
             						method: "post",
             						url: "/api/createSharURL_ws.php",
