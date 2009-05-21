@@ -4090,7 +4090,8 @@ Widget.implement({
 		delicious: {
 			title: 'Delicious',
 			submitUrl: 'http://del.icio.us/post?url={url}&title={title}',
-			destination: 'del.icio.us'
+			destination: 'del.icio.us',
+			dontUseSharURL: 'Shar URLs are not allowed'			
 		},
 		digg: {
 			title: 'Digg',
