@@ -1,6 +1,6 @@
 /*!
- * ShareThis Widget Version 3.5.0-rc1
- * 4/24/09 ShareThis.com 
+ * ShareThis Widget Version 3.8.3-rc1
+ * 5/20/09 ShareThis.com 
  */
 
 //widget-class.js
@@ -128,7 +128,7 @@ var Widget = new Class({ Implements: Events,
 				var blogid = $('bloggerSelect').get('value');
 			}
 			var data = "";
-			var atag = "<a href="+glo_url+">"+decodeURIComponent(glo_title)+"</a>";
+			var atag = "<a href="+getSharURL()+">"+decodeURIComponent(glo_title)+"</a>";
 		
 			if(glo_content!==""){
 				atag="";
@@ -144,6 +144,7 @@ var Widget = new Class({ Implements: Events,
 				method: "post",
 				url: "/api/postBlogger_ws.php",
 				data: data,
+				onFailure: function(){logError("postblogger","Ajax Failure");},
 				onSuccess:this.postBlogger_onSuccess.bind(this)
 			});
 			this.fireEvent('postToServiceRequested', 'blogger');
@@ -151,7 +152,8 @@ var Widget = new Class({ Implements: Events,
 		}
 	},
 	postBlogger_onSuccess: function(responseText, responseXML) {
-		var resp = JSON.decode(responseText);
+		try{var resp = JSON.decode(responseText);}
+		catch(err){logError("post blogger",responseText);}
 		if (resp.status.toLowerCase() == 'success') {
 			this.fireEvent('postToServiceSucceeded', 'blogger');
 		}
@@ -170,6 +172,7 @@ var Widget = new Class({ Implements: Events,
 				]);
 			}
 			else {
+				logError("get contacts",JSON.encode(resp));
 				this.fireEvent('postToServiceFailed', [
 					'blogger', 
 					'Unable to connect to your blog.'
@@ -213,7 +216,7 @@ var Widget = new Class({ Implements: Events,
 		}
 		else {
 			//"+atag+"
-			var atag="<a href="+glo_url+">"+decodeURIComponent(glo_title)+"</a>";
+			var atag="<a href="+getSharURL()+">"+decodeURIComponent(glo_title)+"</a>";
 			atag=encodeURIComponent(atag);
 			if(glo_content!==""){
 				atag="";
@@ -225,6 +228,7 @@ var Widget = new Class({ Implements: Events,
 				method: "post",
 				url: "/api/postFriendster_ws.php",
 				data: data,
+				onFailure: function(){logError("postFriendster","Ajax Failure");},
 				onSuccess:this.postFriendster_onSuccess.bind(this)
 			});
 			this.fireEvent('postToServiceRequested', 'friendster');
@@ -232,7 +236,8 @@ var Widget = new Class({ Implements: Events,
 		}
 	},
 	postFriendster_onSuccess: function(responseText, responseXML) {
-		var resp = JSON.decode(responseText);
+		try{var resp = JSON.decode(responseText);}
+		catch(err){logError("post friendster",responseText);}
 		if(resp.status.toLowerCase()==="success"){
 			this.fireEvent('postToServiceSucceeded', 'friendster');
 		}
@@ -243,6 +248,7 @@ var Widget = new Class({ Implements: Events,
 			]);
 		}	
 		else {
+			logError("postFriendster",JSON.encode(resp));
 			this.fireEvent('postToServiceFailed', [
 				'friendster', 
 				resp.errorMessage || 'Could not post to Friendster.'
@@ -279,7 +285,7 @@ var Widget = new Class({ Implements: Events,
 			err_set=true;	
 			err+="Please enter a password.\n";	
 		}
-			var atag="<a href="+glo_url+">"+decodeURIComponent(glo_title)+"</a>";
+			var atag="<a href="+getSharURL()+">"+decodeURIComponent(glo_title)+"</a>";
 			if(glo_content!==""){
 				atag="";
 			}
@@ -294,6 +300,7 @@ var Widget = new Class({ Implements: Events,
 				method: "post",
 				url: "/api/postLiveJournal_ws.php",
 				data: data,
+				onFailure: function(){logError("postLiveJournal","Ajax Failure");},
 				onSuccess:this.postLive_journal_onSuccess.bind(this)
 			});
 			this.fireEvent('postToServiceRequested', 'livejournal');
@@ -301,11 +308,13 @@ var Widget = new Class({ Implements: Events,
 		}
 	},
 	postLive_journal_onSuccess: function(responseText, responseXML) {
-		var resp = JSON.decode(responseText);
+		try{var resp = JSON.decode(responseText);}
+		catch(err){logError("post_live_journal",responseText);}
 		if(resp.status.toLowerCase()==="success"){
 			this.fireEvent('postToServiceSucceeded', 'livejournal');
 		}
 		else {
+			logError("postLiveJournal",JSON.encode(resp));
 			this.fireEvent('postToServiceFailed', [
 				'livejournal', 
 				"Error while trying to post to your blog."
@@ -336,7 +345,7 @@ var Widget = new Class({ Implements: Events,
 		var err_set=false;
 		var captcha="";
 
-		var atag="<a href="+glo_url+">"+decodeURIComponent(glo_title)+"</a>";
+		var atag="<a href="+getSharURL()+">"+decodeURIComponent(glo_title)+"</a>";
 		if(glo_content!==""){
 			atag="";
 		}
@@ -375,6 +384,7 @@ var Widget = new Class({ Implements: Events,
 				method: "post",
 				url: "/api/postOrkut_ws.php",
 				data: data,
+				onFailure: function(){logError("postOrkut","Ajax Failure");},
 				onSuccess:this.postOrkut_onSuccess.bind(this)
 			});
 			this.fireEvent('postToServiceRequested', 'orkut');
@@ -383,7 +393,8 @@ var Widget = new Class({ Implements: Events,
 	},
 	postOrkut_onSuccess: function(responseText, responseXML) {	
 	
-		var resp = JSON.decode(responseText);
+		try{var resp = JSON.decode(responseText);}
+		catch(err){logError("postOrkut",responseText);}
 		if(resp.status.toLowerCase()==="success"){			
 			glo_Orkutcaptchaurl="";
 			glo_Orkutcookiefile="";
@@ -415,6 +426,7 @@ var Widget = new Class({ Implements: Events,
 			]);
 		}
 		else {
+			logError("postOrkut",JSON.encode(resp));
 			this.fireEvent('postToServiceFailed', [
 				'orkut', 
 				resp.statusMessage
@@ -474,6 +486,7 @@ var Widget = new Class({ Implements: Events,
 				method: "post",
 				url: "/api/postTwitter_ws.php",
 				data: data,
+				onFailure: function(){logError("postTwitter","Ajax Failure");},
 				onSuccess: this.postTwitter_onSuccess.bind(this)
 			});
 			this.fireEvent('postToServiceRequested', 'twitter');
@@ -481,8 +494,8 @@ var Widget = new Class({ Implements: Events,
 		}
 	},	
 	postTwitter_onSuccess: function(responseText, responseXML) {
-		var resp = JSON.decode(responseText);
-		
+		try{var resp = JSON.decode(responseText);}
+		catch(err){logError("postTwitter",responseText);}
 		if (resp.status && resp.status.toLowerCase() == 'success') {
 			this.fireEvent('postToServiceSucceeded', 'twitter.com');
 		}
@@ -503,6 +516,7 @@ var Widget = new Class({ Implements: Events,
 				}
 			}
 			else {
+				logError("postTwitter",JSON.encode(resp));
 				this.fireEvent('postToServiceFailed', [
 					'twitter',
 					'Unable to connect to ShareThis server.'
@@ -547,7 +561,7 @@ var Widget = new Class({ Implements: Events,
 			}
 			var data="";
 		
-			var atag="<a href="+glo_url+">"+decodeURIComponent(glo_title)+"</a>";
+			var atag="<a href="+getSharURL()+">"+decodeURIComponent(glo_title)+"</a>";
 			if(glo_content!==""){
 				atag="";
 			}
@@ -564,6 +578,7 @@ var Widget = new Class({ Implements: Events,
 				method: "post",
 				url: "/api/postTypePad_ws.php",
 				data: data,
+				onFailure: function(){logError("postTypePad","Ajax Failure");},
 				onSuccess: this.postTypePad_onSuccess.bind(this)
 			});
 			this.fireEvent('postToServiceRequested', 'typepad');
@@ -571,8 +586,8 @@ var Widget = new Class({ Implements: Events,
 		}
 	},	
 	postTypePad_onSuccess: function(responseText, responseXML) {
-		var resp = JSON.decode(responseText);
-		
+		try{var resp = JSON.decode(responseText);}
+		catch(err){logError("post typepad",responseText);}
 		if (resp.status.toLowerCase() == 'success') {
 			this.fireEvent('postToServiceSucceeded', 'typepad');
 		}
@@ -591,6 +606,7 @@ var Widget = new Class({ Implements: Events,
 				]);
 			}
 			else {
+				logError("postTypePad",JSON.encode(resp));
 				this.fireEvent('postToServiceFailed', [
 					'typepad',
 					'Unable to connect to your blog.'
@@ -632,7 +648,7 @@ var Widget = new Class({ Implements: Events,
 			err_set=true;	
 			err+="Please enter a url.\n";	
 		}
-		var atag="<a href="+glo_url+">"+decodeURIComponent(glo_title)+"</a>";
+		var atag="<a href="+getSharURL()+">"+decodeURIComponent(glo_title)+"</a>";
 		if(glo_content!==""){
 			atag="";
 		}
@@ -648,6 +664,7 @@ var Widget = new Class({ Implements: Events,
 				method: "post",
 				url: "/api/postWordPress_ws.php",
 				data: data,
+				onFailure: function(){logError("postWordpress","Ajax Failure");},
 				onSuccess:this.postWordpress_onSuccess.bind(this)
 			});
 			this.fireEvent('postToServiceRequested', 'wordpress');
@@ -655,7 +672,8 @@ var Widget = new Class({ Implements: Events,
 		}
 	},
 	postWordpress_onSuccess: function(responseText, responseXML) {
-		var resp = JSON.decode(responseText);
+		try{var resp = JSON.decode(responseText);}
+		catch(err){logError("post wordpress",responseText);}
 		if(resp.status.toLowerCase()==="success"){
 			this.fireEvent('postToServiceSucceeded', 'wordpress');
 		}
@@ -680,6 +698,7 @@ var Widget = new Class({ Implements: Events,
 					]);
 				}
 				else {
+					logError("postWordpress",JSON.encode(resp));
 					this.fireEvent('postToServiceFailed', [
 						'wordpress',
 						'Unable to connect to your blog.'
@@ -721,8 +740,10 @@ var Widget = new Class({ Implements: Events,
 			method: "post",
 			url: "/api/importContacts_ws.php",
 			data: data,
+			onFailure: function(){logError("import contacts","Ajax Failure");},
 			onSuccess: (function(responseText, responseXML) {
-				var resp=JSON.decode(responseText);
+				try{var resp = JSON.decode(responseText);}
+				catch(err){logError("import contacts",responseText);}
 				if (resp.status==="SUCCESS" && resp.data) {
 
 					// the api does not return the service on some contacts, apparently...
@@ -772,6 +793,7 @@ var Widget = new Class({ Implements: Events,
 					widget.pushModalErrorSheet('Invalid Username or password.');
 				}
 				else{
+					logError("import contacts",JSON.encode(resp));
 					this.fireEvent('importContactsFailed');
 				}
 			}).bind(this)
@@ -811,7 +833,7 @@ var Widget = new Class({ Implements: Events,
 		if (!objects || !objects.length || objects.length == 0) {
 			objects = [{
 				'type': 'default',
-				url: glo_url,
+				url: getSharURL(),
 				title: decodeURIComponent(glo_title),
 				thumbnail: glo_thumb,
 				embed: encodeURIComponent(Url.decode(glo_content)),
@@ -832,8 +854,10 @@ var Widget = new Class({ Implements: Events,
 				'return': 'JSON',
 				sender: sender
 			},
+			onFailure: function(){logError("save to sharebox","Ajax Failure");},
 			onSuccess: (function(responseText, responseXML) {
-				var response = JSON.decode(responseText);
+				try{var response = JSON.decode(responseText);}
+				catch(err){logError("save to sharebox",responseText);}
 				if (response.status) {
 					switch (response.status) {
 						case 'SUCCESS':
@@ -841,12 +865,14 @@ var Widget = new Class({ Implements: Events,
 						break;
 						case 'FAILURE':
 							widget.fireEvent('saveToShareBoxFailed');
+							logError("save to sharebox",response);
 						default:
 							
 						break;
 					}
 				}
 				else {
+					logError("save to sharebox",JSON.encode(response));
 					widget.fireEvent('saveToShareBoxFailed');
 				}
 			}).bind(this)
@@ -976,7 +1002,7 @@ if (!window.console || !console.firebug) {
 	glo_tabArray=glo_tabs.split(",");
 	var glo_charset='utf-8';
 	var glo_services="";
-	var glo_default_services='facebook,myspace,digg,delicious,ybuzz,twitter,stumbleupon,reddit,technorati,mixx,blogger,wordpress,typepad,google_bmarks,windows_live,fark,bus_exchange,propeller,newsvine,linkedin,friendfeed,blinklist,furl,blogmarks,yahoo_bmarks,slashdot,n4g,mister_wong,faves,current,simpy,meneame,yigg,oknotizie,fresqui,diigo,care2,funp,kirtsy,xanga,sphinn,dealsplus,orkut,friendster,livejournal';
+	var glo_default_services='facebook,myspace,digg,reddit,windows_live,twitter,google_bmarks,delicious,stumbleupon,yahoo_bmarks,linkedin,ybuzz,technorati,mixx,blogger,friendfeed,blinklist,furl,xanga,newsvine,propeller,wordpress,diigo,typepad,bus_exchange,fark,mister_wong,current,kirtsy,blogmarks,oknotizie,faves,livejournal,slashdot,care2,n4g,meneame,sphinn,simpy,orkut,friendster,dealsplus,fresqui,yigg,funp';
 	var glo_default_swArray=[];
 		glo_default_swArray = glo_default_services.split(',');
 	var glo_style='default';
@@ -1077,9 +1103,15 @@ if (!window.console || !console.firebug) {
 	var glo_googleProfileId="";
 	var googlePubTracker="";
 	var glo_omnitureURL="";
+	var glo_sharURL="";
 	var import_cookie="";
 	var import_cookie_tid;
 	var import_cookie_cycles = 0;
+	var glo_ads=false;
+	var glo_adtag_header="";
+	var glo_adtag_footer="";
+	var glo_page="";
+	var glo_pUrl="";
 	
 	function css_browser_selector(u){var ua = u.toLowerCase(),is=function(t){return ua.indexOf(t)>-1;},g='gecko',w='webkit',s='safari',h=document.getElementsByTagName('html')[0],b=[(!(/opera|webtv/i.test(ua))&&/msie\s(\d)/.test(ua))?('ie ie'+RegExp.$1):is('firefox/2')?g+' ff2':is('firefox/3')?g+' ff3':is('gecko/')?g:/opera(\s|\/)(\d+)/.test(ua)?'opera opera'+RegExp.$2:is('konqueror')?'konqueror':is('chrome')?w+' '+s+' chrome':is('applewebkit/')?w+' '+s+(/version\/(\d+)/.test(ua)?' '+s+RegExp.$1:''):is('mozilla/')?g:'',is('j2me')?'mobile':is('iphone')?'iphone':is('ipod')?'ipod':is('mac')?'mac':is('darwin')?'mac':is('webtv')?'webtv':is('win')?'win':is('freebsd')?'freebsd':(is('x11')||is('linux'))?'linux':'','js']; c = b.join(' '); h.className += ' '+c; return c;}; 
 	var glo_browser=css_browser_selector(navigator.userAgent);
@@ -1103,6 +1135,8 @@ if (!window.console || !console.firebug) {
 		var answer="";
 		if(value===0){answer="No";}
 		if(value===1){answer="Yes";}
+		try{value=decodeURIComponent(value);}catch(err){}
+		try{value=decodeURIComponent(value);}catch(err){}
 	
 		switch(strArg) {
 			case "tabs":
@@ -1212,13 +1246,12 @@ if (!window.console || !console.firebug) {
 					}
 					glo_thumbImageTag='http://sharethis.com/share/thumb?url='+glo_url;
 					$('previewUrl').set('text', widget.extractDomainFromURL(glo_url));
-					widget.fireEvent('shareableURLChanged', glo_url);
+					getDiggs(glo_url);
+					createSharURL(glo_url, true);
 				}
 				break;
 			case "title":
-				try{glo_title=value;value=decodeURIComponent(value);glo_title=value;}catch(err){}
-				glo_title=encodeURIComponent(glo_title);
-				value=encodeURIComponent(value);
+				glo_title=value;
 				if(glo_title=="" || glo_title=="undefined"){
 						glo_title=decodeURIComponent(glo_url);
 				}
@@ -1365,7 +1398,35 @@ if (!window.console || !console.firebug) {
 				break;
 			case "omnitureURL":
 				glo_omnitureURL=value;
-				break;			
+				break;
+			case "ads":
+				if (value == "true") {
+					glo_ads = true;
+				} else {
+					glo_ads = false;
+				}
+				break;
+			case "adtag_header":
+				glo_adtag_header=value;
+				break;
+			case "adtag_footer":
+				glo_adtag_footer=value;
+				break;
+			case "page":
+				glo_page=value;
+				if (glo_page == "send" || glo_page == "post|twitter") {
+					if (glo_page == "post|twitter") {
+						createSharURL(glo_url, true);
+						widget.fireEvent('twitterClicked', getSharURL());
+					}
+					widget.showPage(glo_page);
+				} else {
+					widget.showPage('home');
+				}
+				break;
+			case "pUrl":
+				glo_pUrl=value;
+				//glo_url=value;
 			default: 
 				// do nothing
 				break;
@@ -1446,8 +1507,10 @@ if (!window.console || !console.firebug) {
 					method: "post",
 					url: "/api/getPublisherDomains_ws.php",
 					data: "publisher="+glo_publisher+"&return=json",
+					onFailure: function(){logError("glo_tracking","Ajax Failure");},
 					onSuccess: function(responseText,responseXML){
-						var response = JSON.decode(responseText);
+						try{var response = JSON.decode(responseText);}
+						catch(err){logError("glo_tracking",responseText);}
 						if (response.status === "SUCCESS") {
 							var domainString = document.referrer;
 							var domainPattern = new RegExp("^(http|https)://([^/]*)");
@@ -1470,11 +1533,38 @@ if (!window.console || !console.firebug) {
 									}
 								}
 							}
+						}else{
+							logError("glo_tracking",JSON.encode(response));
 						}
 					}
 				});
 				request.send();
 				break;
+		}
+		if (glo_ads==true) {
+			var request=new Request({
+				method: "post",
+				url: "/api/getPublisherDomains_ws.php",
+				data: "publisher="+glo_publisher+"&return=json",
+				onFailure: function(){logError("add Request","Ajax Failure");},
+				onSuccess: function(responseText,responseXML){
+					try{var response = JSON.decode(responseText);}
+					catch(err){logError("add request",responseText);}
+					if (response.status === "SUCCESS") {
+						var domainString = document.referrer;
+						var domainPattern = new RegExp("^(http|https)://([^/]*)");
+						var domainParsed = domainString.match(domainPattern);
+						var domain = domainParsed[2];
+						for (var i = 0; i < response.data.domain.length; i++) {
+							if (domain == response.data.domain[i].name) {
+								setGlobals("adtag_header", response.data.domain[i].adtag_widgetheader);
+								setGlobals("adtag_footer", response.data.domain[i].adtag_widgetfooter);
+							}
+						}
+					}else{logError("add Request","Ajax Failure");}
+				}
+			});
+			request.send();
 		}
 	}
 	function send_servicesChanged(services) {
@@ -1631,9 +1721,9 @@ if (!window.console || !console.firebug) {
 			fragmentPump.startint();         
 			glo_jsonStr=glo_jsonArray.join('');
 			try{
+				/*glo_jsonStr=decodeURIComponent(glo_jsonStr);
 				glo_jsonStr=decodeURIComponent(glo_jsonStr);
-				glo_jsonStr=decodeURIComponent(glo_jsonStr);
-				glo_jsonStr=decodeURIComponent(glo_jsonStr);
+				glo_jsonStr=decodeURIComponent(glo_jsonStr);*/
 			}
 			catch(err){
 				//noop
@@ -1682,7 +1772,16 @@ if (!window.console || !console.firebug) {
 
 	//creates a social web log event
 	function logSW(network) {
+		var source = "";
+		if (glo_toolbar != false) {
+			source = "toolbar";
+		} else if (glo_page != "home" && glo_page != "") {
+			source = "chicklet";
+		} else {
+			source = "button";
+		}
 		var url2 = "http://l.sharethis.com/log?event=click"
+				+ "&source=" + source
 				+ "&publisher=" + encodeURIComponent(glo_publisher)
 				+ "&hostname=" + encodeURIComponent(glo_hostname)
 				+ "&location=" + encodeURIComponent(glo_location)
@@ -1691,7 +1790,9 @@ if (!window.console || !console.firebug) {
 				+ "&title=" + glo_title
 				+ "&url=" + glo_url
 				+ "&sessionID="+glo_sessionID
-				+ "&fpc="+glo_fpc;
+				+ "&fpc="+glo_fpc
+				+ "&sharURL="+glo_sharURL;
+		
 		var logger2 = new Image(1,1);
 		logger2.src = url2;
 		logger2.onload = function(){return;};
@@ -1716,7 +1817,16 @@ if (!window.console || !console.firebug) {
 	}
 
 	function logEvent(destination1,eventType) {
+		var source = "";
+		if (glo_toolbar != false) {
+			source = "toolbar";
+		} else if (glo_page != "home" && glo_page != "") {
+			source = "chicklet";
+		} else {
+			source = "button";
+		}
 		var url2 = "http://l.sharethis.com/log?event="+eventType;
+			url2+= "&source=" + source
 			url2+= "&publisher="+ encodeURIComponent(glo_publisher);
 			url2+= "&hostname="+ encodeURIComponent(glo_hostname);
 			url2+= "&location="+ encodeURIComponent(glo_location);
@@ -1726,6 +1836,8 @@ if (!window.console || !console.firebug) {
 			url2+= "&url="+encodeURIComponent(glo_url);
 			url2+= "&sessionID="+glo_sessionID;
 			url2+= "&fpc="+glo_fpc;
+			url2+= "&sharUrl="+encodeURIComponent(glo_sharURL);
+			
 		var logger2 = new Image(1,1);
 		logger2.src = url2;
 		logger2.onload = function(){return;};
@@ -1815,13 +1927,15 @@ if (!window.console || !console.firebug) {
 			method: "post",
 			url: "/api/getCache_ws.php",
 			data: "key="+glo_guid+"&return=json",
+			onFailure: function(){logError("getObjects","Ajax Failure");},
 			onSuccess:getObjects_onSuccess
 		});
 		request.send();
 	}
 
 	function getObjects_onSuccess(responseText,responseXML){
-		var response = JSON.decode(responseText);
+		try{var response = JSON.decode(responseText);}
+		catch(err){logError("getObjects",responseText);}
 
 		if (response.status == "SUCCESS") {
 			var newJsonData=Url.decode(response.data);
@@ -1844,34 +1958,35 @@ if (!window.console || !console.firebug) {
 			}
 			setValues();
 		
-		}
+		}else{logError("getObjects","Ajax Failure");}
 	}
 
 
 
 	function processFrag(){
-			try{glo_jsonStr=decodeURIComponent(glo_jsonStr);}catch(err){}
-			var tmp=glo_jsonStr;
-			var newResp=[];
-			try{tmp=decodeURIComponent(tmp);}catch(err){}
-			try{tmp=decodeURIComponent(tmp);}catch(err){}
-			newResp=eval(tmp);
-			for(var i=0;i<newResp.length;i++){
-				setGlobals("glo_title_array",newResp[i].title);
-				setGlobals("glo_type_array",newResp[i].type);
-				setGlobals("glo_summary_array",newResp[i].summary);
-				setGlobals("glo_content_array",newResp[i].content);
-				setGlobals("glo_url_array",newResp[i].url);
-				setGlobals("glo_icon_array",newResp[i].icon);
-				setGlobals("glo_category_array",newResp[i].category);
-				setGlobals("glo_updated_array",newResp[i].updated);
-				setGlobals("glo_published_array",newResp[i].published);
-				setGlobals("glo_author_array",newResp[i].author);
-				setGlobals("glo_thumb_array",newResp[i].icon);
-				if(newResp[i].tags){setGlobals("glo_tags_array",newResp[i].tags);}
-				if(newResp[i].description){setGlobals("glo_description_array",newResp[i].description);}
-			}
-			setValues();
+		
+		//if(glo_browser.test("ff")==false){
+		try{glo_jsonStr=decodeURIComponent(glo_jsonStr);}catch(err){}
+		//}
+		var tmp=glo_jsonStr;
+		var newResp=[];
+		newResp=eval(tmp);
+		for(var i=0;i<newResp.length;i++){
+			setGlobals("glo_title_array",newResp[i].title);
+			setGlobals("glo_type_array",newResp[i].type);
+			setGlobals("glo_summary_array",newResp[i].summary);
+			setGlobals("glo_content_array",newResp[i].content);
+			setGlobals("glo_url_array",newResp[i].url);
+			setGlobals("glo_icon_array",newResp[i].icon);
+			setGlobals("glo_category_array",newResp[i].category);
+			setGlobals("glo_updated_array",newResp[i].updated);
+			setGlobals("glo_published_array",newResp[i].published);
+			setGlobals("glo_author_array",newResp[i].author);
+			setGlobals("glo_thumb_array",newResp[i].icon);
+			if(newResp[i].tags){setGlobals("glo_tags_array",newResp[i].tags);}
+			if(newResp[i].description){setGlobals("glo_description_array",newResp[i].description);}
+		}
+		setValues();
 	}
 
 	var Url = {
@@ -1945,6 +2060,18 @@ if (!window.console || !console.firebug) {
 			setGlobals("glo_description",glo_description_array[glo_guid_index]);
 			createSwList();
 			widget.fireEvent('shareableValuesUpdated');
+			if (glo_ads == true) {
+				var adtag_timestamp = (new Date()).getTime();
+				if (glo_adtag_header != "") {
+					$("header_title").addClass("hidden");
+					$("header_ad").set("html", glo_adtag_header.replace(/\[timestamp\]/g, adtag_timestamp));
+					$("header_ad").removeClass("hidden");
+				}
+				if (glo_adtag_footer != "") {
+					$("footer_ad_body").set("html", glo_adtag_footer.replace(/\[timestamp\]/g, adtag_timestamp));
+					$("footer_ad").removeClass("hidden");
+				}
+			}
 		}
 	}
 
@@ -2207,6 +2334,9 @@ if (!window.console || !console.firebug) {
 		}
 		var sender=glo_userEmail;
 		var subject=decodeURIComponent(glo_title);
+		if(glo_url=="" || glo_url=="undefined" || glo_url==undefined){
+			glo_url=glo_pUrl;
+		}
 		if(subject=="" || subject=="undefined"){
 			subject=decodeURIComponent(glo_url);
 		}
@@ -2217,9 +2347,9 @@ if (!window.console || !console.firebug) {
 		glo_content=encodeURIComponent(glo_content);
 		if(!glo_description || glo_description==undefined || glo_description=="undefined"){glo_description="";}
 		if(!glo_summary || glo_summary==undefined || glo_summary=="undefined"){glo_summary="";}
-		if(!glo_tags){glo_tags="";}
+		if(!glo_tags || glo_tags=="undefined"){glo_tags="";}
 		var objects=[];
-		objects[0]={type:glo_type, url:glo_url, title:glo_title, thumbnail:glo_thumb, embed:glo_content, description:glo_summary, tags:glo_tags };
+		objects[0]={type:glo_type, url:glo_url, sharURL:getSharURL(), title:glo_title, thumbnail:glo_thumb, embed:glo_content, description:glo_summary, tags:glo_tags };
 		objects=JSON.encode(objects);
 		var	data= "sender="+encodeURIComponent(sender)+"&subject="+encodeURIComponent(subject)+"&comment="+encodeURIComponent(comment)+"&publisher="+publisher+"&objects="+encodeURIComponent(objects)+"&recipients="+encodeURIComponent(recipients)+"&sessionID="+glo_sessionID+"&return=JSON";
 	
@@ -2228,6 +2358,7 @@ if (!window.console || !console.firebug) {
 				method: "post",
 				url: "/api/createMessage_ws.php",
 				data: data,
+				onFailure: function(){logError("createMessage","Ajax Failure");},
 				onSuccess:createMessage_onSuccess
 			});
 			request.send();			
@@ -2238,13 +2369,15 @@ if (!window.console || !console.firebug) {
 
 	function createMessage_onSuccess(responseText, responseXML) {
 		logEvent(glo_destinations,"share");	
-		var resp=JSON.decode(responseText);
+		try{var resp = JSON.decode(responseText);}
+		catch(err){logError("createMessage",responseText);}
 		if(resp.status==="SUCCESS"){
 			emptyInputs();
 			glo_msgArray=[];
 			widget.fireEvent('createMessageSucceeded');
 		}
 		else {
+			logError("createMessage",JSON.encode(resp));
 			widget.fireEvent('createMessageFailed', resp.statusMessage);
 		}
 	}
@@ -2383,6 +2516,7 @@ if (!window.console || !console.firebug) {
 				method: "post",
 				url: "/api/createUser_ws.php",
 				data: data,
+				onFailure: function(){logError("register","Ajax Failure");},
 				onSuccess:register_OnSuccess.bind(this)
 			});
 			widget.fireEvent('registerUserRequested');
@@ -2391,7 +2525,8 @@ if (!window.console || !console.firebug) {
 	}
 
 	function register_OnSuccess(responseText, responseXML){
-		var resp=JSON.decode(responseText);
+		try{var resp = JSON.decode(responseText);}
+		catch(err){logError("register",responseText);}
 		if(resp.status==="SUCCESS"){
 			widget.user.acquireAuth(resp.data.token);
 			$$('.working').addClass('hidden');
@@ -2407,6 +2542,7 @@ if (!window.console || !console.firebug) {
 			widget.fireEvent('registerUserFailed', 'E-mail address or Username is already in use.');
 		}
 		else {
+			logError("register","Ajax Failure");
 			widget.fireEvent('registerUserFailed', 'Could not complete registration.');
 		}
 	}
@@ -2418,6 +2554,7 @@ if (!window.console || !console.firebug) {
 				method: "post",
 				url: "/api/getDiggs_ws.php",
 				data: data,
+				onFailure: function(){logError("get diggs","Ajax Failure");},
 				onSuccess:getDiggs_onSuccess
 			});
 			glo_last_url=url;
@@ -2426,64 +2563,53 @@ if (!window.console || !console.firebug) {
 	}
 
 	function getDiggs_onSuccess(responseText, responseXML){
-		var resp=JSON.decode(responseText);
+		try{var resp = JSON.decode(responseText);}
+		catch(err){logError("get diggs",responseText);}
 		glo_num_diggs = widget.nDiggs = resp.data.diggs;
 		glo_digg_comments = widget.nDiggComments = resp.data.comments;
-		widget.fireEvent('nDiggsAcquired', glo_num_diggs);
-		widget.fireEvent('nDiggCommentsAcquired', glo_digg_comments);
+		var diggElement=$('post_digg_link');
+		diggElement.set('title', widget.nDiggs + ' Diggs, ' + widget.nDiggComments + ' Comments');
+		diggElement.set('text', 'Digg (' + widget.nDiggs + ')');
 	}
 
+    function createSharURL(url, sync){
+    	if(url!=="" && url!==" " && url!==glo_last_url2 && url!==undefined && url!=="undefined"){
+    		var data="url="+encodeURIComponent(url)+"&sessionID="+glo_sessionID+"&fpc="+glo_fpc
+            var request=new Request({
+            						method: "post",
+            						url: "/api/createSharURL_ws.php",
+            						data: data,
+            						onFailure: function(){logError("createSharURL","Ajax Failure");},
+            						onSuccess:createSharURL_onSuccess
+                					});
+            if (sync) {
+            	request.options.async = false;
+            }
+            glo_last_url2=url;
+            request.send();
+    	}
+    }
+    
+    function createSharURL_onSuccess(responseText, responseXML){
+        try {
+        	var resp=JSON.decode(responseText);
+            var sharURL=resp.data.sharURL;
+        }
+        catch(err){
+        		logError("createSharURL",responseText);
+                var sharURL=glo_url;
+        }
+        glo_sharURL = sharURL;
+        widget.fireEvent('sharURLAcquired');
+    }
 
-	function getTinyURL(url){
-		if(url!=="" && url!==" " && url!==glo_last_url2 && url!==undefined && url!=="undefined"){
-		  var data="url="+url;
-			var request=new Request({
-				method: "post",
-				url: "/api/getTinyURL_ws.php",
-				data: data,
-				onSuccess:getTinyURL_onSuccess
-			});
-			glo_last_url2=url;
-			request.send();
-		}
-	}
-	function getTinyURL_onSuccess(responseText, responseXML){
-		try{
-			var resp=JSON.decode(responseText);
-			var twitURL=encodeURIComponent(resp.data.tinyURL);
-		}
-		catch(err){
-			var twitURL=glo_url;
-		}
-		widget.tinyURL = twitURL;
-		widget.fireEvent('tinyURLAcquired', widget.tinyURL);
-	}
-
-
-	function getTinyST(url){
-		if(url!=="" && url!==" " && url!==glo_last_url2 && url!==undefined && url!=="undefined"){
-		  var data="url="+url;
-			var request=new Request({
-				method: "post",
-				url: "/api/getTinyST_ws.php",
-				data: data,
-				onSuccess:getTinyST_onSuccess
-			});
-			glo_last_url2=url;
-			request.send();
-		}
-	}
-	function getTinyST_onSuccess(responseText, responseXML){
-		try{
-			var resp=JSON.decode(responseText);
-			var tinyST=encodeURIComponent(resp.data.tinyST);
-		}
-		catch(err){
-			var tinyST=glo_url;
-		}
-		widget.tinyURL = tinyST;
-		widget.fireEvent('tinyURLAcquired');
-	}
+    function getSharURL() {
+    	if (!glo_sharURL || glo_sharURL==undefined || glo_sharURL=="undefined") {
+    		return glo_url;
+        } else {
+        	return glo_sharURL;
+        }
+    }
 
 	function HexToR(h) {return parseInt((cutHex(h)).substring(0,2),16)}
 	function HexToG(h) {return parseInt((cutHex(h)).substring(2,4),16)}
@@ -2521,11 +2647,14 @@ if (!window.console || !console.firebug) {
 		glo_type="default";
 		glo_content=Url.decode(glo_content);
 		glo_content=encodeURIComponent(glo_content);
+		if(glo_url=="" || glo_url=="undefined" || glo_url==undefined){
+			glo_url=glo_pUrl;
+		}
 		if(!glo_description || glo_description==undefined || glo_description=="undefined"){glo_description="";}
-		if(!glo_tags || glo_tags==undefined){glo_tags="";}
+		if(!glo_tags || glo_tags=="undefined"){glo_tags="";}
 		var objects="";
 		var destination="";
-		objects=[ {type:glo_type, url:glo_url, title:decodeURIComponent(glo_title), thumbnail:glo_thumb, embed:glo_content, description:glo_description, tags:glo_tags}];
+		objects=[ {type:glo_type, url:glo_url, sharURL:getSharURL(), title:decodeURIComponent(glo_title), thumbnail:glo_thumb, embed:glo_content, description:glo_description, tags:glo_tags}];
 		objects=JSON.encode(objects);
 		destination=[{type:destination1 , address:destAddress}];
 		destination=JSON.encode(destination);
@@ -2539,9 +2668,9 @@ if (!window.console || !console.firebug) {
 		var data="publisher="+glo_publisher+"&objects="+encodeURIComponent(objects)+"&destinations="+encodeURIComponent(destination)+"&destinationType="+glo_destinationType+"&sessionID="+glo_sessionID+"&return=json"+eml;
 		var url = "/api/createDestination_ws.php?"+data;
 
-			var logger = new Image(1,1);
-			logger.src = url;
-			logger.onload = function(){ console.dir(logger);return;};
+		var logger = new Image(1,1);
+		logger.src = url;
+		logger.onload = function(){return;};
 	
 	}
 	
@@ -2570,6 +2699,24 @@ if (!window.console || !console.firebug) {
 				}catch(err){}
 			}
 		}
+	}
+	
+	function logError(event,error){
+		var url = "http://l.sharethis.com/error?event="+event
+			+ "&publisher=" + encodeURIComponent(glo_publisher)
+			+ "&ts" + (new Date()).getTime()
+			+ "&title=" + encodeURIComponent(glo_title)
+			+ "&url=" + encodeURIComponent(glo_url)
+			+ "&pUrl="+encodeURIComponent(glo_pUrl)
+			+ "&error="+encodeURIComponent(error)
+			+ "&sessionID="+glo_sessionID
+			+ "&fpc="+glo_fpc
+			+ "&sharURL="+glo_sharURL;
+		
+		var logger = new Image(1,1);
+		logger.src = url;
+		logger.onload = function(){return;};
+	
 	}
 
 Widget.Page = new Class({ Implements: Events,
@@ -2865,18 +3012,18 @@ Widget.implement({
 							widget.setImportContactService('twitter');
 						}, 1);
 					}
-					if (widget.tinyURL) {
-						var message = decodeURIComponent(glo_title + ' - ' + widget.tinyURL + ' via @ShareThis');
+					if (glo_sharURL) {
+						var message = decodeURIComponent(glo_title + ' - ' + getSharURL() + ' via @ShareThis');
 						var i=0
 						while ( message.length > 140 ) {
-							message = glo_title.substr(0, glo_title.length - i++) + '... ' + widget.tinyURL;
+							message = glo_title.substr(0, glo_title.length - i++) + '... ' + glo_sharURL;
 						}
 						$('txtMessage').value = message;
 					}
 					event.stop();
 				}).bind(this));
 				$('twitter_update_status').addEvent('click', function(event) {
-					widget.showPage('post/twitter');
+					widget.showPage('post|twitter');
 					event.stop();
 				});
 				widget.addEvent('shareableValuesUpdated', function() {
@@ -2949,7 +3096,7 @@ Widget.implement({
 					if (!tabsContainer.tabs.contains('email')) {
 						$('send_section').getChildren().each(function(child) { child.addClass('hidden') });
 						$('contacts_info').addClass('hidden');
-						widget.carousel.showMore();
+						//widget.carousel.showMore();
 					}
 				});
 				this.parent();
@@ -2970,6 +3117,7 @@ Widget.implement({
 					var domain = widget.extractDomainFromURL(url);
 					$('sharebox_previewUrl').set('text', domain);
 					if (url.length) {
+    						$('sharebox_previewThumb').removeClass('hidden');
 						$('sharebox_previewThumb').set('src', glo_thumbImageTag);
 					}
 					else {
@@ -3005,7 +3153,11 @@ Widget.implement({
 				widget.user.removeEvent('signedOut', this.runAway.bind(this));
 			},
 			runAway: function() {
-				widget.showPage('home');
+				if (glo_page == "send" || glo_page == "post|twitter") {
+					widget.showPage(glo_page);
+				} else {
+					widget.showPage('home');
+				}
 			}
 		},
 		register: {
@@ -3023,7 +3175,11 @@ Widget.implement({
 				widget.addEvent('registerUserSucceeded', function() {
 					widget.popModalWorkingSheet();
 					setTimeout(function() {
-						widget.showPage('home');
+						if (glo_page == "send" || glo_page == "post|twitter") {
+							widget.showPage(glo_page);
+						} else {
+							widget.showPage('home');
+						}
 					}, 10);
 				});
 				widget.addEvent('registerUserFailed', function(message) {
@@ -3138,6 +3294,13 @@ Widget.implement({
 				});
 				$('btnShareSend').addEvent('click', (function(){
 					var recipients = widget.user.getSelectedContacts();
+					
+					if($('contact_search_field')){
+						if($('contact_search_field').value.length>0){
+							widget.pages.send.toField._selectHighlightedResult();
+							widget.pages.send.toField.hideSearchResults();
+						}
+					}					
 					if(recipients.length<1){
 						alert("Please enter a recipient in the 'To' field ");
 					}
@@ -3155,7 +3318,7 @@ Widget.implement({
 					var retval = true;
 					var inputField = $('txtMessage');
 					var maxCharacterCount = widget.maxSendMessageLength;
-					if ( widget.tinyURL && this.hasTwitterRecipients() ) {
+					if ( glo_sharURL && this.hasTwitterRecipients() ) {
 						maxCharacterCount = 140;
 					}
 					var counterSpan = $('spanMessageCounter');
@@ -3404,7 +3567,11 @@ Widget.implement({
 				$('doneScreenOk').addEvent('click',function(event) {
 					widget.user.deselectContacts();
 					clearMsgQueue();
-					widget.showPage('home');
+					if (glo_page == "send" || glo_page == "post|twitter") {
+						widget.showPage(glo_page);
+					} else {
+						widget.showPage('home');
+					}
 					event.stop();
 				});
 				this.parent();
@@ -3553,11 +3720,11 @@ Widget.implement({
 					id: 'post_twitter',
 					statusMessage: null,
 					onReady: function() {
-						widget.addEvent('tinyURLAcquired', (function() {
-							this.statusMessage = decodeURIComponent(glo_title + ' - ' + widget.tinyURL);
-							var i=0
+						widget.addEvent('twitterClicked', (function() {
+							this.statusMessage = decodeURIComponent(glo_title + ' - ' + getSharURL());
+							var i=0;
 							while ( this.statusMessage.length > 140 ) {
-								this.statusMessage = glo_title.substr(0, glo_title.length - i++) + '... ' + widget.tinyURL;
+								this.statusMessage = glo_title.substr(0, glo_title.length - i++) + '... ' + getSharURL();
 							}
 							$('twitterStatus').value = this.statusMessage;
 							this.updateCharacterCounter();
@@ -3664,7 +3831,7 @@ Widget.implement({
 	_currentPage: null,
 	
 	/**
-	 * @param 	string|array path: slash-delimited path to the page to show using 
+	 * @param 	string|array path: pipe-delimited path to the page to show using 
 	 * 			property names in structure above. eg, 'post/wordpress' or just 'done'. 
 	 * 			during internal recursion the argument is an array, so that'll work too.
 	 * @param	[object obj]: only used during internal recursion.
@@ -3673,7 +3840,7 @@ Widget.implement({
 		if (!obj && path != this.pageHistory.getLast()) { 
 			this.pageHistory.push(path); 
 		}
-		path = (typeof path == 'string' ? path.split('/') : path);
+		path = (typeof path == 'string' ? path.split('|') : path);
 		obj = (obj ? obj : widget);
 		var page = path.shift();
 		for (var name in obj.pages) {
@@ -3896,7 +4063,7 @@ Widget.implement({
 		},
 		blogger:  {
 			title: 'Blogger',
-			onClick: function(event) { widget.showPage('post/blogger'); event.stop(); },
+			onClick: function(event) { widget.showPage('post|blogger'); event.stop(); },
 			type: 'post'
 		},
 		bus_exchange: {
@@ -3923,25 +4090,14 @@ Widget.implement({
 		delicious: {
 			title: 'Delicious',
 			submitUrl: 'http://del.icio.us/post?url={url}&title={title}',
-			destination: 'del.icio.us'
+			destination: 'del.icio.us',
+			dontUseSharURL: 'Shar URLs are not allowed'			
 		},
 		digg: {
 			title: 'Digg',
 			submitUrl: 'http://digg.com/submit?phase=2&url={url}&title={title}',
 			destination: 'digg.com',
-			onCreate: function(element) {
-				if (widget.nDiggs) {
-					element.set('title', widget.nDiggs + ' Diggs, ' + widget.nDiggComments + ' Comments');
-					element.set('text', 'Digg (' + widget.nDiggs + ')');
-				}
-				else {
-					getDiggs(glo_url);
-					widget.addEvent('nDiggsAcquired', (function(nDiggs) {
-						element.set('title', widget.nDiggs + ' Diggs, ' + widget.nDiggComments + ' Comments');
-						element.set('text', 'Digg (' + widget.nDiggs + ')');
-					}).bind(this));
-				}
-			}
+			dontUseSharURL: 'Shar URLs are not allowed'
 		},
 		diigo: {
 			title: 'Diigo',
@@ -3966,7 +4122,7 @@ Widget.implement({
 		fresqui: {
 			title: 'Fresqui',
 			submitUrl: 'http://ocio.fresqui.com/post?url={url}&title={title}',
-			destination: 'digg.com'
+			destination: 'ocio.fresqui.com'
 		},
 		friendfeed: {
 			title: 'FriendFeed',
@@ -3975,7 +4131,7 @@ Widget.implement({
 		},
 		friendster: {
 			title: 'Friendster',
-			onClick: function(event) { widget.showPage('post/friendster'); event.stop(); },
+			onClick: function(event) { widget.showPage('post|friendster'); event.stop(); },
 			type: 'post'
 		},
 		funp: {
@@ -3995,7 +4151,7 @@ Widget.implement({
 		},
 		hi5: {
 			title: 'Hi5',
-			onClick: function(event) { widget.showPage('post/hi5'); event.stop(); },
+			onClick: function(event) { widget.showPage('post|hi5'); event.stop(); },
 			type: 'post'
 		},
 		kirtsy: {
@@ -4010,7 +4166,7 @@ Widget.implement({
 		},
 		livejournal: {
 			title: 'LiveJournal',
-			onClick: function(event) { widget.showPage('post/livejournal'); event.stop(); },
+			onClick: function(event) { widget.showPage('post|livejournal'); event.stop(); },
 			type: 'post'
 		},
 		/*
@@ -4039,6 +4195,7 @@ Widget.implement({
 			title: 'MySpace',
 			submitUrl: 'http://www.myspace.com/Modules/PostTo/Pages/?l=3&u={url}&t={title}&c={content}%3Cp%3EPowered+by+%3Ca+href%3D%22http%3A%2F%2Fsharethis.com%22%3EShareThis%3C%2Fa%3E%3C%2Fp%3E',
 			destination: 'myspace.com'
+//			dontUseSharURL: 'Shar URLs are not allowed'
 		},
 		n4g: {
 			title: 'N4G',
@@ -4057,8 +4214,9 @@ Widget.implement({
 		},
 		orkut: {
 			title: 'Orkut',
-			onClick: function(event) { widget.showPage('post/orkut'); event.stop(); },
+			onClick: function(event) { widget.showPage('post|orkut'); event.stop(); },
 			type: 'post'
+//			dontUseSharURL: 'Shar URLs are not allowed'
 		},
 		propeller: {
 			title: 'Propeller',
@@ -4099,11 +4257,12 @@ Widget.implement({
 			title: 'Twitter',
 			onClick: function(event) {
 				page = widget.pages.home;
-				if ( !widget.tinyURL ) getTinyURL(glo_url);
+				createSharURL(glo_url, true);
 				$('twitter_menu').setStyles({
 					top: ($('post_twitter_link').getCoordinates().bottom - 6) + 'px',
 					left: ($('post_twitter_link').getCoordinates().left - 6) + 'px'
 				});
+				widget.fireEvent('twitterClicked', glo_url);
 				/*
 				 * The following if/else block has been commented out 
 				 * for now. It should be uncommented in the April/May Sprint
@@ -4119,18 +4278,18 @@ Widget.implement({
 				}
 				*/
 				/*
-				 * This next line "widget.showPage('post/twitter');"
+				 * This next line "widget.showPage('post|twitter');"
 				 * should be removed when we uncomment the above code
 				 * for re-implement of Twitter direct messageing. -- KJW
 				 */
-				widget.showPage('post/twitter');
+				widget.showPage('post|twitter');
 				event.stop();
 			},
 			type: 'post'			
 		},
 		typepad:  {
 			title: 'TypePad',
-			onClick: function(event) { widget.showPage('post/typepad'); event.stop(); },
+			onClick: function(event) { widget.showPage('post|typepad'); event.stop(); },
 			type: 'post'
 		},
 		windows_live: {
@@ -4144,7 +4303,7 @@ Widget.implement({
 		},
 		wordpress:  {
 			title: 'WordPress',
-			onClick: function(event) { widget.showPage('post/wordpress'); event.stop(); },
+			onClick: function(event) { widget.showPage('post|wordpress'); event.stop(); },
 			type: 'post'
 		},
 		xanga: {
@@ -4229,8 +4388,13 @@ Widget.implement({
 		if(service.aTitle){
 			aTitle=service.aTitle;
 		}
+		
 		if ('submitUrl' in service && service.submitUrl.length) {
-			link = service.submitUrl.replace('{title}', glo_title).replace('{url}', encodeURIComponent(glo_url)).replace('{content}', glo_content);
+			if (service.dontUseSharURL) {
+				link = service.submitUrl.replace('{title}', glo_title).replace('{url}', encodeURIComponent(glo_url)).replace('{content}', glo_content);				
+			} else {
+				link = service.submitUrl.replace('{title}', glo_title).replace('{url}', encodeURIComponent(getSharURL())).replace('{content}', glo_content);
+			}
 		}
 		var a = new Element('a', {
 			'class': serviceTag,
@@ -4263,11 +4427,6 @@ Widget.implement({
 		}).bind(a));
 
 		a.appendText(service.title);
-		
-		if (service.onCreate) {
-			service.onCreate(a);
-		}
-
 		return a;
 	},
 	getDummyServiceLink: function() {
@@ -4441,40 +4600,34 @@ Widget.Carousel = new Class({ Implements: Events,
 			}
 			event.stop();
 		});
+
 		
-		this.domContainer.getElement('#linkWebMore').addEvent('click', function(event) {
-			poppet.showMore();
-			event.stop();
-		});
-		this.domContainer.getElement('#linkWebLess').addEvent('click', function(event) {
-			poppet.showLess();
-			event.stop();
-		});
 		if (initialState == undefined || initialState == Widget.Carousel.initialState_less) {
-			this.showLess();
+			//this.showLess();
 		}
 		else {
-			this.showMore();
+			//this.showMore();
 		}
+			
 	},
 	
 	
 	showMore: function() {
-		this.setNumRows(4);
+		/*this.setNumRows(4);
 		this.domContainer.getElement('#linkWebMore').addClass('hidden');
 		this.domContainer.getElement('#linkWebLess').removeClass('hidden');
 		var poppet = this;
-		this.domContainer.getElement('.view').get('tween').removeEvents('complete').addEvent('complete', function() {
 			poppet.isShowingMore = true;
 			poppet.domContainer.getElement('.fwd').addClass('fwd-big');
 			poppet.domContainer.getElement('.back').addClass('back-big');
 			poppet.render();
 		});
-		this.domContainer.getElement('.view').tween('height', 87);
+		this.domContainer.getElement('.view').tween('height', 87);*/
+		//this.advance();
 	},
 	
 	showLess: function() {
-		this.setNumRows(2);
+	/*	this.setNumRows(2);
 		this.domContainer.getElement('#linkWebMore').removeClass('hidden');
 		this.domContainer.getElement('#linkWebLess').addClass('hidden');
 		var poppet = this;
@@ -4484,7 +4637,18 @@ Widget.Carousel = new Class({ Implements: Events,
 			poppet.domContainer.getElement('.back').removeClass('back-big');
 			poppet.render();
 		});
-		this.domContainer.getElement('.view').tween('height', 44);
+		this.domContainer.getElement('.view').tween('height', 44);*/
+	},
+	
+	autoSize: function(){
+		//console.log("autosize dummies are: "+this.totalDummies);
+		if(this.totalDummies>6){
+			this.nRows=2;
+			$$(".fwd")[0].removeClass('fwd-big');
+			$$(".back")[0].removeClass('back-big');
+			this.createPaginator();
+			this.domContainer.getElement('.view').setStyle('height', '44px');
+		}
 	},
 	
 	/**
@@ -4492,6 +4656,7 @@ Widget.Carousel = new Class({ Implements: Events,
 	setDataSource: function(contents) {
 		this.data = contents;
 		this.page = 0;
+		this.paginatorExists=false;
 		// sort by user preference, then by publisher preference
 		this.data.sort(function(a, b) { 
 			if (a.hasUserPref && b.hasUserPref) {
@@ -4528,6 +4693,13 @@ Widget.Carousel = new Class({ Implements: Events,
 	},
 	
 	_buildPage: function(pageNum) {
+		//console.log("butilpage "+pageNum+1);
+		//console.log("build page");
+		if(this.paginatorExists==false){this.createPaginator()};
+		
+		this.autoSize();
+		//console.log(this.getVisibleData().length);
+		this.highlightNum(pageNum+1);
 		pageNum = this.getEffectivePageNum(pageNum);
 		var data = this.getVisibleData();
 		var groupDiv = new Element('div', { 'class': 'group' });
@@ -4561,6 +4733,7 @@ Widget.Carousel = new Class({ Implements: Events,
 			var itemsPerPage = (this.nRows * this.nCols);
 			var startsWithPref = (this.data.length && (this.data[0].hasPublisherPref || this.data[0].hasUserPref));
 			var dummiesDeployed = false;
+			this.totalDummies=0;
 			
 			for (var i = 0; i < this.data.length; i++) {
 				var previousHadPublisherPref = (i > 1) && (this.data[i - 1].hasPublisherPref);
@@ -4573,6 +4746,7 @@ Widget.Carousel = new Class({ Implements: Events,
 							getContent: function() { return widget.getDummyServiceLink(); }
 						});
 						j++;
+						this.totalDummies++;
 					}
 					dummiesDeployed = true;
 				}
@@ -4595,8 +4769,8 @@ Widget.Carousel = new Class({ Implements: Events,
 	},
 	
 	render: function() {
+		if(this.paginatorExists==false){this.createPaginator()};
 		this.fireEvent('renderBegin');
-
 		var view = this.domContainer.getElement('div.view').getElement('div.groups');
 		$each(view.getChildren(), function(child) { 
 			child.dispose(); 
@@ -4605,6 +4779,67 @@ Widget.Carousel = new Class({ Implements: Events,
 		view.grab(this._buildPage(this.page));
 				
 		this.fireEvent('renderComplete');
+		//if(this.paginatorExists==false){this.createPaginator()};
+	},
+	
+	createPaginator: function(){
+	//	console.log("create paginator");
+		var pages=this.getNumPages();
+		var div_size=pages*20;
+		div_size+="px";
+		var html="<div style='clear:both'></div><div id='circle_container' style='width:"+div_size+"' >";
+		for(var i=0;i<pages;i++){
+			var num=i+1;
+			//html+='<a href="javascript:void(0);" onclick="widget.carousel.goToPage('+num+');"  onmouseover="widget.carousel.goToPage('+num+');" title="Go To Page # '+num+'">'+num+'</a> ';
+			//html+='<a href="javascript:void(0);" onclick="widget.carousel.goToPage('+num+');"  class="circles" title="Go To Page # '+num+'">.</a> ';
+			html+='<div class="circles" onclick="widget.carousel.goToPage('+num+');" title="Go To Page # '+num+'"></div> ';			
+		}
+		html+="</div><div style='clear:both'></div>";
+		
+	//	$('circle_container').set('style',div_size);
+		$("paginator").set('html',html);
+		this.highlightNum(this.page+1);
+		this.paginatorExists=true;
+	},
+	highlightNum: function(num){
+		var maxSize=this.getNumPages();
+		if(num>maxSize){
+			num=1;
+		}
+		if(num<1){
+			num=4;
+		}
+	//	console.log("here "+maxSize);
+	//	console.log("highlight num "+num);
+		var i=num-1;
+		if($('paginator')){
+			//var a=$('paginator').getChildren()[0].getChildren();
+			var a=$('circle_container').getChildren();
+			a.removeClass('circles-selected');
+			a.addClass('circles');
+			a[i].addClass('circles-selected');
+			a[i].removeClass('circles');
+		/*	a.setStyle('margin-left','2px');
+			a.setStyle('border','none');
+			a.setStyle('hover','2px');
+			a.setStyle('font-size','11px');
+			a.setStyle('margin-right','2px');
+			a.setStyle('font-weight','normal');
+			a.setStyle('text-decoration','none');
+			a[i].setStyle('font-weight','bold');
+			a[i].setStyle('font-size','12px');
+		//	a[i].setStyle('border','1px solid #666');
+			//a[i].setStyle('color','blue');
+			*/
+			var pgInfo="("+num+"/"+this.getNumPages()+")";
+			//$("whatpage").set("html",pgInfo);
+		}
+	},
+	goToPage: function(num){
+		this.page=num-1;
+	//	console.log("page is "+this.page);
+		this.render();
+		this.highlightNum(num);
 	},
 	
 	advance: function() {
@@ -4624,12 +4859,12 @@ Widget.Carousel = new Class({ Implements: Events,
 			currentGroup.dispose();
 			groups.setStyle('left', 0);
 			poppet.page = poppet.getEffectivePageNum(poppet.page + 1);
-			if (poppet.page == 0) {
+	/*		if (poppet.page == 0) {
 				poppet.domContainer.getElement('#moreorless').fade('in');
 			}
 			else {
 				poppet.domContainer.getElement('#moreorless').fade('out');
-			}
+			}*/
 			poppet.fireEvent('advanceComplete');
 			poppet.rotating = false;
 		});
@@ -4655,10 +4890,10 @@ Widget.Carousel = new Class({ Implements: Events,
 			currentGroup.dispose();
 			poppet.page = poppet.getEffectivePageNum(poppet.page - 1);
 			if (poppet.page == 0) {
-				poppet.domContainer.getElement('#moreorless').fade('in');
+				//poppet.domContainer.getElement('#moreorless').fade('in');
 			}
 			else {
-				poppet.domContainer.getElement('#moreorless').fade('out');
+				//poppet.domContainer.getElement('#moreorless').fade('out');
 			}
 			poppet.fireEvent('rewindComplete');
 			poppet.rotating = false;
@@ -4668,7 +4903,7 @@ Widget.Carousel = new Class({ Implements: Events,
 	},
 	
 	domContainer: null,
-	nRows: 2,
+	nRows: 4,
 	nCols: 3,
 	page: 0,
 	isShowingMore: false,
@@ -5185,8 +5420,10 @@ Widget.User = new Class({ Implements: Events,
 			method: "post",
 			url: "/api/getAuth_ws.php",
 			data: "username=" + username + "&password=" + password + "&return=json",
+			onFailure: function(){logError("signin","Ajax Failure");},
 			onSuccess: (function(responseText) {
-				var response = JSON.decode(responseText);
+				try{var response = JSON.decode(responseText);}
+				catch(err){logError("signin",responseText);}
 				if (response.status === "SUCCESS") {
 					this.acquireAuth(response.data.token)
 				} 
@@ -5195,6 +5432,7 @@ Widget.User = new Class({ Implements: Events,
 				}
 				else if (response.statusMessage === "DATABASE_FAILED") {
 					this.fireEvent('signInFailed', 'Unable to connect to ShareThis authentication server.');
+					logError("signin","unable to connect to db");
 				}
 				else {
 					this.fireEvent('signInFailed', 'Email/Username or Password is incorrect. Please try again.');
@@ -5226,8 +5464,10 @@ Widget.User = new Class({ Implements: Events,
 				method: "post",
 				url: "/api/getUserInfo_ws.php",
 				data: "token=" + this.authToken + "&return=json",
+				onFailure: function(){logError("get user info","Ajax Failure");},
 				onSuccess: (function (responseText) {
-					var response = JSON.decode(responseText);
+					try{var response = JSON.decode(responseText);}
+					catch(err){logError("get user info",responseText);}
 					if (response.status === "SUCCESS") {
 						setGlobals("userName", response.data.name);
 						setGlobals("userEmail", response.data.email);
@@ -5257,6 +5497,7 @@ Widget.User = new Class({ Implements: Events,
 						this.fireEvent('infoChanged', this);
 					}
 					else {
+						logError("get user info",JSON.encode(response));
 						setTimeout((function() {
 							this.signOut();
 						}).bind(this), 1);
@@ -5274,9 +5515,11 @@ Widget.User = new Class({ Implements: Events,
 			method: "post",
 			url: "/api/getContacts_ws.php",
 			data: "token=" + this.authToken + "&return=json",
+			onFailure: function(){logError("get contacts","Ajax Failure");},
 			onSuccess:(function(responseText,responseXML) {
 				//widget.pushProfiler('decoding response');
-				var response = JSON.decode(responseText);
+				try{var response = JSON.decode(responseText);}
+				catch(err){logError("get contacts",responseText);}
 				//widget.popProfiler();
 				if (response.status === "SUCCESS" && response.data) {
 					var newContacts = response.data;
@@ -5285,6 +5528,7 @@ Widget.User = new Class({ Implements: Events,
 					this.addContactsLocally(newContacts);
 					this.fireEvent('getContactsSucceeded', newContacts);
 				} else {
+					logError("get contacts",JSON.encode(response));
 					this.fireEvent('getContactsFailed');
 				}
 			}).bind(this)
@@ -5299,8 +5543,10 @@ Widget.User = new Class({ Implements: Events,
 			method: 'post',
 			url: '/api/addContacts_ws.php',
 			data: 'token=' + this.authToken + '&contacts=' + c + '&return=json',
+			onFailure: function(){logError("add contacts","Ajax Failure");},
 			onSuccess: (function(responseText) {
-				var response = JSON.decode(responseText);
+				try{var response = JSON.decode(responseText);}
+				catch(err){logError("add contacts",responseText);}
 				if (response.status == 'SUCCESS') {
 					// wipe local contacts; retrieve from api
 					var f = null;
@@ -5312,6 +5558,7 @@ Widget.User = new Class({ Implements: Events,
 					this.getContactsOnAccount();
 				}
 				else {
+					logError("add contacts",JSON.encode(response));
 					this.fireEvent('addContactsToAccountFailed');
 				}
 			}).bind(this)
@@ -5794,14 +6041,14 @@ Widget.ToField = new Class({ Implements: Events,
 		this.resultsElement.addEvent('mouseenter', (function(event) {
 			this._mouseOverSearchResultsList = true;
 		}).bind(this));
-		this.resultsElement.addEvent('mouseleave', (function(event) {
+/*		this.resultsElement.addEvent('mouseleave', (function(event) {
 			this._mouseOverSearchResultsList = false;
 			if (Browser.Engine.trident) {
 				setTimeout((function() {
 					this.inputElement.focus();
 				}).bind(this), 10);
 			}
-		}).bind(this));
+		}).bind(this));*/
 		// note: there doesn't appear to be a way to detect a click on the scroll bar itself.
 		// soo... we're kind of screwed here. using the scroll bar without generating a mouseleave event
 		// will keep the input blurred, so keyboard commands won't work. ie is teh awesomeness.
@@ -5817,15 +6064,15 @@ Widget.ToField = new Class({ Implements: Events,
 		this.inputElement.addEvent('keydown', (function(event) {
 			switch (event.key) {
 				case 'up':
-					this._highlightPrevResult();
+					widget.pages.send.toField._highlightPrevResult();
 					event.stop();
 				break;
 				case 'down':
-					this._highlightNextResult();
+					widget.pages.send.toField._highlightNextResult();
 					event.stop();
 				break;
 				case 'enter':
-					this._selectHighlightedResult();
+					widget.pages.send.toField._selectHighlightedResult();
 					event.stop();
 				break;
 				case 'esc':
@@ -5835,7 +6082,7 @@ Widget.ToField = new Class({ Implements: Events,
 			}
 			switch (event.code) {
 				case 188: 	// comma
-					this._selectHighlightedResult();
+					widget.pages.send.toField._selectHighlightedResult();
 					event.stop();
 				break;
 			}
@@ -5851,18 +6098,19 @@ Widget.ToField = new Class({ Implements: Events,
 		}).bind(this.inputElement));
 	
 		this.inputElement.addEvent('blur', (function() {
-			if(this._mouseOverSearchResultsList==false && this.inputElement.get('value').length){
-				this._selectHighlightedResult();
-				this.hideSearchResults();
+			if($('contact_search_field').value.length){
+				widget.pages.send.toField._selectHighlightedResult();
+				widget.pages.send.toField.hideSearchResults();
 			}
-		}).bind(this));
+		}),this);
 		
 		this.inputElement.addEvent('focus', (function() {
 			//this._deselectTokens();
-			if (this.searchText.length) {
-				this.showSearchResults();
+		//	console.log("in focus");
+			if (widget.pages.send.toField.searchText.length) {
+				widget.pages.send.toField.showSearchResults();
 			}
-		}).bind(this));
+		}),this);
 		this.inputElementContainer.grab(this.inputElement);
 		return this.inputElement;
 	},
@@ -5954,8 +6202,8 @@ Widget.ToField = new Class({ Implements: Events,
 		
 		var retVal='<a class="token" href="javascript:void(0);" >';
 		retVal+='<span title= "' + contact.name + '<' + contact.address + '>' + '" class="' + (contact.service.length ? contact.service : 'email') + '">';
-		retVal+=widget.truncateText(contact.name, 130);
-		retVal+='</span></a>';
+		retVal+='<img class="token_x" id="token_img" src="">' + widget.truncateText(contact.name, 130);
+		retVal+='</span></span></a>';
 		return retVal;
 	
 		/*if (method == Widget.ToField.createToken_asHTML) {
@@ -6029,10 +6277,10 @@ Widget.ToField = new Class({ Implements: Events,
 		
 		var mouseMoveHandler = (function(event) {
 			if (element.pageCoordinateIsOverX(event.page.x)) {
-				element.addClass('token_hover');
+				//element.getElementById('token_img').addClass('token_hover');
 			}
 			else {
-				element.removeClass('token_hover');
+				//element.getElementById('token_img').removeClass('token_hover');
 			}
 		}).bind(this);
 		element.addEvent('mousemove', mouseMoveHandler);
@@ -6145,6 +6393,11 @@ Widget.ToField = new Class({ Implements: Events,
 		}
 		document.addEvent('keydown', this._windowKeyDownHandler);
 		*/
+		
+		/*setTimeout((function() {
+			this._insertInputField();
+		}).bind(this), 100);
+		*/
 		setTimeout((function() {
 			this._insertInputField();
 		}).bind(this), 100);
@@ -6200,7 +6453,11 @@ window.addEvent('domready', function() {
 		widget.openLoginBox();
 	});
 	$('linkSignOut').addEvent('click', function(){
-		widget.showPage('home');
+		if (glo_page == "send" || glo_page == "post|twitter") {
+			widget.showPage(glo_page);
+		} else {
+			widget.showPage('home');
+		}
 		widget.signOut();
 	});
 	
@@ -6257,12 +6514,15 @@ window.addEvent('domready', function() {
 			$('header_title').addClass('hidden');
 		}
 		else {
-			$('header_title').removeClass('hidden');
+			if (glo_ads == false) {
+				$('header_title').removeClass('hidden');
+			}
 		}
 		// if header has collapsed, remove the top-border on the sub-header
 		if ($('header_title').getSize().y < 2) {
-			$('sub_header').addClass('headerless');
-			
+			if (glo_ads == false) {
+				$('sub_header').addClass('headerless');
+			}
 		}
 		else {
 			$('sub_header').removeClass('headerless');
@@ -6360,6 +6620,10 @@ window.addEvent('domready', function() {
 		});
 	});
 
-	widget.showPage('home');
+	if (glo_page == "send" || glo_page == "post|twitter") {
+		widget.showPage(glo_page);
+	} else {
+		widget.showPage('home');
+	}
 });
 

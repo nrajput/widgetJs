@@ -81,27 +81,39 @@ textarea {
 	overflow-x:hidden;
 }
 .to_field .token {
-	background: #cfcfcf url(../images/close-token.gif) no-repeat right center;
+	/*background: #cfcfcf url(../images/close-token.gif) no-repeat right center;*/
+	background: #cfcfcf;
 	-moz-border-radius:3px;
 	-webkit-border-radius:3px;
 	-khtml-border-radius:3px;
 	border-radius:3px;
 	float:left;
 	margin:1px 2px 1px 0;
-	padding:1px 20px 3px 3px;
+	/*padding:1px 20px 3px 3px;*/
+	padding:1px 0px 3px 3px;
 }
 .to_field a:hover {
 	text-decoration:none;
 	cursor:default;
 }
-.to_field a.token_hover {
-	background-image:url(../images/close-token-active.gif);
+.to_field .token_x:hover {
+	background-position: -7px -124px;	
 	cursor:pointer;
 }
 .to_field .token span {
 	margin:0;
 	padding-bottom:1px;
 	padding-top:0;
+}
+
+.to_field .token_x {
+	background-image: url(../images/sprite_main_1.gif);
+	background-repeat:no-repeat;
+	background-position: 0 -137px;	
+	height: 13px;
+	width: 16px;
+	float:right;
+	margin: 2px 0px 0px 4px;
 }
 
 .to_field #contact_search_field_container {
@@ -265,7 +277,10 @@ ul.scroll li.even {
 	width:177px;
 }
 a.addressbook_button {
-	background:url(../images/address-book.gif) no-repeat;
+	/*background:url(../images/address-book.gif) no-repeat;*/
+	background-image:url(../images/sprite_main_1.gif);
+	background-repeat:no-repeat;
+	background-position: 0 0;
 	float:right;
 	height:24px;
 	text-indent:-32000px;
@@ -329,9 +344,46 @@ a.addressbook_button {
 .carousel .fwd,
 .carousel .back-big,
 .carousel .fwd-big {
-	background-image:url(../images/slider-btn-sprite.gif);
+	/*background-image:url(../images/slider-btn-sprite2.gif);*/
+	background-image:url(../images/sprite_main_1.gif);
+	background-position:0 -196px;
 	background-repeat:no-repeat;
 }
+
+.circles{
+	 /*background-image:url(../images/circle_light.gif); */
+	background-image:url(../images/sprite_main_1.gif);
+	background-position:0 -124px;
+	background-repeat:no-repeat;	
+	height:7px;
+	width:7px;
+	margin-left:5px;
+	margin-right:5px;
+	margin-top:0px;
+	margin-bottom:0px;	
+	font-size:0px;
+	padding:0px;
+	float:left;
+	cursor:pointer;
+	display:inline;
+	
+}
+
+.circles-selected{
+	/* background-image:url(../images/circle_dark.gif); */
+	background-image:url(../images/sprite_main_1.gif);
+	background-position: -120px -69px;
+	background-repeat:no-repeat;
+	height:7px;
+	width:7px;
+	margin-left:5px;
+	margin-right:5px;	
+	text-indent:-32000px;
+	float:left;		
+	cursor:pointer;
+}
+
+
 .carousel .back,
 .carousel .fwd {
 	display:inline;
@@ -348,16 +400,37 @@ a.addressbook_button {
 	background-position:0 0;
 }
 .carousel .fwd {
-	background-position:-13px 0;
+	/*background-position:-13px 0;*/
+	background-position: -13px -196px;
 }
+.carousel .back:hover {
+	/*background-position:0 -175px;*/
+	background-position:0 -371px;
+}
+.carousel .fwd:hover {
+	background-position:-13px -371px;
+}
+
 .carousel .back-big {
-	background-position:0 -66px;
+	/*background-position:0 -66px;*/
+	background-position:0 -262px;
 }
 .carousel .fwd-big {
-	background-position:-13px -66px;
+	/*background-position:-13px -66px;*/
+	background-position:-13px -262px;
 }
+.carousel .back-big:hover {
+	/*background-position:0 -241px;*/
+	background-position:0 -437px;
+}
+.carousel .fwd-big:hover {
+	/*background-position:-13px -241px;*/
+	background-position:-13px -437px;
+}
+
+
 .carousel .view {
-	height:44px;
+	height:87px;
 	margin:0 5px;
 	overflow:hidden;
 	position:relative;
@@ -384,10 +457,36 @@ a.addressbook_button {
 	padding:20px;
 	position:relative;
 }
-#send_section,
-#save_section {
+#send_section{
 	padding:10px 20px;
 }
+
+#save_section {
+	padding:0px 20px;
+	margin-bottom:10px;
+}
+#whatpage{
+	position:absolute;
+	top:3px;
+	left:34px;
+	font-size:10px;
+}
+#paginator{
+	margin-top:5px;
+	height:7px;
+}
+#paginator a:hover{
+	text-decoration:underline;
+	color:red;
+}
+#circle_container{
+	width:80px;
+	height:7px;
+	clear:both;
+	margin-left:auto;
+	margin-right:auto;
+}
+
 .overlay {
 	background:#eee;
 	border-top:3px solid #999;
@@ -412,12 +511,14 @@ a.addressbook_button {
 	margin-left:10px;
 }
 .mboxpoint {
-	background:url(../images/pointer.gif) right top;
+	/*background:url(../images/pointer.gif) right top;*/
+	background-image:url(../images/sprite_main_1.gif);
+	background-position: 0 -159px;
 	height:16px;
-	left:-11px;
+	left:-16px;
 	position:absolute;
 	top:6px;
-	width:11px;
+	width:16px;
 }
 .mboxclose {
 	text-align:right;
@@ -597,7 +698,7 @@ a.addressbook_button {
 	background: white;
 	border:6px solid #666;
 	position:relative;
-	width:337px; 
+	width:340px; 
 	z-index: 999;
 }
 #header {
@@ -645,7 +746,10 @@ h1#header_title {
 	margin-right:9px;
 }
 a#home_button {
-	background: url(../images/home-icon.gif) no-repeat 0 0;
+	/* background: url(../images/home-icon.gif) no-repeat 0 0; */
+	background-image:url(../images/sprite_main_1.gif);
+	background-position: -19px -137px;
+	background-repeat:no-repeat;
 	float:left;
 	height:11px;
 	margin-right:6px;
@@ -654,13 +758,42 @@ a#home_button {
 }
 a#home_button:hover,
 span.active a#home_button {
-	background-position:0 -11px;
+	background-position:-19px -148px;
 }
 .doneText {
 	clear:both;
 }
 .doneText img {
 	float:left;
+}
+
+#bullet_2 {
+	background-image:url(../images/sprite_main_1.gif);
+	background-repeat:no-repeat;
+	background-position: 0 -24px;
+	float:left;
+	display:inline;
+	width: 120px;
+	height: 45px;
+}
+
+#bullet_3 {
+	background-image:url(../images/sprite_main_1.gif);
+	background-repeat:no-repeat;
+	background-position: -120px -24px;
+	float:left;
+	display:inline;
+	width: 120px;
+	height: 45px;
+}
+#bullet_6 {
+	background-image:url(../images/sprite_main_1.gif);
+	background-repeat:no-repeat;
+	background-position: 0 -69px;
+	float:left;
+	display:inline;
+	width: 120px;
+	height: 55px;
 }
 #textAuthPassword_forgot {
 	padding:0 2px;
@@ -734,19 +867,39 @@ span.active a#home_button {
 .ad {
 	margin:0 auto;
 }
+#header_ad {
+	width: 340px;
+}
+#footer_ad {
+	width: 340px;
+	border-top: 1px solid #B6B6B6;
+	z-index: -1;
+}
+#footer_ad_header {
+	font-size: 9px;
+	margin-bottom: 0;
+	text-align: center;
+}
+#footer_ad_body {
+	width: 340px;
+}
+#footer_ad_body img {
+	margin: auto;
+}
 #registerStatus {
 	clear:both;
 }
 .sharebox {
-	background:url(../images/sharebox_logo.gif) no-repeat;
+	/* background:url(../images/sharebox_logo.gif) no-repeat; */
+	background-image:url(../images/sprite_main_1.gif);
+	background-position: -16px -177px;
+	background-repeat:no-repeat;
 	display:block;
-	margin:2px 0 0;
-	padding:4px 4px 4px 22px;
+	padding:3px 4px 2px 22px !important;
+	padding:2px 4px 2px 22px;
 	white-space:nowrap;
 }
- {
-	margin-top:2px;
-}
+ 
 #addressbook_goto_import {
 	float:right;
 }
@@ -996,13 +1149,17 @@ span.active a#home_button {
 	background-position:0 -1300px;
 }
 #close_button{
-	height:10px;
-	width:10px;
+	background-image:url(../images/sprite_main_1.gif);
+	background-repeat:no-repeat;
+	background-position: -26px -196px;
+	height:12px;
+	width:12px;
 	top:6px;
-	left:331px;
+	left:334px;
 	position:absolute;
 	z-index:10000;
 }
+
 #boxToYourAddrInfo {
     display: none;
 }

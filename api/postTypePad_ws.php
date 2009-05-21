@@ -22,5 +22,6 @@ exit();
 		$url.="?".$postdata;	
 	}
 	
+	error_log($url, 0);
 	$result = AjaxProxy::makeGetRequest($url);
 	echo $result;
