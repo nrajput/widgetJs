@@ -702,7 +702,7 @@ a.addressbook_button {
 	z-index: 999;
 }
 #header {
-	background:#1d4965 url(../images/fff-1x1.gif) repeat-x bottom;
+	background:#ccc;
 }
 #sub_header {
 	background:#ccc;
@@ -869,6 +869,7 @@ span.active a#home_button {
 }
 #header_ad {
 	width: 340px;
+	height: 40px;
 }
 #footer_ad {
 	width: 340px;

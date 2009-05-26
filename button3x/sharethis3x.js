@@ -566,11 +566,11 @@ try{
 		        	} else {
 		        		if( (SHARETHIS.ready===true && SHARETHIS.frameReady===true) || (SHARETHIS.popupExists===true && SHARETHIS.ready==true && SHARETHIS.widgetExists===false) || (SHARETHIS.popupExists===true && SHARETHIS.ready==true && SHARETHIS.frameReady===true) ){
 							clearInterval(stVisibleInterval);
-							if (typeof(e) != "undefined" || typeof(event) != "undefined") {
-								if (typeof(e) != "undefined") {
+							if ( ( e && typeof(e) != "undefined" &&  typeof(e) != "unknown" ) || ( event && typeof(event) != "undefined" &&  typeof(event) != "unknown") ) {
+								if (e && typeof(e) != "undefined" &&  typeof(e) != "unknown") {
 									o.trigger = e.target
 								}
-								else if (typeof(event) != "undefined") {
+								else if (event && typeof(event) != "undefined" && typeof(event) != "unknown") {
 									o.trigger = event.srcElement;
 								}
 								if (o.trigger !== null) {

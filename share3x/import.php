@@ -11,8 +11,13 @@
 		<?php 
 			$action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
 			$consent_token = isset($_REQUEST['ConsentToken']) ? $_REQUEST['ConsentToken'] : '';
+			$guid = isset($_REQUEST['guid']) ? $_REQUEST['guid'] : '';
+			if($guid == '') {
+				$guid = isset($_REQUEST['appctx']) ? $_REQUEST['appctx'] : '';
+			}
 			echo('<script type="text/javascript">var delauth_action = \'' . $action . '\'; </script>');
 			echo('<script type="text/javascript">var delauth_token = \'' . $consent_token . '\'; </script>');
+			echo('<script type="text/javascript">var guid = \'' . $guid . '\'; </script>');
 		
 			if( isset( $_GET['callback'] ) || isset( $_GET['requestId'] ) ){
 				echo '<script type="text/javascript">doOauth();</script>';
