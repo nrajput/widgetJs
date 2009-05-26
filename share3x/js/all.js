@@ -1408,9 +1408,16 @@ if (!window.console || !console.firebug) {
 				break;
 			case "adtag_header":
 				glo_adtag_header=value;
+				if (value != "") {
+					$('header_ad').setStyle('height', '40px');
+					$('header_ad').removeClass("hidden");
+				}
 				break;
 			case "adtag_footer":
 				glo_adtag_footer=value;
+				if (value != "") {
+					$('footer_ad').removeClass("hidden");
+				}
 				break;
 			case "page":
 				glo_page=value;
@@ -1688,6 +1695,8 @@ if (!window.console || !console.firebug) {
 				switch (kvPairs[i]) {
 					case 'screen':
 						widget.showPage(kvPairs[i + 1]);
+						$('header_ad').empty();
+						$('footer_ad_body').empty();
 					break;
 				}
 			}
@@ -2063,13 +2072,10 @@ if (!window.console || !console.firebug) {
 			if (glo_ads == true) {
 				var adtag_timestamp = (new Date()).getTime();
 				if (glo_adtag_header != "") {
-					$("header_title").addClass("hidden");
 					$("header_ad").set("html", glo_adtag_header.replace(/\[timestamp\]/g, adtag_timestamp));
-					$("header_ad").removeClass("hidden");
-				}
+					}
 				if (glo_adtag_footer != "") {
 					$("footer_ad_body").set("html", glo_adtag_footer.replace(/\[timestamp\]/g, adtag_timestamp));
-					$("footer_ad").removeClass("hidden");
 				}
 			}
 		}
