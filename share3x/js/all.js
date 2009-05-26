@@ -4246,12 +4246,14 @@ Widget.implement({
 		stumbleupon: {
 			title: 'Stumbleupon',
 			submitUrl: 'http://www.stumbleupon.com/submit?url={url}&title={title}',
-			destination: 'stumbleupon.com'
+			destination: 'stumbleupon.com',
+			dontUseSharURL: 'Shar URLs are not allowed'	
 		},
 		technorati: {
 			title: 'Technorati',
 			submitUrl: 'http://www.technorati.com/faves?add={url}',
-			destination: 'technorati.com'
+			destination: 'technorati.com',
+			dontUseEncodedURL: 'Encoded URLs are not allowed'
 		},
 		twitter: {
 			title: 'Twitter',
@@ -4390,10 +4392,12 @@ Widget.implement({
 		}
 		
 		if ('submitUrl' in service && service.submitUrl.length) {
-			if (service.dontUseSharURL) {
-				link = service.submitUrl.replace('{title}', glo_title).replace('{url}', encodeURIComponent(glo_url)).replace('{content}', glo_content);				
+			var serviceURL = service.dontUseSharURL ? glo_url : getSharURL();
+			
+			if (service.dontUseEncodedURL) {
+				link = service.submitUrl.replace('{title}', glo_title).replace('{url}', serviceURL).replace('{content}', glo_content);				
 			} else {
-				link = service.submitUrl.replace('{title}', glo_title).replace('{url}', encodeURIComponent(getSharURL())).replace('{content}', glo_content);
+				link = service.submitUrl.replace('{title}', glo_title).replace('{url}', encodeURIComponent(serviceURL)).replace('{content}', glo_content);
 			}
 		}
 		var a = new Element('a', {
