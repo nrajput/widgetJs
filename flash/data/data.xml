@@ -3,8 +3,8 @@
 	<servers>
 		<server id="dev">
 			<url id="track"><![CDATA[http://l.qa.sharethis.com/log]]></url>
-			<url id="smallIcons"><![CDATA[http://w.qa.sharethis.com/flashwidget/images/icons_small.gif]]></url>
-			<url id="bigIcons"><![CDATA[http://w.qa.sharethis.com/flashwidget/images/icons_large.png]]></url>
+			<url id="smallIcons"><![CDATA[http://w.qa.sharethis.com/flash/images/icons_small.gif]]></url>
+			<url id="bigIcons"><![CDATA[http://w.qa.sharethis.com/flash/images/icons_large.png]]></url>
 			<url id="auth"><![CDATA[http://w.qa.sharethis.com/api/getAuth_ws.php?return=xml]]></url>
 			<url id="info"><![CDATA[http://w.qa.sharethis.com/api/getUserInfo_ws.php?return=xml]]></url>
 			<url id="getContacts"><![CDATA[http://w.qa.sharethis.com/api/getContacts_ws.php?return=xml]]></url>
