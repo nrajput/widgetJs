@@ -1,9 +1,9 @@
 /*
-ShareThis Loader Version 3.8.3-rc1
-5/20/09 ShareThis.com
+ShareThis Loader Version 3.9.0-rc1
+5/27/09 ShareThis.com
 */
 
-var STV="3-8-3RC1";
+var STV="3.9.0-rc1";
 
 ST_JSON = new function(){
 
@@ -291,7 +291,6 @@ try{
 		function ShareThis(options){
 			this.version=2.03;
 			this.tmpSendData="";
-			this.script_host="";
 			this.sendArray=[];
 			this.sendNum=0;
 			this.guid=null;
@@ -459,18 +458,9 @@ try{
 		    	if(_thisScript===null){
 		    		var tmpScr=getShareThisScript();
 		    		SHARETHIS.options=parseQueryString(tmpScr.src);
-		 			var ST_script_src=tmpScr.src;
-					var parse_url = /(.*?:\/\/)(.*?)(\/.*)/;
-					var array_url = ST_script_src.match(parse_url);
-					if(array_url.length>0){
-						this.script_host=array_url[2];
-					}
-					if(this.script_host.search(/sharethis/) <0){
-						this.script_host="w.sharethis.com";
-					}	
 						
-					this.frameUrl="http://"+this.script_host+"/share3x/lightbox.html?stv="+STV;	
-					this.postUrl="http://"+this.script_host+"/api/setCache_ws.php"
+					this.frameUrl="http://wd.sharethis.com/share3x/lightbox."+STV+".html";	
+					this.postUrl="http://wd.sharethis.com/api/setCache_ws.php"
 
 					if(SHARETHIS.options["button"]){SHARETHIS.options["button"]=SHARETHIS.getBool(SHARETHIS.options["button"].toString());}
 					if(SHARETHIS.options["popup"]){SHARETHIS.options["popup"]=SHARETHIS.getBool(SHARETHIS.options["popup"].toString());}
@@ -542,7 +532,7 @@ try{
 					var logger = new Image(1,1);
 					logger.src = loggerUrl;
 					logger.onload = function(){
-						var url  = "http://" + SHARETHIS.script_host + "/button/redirect.php";
+						var url  = "http://wd.sharethis.com/button/redirect.php";
 						url += "?d="  + dest;
 						url += "&pk=" + SHARETHIS.options.publisher;
 						url += "&s="  + SHARETHIS.options.sessionID;
@@ -882,17 +872,9 @@ try{
 					else{
 						var ST_script_src=_thisScript.src;
 					}
-					var parse_url = /(.*?:\/\/)(.*?)(\/.*)/;
-					var array_url = ST_script_src.match(parse_url);
-						if(array_url.length>0){
-							this.script_host=array_url[2];
-						}
-					if(this.script_host.search(/sharethis/) <0){
-						this.script_host="w.sharethis.com";
-					}	
-						
-					this.frameUrl="http://"+this.script_host+"/share3x/lightbox.html?stv="+STV;	
-					this.postUrl="http://"+this.script_host+"/api/setCache_ws.php"	
+					
+					this.frameUrl="http://wd.sharethis.com/share3x/lightbox."+STV+".html";	
+					this.postUrl="http://wd.sharethis.com/api/setCache_ws.php"	
 					this.options = options || {};
 					if(this.options["button"]){this.options["button"]=this.getBool(this.options["button"].toString());}
 					if(this.options["popup"]){this.options["popup"]=this.getBool(this.options["popup"].toString());}
@@ -900,7 +882,7 @@ try{
 					if (this.options.publisher) {
 						this.meta.publisher = this.options.publisher;
 					}
-					var tmp_css='http://'+this.script_host+'/button/css/sharethis.css?stv='+STV;
+					var tmp_css='http://w.sharethis.com/button/css/sharethis.'+STV+'.css';
 					try{
 						if(this.options.css){
 						tmp_css=this.options.css.toString();
