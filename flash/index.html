@@ -1,0 +1,250 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>ShareThis Flash Widget</title>
+		<script type='text/javascript'>/** * SWFObject v1.4: Flash Player detection and embed - http://blog.deconcept.com/swfobject/ * * SWFObject is (c) 2006 Geoff Stearns and is released under the MIT License: * http://www.opensource.org/licenses/mit-license.php * * **SWFObject is the SWF embed script formarly known as FlashObject. The name was changed for *   legal reasons. */if(typeof deconcept=="undefined"){var deconcept=new Object();}if(typeof deconcept.util=="undefined"){deconcept.util=new Object();}if(typeof deconcept.SWFObjectUtil=="undefined"){deconcept.SWFObjectUtil=new Object();}deconcept.SWFObject=function(_1,id,w,h,_5,c,_7,_8,_9,_a,_b){if(!document.createElement||!document.getElementById){return;}this.DETECT_KEY=_b?_b:"detectflash";this.skipDetect=deconcept.util.getRequestParameter(this.DETECT_KEY);this.params=new Object();this.variables=new Object();this.attributes=new Array();if(_1){this.setAttribute("swf",_1);}if(id){this.setAttribute("id",id);}if(w){this.setAttribute("width",w);}if(h){this.setAttribute("height",h);}if(_5){this.setAttribute("version",new deconcept.PlayerVersion(_5.toString().split(".")));}this.installedVer=deconcept.SWFObjectUtil.getPlayerVersion(this.getAttribute("version"),_7);if(c){this.addParam("bgcolor",c);}var q=_8?_8:"high";this.addParam("quality",q);this.setAttribute("useExpressInstall",_7);this.setAttribute("doExpressInstall",false);var _d=(_9)?_9:window.location;this.setAttribute("xiRedirectUrl",_d);this.setAttribute("redirectUrl","");if(_a){this.setAttribute("redirectUrl",_a);}};deconcept.SWFObject.prototype={setAttribute:function(_e,_f){this.attributes[_e]=_f;},getAttribute:function(_10){return this.attributes[_10];},addParam:function(_11,_12){this.params[_11]=_12;},getParams:function(){return this.params;},addVariable:function(_13,_14){this.variables[_13]=_14;},getVariable:function(_15){return this.variables[_15];},getVariables:function(){return this.variables;},getVariablePairs:function(){var _16=new Array();var key;var _18=this.getVariables();for(key in _18){_16.push(key+"="+_18[key]);}return _16;},getSWFHTML:function(){var _19="";if(navigator.plugins&&navigator.mimeTypes&&navigator.mimeTypes.length){if(this.getAttribute("doExpressInstall")){this.addVariable("MMplayerType","PlugIn");}_19="<embed type=\"application/x-shockwave-flash\" src=\""+this.getAttribute("swf")+"\" width=\""+this.getAttribute("width")+"\" height=\""+this.getAttribute("height")+"\"";_19+=" id=\""+this.getAttribute("id")+"\" name=\""+this.getAttribute("id")+"\" ";var _1a=this.getParams();for(var key in _1a){_19+=[key]+"=\""+_1a[key]+"\" ";}var _1c=this.getVariablePairs().join("&");if(_1c.length>0){_19+="flashvars=\""+_1c+"\"";}_19+="/>";}else{if(this.getAttribute("doExpressInstall")){this.addVariable("MMplayerType","ActiveX");}_19="<object id=\""+this.getAttribute("id")+"\" classid=\"clsid:D27CDB6E-AE6D-11cf-96B8-444553540000\" width=\""+this.getAttribute("width")+"\" height=\""+this.getAttribute("height")+"\">";_19+="<param name=\"movie\" value=\""+this.getAttribute("swf")+"\" />";var _1d=this.getParams();for(var key in _1d){_19+="<param name=\""+key+"\" value=\""+_1d[key]+"\" />";}var _1f=this.getVariablePairs().join("&");if(_1f.length>0){_19+="<param name=\"flashvars\" value=\""+_1f+"\" />";}_19+="</object>";}return _19;},write:function(_20){if(this.getAttribute("useExpressInstall")){var _21=new deconcept.PlayerVersion([6,0,65]);if(this.installedVer.versionIsValid(_21)&&!this.installedVer.versionIsValid(this.getAttribute("version"))){this.setAttribute("doExpressInstall",true);this.addVariable("MMredirectURL",escape(this.getAttribute("xiRedirectUrl")));document.title=document.title.slice(0,47)+" - Flash Player Installation";this.addVariable("MMdoctitle",document.title);}}if(this.skipDetect||this.getAttribute("doExpressInstall")||this.installedVer.versionIsValid(this.getAttribute("version"))){var n=(typeof _20=="string")?document.getElementById(_20):_20;n.innerHTML=this.getSWFHTML();return true;}else{if(this.getAttribute("redirectUrl")!=""){document.location.replace(this.getAttribute("redirectUrl"));}}return false;}};deconcept.SWFObjectUtil.getPlayerVersion=function(_23,_24){var _25=new deconcept.PlayerVersion([0,0,0]);if(navigator.plugins&&navigator.mimeTypes.length){var x=navigator.plugins["Shockwave Flash"];if(x&&x.description){_25=new deconcept.PlayerVersion(x.description.replace(/([a-z]|[A-Z]|\s)+/,"").replace(/(\s+r|\s+b[0-9]+)/,".").split("."));}}else{try{var axo=new ActiveXObject("ShockwaveFlash.ShockwaveFlash");for(var i=3;axo!=null;i++){axo=new ActiveXObject("ShockwaveFlash.ShockwaveFlash."+i);_25=new deconcept.PlayerVersion([i,0,0]);}}catch(e){}if(_23&&_25.major>_23.major){return _25;}if(!_23||((_23.minor!=0||_23.rev!=0)&&_25.major==_23.major)||_25.major!=6||_24){try{_25=new deconcept.PlayerVersion(axo.GetVariable("rsion").split(" ")[1].split(","));}catch(e){}}}return _25;};deconcept.PlayerVersion=function(_29){this.major=parseInt(_29[0])!=null?parseInt(_29[0]):0;this.minor=parseInt(_29[1])||0;this.rev=parseInt(_29[2])||0;};deconcept.PlayerVersion.prototype.versionIsValid=function(fv){if(this.major<fv.major){return false;}if(this.major>fv.major){return true;}if(this.minor<fv.minor){return false;}if(this.minor>fv.minor){return true;}if(this.rev<fv.rev){return false;}return true;};deconcept.util={getRequestParameter:function(_2b){var q=document.location.search||document.location.hash;if(q){var _2d=q.indexOf(_2b+"=");var _2e=(q.indexOf("&",_2d)>-1)?q.indexOf("&",_2d):q.length;if(q.length>1&&_2d>-1){return q.substring(q.indexOf("=",_2d)+1,_2e);}}return "";}};if(Array.prototype.push==null){Array.prototype.push=function(_2f){this[this.length]=_2f;return this.length;};}var getQueryParamValue=deconcept.util.getRequestParameter;var FlashObject=deconcept.SWFObject; var SWFObject=deconcept.SWFObject;</script>
+		
+		
+		<script type='text/javascript'>
+			var props = Array('hostname','title','description','location','openDirectionH','openDirectionV','mouseoverActivate','rotateIcon','publisher','url','bgColor','fgColor','activeColor','bgAlpha','width','height');
+			
+			var services = Array('facebook','twitter','myspace','digg','delicious','reddit','stumbleupon','ybuzz','windows_live','google_bmarks','blogger','linkedin','technorati','mixx','typepad','yahoo_bmarks','newsvine','wordpress','propeller','friendfeed','blinklist','xanga','diigo','livejournal','mister_wong','current','faves','oknotizie','kirtsy','slashdot','care2','blogmarks','n4g','meneame','simpy','yigg','yahoo_myweb','funp','sphinn','orkut','dealsplus','fresqui');
+			
+			function setCheckboxValue(id, value) {
+				var cb = document.getElementById(id);
+				cb.checked = value;
+			}
+			
+			function getCheckboxValue(id) {
+				var cb = document.getElementById(id);
+				return cb.checked;
+			}
+			
+			function checkServices() {
+				for (var _i = 0; _i < services.length; _i++) {
+					setCheckboxValue(services[_i], true);
+				}
+			}
+			
+			function uncheckServices() {
+				for (var _i = 0; _i < services.length; _i++) {
+					setCheckboxValue(services[_i], false);
+				}
+			}
+			
+			function updateWidget() {
+				
+				var _width = parseInt(getInputValue('width'));
+				var _height = parseInt(getInputValue('height'));
+				
+				if (_width < 150) {
+					setInputValue('width', 150);
+					_width = 150;
+				}
+				
+				if (_height < 120) {
+					setInputValue('height', 120);
+					_height = 120;
+				}
+				
+				_width += 50;
+				_height += 50;
+		
+				var widgetDiv = document.getElementById("Widget");
+				widgetDiv.innerHTML = '';
+				
+				var ignoredParams = {src: 1, bgcolor: 1};
+				var params = Array('src="sample_code_as3.swf"', 'id="flashWidget"', 'quality="high"', 'AllowScriptAccess="always" ');
+				var widget_swf = new SWFObject("sample_code_as3.swf", "App", _width, _height, "9.0.0.0", "#222222");
+				
+				for(var i = 0; i < params.length; i++)
+				{
+					var paramName = params[i].split("=")[0];
+					var paramValue = params[i].split("\"")[1];
+					
+					if(ignoredParams[paramName] != 1 && paramName != "")
+					{
+						//console.log(paramName+'='+paramValue);
+						widget_swf.addParam(paramName, paramValue);
+					}
+				}
+				
+				//Set up properties
+				for (var i=0; i < props.length; i++) {
+					var pid = props[i];
+					//console.log(pid + '='+getInputValue(pid));
+					widget_swf.addVariable(pid, getInputValue(pid));
+				}
+				
+				var _services_arr = [];
+				//Set up services
+				for (var i=0; i < services.length; i++) {
+					var sid = services[i];
+					if (getCheckboxValue(sid)) {
+						
+						_services_arr.push(sid);
+					}
+				}
+				
+				//console.log('services='+ _services_arr.join(','));
+				
+				widget_swf.addVariable('services', _services_arr.join(','))
+
+				widget_swf.write("Widget");
+			}
+			
+			function getInputValue(id) {
+				inputField = document.getElementById(id);
+				return inputField.value;
+			}
+			function setInputValue(id, value) {
+				inputField = document.getElementById(id);
+				inputField.value = value;
+			}
+			function setup() {
+				setInputValue('hostname', document.location.host);
+				setInputValue('location', document.location.pathname);
+				setInputValue('title', document.title);
+				setInputValue('url', document.location);
+				updateWidget();
+			}
+		</script>
+		<style type="text/css">
+			html {
+				background-color:		#222222;
+				font:					62.5% Helvetica, Arial;
+				font-size:				1em;
+				line-height:			1.5em;
+				color:					#fff;
+			}
+			div {
+				width:					350px;
+				margin:					75px auto 0 auto;
+				padding:				50px 0 1.5em 120px;
+			}
+			a {
+				color:					#999;
+			}
+			a:hover {
+				color:					#FFFFFF;
+			}
+			:focus {
+				outline:				none;
+			}
+			dl dt {
+				margin-top:				1.5em;
+			}
+
+			h1 {
+				font-size:.8em;
+				font-weight:bold;
+			}
+			h2 {
+				font-size:.75em;
+				font-weight:bold;
+				color:#FEFE00;
+			}
+			label {
+				font-size:.7em;
+			}
+			
+
+			#Widget {
+				#background-color:#000000;
+			}
+			
+		</style>
+	</head>
+
+	<body onLoad="setup();">
+		
+		<table width='100%' height='100%' border="0" cellspacing="0" cellpadding="0">
+			<tr>
+				<td>
+					<table width='300' cellpadding='0' border='0'>
+						<tr><td colspan='2' align='center'><h1>ShareThis Widget Configuration Panel</h1></td></tr>
+						<tr><td colspan='2' align='left'><h2>Appearance</h2></td></tr>
+						
+						<tr><td align='right'><label for='width'>Widget width</label>&nbsp;&nbsp;</td><td><input type='text' id='width' value='250' /></td></tr>
+						<tr><td align='right'><label for='height'>Widget height</label>&nbsp;&nbsp;</td><td><input type='text' id='height' value='200' /></td></tr>
+						<tr><td align='right'><label for='bgColor'>BG Color (hex)</label>&nbsp;&nbsp;</td><td><input type='text' id='bgColor' value='222222' /></td></tr>
+						<tr><td align='right'><label for='fgColor'>FG Color (hex)</label>&nbsp;&nbsp;</td><td><input type='text' id='fgColor' value='FFFFFF' /></td></tr>
+						<tr><td align='right'><label for='fgColor'>Active Color (hex)</label>&nbsp;&nbsp;</td><td><input type='text' id='activeColor' value='FFCC00' /></td></tr>
+						<tr><td align='right'><label for='bgAlpha'>BG Opacity</label>&nbsp;&nbsp;</td><td><input type='text' id='bgAlpha' value='100' /></td></tr>
+						<!--
+						 <tr><td align='right'><label for='buttonText'>Button Text</label>&nbsp;&nbsp;</td><td><input type='text' id='buttonText' value='ShareThis' /></td></tr>-->
+						<tr><td colspan='2' align='center'><br/><input type='submit' value='Update Widget' onClick='updateWidget()'></td></tr>
+						<tr><td colspan='2' align='left'><h2>Interactivity</h2></td></tr>
+						<tr><td align='right'><label for='openDirectionH'>Hor. Open Direction</label>&nbsp;&nbsp;</td><td><select id='openDirectionH'><option value='left'>Left</option><option value='right'>Right</option></select></td></tr>
+						<tr><td align='right'><label for='openDirectionV'>Vert. Open Direction</label>&nbsp;&nbsp;</td><td><select id='openDirectionV'><option value='up'>Up</option><option value='down'>Down</option></select></td></tr>
+					
+						<tr><td align='right'><label for='mouseoverActivate'>Mouseover Activate</label>&nbsp;&nbsp;</td><td><select id='mouseoverActivate'><option value='false'>False</option><option value='true'>True</option></select></td></tr>
+						
+						<tr><td align='right'><label for='rotateIcon'>Rotate Button Icon</label>&nbsp;&nbsp;</td><td><select id='rotateIcon'><option value='false'>False</option><option value='true'>True</option></select></td></tr>
+						<tr><td colspan='2' align='center'><br/><input type='submit' value='Update Widget' onClick='updateWidget()'></td></tr>
+						<tr><td colspan='2' align='left'><h2>Share Data Items</h2></td></tr>
+						<tr><td align='right'><label for='hostname'>Host Name</label>&nbsp;&nbsp;</td><td><input type='text' id='hostname' value='' /></td></tr>
+						<tr><td align='right'><label for='location'>Location</label>&nbsp;&nbsp;</td><td><input type='text' id='location' value='' /></td></tr>
+						<tr><td align='right'><label for='title'>Title</label>&nbsp;&nbsp;</td><td><input type='text' id='title' value='' /></td></tr>
+						<tr><td align='right'><label for='description'>Description</label>&nbsp;&nbsp;</td><td><input type='text' id='description' value='Sample description' /></td></tr>
+						<tr><td align='right'><label for='publisher'>Publisher</label>&nbsp;&nbsp;</td><td><input type='text' id='publisher' value='xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx' /></td></tr>
+						<tr><td align='right'><label for='url'>URL</label>&nbsp;&nbsp;</td><td><input type='text' id='url' value='' /></td></tr>
+						<tr><td colspan='2' align='center'><br/><input type='submit' value='Update Widget' onClick='updateWidget()'></td></tr>		
+						<tr><td colspan='2' align='left'><h2>Share Data Services</h2></td></tr>
+						<tr><td colspan='2'><input type="submit" value="Uncheck All" onclick="uncheckServices()"/><input type="submit" value="Check All" onclick="checkServices()"/> </td> </tr>
+						<tr><td align='right'><label for "reddit">Reddit</label></td><td><input type="checkbox" id="reddit" name="reddit" CHECKED></td></tr>
+						<tr><td align='right'><label for "digg">Digg</label></td><td><input type="checkbox" id="digg" name="digg" CHECKED></td></tr>
+						<tr><td align='right'><label for "facebook">Facebook</label></td><td><input type="checkbox" id="facebook" name="facebook" CHECKED></td></tr>
+						<tr><td align='right'><label for "blogger">Blogger</label></td><td><input type="checkbox" id="blogger" name="blogger" CHECKED></td></tr>
+						<tr><td align='right'><label for "typepad">TypePad</label></td><td><input type="checkbox" id="typepad" name="typepad" CHECKED></td></tr>
+						<tr><td align='right'><label for "wordpress">Wordpress</label></td><td><input type="checkbox" id="wordpress" name="wordpress" CHECKED></td></tr>
+						<tr><td align='right'><label for "twitter">Twitter</label></td><td><input type="checkbox" id="twitter" name="twitter" CHECKED></td></tr>
+						<tr><td align='right'><label for "myspace">Myspace</label></td><td><input type="checkbox" id="myspace" name="myspace" CHECKED></td></tr>
+						<tr><td align='right'><label for "delicious">Delicious</label></td><td><input type="checkbox" id="delicious" name="delicious" CHECKED></td></tr>
+						<tr><td align='right'><label for "stumbleupon">Stumbleupon</label></td><td><input type="checkbox" id="stumbleupon" name="stumbleupon" CHECKED></td></tr>
+						<tr><td align='right'><label for "technorati">Technorati</label></td><td><input type="checkbox" id="technorati" name="technorati" CHECKED></td></tr>
+						<tr><td align='right'><label for "google_bmarks">Google Bookmarks</label></td><td><input type="checkbox" id="google_bmarks" name="google_bmarks" CHECKED></td></tr>
+						<tr><td align='right'><label for "yahoo_bmarks">Yahoo Bookmarks</label></td><td><input type="checkbox" id="yahoo_bmarks" name="yahoo_bmarks" CHECKED></td></tr>
+						<tr><td align='right'><label for "livejournal">Livejournal</label></td><td><input type="checkbox" id="livejournal" name="livejournal" CHECKED></td></tr>
+						<tr><td align='right'><label for "orkut">Orkut</label></td><td><input type="checkbox" id="orkut" name="orkut" CHECKED></td></tr>
+						<tr><td align='right'><label for "yahoo_myweb">Yahoo MyWeb</label></td><td><input type="checkbox" id="yahoo_myweb" name="yahoo_myweb" CHECKED></td></tr>
+						<tr><td align='right'><label for "windows_live">Windows Live</label></td><td><input type="checkbox" id="windows_live" name="windows_live" CHECKED></td></tr>
+						<tr><td align='right'><label for "propeller">Propeller</label></td><td><input type="checkbox" id="propeller" name="propeller" CHECKED></td></tr>
+						<tr><td align='right'><label for "slashdot">Slashdot</label></td><td><input type="checkbox" id="slashdot" name="slashdot" CHECKED></td></tr>
+						<tr><td align='right'><label for "newsvine">Newsvine</label></td><td><input type="checkbox" id="newsvine" name="newsvine" CHECKED></td></tr>
+						<tr><td align='right'><label for "n4g">N4G</label></td><td><input type="checkbox" id="n4g" name="n4g" CHECKED></td></tr>
+						<tr><td align='right'><label for "mixx">Mixx</label></td><td><input type="checkbox" id="mixx" name="mixx" CHECKED></td></tr>
+						<tr><td align='right'><label for "blinklist">Blinklist</label></td><td><input type="checkbox" id="blinklist" name="blinklist" CHECKED></td></tr>
+						<!--<tr><td align='right'><label for "magnolia">Magnolia</label></td><td><input type="checkbox" id="magnolia" name="magnolia" CHECKED></td></tr>//-->
+						<tr><td align='right'><label for "mister_wong">Mister Wong</label></td><td><input type="checkbox" id="mister_wong" name="mister_wong" CHECKED></td></tr>
+						<tr><td align='right'><label for "blogmarks">Blogmarks</label></td><td><input type="checkbox" id="blogmarks" name="blogmarks" CHECKED></td></tr>
+						<tr><td align='right'><label for "faves">Faves</label></td><td><input type="checkbox" id="faves" name="faves" CHECKED></td></tr>
+						<tr><td align='right'><label for "current">Current</label></td><td><input type="checkbox" id="current" name="current" CHECKED></td></tr>
+						<tr><td align='right'><label for "simpy">Simpy</label></td><td><input type="checkbox" id="simpy" name="simpy" CHECKED></td></tr>
+						<tr><td align='right'><label for "meneame">Meneame</label></td><td><input type="checkbox" id="meneame" name="meneame" CHECKED></td></tr>
+						<tr><td align='right'><label for "yigg">Yigg</label></td><td><input type="checkbox" id="yigg" name="yigg" CHECKED></td></tr>
+						<tr><td align='right'><label for "oknotizie">Oknotizie.alice.it</label></td><td><input type="checkbox" id="oknotizie" name="oknotizie" CHECKED></td></tr>
+						<tr><td align='right'><label for "fresqui">Fresqui</label></td><td><input type="checkbox" id="fresqui" name="fresqui" CHECKED></td></tr>
+						<tr><td align='right'><label for "diigo">Diigo</label></td><td><input type="checkbox" id="diigo" name="diigo" CHECKED></td></tr>
+						<tr><td align='right'><label for "care2">Care2</label></td><td><input type="checkbox" id="care2" name="care2" CHECKED></td></tr>
+						<tr><td align='right'><label for "funp">Funp</label></td><td><input type="checkbox" id="funp" name="funp" CHECKED></td></tr>
+						<tr><td align='right'><label for "kirtsy">Kirtsy</label></td><td><input type="checkbox" id="kirtsy" name="kirtsy" CHECKED></td></tr>
+						<!--<tr><td align='right'><label for "hugg">Hugg</label></td><td><input type="checkbox" id="hugg" name="hugg" CHECKED></td></tr>-->
+						<tr><td align='right'><label for "xanga">Xanga</label></td><td><input type="checkbox" id="xanga" name="xanga" CHECKED></td></tr>
+						<tr><td align='right'><label for "friendfeed">FriendFeed</label></td><td><input type="checkbox" id="friendfeed" name="friendfeed" CHECKED></td></tr>
+						<tr><td align='right'><label for "sphinn">Sphinn</label></td><td><input type="checkbox" id="sphinn" name="sphinn" CHECKED></td></tr>
+						<tr><td align='right'><label for "linkedin">LinkedIn</label></td><td><input type="checkbox" id="linkedin" name="linkedin" CHECKED></td></tr>
+						<tr><td align='right'><label for "ybuzz">Buzz Up!</label></td><td><input type="checkbox" id="ybuzz" name="ybuzz" CHECKED></td></tr>
+						<tr><td align='right'><label for "dealsplus">Dealspl.us</label></td><td><input type="checkbox" id="dealsplus" name="dealsplus" CHECKED></td></tr>
+
+						
+						<tr><td colspan='2' align='center'><br/><input type='submit' value='Update Widget' onClick='updateWidget()'></td></tr>
+					</table>
+				</td>
+			<td valign="top" align="center" width="100%" height="100%">
+				<div id="Widget">You need the Flash Player version 9.0.0.0 or higher and a JavaScript enabled browser to view this site</div>
+			</td></tr></table>
+	</body>
+</html>
+

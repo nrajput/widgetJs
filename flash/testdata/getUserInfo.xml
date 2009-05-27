@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<response>
+  <status>SUCCESS</status>
+  <data>
+    <userID>1016640</userID>
+    <name>Test Username.</name>
+    <email>email@gmail.com</email>
+    <nickname>testnickname</nickname>
+    <pubkey>b2246a50-4aa5-485c-ad0f-57b2455b20a2</pubkey>
+    <pubgen>0</pubgen>
+    <socialShares/>
+    <recipients>
+      <name>djrocketface</name>
+      <address>djrocketface</address>
+      <service>AIM</service>
+    </recipients>
+  </data>
+</response>

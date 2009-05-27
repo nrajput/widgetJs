@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<servers>
+		<server id="dev">
+			<url id="track"><![CDATA[http://l.qa.sharethis.com/log]]></url>
+			<url id="smallIcons"><![CDATA[http://w.qa.sharethis.com/flashwidget/images/icons_small.gif]]></url>
+			<url id="bigIcons"><![CDATA[http://w.qa.sharethis.com/flashwidget/images/icons_large.png]]></url>
+			<url id="auth"><![CDATA[http://w.qa.sharethis.com/api/getAuth_ws.php?return=xml]]></url>
+			<url id="info"><![CDATA[http://w.qa.sharethis.com/api/getUserInfo_ws.php?return=xml]]></url>
+			<url id="getContacts"><![CDATA[http://w.qa.sharethis.com/api/getContacts_ws.php?return=xml]]></url>
+			<url id="sharethis"><![CDATA[http://www.sharethis.com]]></url>
+			<url id="importContacts"><![CDATA[http://w.qa.sharethis.com/api/importContacts_ws.php?return=xml]]></url>
+			<url id="createMessage"><![CDATA[http://w.qa.sharethis.com/api/createMessage_ws.php]]></url>
+			<url id="preview"><![CDATA[http://sharethis.com/share/thumb]]></url>
+			<url id="getDiggs"><![CDATA[http://w.qa.sharethis.com/api/getDiggs_ws.php]]></url>
+			<url id="addContacts"><![CDATA[http://w.qa.sharethis.com/api/addContacts_ws.php]]></url>
+			<url id="register"><![CDATA[http://dev.sharethis.com/users/register/]]></url>
+			<url id="save"><![CDATA[http://w.qa.sharethis.com/api/createDestination_ws.php]]></url>
+			<url id="upload"><![CDATA[http://sharethis.com/account/import/]]></url>
+			<url id="privacy"><![CDATA[http://sharethis.com/privacy/]]></url>
+			<url id="createUser"><![CDATA[http://w.qa.sharethis.com/api/createUser_ws.php?return=xml]]></url>
+			<url id="importWindow"><![CDATA[http://w.qa.sharethis.com/share3x/import.php?provider=RSERVICE&guid=RGUID]]></url>
+			<url id="getImportContactsURL"><![CDATA[http://w.qa.sharethis.com/api/getCache_ws.php?key=RGUID&clear=1&return=xml&action=request]]></url>
+			<url id="getTinyURL"><![CDATA[http://w.qa.sharethis.com/api/getTinyURL_ws.php?return=xml&url=RURL]]></url>
+			<url id="baseURL"><![CDATA[http://w.qa.sharethis.com/]]></url>
+			<url id="getButton"><![CDATA[http://sharethis.com/publishers/getbutton/]]></url>
+		</server>
+	</servers>
+	<client>
+		<shareURLs>
+			<url id="reddit" trackingId="reddit.com" name="Reddit" icon="14"><![CDATA[http://reddit.com/submit?url=RURL&amp;title=RTITLE]]></url>
+			<url id="digg" trackingId="digg.com" name="Digg" icon="1"><![CDATA[http://digg.com/submit?phase=2&url=RURL&title=RTITLE]]></url>
+			<url id="facebook" trackingId="facebook.com" name="Facebook" icon="8"><![CDATA[http://www.facebook.com/share.php?u=RURL]]></url>
+			<url id="myspace" trackingId="myspace.com" name="Myspace" icon="11"><![CDATA[http://www.myspace.com/Modules/PostTo/Pages/?l=3&u=RURL&t=RTITLE&c=RDESC]]></url>
+			<url id="delicious" trackingId="del.icio.us" name="Delicious" icon="2"><![CDATA[http://del.icio.us/post?url=RURL&title=RTITLE]]></url>
+			<url id="stumbleupon" trackingId="stumbleupon.com" name="Stumbleupon" icon="6"><![CDATA[http://www.stumbleupon.com/submit?url=RURL&title=RTITLE]]></url>
+			<!-- auth-based posting items. posting logic internal to widget.-->
+			<url id="wordpress" trackingId="wordpress" name="WordPress" icon="52"><![CDATA[http://w.sharethis.com/api/postWordPress_ws.php]]></url>
+			<url id="blogger" trackingId="blogger" name="Blogger" icon="53"><![CDATA[http://w.sharethis.com/api/postBlogger_ws.php]]></url>
+			<url id="friendster" trackingId="friendster" name="Friendster" icon="51"><![CDATA[http://w.sharethis.com/api/postFriendster_ws.php]]></url>
+			<url id="livejournal" trackingId="livejournal" name="Livejournal" icon="55"><![CDATA[http://w.sharethis.com/api/postLiveJournal_ws.php]]></url>
+			<url id="orkut" trackingId="orkut" name="Orkut" icon="50"><![CDATA[http://w.sharethis.com/api/postOrkut_ws.php]]></url>
+			<url id="typepad" trackingId="typepad" name="TypePad" icon="54"><![CDATA[http://w.sharethis.com/api/postTypePad_ws.php]]></url>
+			<url id="twitter" trackingId="twitter" name="Twitter" icon="28"><![CDATA[http://w.sharethis.com/api/postTwitter_ws.php]]></url>
+			<!-- end auth-based posting items -->
+			<url id="technorati" trackingId="technorati.com" name="Technorati" icon="5"><![CDATA[http://www.technorati.com/faves?add=RURL]]></url>
+			<url id="google_bmarks" trackingId="google.com" name="Google Bookmarks" icon="9"><![CDATA[http://www.google.com/bookmarks/mark?op=edit&bkmk=RURL&title=RTITLE]]></url>
+			<url id="yahoo_bmarks" trackingId="bookmarks.yahoo.com" name="Yahoo Bookmarks" icon="25"><![CDATA[http://bookmarks.yahoo.com/toolbar/savebm?opener=tb&u=RURL&t=RTITLE]]></url>
+			<url id="yahoo_myweb" trackingId="myweb2.search.yahoo.com" name="Yahoo MyWeb" icon="4"><![CDATA[http://myweb2.search.yahoo.com/myresults/bookmarklet?u=RURL&t=RTITLE]]></url>
+			<url id="windows_live" trackingId="favorites.live.com" name="Windows Live" icon="13"><![CDATA[https://favorites.live.com/quickadd.aspx?marklet=1&mkt=en-us&url=RURL&title=RTITLE&top=1]]></url>
+			<url id="propeller" trackingId="propeller.com" name="Propeller" icon="27"><![CDATA[http://www.propeller.com/submit/?U=RURL&T=RTITLE]]></url>
+			<url id="slashdot" trackingId="slashdot.com" name="Slashdot" icon="34"><![CDATA[http://slashdot.org/bookmark.pl?url=RURL&title=RTITLE]]></url>
+			<url id="newsvine" trackingId="newsvine.com" name="Newsvine" icon="16"><![CDATA[http://www.newsvine.com/_tools/seed&save?popoff=0&u=RURL&h=RTITLE]]></url>
+			<url id="n4g" trackingId="n4g.com" name="N4G" icon="38"><![CDATA[http://www.n4g.com/tips.aspx?url=RURL&title=RTITLE]]></url>
+			<url id="mixx" trackingId="mixx.com" name="Mixx" icon="26"><![CDATA[http://www.mixx.com/submit?page_url=RURL]]></url>
+			<url id="blinklist" trackingId="blinklist.com" name="Blinklist" icon="0"><![CDATA[http://blinklist.com/index.php?Action=Blink/addblink.php&Url=RURL&Title=RTITLE]]></url>
+			<url id="mister_wong" trackingId="mister-wong.com" name="Mister Wong" icon="37"><![CDATA[http://www.mister-wong.com/index.php?action=addurl&bm_url=RURL&bm_description=RTITLE]]></url>
+			<url id="blogmarks" trackingId="blogmarks.net" name="Blogmarks" icon="3"><![CDATA[http://blogmarks.net/my/new.php?mini=1&url=RURL&title=RTITLE]]></url>
+			<url id="faves" trackingId="faves.com" name="Faves" icon="36"><![CDATA[http://www.faves.com/Authoring.aspx?u=RURL&t=RTITLE]]></url>
+			<url id="current" trackingId="current.com" name="Current" icon="29"><![CDATA[http://current.com/clipper.htm?url=RURL&title=RTITLE&src=st]]></url>
+			<url id="simpy" trackingId="simpy.com" name="Simpy" icon="37"><![CDATA[http://www.simpy.com/simpy/LinkAdd.do?href=RURL&title=RTITLE]]></url>
+			<url id="meneame" trackingId="meneame.net" name="Meneame" icon="35"><![CDATA[http://meneame.net/submit.php?url=RURL]]></url>
+			<url id="yigg" trackingId="yigg.de" name="Yigg" icon="32"><![CDATA[http://www.yigg.de/neu?exturl=RURL&exttitle=RTITLE]]></url>
+			<url id="oknotizie" trackingId="oknotizie.alice.it" name="Oknotizie.alice.it" icon="40"><![CDATA[http://oknotizie.alice.it/post?url=RURL&title=RTITLE]]></url>
+			<url id="fresqui" trackingId="ocio.fresqui.com" name="Fresqui" icon="41"><![CDATA[http://ocio.fresqui.com/post?url=RURL&title=RTITLE]]></url>
+			<url id="diigo" trackingId="secure.diigo.com" name="Diigo" icon="33"><![CDATA[http://secure.diigo.com/post?url=RURL&title=RTITLE]]></url>
+			<url id="care2" trackingId="care2.com" name="Care2" icon="31"><![CDATA[http://www.care2.com/news/compose?share[link_url]=RURL&share[title]=RTITLE]]></url>
+			<url id="funp" trackingId="funp.com" name="Funp" icon="15"><![CDATA[http://funp.com/pages/submit/add.php?title=RTITLE&url=RURL&via=tools]]></url>
+			<url id="kirtsy" trackingId="kirtsy.com" name="Kirtsy" icon="39"><![CDATA[http://www.kirtsy.com/submit.php?url=RURL]]></url>
+			<url id="xanga" trackingId="xanga.com" name="Xanga" icon="45"><![CDATA[http://www.xanga.com/private/editorx.aspx?t=RTITLE&u=RURL&s=RDESC]]></url>
+			<url id="friendfeed" trackingId="friendfeed.com" name="FriendFeed" icon="42"><![CDATA[http://friendfeed.com/share?url=RURL&title=RTITLE]]></url>
+			<url id="sphinn" trackingId="sphinn.com" name="Sphinn" icon="44"><![CDATA[http://sphinn.com/submit.php?url=RURL]]></url>
+			<url id="linkedin" trackingId="linkedin.com" name="LinkedIn" icon="47"><![CDATA[http://www.linkedin.com/shareArticle?mini=true&url=RURL&title=RTITLE&summary=&source=]]></url>
+			<url id="ybuzz" trackingId="buzz.yahoo.com" name="Buzz Up!" icon="46"><![CDATA[http://buzz.yahoo.com/submit/?submitUrl=RURL&submitHeadline=RTITLE]]></url>
+			<url id="dealsplus" trackingId="dealspl.us" name="Dealspl.us" icon="43"><![CDATA[http://dealspl.us/add.php?ibm=1&url=RURL]]></url>	
+		</shareURLs>
+		<sendServices>
+			<service id="email" name="Email" icon="21" />
+			<service id="sms" name="Txt/SMS" icon="23" />
+			<service id="aim" name="AOL IM" icon="17" />
+			<!--<service id="myspace" name="MySpace" icon="11" />-->
+		</sendServices>
+		<importSources>
+			<source id="Gmail" type="Email" name="Gmail" icon="24" uLabel="GMail address" pLabel="Password" />
+			<source id="Yahoo" type="Email" name="Yahoo! Mail" icon="28" uLabel="Yahoo! Email" pLabel="Password"/>
+			<source id="Hotmail" type="Email" name="MSN Hotmail" icon="25" uLabel="Email" pLabel="Password"/>
+			<source id="AOL" type="Email" name="AOL" icon="22" uLabel="AOL Username" pLabel="Password" />
+			<source id="AIM" type="AIM" name="AIM" icon="21" uLabel="Screenname" pLabel="Password"/>
+			<!--<source id="MySpace" type="MySpace" name="MySpace" icon="13" uLabel="Myspace Login" pLabel="Password"/>-->
+			<source id="Import" type="Import" name="Import Contacts" icon="19"/>
+		</importSources>
+	</client>
+</data>
