@@ -38,5 +38,37 @@
 		Header unset ETag
 	</FilesMatch>
 	
-#redirector for widget is in widget 
+#	^share/lightbox-(\d{4}-\d{1,2}-\d{1,2}).html$ /share/lightbox.html [L]
 </IfModule>
+
+
+#redirector for widget to /button/sharethis.js 
+<IfModule mod_rewrite.c>
+	RewriteEngine on
+	RewriteCond %{REQUEST_FILENAME}.php -f
+	RewriteRule (.*)$ $1.php
+	RewriteRule ^widget/(|index(|.php))$ /button/sharethis.js? [L,QSA]
+	#[0-9a-fA-F]{2}
+	RewriteRule ^share3x/lightbox.(\d{1}.\d{1}.\d{1}.[0-9a-zA-Z]{3}).html$ /share/lightbox.html [L]
+	
+	
+	
+</IfModule>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
