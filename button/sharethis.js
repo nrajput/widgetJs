@@ -135,9 +135,9 @@ ST_JSON = new function(){
 	catch(z){rc=/^(true|false|null|\[.*\]|\{.*\}|".*"|\d+|\d+\.\d+)$/}
 };
 
-
+/*
 try{
-
+*/
 	if (!SHARETHIS) {
 		if(!SHARETHIS_TOOLBAR){
 			var SHARETHIS_TOOLBAR=false;
@@ -1142,7 +1142,7 @@ try{
 		var obj = SHARETHIS.addEntry();
 	}
 
-
+/*
 }
 catch(err){
-}
+}*/
