@@ -1845,7 +1845,7 @@ if (!window.console || !console.firebug) {
 			url2+= "&url="+encodeURIComponent(glo_url);
 			url2+= "&sessionID="+glo_sessionID;
 			url2+= "&fpc="+glo_fpc;
-			url2+= "&sharUrl="+encodeURIComponent(glo_sharURL);
+			url2+= "&sharURL="+encodeURIComponent(glo_sharURL);
 			
 		var logger2 = new Image(1,1);
 		logger2.src = url2;
