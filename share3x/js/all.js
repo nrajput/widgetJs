@@ -1408,9 +1408,16 @@ if (!window.console || !console.firebug) {
 				break;
 			case "adtag_header":
 				glo_adtag_header=value;
+				if (value != "") {
+					$('header_ad').setStyle('height', '40px');
+					$('header_ad').removeClass("hidden");
+				}
 				break;
 			case "adtag_footer":
 				glo_adtag_footer=value;
+				if (value != "") {
+					$('footer_ad').removeClass("hidden");
+				}
 				break;
 			case "page":
 				glo_page=value;
@@ -1688,6 +1695,8 @@ if (!window.console || !console.firebug) {
 				switch (kvPairs[i]) {
 					case 'screen':
 						widget.showPage(kvPairs[i + 1]);
+						$('header_ad').empty();
+						$('footer_ad_body').empty();
 					break;
 				}
 			}
@@ -1836,7 +1845,7 @@ if (!window.console || !console.firebug) {
 			url2+= "&url="+encodeURIComponent(glo_url);
 			url2+= "&sessionID="+glo_sessionID;
 			url2+= "&fpc="+glo_fpc;
-			url2+= "&sharUrl="+encodeURIComponent(glo_sharURL);
+			url2+= "&sharURL="+encodeURIComponent(glo_sharURL);
 			
 		var logger2 = new Image(1,1);
 		logger2.src = url2;
@@ -2063,13 +2072,10 @@ if (!window.console || !console.firebug) {
 			if (glo_ads == true) {
 				var adtag_timestamp = (new Date()).getTime();
 				if (glo_adtag_header != "") {
-					$("header_title").addClass("hidden");
 					$("header_ad").set("html", glo_adtag_header.replace(/\[timestamp\]/g, adtag_timestamp));
-					$("header_ad").removeClass("hidden");
-				}
+					}
 				if (glo_adtag_footer != "") {
 					$("footer_ad_body").set("html", glo_adtag_footer.replace(/\[timestamp\]/g, adtag_timestamp));
-					$("footer_ad").removeClass("hidden");
 				}
 			}
 		}
@@ -4246,12 +4252,14 @@ Widget.implement({
 		stumbleupon: {
 			title: 'Stumbleupon',
 			submitUrl: 'http://www.stumbleupon.com/submit?url={url}&title={title}',
-			destination: 'stumbleupon.com'
+			destination: 'stumbleupon.com',
+			dontUseSharURL: 'Shar URLs are not allowed'	
 		},
 		technorati: {
 			title: 'Technorati',
 			submitUrl: 'http://www.technorati.com/faves?add={url}',
-			destination: 'technorati.com'
+			destination: 'technorati.com',
+			dontUseEncodedURL: 'Encoded URLs are not allowed'
 		},
 		twitter: {
 			title: 'Twitter',
@@ -4390,10 +4398,12 @@ Widget.implement({
 		}
 		
 		if ('submitUrl' in service && service.submitUrl.length) {
-			if (service.dontUseSharURL) {
-				link = service.submitUrl.replace('{title}', glo_title).replace('{url}', encodeURIComponent(glo_url)).replace('{content}', glo_content);				
+			var serviceURL = service.dontUseSharURL ? glo_url : getSharURL();
+			
+			if (service.dontUseEncodedURL) {
+				link = service.submitUrl.replace('{title}', glo_title).replace('{url}', serviceURL).replace('{content}', glo_content);				
 			} else {
-				link = service.submitUrl.replace('{title}', glo_title).replace('{url}', encodeURIComponent(getSharURL())).replace('{content}', glo_content);
+				link = service.submitUrl.replace('{title}', glo_title).replace('{url}', encodeURIComponent(serviceURL)).replace('{content}', glo_content);
 			}
 		}
 		var a = new Element('a', {

@@ -1,6 +1,0 @@
-<IfModule mod_rewrite.c>
-	RewriteEngine on
-	RewriteCond %{REQUEST_FILENAME}.php -f
-	RewriteRule ^(.*)$ $1.php
-	RewriteRule ^(|index(|.php))$ /button/sharethis.js? [L,QSA]
-</IfModule>
