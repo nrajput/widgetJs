@@ -2,26 +2,26 @@
 <data>
 	<servers>
 		<server id="dev">
-			<url id="track"><![CDATA[http://l.qa.sharethis.com/log]]></url>
-			<url id="smallIcons"><![CDATA[http://wf.qa.sharethis.com/flash/images/icons_small.gif]]></url>
-			<url id="bigIcons"><![CDATA[http://wf.qa.sharethis.com/flash/images/icons_large.png]]></url>
-			<url id="auth"><![CDATA[http://wf.qa.sharethis.com/api/getAuth_ws.php?return=xml]]></url>
-			<url id="info"><![CDATA[http://wf.qa.sharethis.com/api/getUserInfo_ws.php?return=xml]]></url>
-			<url id="getContacts"><![CDATA[http://wf.qa.sharethis.com/api/getContacts_ws.php?return=xml]]></url>
+			<url id="track"><![CDATA[/log]]></url>
+			<url id="smallIcons"><![CDATA[/flash/images/icons_small.gif]]></url>
+			<url id="bigIcons"><![CDATA[/flash/images/icons_large.png]]></url>
+			<url id="auth"><![CDATA[/api/getAuth_ws.php?return=xml]]></url>
+			<url id="info"><![CDATA[/api/getUserInfo_ws.php?return=xml]]></url>
+			<url id="getContacts"><![CDATA[/api/getContacts_ws.php?return=xml]]></url>
 			<url id="sharethis"><![CDATA[http://www.sharethis.com]]></url>
-			<url id="importContacts"><![CDATA[http://wf.qa.sharethis.com/api/importContacts_ws.php?return=xml]]></url>
-			<url id="createMessage"><![CDATA[http://wf.qa.sharethis.com/api/createMessage_ws.php]]></url>
+			<url id="importContacts"><![CDATA[/api/importContacts_ws.php?return=xml]]></url>
+			<url id="createMessage"><![CDATA[/api/createMessage_ws.php]]></url>
 			<url id="preview"><![CDATA[http://sharethis.com/share/thumb]]></url>
-			<url id="getDiggs"><![CDATA[http://wf.qa.sharethis.com/api/getDiggs_ws.php]]></url>
-			<url id="addContacts"><![CDATA[http://wf.qa.sharethis.com/api/addContacts_ws.php]]></url>
+			<url id="getDiggs"><![CDATA[/api/getDiggs_ws.php]]></url>
+			<url id="addContacts"><![CDATA[/api/addContacts_ws.php]]></url>
 			<url id="register"><![CDATA[http://dev.sharethis.com/users/register/]]></url>
-			<url id="save"><![CDATA[http://wf.qa.sharethis.com/api/createDestination_ws.php]]></url>
+			<url id="save"><![CDATA[/api/createDestination_ws.php]]></url>
 			<url id="upload"><![CDATA[http://sharethis.com/account/import/]]></url>
 			<url id="privacy"><![CDATA[http://sharethis.com/privacy/]]></url>
-			<url id="createUser"><![CDATA[http://wf.qa.sharethis.com/api/createUser_ws.php?return=xml]]></url>
-			<url id="importWindow"><![CDATA[http://wf.qa.sharethis.com/share3x/import.php?provider=RSERVICE&guid=RGUID]]></url>
-			<url id="getImportContactsURL"><![CDATA[http://wf.qa.sharethis.com/api/getCache_ws.php?key=RGUID&clear=1&return=xml&action=request]]></url>
-			<url id="getTinyURL"><![CDATA[http://wf.qa.sharethis.com/api/getTinyURL_ws.php?return=xml&url=RURL]]></url>
+			<url id="createUser"><![CDATA[/api/createUser_ws.php?return=xml]]></url>
+			<url id="importWindow"><![CDATA[/share3x/import.php?provider=RSERVICE&guid=RGUID]]></url>
+			<url id="getImportContactsURL"><![CDATA[/api/getCache_ws.php?key=RGUID&clear=1&return=xml&action=request]]></url>
+			<url id="getTinyURL"><![CDATA[/api/getTinyURL_ws.php?return=xml&url=RURL]]></url>
 			<url id="baseURL"><![CDATA[http://wf.qa.sharethis.com/]]></url>
 			<url id="getButton"><![CDATA[http://sharethis.com/publishers/getbutton/]]></url>
 		</server>
