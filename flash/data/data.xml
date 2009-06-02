@@ -14,7 +14,7 @@
 			<url id="preview"><![CDATA[http://sharethis.com/share/thumb]]></url>
 			<url id="getDiggs"><![CDATA[/api/getDiggs_ws.php]]></url>
 			<url id="addContacts"><![CDATA[/api/addContacts_ws.php]]></url>
-			<url id="register"><![CDATA[http://dev.sharethis.com/users/register/]]></url>
+			<url id="register"><![CDATA[http://www.sharethis.com/users/register/]]></url>
 			<url id="save"><![CDATA[/api/createDestination_ws.php]]></url>
 			<url id="upload"><![CDATA[http://sharethis.com/account/import/]]></url>
 			<url id="privacy"><![CDATA[http://sharethis.com/privacy/]]></url>
