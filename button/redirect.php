@@ -61,8 +61,6 @@
 			$url = str_replace("{sharurl}", urlencode($properties->sharURL), $url);
 			$url = str_replace("{url}", urlencode($properties->url), $url);
 			$url = str_replace("{title}", urlencode($properties->title), $url);
-			echo $url;
-			exit;
 			header("Location: $url");
 		}
 	}
