@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<macromedia-extension name="ShareThis AS2 Flash Widget" version="1" type="flash component" requires-restart="true">
+<macromedia-extension name="ShareThis AS3 Flash Widget" version="1" type="flash component" requires-restart="true">
 
 	<!-- Describe the author -->
 
@@ -26,7 +26,7 @@
 	<!-- Describe the files that comprise the extension -->
 
 	<files>
-		<file name="sharethis_as2.swc" destination="$flash/Components" />
+		<file name="sharethis_as3.swc" destination="$flash/Components" />
 	</files>
 
 </macromedia-extension>

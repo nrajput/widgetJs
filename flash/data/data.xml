@@ -22,7 +22,7 @@
 			<url id="importWindow"><![CDATA[/share3x/import.php?provider=RSERVICE&guid=RGUID]]></url>
 			<url id="getImportContactsURL"><![CDATA[/api/getCache_ws.php?key=RGUID&clear=1&return=xml&action=request]]></url>
 			<url id="getTinyURL"><![CDATA[/api/getTinyURL_ws.php?return=xml&url=RURL]]></url>
-			<url id="baseURL"><![CDATA[http://wf.qa.sharethis.com/]]></url>
+			<url id="baseURL"><![CDATA[http://wf.qa2.sharethis.com/]]></url>
 			<url id="getButton"><![CDATA[http://sharethis.com/publishers/getbutton/]]></url>
 		</server>
 	</servers>
@@ -35,13 +35,13 @@
 			<url id="delicious" trackingId="del.icio.us" name="Delicious" icon="2"><![CDATA[http://del.icio.us/post?url=RURL&title=RTITLE]]></url>
 			<url id="stumbleupon" trackingId="stumbleupon.com" name="Stumbleupon" icon="6"><![CDATA[http://www.stumbleupon.com/submit?url=RURL&title=RTITLE]]></url>
 			<!-- auth-based posting items. posting logic internal to widget.-->
-			<url id="wordpress" trackingId="wordpress" name="WordPress" icon="52"><![CDATA[http://w.sharethis.com/api/postWordPress_ws.php]]></url>
-			<url id="blogger" trackingId="blogger" name="Blogger" icon="53"><![CDATA[http://w.sharethis.com/api/postBlogger_ws.php]]></url>
-			<url id="friendster" trackingId="friendster" name="Friendster" icon="51"><![CDATA[http://w.sharethis.com/api/postFriendster_ws.php]]></url>
-			<url id="livejournal" trackingId="livejournal" name="Livejournal" icon="55"><![CDATA[http://w.sharethis.com/api/postLiveJournal_ws.php]]></url>
-			<url id="orkut" trackingId="orkut" name="Orkut" icon="50"><![CDATA[http://w.sharethis.com/api/postOrkut_ws.php]]></url>
-			<url id="typepad" trackingId="typepad" name="TypePad" icon="54"><![CDATA[http://w.sharethis.com/api/postTypePad_ws.php]]></url>
-			<url id="twitter" trackingId="twitter" name="Twitter" icon="28"><![CDATA[http://w.sharethis.com/api/postTwitter_ws.php]]></url>
+			<url id="wordpress" trackingId="wordpress" name="WordPress" icon="52"><![CDATA[/api/postWordPress_ws.php]]></url>
+			<url id="blogger" trackingId="blogger" name="Blogger" icon="53"><![CDATA[/api/postBlogger_ws.php]]></url>
+			<url id="friendster" trackingId="friendster" name="Friendster" icon="51"><![CDATA[/api/postFriendster_ws.php]]></url>
+			<url id="livejournal" trackingId="livejournal" name="Livejournal" icon="55"><![CDATA[/api/postLiveJournal_ws.php]]></url>
+			<url id="orkut" trackingId="orkut" name="Orkut" icon="50"><![CDATA[/api/postOrkut_ws.php]]></url>
+			<url id="typepad" trackingId="typepad" name="TypePad" icon="54"><![CDATA[/api/postTypePad_ws.php]]></url>
+			<url id="twitter" trackingId="twitter" name="Twitter" icon="28"><![CDATA[/api/postTwitter_ws.php]]></url>
 			<!-- end auth-based posting items -->
 			<url id="technorati" trackingId="technorati.com" name="Technorati" icon="5"><![CDATA[http://www.technorati.com/faves?add=RURL]]></url>
 			<url id="google_bmarks" trackingId="google.com" name="Google Bookmarks" icon="9"><![CDATA[http://www.google.com/bookmarks/mark?op=edit&bkmk=RURL&title=RTITLE]]></url>
