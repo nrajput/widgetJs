@@ -48,17 +48,18 @@
 		$url = "";
 		switch ($destination) {
 			case "facebook.com":
-				$url = "http://www.facebook.com/share.php?u={url}&t={title}";
+				$url = "http://www.facebook.com/share.php?u={sharurl}&t={title}";
 				break;
 			case "digg.com":
 				$url = "http://digg.com/submit?phase=2&url={url}&title={title}";
 				break;
 			case "buzz.yahoo.com":
-				$url = "http://buzz.yahoo.com/buzz?targetUrl={url}&headline={title}&src=sharethis";
+				$url = "http://buzz.yahoo.com/buzz?targetUrl={sharurl}&headline={title}&src=sharethis";
 				break;
 		}
 		if ($url !== "") {
-			$url = str_replace("{url}", urlencode($properties->sharURL), $url);
+			$url = str_replace("{sharurl}", urlencode($properties->sharURL), $url);
+			$url = str_replace("{url}", urlencode($properties->url), $url);
 			$url = str_replace("{title}", urlencode($properties->title), $url);
 			header("Location: $url");
 		}

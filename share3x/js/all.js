@@ -128,7 +128,9 @@ var Widget = new Class({ Implements: Events,
 				var blogid = $('bloggerSelect').get('value');
 			}
 			var data = "";
-			var atag = "<a href="+getSharURL()+">"+decodeURIComponent(glo_title)+"</a>";
+			var tmpTitle=glo_title;
+			try{tmpTitle=decodeURIComponent(glo_title);}catch(err){}
+			var atag = "<a href="+getSharURL()+">"+tmpTitle+"</a>";
 		
 			if(glo_content!==""){
 				atag="";
@@ -216,7 +218,9 @@ var Widget = new Class({ Implements: Events,
 		}
 		else {
 			//"+atag+"
-			var atag="<a href="+getSharURL()+">"+decodeURIComponent(glo_title)+"</a>";
+			var tmpTitle=glo_title;
+			try{tmpTitle=decodeURIComponent(glo_title);}catch(err){}
+			var atag="<a href="+getSharURL()+">"+tmpTitle+"</a>";
 			atag=encodeURIComponent(atag);
 			if(glo_content!==""){
 				atag="";
@@ -285,7 +289,9 @@ var Widget = new Class({ Implements: Events,
 			err_set=true;	
 			err+="Please enter a password.\n";	
 		}
-			var atag="<a href="+getSharURL()+">"+decodeURIComponent(glo_title)+"</a>";
+			var tmpTitle=glo_title;
+			try{tmpTitle=decodeURIComponent(glo_title);}catch(err){}
+			var atag="<a href="+getSharURL()+">"+tmpTitle+"</a>";
 			if(glo_content!==""){
 				atag="";
 			}
@@ -344,8 +350,9 @@ var Widget = new Class({ Implements: Events,
 		var err="";
 		var err_set=false;
 		var captcha="";
-
-		var atag="<a href="+getSharURL()+">"+decodeURIComponent(glo_title)+"</a>";
+		var tmpTitle=glo_title;
+		try{tmpTitle=decodeURIComponent(glo_title);}catch(err){}
+		var atag="<a href="+getSharURL()+">"+tmpTitle+"</a>";
 		if(glo_content!==""){
 			atag="";
 		}
@@ -560,8 +567,9 @@ var Widget = new Class({ Implements: Events,
 				var blogid = $('tpSelect').get('value');
 			}
 			var data="";
-		
-			var atag="<a href="+getSharURL()+">"+decodeURIComponent(glo_title)+"</a>";
+			var tmpTitle=glo_title;
+			try{tmpTitle=decodeURIComponent(glo_title);}catch(err){}
+			var atag="<a href="+getSharURL()+">"+tmpTitle+"</a>";
 			if(glo_content!==""){
 				atag="";
 			}
@@ -648,7 +656,9 @@ var Widget = new Class({ Implements: Events,
 			err_set=true;	
 			err+="Please enter a url.\n";	
 		}
-		var atag="<a href="+getSharURL()+">"+decodeURIComponent(glo_title)+"</a>";
+		var tmpTitle=glo_title;
+		try{tmpTitle=decodeURIComponent(glo_title);}catch(err){}
+		var atag="<a href="+getSharURL()+">"+tmpTitle+"</a>";
 		if(glo_content!==""){
 			atag="";
 		}
@@ -830,11 +840,13 @@ var Widget = new Class({ Implements: Events,
 		else if (typeof tags == 'object' && 'length' in tags) {
 			tags = tags.join(',');
 		}
+		var tmpTitle=glo_title;
+		try{tmpTitle=decodeURIComponent(glo_title);}catch(err){}
 		if (!objects || !objects.length || objects.length == 0) {
 			objects = [{
 				'type': 'default',
 				url: getSharURL(),
-				title: decodeURIComponent(glo_title),
+				title: tmpTitle,
 				thumbnail: glo_thumb,
 				embed: encodeURIComponent(Url.decode(glo_content)),
 				description: (glo_description ? glo_description : ''),
@@ -1255,7 +1267,7 @@ if (!window.console || !console.firebug) {
 				if(glo_title=="" || glo_title=="undefined"){
 						glo_title=decodeURIComponent(glo_url);
 				}
-				value=decodeURIComponent(value);
+				try{value=decodeURIComponent(value)}catch(err){};
 				if(value.length>80){
 					value=value.slice(0,77);
 					value+="...";
@@ -2339,7 +2351,9 @@ if (!window.console || !console.firebug) {
 			err_isTrue=true;
 		}
 		var sender=glo_userEmail;
-		var subject=decodeURIComponent(glo_title);
+		var tmpTitle=glo_title;
+		try{tmpTitle=decodeURIComponent(glo_title);}catch(err){}
+		var subject=tmpTitle;
 		if(glo_url=="" || glo_url=="undefined" || glo_url==undefined){
 			glo_url=glo_pUrl;
 		}
@@ -2658,9 +2672,11 @@ if (!window.console || !console.firebug) {
 		}
 		if(!glo_description || glo_description==undefined || glo_description=="undefined"){glo_description="";}
 		if(!glo_tags || glo_tags=="undefined"){glo_tags="";}
+		var tmpTitle=glo_title;
+		try{tmpTitle=decodeURIComponent(glo_title);}catch(err){}
 		var objects="";
 		var destination="";
-		objects=[ {type:glo_type, url:glo_url, sharURL:getSharURL(), title:decodeURIComponent(glo_title), thumbnail:glo_thumb, embed:glo_content, description:glo_description, tags:glo_tags}];
+		objects=[ {type:glo_type, url:glo_url, sharURL:getSharURL(), title:tmpTitle, thumbnail:glo_thumb, embed:glo_content, description:glo_description, tags:glo_tags}];
 		objects=JSON.encode(objects);
 		destination=[{type:destination1 , address:destAddress}];
 		destination=JSON.encode(destination);
@@ -3132,7 +3148,8 @@ Widget.implement({
 					$('sharebox_preview').removeClass('hidden');
 				}).bind(this));
 				widget.addEvent('shareableTitleChanged', (function(title) {
-					$('sharebox_previewTitle').set('text', decodeURIComponent(title));
+					try{title=decodeURIComponent(title)}catch(err){}
+					$('sharebox_previewTitle').set('text',title);
 				}).bind(this));
 				widget.addEvent('shareableDescriptionChanged', (function(description) {
 					$('sharebox_previewDescription').set('text', description);
