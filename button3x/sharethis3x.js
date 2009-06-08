@@ -1038,6 +1038,9 @@ try{
 		}
 		//main function for fpc cookie handling
 		function _stFpc(){
+			if(!document.domain){
+				return false;
+			}
 			var cVal=_stGetFpc("__unam");
 			if(cVal==false){
 				var bigRan=Math.round(Math.random() * 2147483647);
@@ -1045,7 +1048,7 @@ try{
 				var time=(new Date()).getTime();
 				time=time.toString(16);
 				var guid="";
-				var hashD=_stGetD()
+				var hashD=_stGetD();
 				hashD=hashD.split(/\./)[1];
 				guid=_stdHash(hashD)+"-"+time+"-"+bigRan+"-1";
 				cVal=guid;
