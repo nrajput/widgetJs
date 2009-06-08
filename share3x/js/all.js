@@ -1,5 +1,5 @@
 /*!
- * ShareThis Widget Version 3.9.1-rc1
+ * ShareThis Widget Version 3.9.1-rc2
  * 6/05/09 ShareThis.com 
  */
 
