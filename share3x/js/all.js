@@ -3035,7 +3035,9 @@ Widget.implement({
 						}, 1);
 					}
 					if (glo_sharURL) {
-						var message = decodeURIComponent(glo_title + ' - ' + getSharURL() + ' via @ShareThis');
+						var tempTitle=glo_title;
+						try{tempTitle=decodeURIComponent(glo_title);}catch(err){}
+						var message = empTitle + ' - ' + getSharURL() + ' via @ShareThis';
 						var i=0
 						while ( message.length > 140 ) {
 							message = glo_title.substr(0, glo_title.length - i++) + '... ' + glo_sharURL;
@@ -3744,7 +3746,9 @@ Widget.implement({
 					statusMessage: null,
 					onReady: function() {
 						widget.addEvent('twitterClicked', (function() {
-							this.statusMessage = decodeURIComponent(glo_title + ' - ' + getSharURL());
+							var tempTitle=glo_title;
+							try{tempTitle=decodeURIComponent(glo_title);}catch(err){}
+							this.statusMessage = tempTitle + ' - ' + getSharURL();
 							var i=0;
 							while ( this.statusMessage.length > 140 ) {
 								this.statusMessage = glo_title.substr(0, glo_title.length - i++) + '... ' + getSharURL();
@@ -4420,7 +4424,7 @@ Widget.implement({
 			if (service.dontUseEncodedURL) {
 				link = service.submitUrl.replace('{title}', glo_title).replace('{url}', serviceURL).replace('{content}', glo_content);				
 			} else {
-				link = service.submitUrl.replace('{title}', glo_title).replace('{url}', encodeURIComponent(serviceURL)).replace('{content}', glo_content);
+				link = service.submitUrl.replace('{title}', encodeURIComponent(glo_title)).replace('{url}', encodeURIComponent(serviceURL)).replace('{content}', glo_content);
 			}
 		}
 		var a = new Element('a', {
