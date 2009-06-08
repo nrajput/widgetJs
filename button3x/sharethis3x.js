@@ -135,9 +135,9 @@ ST_JSON = new function(){
 	catch(z){rc=/^(true|false|null|\[.*\]|\{.*\}|".*"|\d+|\d+\.\d+)$/}
 };
 
-/*
+
 try{
-*/
+
 	if (!SHARETHIS) {
 		if(!SHARETHIS_TOOLBAR){
 			var SHARETHIS_TOOLBAR=false;
@@ -556,11 +556,11 @@ try{
 		        	} else {
 		        		if( (SHARETHIS.ready===true && SHARETHIS.frameReady===true) || (SHARETHIS.popupExists===true && SHARETHIS.ready==true && SHARETHIS.widgetExists===false) || (SHARETHIS.popupExists===true && SHARETHIS.ready==true && SHARETHIS.frameReady===true) ){
 							clearInterval(stVisibleInterval);
-							if ( ( e && typeof(e) != "undefined" &&  typeof(e) != "unknown" ) || ( event && typeof(event) != "undefined" &&  typeof(event) != "unknown") ) {
-								if (e && typeof(e) != "undefined" &&  typeof(e) != "unknown") {
+							if ( ( typeof(e) != "undefined" &&  typeof(e) != "unknown" && e) || (typeof(event) != "undefined" &&  typeof(event) != "unknown" && event) ) {
+								if (typeof(e) != "undefined" &&  typeof(e) != "unknown" && e) {
 									o.trigger = e.target
 								}
-								else if (event && typeof(event) != "undefined" && typeof(event) != "unknown") {
+								else if (typeof(event) != "undefined" && typeof(event) != "unknown" && event) {
 									o.trigger = event.srcElement;
 								}
 								if (o.trigger !== null) {
@@ -1142,7 +1142,7 @@ try{
 		var obj = SHARETHIS.addEntry();
 	}
 
-/*
+
 }
 catch(err){
-}*/
+}
