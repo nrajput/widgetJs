@@ -48,13 +48,13 @@
 		$url = "";
 		switch ($destination) {
 			case "facebook.com":
-				$url = "http://www.facebook.com/share.php?u={sharurl}&t={title}";
+				$url = "http://www.facebook.com/share.php?u={url}&t={title}";
 				break;
 			case "digg.com":
 				$url = "http://digg.com/submit?phase=2&url={url}&title={title}";
 				break;
 			case "buzz.yahoo.com":
-				$url = "http://buzz.yahoo.com/buzz?targetUrl={sharurl}&headline={title}&src=sharethis";
+				$url = "http://buzz.yahoo.com/buzz?targetUrl={url}&headline={title}&src=sharethis";
 				break;
 		}
 		if ($url !== "") {

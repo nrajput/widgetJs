@@ -4117,14 +4117,12 @@ Widget.implement({
 		delicious: {
 			title: 'Delicious',
 			submitUrl: 'http://del.icio.us/post?url={url}&title={title}',
-			destination: 'del.icio.us',
-			dontUseSharURL: 'Shar URLs are not allowed'			
+			destination: 'del.icio.us'		
 		},
 		digg: {
 			title: 'Digg',
 			submitUrl: 'http://digg.com/submit?phase=2&url={url}&title={title}',
-			destination: 'digg.com',
-			dontUseSharURL: 'Shar URLs are not allowed'
+			destination: 'digg.com'
 		},
 		diigo: {
 			title: 'Diigo',
@@ -4222,7 +4220,6 @@ Widget.implement({
 			title: 'MySpace',
 			submitUrl: 'http://www.myspace.com/Modules/PostTo/Pages/?l=3&u={url}&t={title}&c={content}%3Cp%3EPowered+by+%3Ca+href%3D%22http%3A%2F%2Fsharethis.com%22%3EShareThis%3C%2Fa%3E%3C%2Fp%3E',
 			destination: 'myspace.com'
-//			dontUseSharURL: 'Shar URLs are not allowed'
 		},
 		n4g: {
 			title: 'N4G',
@@ -4243,7 +4240,6 @@ Widget.implement({
 			title: 'Orkut',
 			onClick: function(event) { widget.showPage('post|orkut'); event.stop(); },
 			type: 'post'
-//			dontUseSharURL: 'Shar URLs are not allowed'
 		},
 		propeller: {
 			title: 'Propeller',
@@ -4273,8 +4269,7 @@ Widget.implement({
 		stumbleupon: {
 			title: 'Stumbleupon',
 			submitUrl: 'http://www.stumbleupon.com/submit?url={url}&title={title}',
-			destination: 'stumbleupon.com',
-			dontUseSharURL: 'Shar URLs are not allowed'	
+			destination: 'stumbleupon.com'
 		},
 		technorati: {
 			title: 'Technorati',
@@ -4314,7 +4309,8 @@ Widget.implement({
 				widget.showPage('post|twitter');
 				event.stop();
 			},
-			type: 'post'			
+			type: 'post',
+			useSharURL: 'Shar URLs are allowed'
 		},
 		typepad:  {
 			title: 'TypePad',
@@ -4419,7 +4415,7 @@ Widget.implement({
 		}
 		
 		if ('submitUrl' in service && service.submitUrl.length) {
-			var serviceURL = service.dontUseSharURL ? glo_url : getSharURL();
+			var serviceURL = service.useSharURL ? getSharURL() : glo_url;
 			
 			if (service.dontUseEncodedURL) {
 				link = service.submitUrl.replace('{title}', glo_title).replace('{url}', serviceURL).replace('{content}', glo_content);				
