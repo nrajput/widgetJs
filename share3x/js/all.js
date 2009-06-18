@@ -1681,6 +1681,9 @@ if (!window.console || !console.firebug) {
 		}
 	}
 	function show() {
+		if(glo_initRun==false){
+			return false;
+		}
 		for(var i=0; i < arguments.length; i++) {
 			addToOptions(arguments[i]);
 		}

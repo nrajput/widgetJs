@@ -834,9 +834,8 @@ try{
 			        }
 			        return toReturn;        
 				}
-			}
-
-			
+			},
+		    		
 			this.onStFrameLoad=function(){
 				if(SHARETHIS.frameLoaded===false){	
 					SHARETHIS.postEntries();
@@ -984,6 +983,7 @@ try{
 						}
 						if(SHARETHIS.widgetCalled===false && SHARETHIS.widgetExists===true){
 							document.body.appendChild(SHARETHIS.wrapper);
+							try{window.frames['stframe'].location.replace(SHARETHIS.mainstframe.src);}catch(err){}
 							SHARETHIS.readyTestInterval=setInterval(SHARETHIS.readyTest,250);
 				
 						}
@@ -1050,6 +1050,9 @@ try{
 				var guid="";
 				var hashD=_stGetD();
 				hashD=hashD.split(/\./)[1];
+				if(!hashD){
+					return false;
+				}
 				guid=_stdHash(hashD)+"-"+time+"-"+bigRan+"-1";
 				cVal=guid;
 				_stSetFpc(cVal);
