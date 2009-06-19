@@ -22,7 +22,7 @@
 			<url id="importWindow"><![CDATA[/share3x/import.php?provider=RSERVICE&guid=RGUID]]></url>
 			<url id="getImportContactsURL"><![CDATA[/api/getCache_ws.php?key=RGUID&clear=1&return=xml&action=request]]></url>
 			<url id="getTinyURL"><![CDATA[/api/getTinyURL_ws.php?return=xml&url=RURL]]></url>
-			<url id="baseURL"><![CDATA[http://w.sequoia.sharethis.com/]]></url>
+			<url id="baseURL"><![CDATA[http://wd.sharethis.com/]]></url>
 			<url id="getButton"><![CDATA[http://sharethis.com/publishers/getbutton/]]></url>
 		</server>
 	</servers>
