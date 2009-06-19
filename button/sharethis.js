@@ -1,6 +1,6 @@
 /*
-ShareThis Loader Version 3.9.2-rc1
-6/10/09 ShareThis.com
+ShareThis Loader Version 3.9.3-rc1
+6/19/09 ShareThis.com
 */
 
 var STV="3.9.2-rc1";
@@ -284,6 +284,14 @@ try{
 							chicklet.onclick = this.popup;
 						}
 						break;
+					case "myspace":
+						chicklet.setAttribute("st_dest", "myspace.com");
+						chicklet.onclick = this.chicklet;
+						break;
+					case "aim":
+						chicklet.setAttribute("st_dest", "aim.com");
+						chicklet.onclick = this.chicklet;
+						break;	
 				}
 			}
 		}
