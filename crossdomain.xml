@@ -2,6 +2,6 @@
 <!DOCTYPE cross-domain-policy SYSTEM "http://www.adobe.com/xml/dtds/cross-domain-policy.dtd">
 <cross-domain-policy>
   <site-control permitted-cross-domain-policies="master-only" />
-  <allow-access-from domain="*.meandmybadself.com" secure="false" />
-  <allow-access-from domain="*.sharethis.com" secure="false"  />
+  <allow-access-from domain="*.meandmybadself.com" />
+  <allow-access-from domain="*.sharethis.com"  />
 </cross-domain-policy>
