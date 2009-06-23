@@ -1,6 +1,6 @@
 /*
-ShareThis Loader Version 3.9.2-rc1
-6/10/09 ShareThis.com
+ShareThis Loader Version 3.9.3-rc1
+6/19/09 ShareThis.com
 */
 
 var STV="3.9.2-rc1";
@@ -284,6 +284,14 @@ try{
 							chicklet.onclick = this.popup;
 						}
 						break;
+					case "myspace":
+						chicklet.setAttribute("st_dest", "myspace.com");
+						chicklet.onclick = this.chicklet;
+						break;
+					case "aim":
+						chicklet.setAttribute("st_dest", "aim.com");
+						chicklet.onclick = this.chicklet;
+						break;	
 				}
 			}
 		}
@@ -834,9 +842,8 @@ try{
 			        }
 			        return toReturn;        
 				}
-			}
-
-			
+			},
+		    		
 			this.onStFrameLoad=function(){
 				if(SHARETHIS.frameLoaded===false){	
 					SHARETHIS.postEntries();
@@ -984,6 +991,7 @@ try{
 						}
 						if(SHARETHIS.widgetCalled===false && SHARETHIS.widgetExists===true){
 							document.body.appendChild(SHARETHIS.wrapper);
+							try{window.frames['stframe'].location.replace(SHARETHIS.mainstframe.src);}catch(err){}
 							SHARETHIS.readyTestInterval=setInterval(SHARETHIS.readyTest,250);
 				
 						}
@@ -1050,6 +1058,9 @@ try{
 				var guid="";
 				var hashD=_stGetD();
 				hashD=hashD.split(/\./)[1];
+				if(!hashD){
+					return false;
+				}
 				guid=_stdHash(hashD)+"-"+time+"-"+bigRan+"-1";
 				cVal=guid;
 				_stSetFpc(cVal);

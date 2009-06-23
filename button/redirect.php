@@ -56,11 +56,19 @@
 			case "buzz.yahoo.com":
 				$url = "http://buzz.yahoo.com/buzz?targetUrl={url}&headline={title}&src=sharethis";
 				break;
+			case "myspace.com":
+				$url = "http://www.myspace.com/Modules/PostTo/Pages/?l=3&u={url}&t={title}&c={content}%3Cp%3EPowered+by+%3Ca+href%3D%22http%3A%2F%2Fsharethis.com%22%3EShareThis%3C%2Fa%3E%3C%2Fp%3E";
+				break;
+			case "aim.com":
+				$url = "http://share.aim.com/share/?url={url}&title={title}";
+				break;		
+				
 		}
 		if ($url !== "") {
 			$url = str_replace("{sharurl}", urlencode($properties->sharURL), $url);
 			$url = str_replace("{url}", urlencode($properties->url), $url);
 			$url = str_replace("{title}", urlencode($properties->title), $url);
+			$url = str_replace("{content}", urlencode($properties->content), $url);
 			header("Location: $url");
 		}
 	}
