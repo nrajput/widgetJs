@@ -4,9 +4,7 @@ $file_name="sharethis.js";
 $file_contents=file_get_contents($file_name); 
 $file_contents=str_replace("SHARETHIS","SHARETHIS_NO_CONFLICT",$file_contents);
 $pubKey	= isset($_REQUEST["publisher"]) 	? $_REQUEST["publisher"]		: '';
-
-
-
+$page	= isset($_REQUEST["page"]) 	? $_REQUEST["page"]		: '';
 ?>
 
 var manustvar=0;
@@ -85,6 +83,9 @@ var stObj = SHARETHIS_NO_CONFLICT.addEntry({title:document.title,url:document.lo
 <?php
 if(!empty($pubKey)){
 	echo "SHARETHIS_NO_CONFLICT.meta.publisher='$pubKey';";	
+}
+if(!empty($page)){
+	echo "SHARETHIS_NO_CONFLICT.page='$page';";	
 }
 ?>
 

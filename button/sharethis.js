@@ -1,9 +1,9 @@
 /*
-ShareThis Loader Version 3.9.3-rc1
-6/19/09 ShareThis.com
+ShareThis Loader Version 3.9.4-rc1
+7/7/09 ShareThis.com
 */
 
-var STV="3.9.2-rc1";
+var STV="3.9.4-rc1";
 
 ST_JSON = new function(){
 
@@ -305,6 +305,7 @@ try{
 			this.popExists=false;
 			this.popup_win=null;
 			this.newwinfrag="";
+			this.page=null;
 			this.shareables=[];
 			this.readyList=[];
 			this.postUrl="";
@@ -558,7 +559,11 @@ try{
 						clearInterval(stVisibleInterval);
 						added_tool="/glo_toolbar=true";
 						SHARETHIS.hideEmbeds();
-						SHARETHIS.mainstframe.src = SHARETHIS.frameUrl + SHARETHIS.newwinfrag +"/guid_index=" + oidx +"/guid=" + SHARETHIS.guid+added_tool;	
+						var pgval="";
+						if(SHARETHIS.page!=null){
+							pgval="/page="+SHARETHIS.page;
+						}
+						SHARETHIS.mainstframe.src = SHARETHIS.frameUrl + SHARETHIS.newwinfrag +"/guid_index=" + oidx +"/guid=" + SHARETHIS.guid+added_tool+pgval;	
 						SHARETHIS.wrapper.style.visibility="visible";
 						SHARETHIS.mainstframe.style.visibility = 'visible';
 		        	} else {
