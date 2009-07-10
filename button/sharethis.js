@@ -1,9 +1,9 @@
 /*
-ShareThis Loader Version 3.9.3-rc1
-6/19/09 ShareThis.com
+ShareThis Loader Version 3.9.4-rc1
+7/8/09 ShareThis.com
 */
 
-var STV="3.9.2-rc1";
+var STV="3.9.4-rc1";
 
 ST_JSON = new function(){
 
@@ -135,9 +135,9 @@ ST_JSON = new function(){
 	catch(z){rc=/^(true|false|null|\[.*\]|\{.*\}|".*"|\d+|\d+\.\d+)$/}
 };
 
-
+/*
 try{
-
+*/
 	if (!SHARETHIS) {
 		if(!SHARETHIS_TOOLBAR){
 			var SHARETHIS_TOOLBAR=false;
@@ -220,9 +220,10 @@ try{
 				published:  '',
 				author:     ''
 			};
+			//onmouseover set to true for default
 			this.options={
 				button: true,
-				onmouseover: false,
+				onmouseover: true,
 				buttonText: 'ShareThis',
 				popup: false,
 				offsetLeft: 0,
@@ -339,6 +340,7 @@ try{
 			this.curr_id=null;
 			this.current_element=null;
 			this.opt_arr=[]
+			this.mousetimer=null;
 			this.meta={
 				publisher: '',
 				hostname: location.host,
@@ -368,19 +370,77 @@ try{
 					var elleft=0;
 					var topVal=0;
 					var leftVal=0;
+					var elemH=0;
+					var elemW=0;
 					eltop = curtop+shareel.offsetHeight+5;
 					elleft = curleft+5;
 					topVal=(eltop + SHARETHIS.curr_offsetTop);
 					topVal=eval(topVal);
+					elemH=topVal;
 					topVal+="px";
 					leftVal=(elleft + SHARETHIS.curr_offsetLeft);
 					leftVal=eval(leftVal);
+					elemW=leftVal;
 					leftVal+="px";
 					SHARETHIS.wrapper.style.top = topVal;
 					SHARETHIS.wrapper.style.left = leftVal;
+					
+					SHARETHIS.oldScroll=document.body.scrollTop;
+					//console.log("in position widget");
+					var pginfo=this.pageSize();
+					var effectiveH=pginfo.height+pginfo.scrY;
+					var effectiveW=pginfo.width+pginfo.scrX;
+					var widgetH=280;
+					var widgetW=355;
+					/*console.log(pginfo);
+					console.log(effectiveH); //501 //400
+					console.log(effectiveW); //1920
+					console.log(elemH); //221
+					console.log(elemW); //910
+					*/
+					var needH=widgetH+elemH; //500
+					var needW=widgetW+elemW; //1270
+					var diffH=needH-effectiveH; //~100
+					var diffW=needW-effectiveW;
+					var newH=elemH-diffH;// ~121
+					var newW=elemW-diffW;
+					function getHW(elem)
+					{
+					    var retH=0;
+						var retW=0;
+						while( elem!=null ) {
+							retH+= elem.offsetTop;
+							retW+= elem.offsetLeft;
+							elem= elem.offsetParent;
+						}
+						return {height:retH,width:retW};
+					}
+					
+					var buttonPos=getHW(shareel);
+					var leftA,rightA,topA,bottomA=false;
+					if(diffH>0){
+						//bottom space is not available assume top is 
+						bottomA=false;
+						topA=true;
+						if((buttonPos.height-widgetH)>0){
+							newH=buttonPos.height-widgetH;
+						}
+						SHARETHIS.wrapper.style.top = newH+"px";
+					}
+					
+					if(diffW>0){
+						//left is not avaialbe assume right is...
+						leftA=false;
+						rightA=true;
+						if((buttonPos.width-widgetW)>0){
+							newW=buttonPos.width-widgetW;
+						}
+						SHARETHIS.wrapper.style.left = newW+"px";
+					}
+					
 					SHARETHIS.wrapper.style.visibility="visible";
 					SHARETHIS.mainstframe.style.visibility = 'visible';
-					SHARETHIS.oldScroll=document.body.scrollTop;
+					
 			},
 			this.hideWidget=function(){
 				if(SHARETHIS.wrapper.style.visibility !== 'hidden'){
@@ -418,8 +478,7 @@ try{
 			   		winX= document.documentElement.offsetWidth;
 			        winY=document.documentElement.offsetHeight;
 			   }
-		
-				pScroll=[scX,scY,winX,winY];
+				pScroll={scrX:scX,scrY:scY,width:winX,height:winY};
 		        return pScroll;
 		    }
 			this.postPopup=function(){
@@ -550,6 +609,8 @@ try{
 					};
 				}
 		        o.popup = function(e){
+		        	o.options.autoclose=true;
+		        	o.options.onmouseover=true;//setting to true for default...
 		        	if(SHARETHIS_TOOLBAR===true){
 		        		if(st_showing===false){
 		        			SHARETHIS.log('widget',o,'toolbar');
@@ -571,7 +632,7 @@ try{
 								else if (typeof(event) != "undefined" && typeof(event) != "unknown" && event) {
 									o.trigger = event.srcElement;
 								}
-								if (o.trigger !== null) {
+								if (o.trigger !== null && o.trigger) {
 									id=o.trigger.id;
 									SHARETHIS.current_element=o.trigger;
 									o.page = o.trigger.getAttribute('st_page');
@@ -641,7 +702,7 @@ try{
 									st_showing = true;
 								}
 								else{
-								stcloseWidget();
+									if(o.options.onmouseover==false || o.options.onmouseover=="false"){stcloseWidget();}
 								}
 							}
 		        		}
@@ -657,8 +718,14 @@ try{
 			    a.title = "ShareThis via email, AIM, social bookmarking and networking sites, etc.";
 		        a.href = "javascript:void(0)";
 		        a.setAttribute("st_page", "home");
-		        if(o.options.onmouseover == false || o.options.onmouseover == "false") a.onclick = o.popup;
-		        if(o.options.onmouseover == true) a.onmouseover = o.popup;
+		        //if(o.options.onmouseover == false || o.options.onmouseover == "false") a.onclick = o.popup;
+		        if(o.options.onmouseover == true || o.options.onmouseover == "true") {
+		        	SHARETHIS.wrapper.onmouseover=function(){stCancelClose();};
+		        	a.onmouseover=function(){console.log("button mouseover");stCancelClose();SHARETHIS.mousetimer=setTimeout(o.popup,300);};
+		        	a.onmouseout=function(){console.log("button mouse out");clearInterval(SHARETHIS.mousetimer);stClose();};
+		        		//function(){SHARETHIS.mousetimer=setTimeout(o.popup,100);};
+		        		//a.onmouseover = o.popup;
+		        }
 		        var t = document.createElement("span");
 		        t.className = 'stbuttontext';
 		        t.setAttribute("st_page", "home");
@@ -1012,10 +1079,12 @@ try{
 		var closetimeout;
 
 		function stClose(){
-		if(stautoclose==true) closetimeout = setTimeout("stcloseWidget()",750);	
+			console.log("in stClose");
+			if(stautoclose==true) closetimeout = setTimeout("stcloseWidget()",1500);	
 		}
 
 		function stCancelClose() {
+			console.log("in stCancelClose");
 			clearTimeout(closetimeout);
 		}
 
@@ -1156,7 +1225,8 @@ try{
 		var obj = SHARETHIS.addEntry();
 	}
 
-
+/*
 }
 catch(err){
 }
+*/
