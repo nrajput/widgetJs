@@ -1981,6 +1981,11 @@ if (!window.console || !console.firebug) {
 				if(newResp[i].description){setGlobals("glo_description_array",newResp[i].description);}
 			}
 			setValues();
+			
+			if (glo_page == "post|twitter") {
+				createSharURL(glo_url, true);
+				widget.fireEvent('twitterClicked', getSharURL());
+			}
 		
 		}else{logError("getObjects","Ajax Failure");}
 	}
