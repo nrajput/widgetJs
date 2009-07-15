@@ -5,7 +5,7 @@ function genTopicCloud() {
 		idProperty: 'num',
 		fields: ['count', 'score', 'neigh'],
 		proxy: new Ext.data.HttpProxy({
-			url: '../api/getTopics.php',
+			url: 'api/getTopics.php',
 		}),
 		reader: new Ext.data.JsonReader({
 			totalProperty: 'topic_count',
@@ -63,7 +63,7 @@ function genContentList() {
 		root: 'items',
 		fields: ['oid', 'title', 'url', 'views', 'shares', 'services'],
 		proxy: new Ext.data.HttpProxy({
-			url: '../api/getTopics.php',
+			url: 'api/getTopics.php',
 		}),
 		reader: new Ext.data.JsonReader({
 			totalProperty: 'url_count',
