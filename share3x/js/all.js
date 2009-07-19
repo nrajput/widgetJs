@@ -1,6 +1,6 @@
 /*!
- * ShareThis Widget Version 3.9.3-rc1
- * 6/19/09 ShareThis.com 
+ * ShareThis Widget Version 3.9.4-rc2
+ * 7/19/09 ShareThis.com 
  */
 
 //widget-class.js
@@ -1014,7 +1014,7 @@ if (!window.console || !console.firebug) {
 	glo_tabArray=glo_tabs.split(",");
 	var glo_charset='utf-8';
 	var glo_services="";
-	var glo_default_services='facebook,myspace,digg,reddit,windows_live,twitter,google_bmarks,delicious,stumbleupon,yahoo_bmarks,linkedin,ybuzz,technorati,mixx,blogger,friendfeed,blinklist,furl,xanga,newsvine,propeller,wordpress,diigo,typepad,bus_exchange,fark,mister_wong,current,kirtsy,blogmarks,oknotizie,faves,livejournal,slashdot,care2,n4g,meneame,sphinn,simpy,orkut,friendster,dealsplus,fresqui,yigg,funp';
+	var glo_default_services='facebook,myspace,digg,reddit,windows_live,twitter,google_bmarks,delicious,stumbleupon,yahoo_bmarks,linkedin,ybuzz,technorati,mixx,blogger,friendfeed,blinklist,furl,xanga,newsvine,propeller,wordpress,diigo,typepad,bus_exchange,fark,mister_wong,current,kirtsy,blogmarks,oknotizie,faves,livejournal,slashdot,care2,n4g,meneame,sphinn,simpy,dealsplus,fresqui,yigg,funp';
 	var glo_default_swArray=[];
 		glo_default_swArray = glo_default_services.split(',');
 	var glo_style='default';
@@ -4162,11 +4162,6 @@ Widget.implement({
 			submitUrl: 'http://friendfeed.com/share?url={url}&title={title}',
 			destination: 'friendfeed.com'
 		},
-		friendster: {
-			title: 'Friendster',
-			onClick: function(event) { widget.showPage('post|friendster'); event.stop(); },
-			type: 'post'
-		},
 		funp: {
 			title: 'Funp',
 			submitUrl: 'http://funp.com/pages/submit/add.php?title={title}&url={url}&via=tools',
@@ -4243,11 +4238,6 @@ Widget.implement({
 			title: 'Oknotizie',
 			submitUrl: 'http://oknotizie.alice.it/post?url={url}&title={title}',
 			destination: 'oknotizie.alice.it'
-		},
-		orkut: {
-			title: 'Orkut',
-			onClick: function(event) { widget.showPage('post|orkut'); event.stop(); },
-			type: 'post'
 		},
 		propeller: {
 			title: 'Propeller',
