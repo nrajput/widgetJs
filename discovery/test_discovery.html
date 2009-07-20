@@ -6,7 +6,25 @@
 </head>
 <body>
 <p>Start of Discovery Widget</p>
-<script type="text/javascript" src="http://w.sharethis.com/discovery/discovery_loader.js?style=default&amp;publisher=9d7164f7-852e-49b6-ad44-5b3dd5bc6e92&amp;images=true&amp;topics=cars&amp;height=440&amp;width=300"></script>
+<div id="st_disc_container">
+</div>
+<script type="text/javascript" src="http://w.sharethis.com/loader.js"></script>
+<script type="text/javascript">
+	try {
+		var container = document.getElementById("st_disc_container");
+		var options = {
+			width: 350,
+			height: 450,
+			components: {
+				header: false,
+				footer: false
+			}
+		};
+		var st_disc_widget = new sharethis.widgets.discovery(document.getElementById("st_disc_container"), options);
+	} catch (err) {
+		
+	}
+</script>
 <p>End of Discovery Widget</p>
 <p>Body Done Loading</p>
 </body>

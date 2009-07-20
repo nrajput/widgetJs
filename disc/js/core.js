@@ -5,7 +5,7 @@ function genTopicCloud() {
 		idProperty: 'num',
 		fields: ['count', 'score', 'neigh'],
 		proxy: new Ext.data.HttpProxy({
-			url: 'api/getTopics.php',
+			url: 'http://wd.sharethis.com/api/getTopics_ws.php',
 		}),
 		reader: new Ext.data.JsonReader({
 			totalProperty: 'topic_count',
@@ -18,8 +18,7 @@ function genTopicCloud() {
 		autoLoad: { params: { start: 0, limit: 20, domain: currentDomain, period: currentPeriod, topic: currentTopic } }
 	});
 	
-		//sampleData.results.sort( function(){return (Math.round(Math.random())-0.5)});
-    
+   
     var cloud = new Ext.ux.TagCloud({
         store: topicStore, 
         displayField: 'tag', 
@@ -63,7 +62,7 @@ function genContentList() {
 		root: 'items',
 		fields: ['oid', 'title', 'url', 'views', 'shares', 'services'],
 		proxy: new Ext.data.HttpProxy({
-			url: 'api/getTopics.php',
+			url: 'http://wd.sharethis.com/api/getTopics_ws.php',
 		}),
 		reader: new Ext.data.JsonReader({
 			totalProperty: 'url_count',
@@ -158,8 +157,5 @@ Ext.onReady(function(){
 	genTopicCloud();
 	genFilter();
 	genContentList();
-
-	
-
 });
 						
