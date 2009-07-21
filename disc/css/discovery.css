@@ -197,7 +197,7 @@ h6 {
 .x-cloud-item a:hover  {
 	text-decoration:underline;
 }
-.x-cloud-item.small { font-size: 0.90em; }
+.x-cloud-item.small { font-size: 1.2em; }
 .x-cloud-item.medium { font-size: 1.2em; }
 .x-cloud-item.large { font-size: 1.35em; }
 .x-cloud-item.largest { font-size: 1.5em; }
@@ -267,6 +267,7 @@ h6 {
 	margin-left:8px;
 	border:1px #ccc solid;
 	display:inline;
+	font-size:0.8em;
 }
 
 .icons{

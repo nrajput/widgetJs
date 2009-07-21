@@ -1,3 +1,16 @@
+function queryParameters(query) {
+  var keyValuePairs = query.split(/[&?]/g);
+  var params = {};
+  for (var i = 0, n = keyValuePairs.length; i < n; ++i) {
+    var m = keyValuePairs[i].match(/^([^=]+)(?:=([\s\S]*))?/);
+    if (m) {
+      var key = decodeURIComponent(m[1]);
+      (params[key] || (params[key] = [])).push(decodeURIComponent(m[2]));
+    }
+  }
+  return params;
+}
+
 function genTopicCloud() {
 	topicStore = new Ext.ux.data.PagingStore({
 		totalProperty: 'topic_count',
@@ -31,7 +44,7 @@ function genTopicCloud() {
 		contentStore.setBaseParam('topic', currentTopic);
 
 		var headerTemplate = new Ext.XTemplate(
-			'<div id="headerText">Discover more about: <span id="headerTopic">{[Ext.util.Format.ellipsis(values.topic, 14, false)]}</span></div>'
+			'<div id="headerText">Discover more about: <span id="headerTopic">{[Ext.util.Format.ellipsis(values.topic, 12, false)]}</span></div>'
 		);
 		headerTemplate.overwrite('header', { topic: currentTopic.replace(/_/g, ' ') });
 
@@ -52,7 +65,7 @@ function genFilter() {
 }
 
 function reload() {
-	topicStore.load( { params: { start: 0, limit: 4, domain: currentDomain, period: currentPeriod, topic: currentTopic } });
+	topicStore.load( { params: { start: 0, limit: 5, domain: currentDomain, period: currentPeriod, topic: currentTopic } });
 	contentStore.load( { params: { start: 0, limit: 4, domain: currentDomain, period: currentPeriod, topic: currentTopic } });
 }
 
@@ -134,6 +147,9 @@ var topicStore;
 var currentTopic = "Obama";
 var currentDomain = "foxnews.com";
 var currentPeriod = 30;
+var currentDestination = "";
+var options = queryParameters(document.location.hash.substring(1));
+
 
 Ext.override(Ext.PagingToolbar, {
     refresh: function(){
