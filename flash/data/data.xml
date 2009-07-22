@@ -87,7 +87,7 @@
 			<source id="AOL" type="Email" name="AOL" icon="22" uLabel="AOL Username" pLabel="Password" />
 			<source id="AIM" type="AIM" name="AIM" icon="21" uLabel="Screenname" pLabel="Password"/>
 			<!--<source id="MySpace" type="MySpace" name="MySpace" icon="13" uLabel="Myspace Login" pLabel="Password"/>-->
-			<source id="Import" type="Import" name="Import Contacts" icon="19"/>
+			<!--<source id="Import" type="Import" name="Import Contacts" icon="19"/>-->
 		</importSources>
 	</client>
 </data>
