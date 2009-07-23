@@ -84,6 +84,34 @@ h6 {
 	color:#fff;
 }
 
+#headerTopic {
+	font-weight: bold;
+}
+
+.headerText {
+	margin-left: 5px;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.topicHeaderText {
+	margin-left: 5px;
+	white-space: nowrap;
+	overflow: hidden;
+	font-size: 0.9em;
+}
+
+.footerText a  {
+	margin-left:5px;
+	text-decoration:none;	
+	font-size: 12px;
+	color: #fff;
+}
+
+.footerText a:hover  {
+	text-decoration:none;
+}
+
 .day a{
 	display:inline;
 	font-weight: bold;
@@ -191,15 +219,15 @@ h6 {
 .x-cloud-item a  {
 	margin:5px;
 	color:#0F75BC;
-	text-decoration:none;
-	
+	text-decoration:none;	
 }
+
 .x-cloud-item a:hover  {
 	text-decoration:underline;
 }
-.x-cloud-item.small { font-size: 1.2em; }
-.x-cloud-item.medium { font-size: 1.2em; }
-.x-cloud-item.large { font-size: 1.35em; }
+.x-cloud-item.small { font-size: 1.1em; }
+.x-cloud-item.medium { font-size: 1.1em; }
+.x-cloud-item.large { font-size: 1.30em; }
 .x-cloud-item.largest { font-size: 1.5em; }
 
 .clear{
@@ -243,16 +271,44 @@ h6 {
 	color:#a0a2a4;
 	min-height:150px;
 }
+
+.viewsSharesSeparator {
+	margin: 0;
+	border-left:2px #ccc solid;
+	display:inline;
+	font-size:0.8em;
+	position: absolute;
+	left: 25%;
+	height: 10px;
+	width: 1px;
+}
+
 .resultShares{
 	font-size:9px;
 	display:inline;
 	color:#a0a2a4;
+	position: absolute;
+	left: 30%;
 }
+
+.sharesServicesSeparator {
+	margin: 0;
+	border-left:2px #ccc solid;
+	display:inline;
+	font-size:0.8em;
+	position: absolute;
+	left: 50%;
+	height: 10px;
+	width: 1px;
+}
+
 .resultServices{
 	display:inline;
 	font-size:9px;
 	color:#a0a2a4;
 	white-space:nowrap;
+	position: absolute;
+	left: 55%;
 }
 
 .ad_text{

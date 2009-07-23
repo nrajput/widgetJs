@@ -44,7 +44,7 @@ function genTopicCloud() {
 		contentStore.setBaseParam('topic', currentTopic);
 
 		var headerTemplate = new Ext.XTemplate(
-			'<div id="headerText">Discover more about: <span id="headerTopic">{[Ext.util.Format.ellipsis(values.topic, 12, false)]}</span></div>'
+			'<div id="headerText" class="topicHeaderText">Discover more about: <span id="headerTopic">{[Ext.util.Format.ellipsis(values.topic, 12, true)]}</span></div>'
 		);
 		headerTemplate.overwrite('header', { topic: currentTopic.replace(/_/g, ' ') });
 
@@ -100,11 +100,11 @@ function genContentList() {
 	var tpl = new Ext.XTemplate( 
 		'<tpl for=".">',
 		'<div class="listElement">',
-		    '<div class="resultTitle"><a href="{url}" title="{title}" target="_blank">{[Ext.util.Format.ellipsis(values.title, 60, true)]}</a></div>',
+		    '<div class="resultTitle"><a href="{url}" title="{title}" target="_blank">{[Ext.util.Format.ellipsis(values.title, 80, true)]}</a></div>',
 		    '<div class="resultViews">viewed {views}</div>',
-			'<div class="separator"></div>',
+			'<div class="viewsSharesSeparator"></div>',
 		    '<div class="resultShares">shared {shares}</div>',
-			'<div class="separator"></div>',
+			'<div class="sharesServicesSeparator"></div>',
 		    '<div class="resultServices">most shared on {[this.formatServices(values.services)]}</div>',
 		'</div>',
 		'</tpl>',
@@ -158,7 +158,7 @@ Ext.override(Ext.PagingToolbar, {
 		
 		
 		var headerTemplate = new Ext.Template(
-			'<div id="headerText">Discover what\'s popular right now!</div>'
+			'<div id="headerText" class="headerText">Discover what\'s popular right now!</div>'
 		);
 		headerTemplate.overwrite('header');
 
