@@ -1,6 +1,6 @@
 /*!
- * ShareThis Widget Version 3.9.4-rc2
- * 7/19/09 ShareThis.com 
+ * ShareThis Widget Version 3.9.5-rc1
+ * 7/20/09 ShareThis.com 
  */
 
 //widget-class.js
@@ -173,6 +173,14 @@ var Widget = new Class({ Implements: Events,
 					resp.data
 				]);
 			}
+			else if (resp.statusMessage && resp.statusMessage.toLowerCase()==="missing_parameter_token") {
+				this.fireEvent('postToServiceFailed', [
+					'blogger', 
+					'Remembering Credentials is for Signed in Users Only',
+					resp.data
+				]);
+			}
+			//MISSING_PARAMETER_TOKEN
 			else {
 				logError("get contacts",JSON.encode(resp));
 				this.fireEvent('postToServiceFailed', [
@@ -1994,9 +2002,9 @@ if (!window.console || !console.firebug) {
 
 	function processFrag(){
 		
-		//if(glo_browser.test("ff")==false){
+		if(glo_browser.test("ff")==false){
 		try{glo_jsonStr=decodeURIComponent(glo_jsonStr);}catch(err){}
-		//}
+		}
 		var tmp=glo_jsonStr;
 		var newResp=[];
 		newResp=eval(tmp);
@@ -3686,7 +3694,7 @@ Widget.implement({
 						this.parent();
 					},
 					submitForm: function() {
-						setGlobals("glo_bloggerDraft",0);
+						setGlobals("glo_bloggerDraft",1);
 						widget.postBlogger();
 					}
 				},
@@ -4154,7 +4162,7 @@ Widget.implement({
 		},
 		fresqui: {
 			title: 'Fresqui',
-			submitUrl: 'http://ocio.fresqui.com/post?url={url}&title={title}',
+			submitUrl: 'http://fresqui.com/enviar?url={url}&title={title}',
 			destination: 'ocio.fresqui.com'
 		},
 		friendfeed: {
@@ -4261,7 +4269,7 @@ Widget.implement({
 		},
 		sphinn: {
 			title: 'Sphinn',
-			submitUrl: 'http://sphinn.com/submit.php?url={url}',
+			submitUrl: 'http://sphinn.com/index.php?c=post&m=submit&link={url}',
 			destination: 'sphinn.com'
 		},
 		stumbleupon: {

@@ -1,9 +1,9 @@
 /*
-ShareThis Loader Version 3.9.4-rc2
-7/19/09 ShareThis.com
+ShareThis Loader Version 3.9.5-rc1
+7/20/09 ShareThis.com
 */
 
-var STV="3.9.4-rc2";
+var STV="3.9.5-rc2";
 
 ST_JSON = new function(){
 
@@ -339,7 +339,8 @@ try{
 			this.frameLoaded=false;
 			this.curr_id=null;
 			this.current_element=null;
-			this.opt_arr=[]
+			this.opt_arr=[];
+			this.buttonCount=0;
 			this.meta={
 				publisher: '',
 				hostname: location.host,
@@ -685,7 +686,7 @@ try{
 		            	x.appendChild(a);
 					}
 		        }
-				if(this.logFlag){this.log('view', o, null);}
+				if(this.logFlag){SHARETHIS.buttonCount++;}
 		        return o;
 		    },
 		
@@ -984,7 +985,18 @@ try{
 					this.wrapper.appendChild(this.closebutton);
 
 					this.defer(function(){
-						if(SHARETHIS_TOOLBAR===true){
+						//make button count call
+						var burl = "http://l.sharethis.com/log?event=view";
+				        burl+="&publisher=" + encodeURIComponent(SHARETHIS.meta.publisher)
+				            + "&hostname=" + encodeURIComponent(SHARETHIS.meta.hostname)
+				            + "&count="+SHARETHIS.buttonCount
+				            + "&sessionID="+SHARETHIS.sessionID
+				            + "&ts" + (new Date()).getTime() + "." + SHARETHIS.counter++;		        		         
+				        var logger3 = new Image(1,1);
+				        logger3.src = burl;
+				        logger3.onload = function(){return;};
+
+				        if(SHARETHIS_TOOLBAR===true){
 							document.body.appendChild(SHARETHIS.fp);
 							SHARETHIS.postPopup(); //posts data to set cache
 							SHARETHIS_TOOLBAR_DIV.appendChild(SHARETHIS.wrapper);
