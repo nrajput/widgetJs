@@ -37,7 +37,6 @@ Ext.ux.CustomPaging = Ext.extend(Object, {
 				for( var i = 1; i <= data.pages; i++ ){                                                    
 					Ext.fly('pagingDot'+i).on('click' , function(clickEvent, elem) {
 						if (elem.id.match('pagingDot')) {
-							console.log("switching to page"+elem.id.substring(9));
 							pbar.changePage(parseInt(elem.id.substring(9)));
 						}
 					});
