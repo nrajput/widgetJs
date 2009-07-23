@@ -991,6 +991,9 @@ try{
 				            + "&hostname=" + encodeURIComponent(SHARETHIS.meta.hostname)
 				            + "&count="+SHARETHIS.buttonCount
 				            + "&sessionID="+SHARETHIS.sessionID
+				            + "&location="
+				            + "&url="
+				            + "&fpc="+SHARETHIS.fpc
 				            + "&ts" + (new Date()).getTime() + "." + SHARETHIS.counter++;		        		         
 				        var logger3 = new Image(1,1);
 				        logger3.src = burl;
