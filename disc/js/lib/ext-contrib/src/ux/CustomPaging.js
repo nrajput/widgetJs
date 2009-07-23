@@ -22,7 +22,7 @@ Ext.ux.CustomPaging = Ext.extend(Object, {
 						var headerTemplate = new Ext.Template(
 							'<div id="pagingDot{num}" class="pagingDot"></div>'
 						);
-						headerTemplate.append('pagingDotContainer', {num: i} ) ;
+						headerTemplate.append('pagingDotContainer', {num: i} );
 					}
 					pb.customNumPages = data.pages;
 				} else if( pb.customNumPages > data.pages){
@@ -32,6 +32,16 @@ Ext.ux.CustomPaging = Ext.extend(Object, {
 					pb.customNumPages = data.pages;
 				}  
 				Ext.fly('pagingDot' + data.activePage).radioClass('pagingDot_selected');
+				
+				// setup the handlers for on click
+				for( var i = 1; i <= data.pages; i++ ){                                                    
+					Ext.fly('pagingDot'+i).on('click' , function(clickEvent, elem) {
+						if (elem.id.match('pagingDot')) {
+							console.log("switching to page"+elem.id.substring(9));
+							pbar.changePage(parseInt(elem.id.substring(9)));
+						}
+					});
+				}
 			}
 		});
 
