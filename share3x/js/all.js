@@ -3384,6 +3384,165 @@ Widget.implement({
 				this.parent();
 			}
 		},
+	/*
+		'signin': {
+			id: 'signin_page',
+			nImportsOnShow: 0,
+			onReady: function() {
+				$('import_list').getElements('li').each(function(item, index) {
+					item.getElement('a').addEvents({
+						click: function(event) {
+							widget.setImportContactService(item.getChildren()[0].get('class'));
+							event.stop();
+						}
+					});
+				});
+					
+				$('import_contacts_submit').addEvent('click', (function(event) {
+					Cookie.dispose('import', {domain: ".sharethis.com", path: '/'});
+					Cookie.dispose('import_delt', {domain: ".sharethis.com", path: '/'});
+					var service = widget.currentImportContactService;
+					if( service.protocolName == 'aol' || service.protocolName == 'yahoo' || service.protocolName == 'gmail') {
+						var username = $('import_contacts_username').get('value');
+						var password = $('import_contacts_password').get('value');
+						this.submitForm();
+					} else {
+						//this.fireEvent('importContactsRequested');
+						widget.pushModalWorkingSheet('Waiting for Authorization&hellip;');
+						window.open('/share3x/import.php?provider=' + service.protocolName,'import_contacts','scrollbars=yes,directories=no,menubar=yes,toolbar=yes,height=600,width=900');
+						this.pollImportCookie();
+					}
+					event.stop();
+				}).bind(this));
+								
+				widget.addEvent('importContactsRequested', function() {
+					widget.pushModalWorkingSheet('Importing contacts&hellip;');
+				});
+				widget.addEvent('importContactsSucceeded', function(contactInfo) {
+					widget.popModalWorkingSheet();
+					widget.displayNotification('Success! ' + contactInfo.nContacts + ' contacts imported.');
+					emptyInputs();
+				});
+				widget.addEvent('importContactsFailed', function() {
+					widget.popModalWorkingSheet();
+					widget.pushModalErrorSheet('Could not retrieve your contacts.');
+				})
+				$('import_contacts_done').addEvent('click', (function() {
+					if (this.nImportsOnShow != widget.user.contacts.length) {
+						widget.showPage('addressbook');
+						$("abLoading").setStyle("display","inline");
+						setTimeout("widget.pages.addressbook.addressBook.addBlock()",10);
+					}
+					else {
+						widget.showPage('send');
+					}
+				}).bind(this));
+				widget.addEvent('importContactServiceChanged', (function(serviceTag) {
+					if (this.isShown()) {
+						var service = widget.contactSources[serviceTag];
+						$('regAuth').setStyle('display', 'none');
+						$('oauthImport').setStyle('display', 'block');
+						switch(serviceTag) {
+							case 'gmail':
+								$('regAuth').setStyle('display', 'block');
+								$('oauthImport').setStyle('display', 'none');
+								//$('oauthImport').getElement('label').set('text','We\'ll take you to Gmail where you\'ll be asked to let ShareThis access your address book.');
+								break;
+							case 'yahoo':
+								$('regAuth').setStyle('display', 'block');
+								$('oauthImport').setStyle('display', 'none');
+								//$('oauthImport').getElement('label').set('text','We\'ll take you to Yahoo where you\'ll be asked to let ShareThis access your address book.');
+								break;
+							case 'myspace':
+								$('oauthImport').getElement('label').set('text','We\'ll take you to Myspace where you\'ll be asked to let ShareThis access your friend list.');
+								break;
+							case 'msn':
+								$('oauthImport').getElement('label').set('text','We\'ll take you to MSN/Hotmail where you\'ll be asked to let ShareThis access your address book.');
+								break;
+							case 'aim':
+								$('oauthImport').getElement('label').set('text','We\'ll take you to AOL/AIM where you\'ll be asked to let ShareThis access your buddy list.');
+								break;
+							case 'aol':
+								$('regAuth').setStyle('display', 'block');
+								$('oauthImport').setStyle('display', 'none');
+								break;
+						}
+						var importBox = this.domContainer.getElement('.mbox');//$$('.mbox')[0];
+						importBox.getElement('h4').set('html', service.title);
+						importBox.getElement('h4').set('class', serviceTag);
+						var item = null;
+						$('import_list').getElements('li').each(function(i) {
+							if (i.getElement('a').hasClass(serviceTag)) {
+								item = i;
+							}
+						});
+						if (item) {
+							this.pointImportPointerAt(item);
+						}
+					}
+				}).bind(this));
+				this.bindReturnKeyToSubmission();
+				this.parent();
+			},
+							
+			pollImportCookie: function() {
+				import_cookie_tid = setInterval('import_cookie = Cookie.read("import");'
+						    + 'if(import_cookie == -1) { clearInterval(import_cookie_tid);'
+							+ 		'widget.popModalWorkingSheet();'
+					        +       'widget.pushModalErrorSheet("Contact Import Failed.");'
+					        +		'import_cookie_cycles = 0;'
+					        +       'Cookie.dispose("import", {domain: ".sharethis.com", path: "/"});'
+							+		'Cookie.dispose("import_delt", {domain: ".sharethis.com", path: "/"});'
+							+ '} else if(import_cookie) { clearInterval(import_cookie_tid);'
+							+		'import_cookie_cycles = 0;'	
+							+ 		'contact_url = import_cookie;'
+							+		'delt = Cookie.read("import_delt");'
+							+		'Cookie.dispose("import", {domain: ".sharethis.com", path: "/"});'
+							+		'Cookie.dispose("import_delt", {domain: ".sharethis.com", path: "/"});'
+							+       'widget.importContacts( widget.currentImportContactService, "", "", escape(contact_url), delt );'
+							+ '} else if(import_cookie_cycles++ > 120) { clearInterval(import_cookie_tid);'
+							+ 		'widget.popModalWorkingSheet();'
+					        +       'widget.pushModalErrorSheet("Authorization Timed Out.");'
+					        +		'import_cookie_cycles = 0;'
+					        + '}'
+					    , 1000);
+			},
+			
+			submitForm: function() {
+				var service = widget.currentImportContactService;
+				var username = $('import_contacts_username').get('value');
+				var password = $('import_contacts_password').get('value');
+				widget.importContacts(widget.currentImportContactService, username, password, '', '');				
+			},
+			onShow: function() {
+				this.nImportsOnShow = widget.user.contacts.length;
+				if (this.firstShow) {
+					setTimeout(function() {widget.setImportContactService('gmail')}, 1);
+				}
+				$('privacyLink').removeClass('hidden');
+				this.parent();
+			},
+			onHide: function() {
+				$('privacyLink').addClass('hidden');
+				this.parent();
+			},
+			pointImportPointerAt: function(pointToItem) {
+				var y = pointToItem.getPosition(pointToItem.getParent()).y;
+				var pointer = $$('.mboxpoint')[0];
+				var importBox = $$('.mbox')[0];
+				pointer.set('tween', { duration: 0 });
+				pointer.tween('top', y + (pointToItem.getSize().y / 2) - (pointer.getSize().y / 2) + 5);	// random extra 5 pixels. *shrug*
+
+				$('import_list').getElements('li').each(function(selectedItem) {
+					if (selectedItem !== pointToItem) {
+						selectedItem.removeClass('selected');
+					}
+					else {
+						selectedItem.addClass('selected');
+					}
+				});
+			}
+		},*/
 		'import': {
 			id: 'import_page',
 			nImportsOnShow: 0,
@@ -6485,6 +6644,12 @@ window.addEvent('domready', function() {
 		}
 		widget.signOut();
 	});
+
+	$('signInFacebook').addEvent('click', function(){
+		widget.pages.addressbook.addressBook.svc="all";
+		widget.showPage('signin');
+		event.stop();
+	});
 	
 	$('textAuthUsername').addEvent('keydown', function(event){
 		event = new Event(event); 
@@ -6650,5 +6815,6 @@ window.addEvent('domready', function() {
 	} else {
 		widget.showPage('home');
 	}
+
 });
 
