@@ -341,13 +341,12 @@ a.addressbook_button {
 	top:0;
 }
 .carousel .back,
-.carousel .fwd,
-.carousel .back-big,
-.carousel .fwd-big {
-	/*background-image:url(http://w.sharethis.com/share3x/images/slider-btn-sprite2.gif);*/
+.carousel .fwd {
+/*
 	background-image:url(http://w.sharethis.com/share3x/images/sprite_main_1.gif);
 	background-position:0 -196px;
 	background-repeat:no-repeat;
+*/
 }
 
 .circles{
@@ -388,46 +387,27 @@ a.addressbook_button {
 .carousel .fwd {
 	display:inline;
 	float:left;
-	height:66px;
-	width:13px;
+	height:18px;
+	width:18px;
 	text-indent:-32000px;
 }
-.carousel .fwd-big,
-.carousel .back-big {
-	height:109px;
-}
+
 .carousel .back {
-	background-position:0 0;
+/*	background-position:0 0; */
+	background: url(../images/leftArrow.png) no-repeat;
 }
 .carousel .fwd {
 	/*background-position:-13px 0;*/
-	background-position: -13px -196px;
+/*	background-position: -13px -196px; */
+	background: url(../images/rightArrow.png) no-repeat;
 }
 .carousel .back:hover {
 	/*background-position:0 -175px;*/
-	background-position:0 -371px;
+	/*background-position:0 -371px;*/
 }
 .carousel .fwd:hover {
-	background-position:-13px -371px;
+/*	background-position:-13px -371px; */
 }
-
-.carousel .back-big {
-	/*background-position:0 -66px;*/
-	background-position:0 -262px;
-}
-.carousel .fwd-big {
-	/*background-position:-13px -66px;*/
-	background-position:-13px -262px;
-}
-.carousel .back-big:hover {
-	/*background-position:0 -241px;*/
-	background-position:0 -437px;
-}
-.carousel .fwd-big:hover {
-	/*background-position:-13px -241px;*/
-	background-position:-13px -437px;
-}
-
 
 .carousel .view {
 	height:87px;
