@@ -818,6 +818,13 @@ span.active a#home_button {
 	line-height:12px;
 	padding:3px 5px 4px;
 }
+#footer .signInIcon{
+	margin-left: 3px;
+	height: 13px;
+	display: inline;
+	margin-right: 0;
+	padding: 2px 0px 2px 20px;
+}
 #signedInFooter {
 	display:none;
 }
