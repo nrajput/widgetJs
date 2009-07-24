@@ -148,6 +148,48 @@
 					<span class="link" onclick="widget.showPreviousPage();">Go back</span>
 				</div>
 			</div>
+			<div id="signin_page" class="panel">
+				<h1>Sign In</h1>
+				<p>Sign in using the following.</p>
+				<p id="signin_status" class="error"></p>
+				<div class="mbox">
+					<dl class="col">
+						<div id="oauthImport_signin">
+							<label></label>
+						</div>
+						<div id='signinAuth' style="display:none">						
+						<dt><label>Username:</label></dt>
+						<dd><input id="signin_username" type="text" class="text" value="" /></dd>
+						<dt><label>Password:</label></dt>
+						<dd><input id="signin_password" type="password" class="text" value="" /></dd>
+						</div>
+					</dl>
+					<div class="col_foot">
+						<div class="col_act">
+							<div class="loading hidden"></div>
+						</div>
+						<h4 class="gmail">GMail</h4>
+					</div>
+					<div class="mboxpoint"></div>
+				</div>
+				<ul id="signin_list">
+					<li><a href="#" class="gmail">GMail</a></li>
+					<li><a href="#" class="yahoo">Yahoo</a></li>
+					<li><a href="#" class="msn">MSN</a></li>
+					<li><a href="#" class="aol">AOL</a></li>
+					<li style="visibility: hidden"><a href="#" class="myspace">MySpace</a></li>
+					<!-- Once Twitter contact importing re-implementation goes live.
+					<li><a href="#" class="twitter">Twitter</a></li> -->                    
+				</ul>
+				<div class="clear"></div>
+				
+				<div class="col_foot">
+					<div class="col_act">
+						<input id="signin_done" type="submit" class="button" value="Done" />
+					</div>
+					<span class="link" onclick="widget.showPreviousPage();">Go back</span>
+				</div>
+			</div>
 			<div id="import_page" class="panel">
 				<h1>Import Contacts</h1>
 				<p>Choose a service, import and all your contacts will be a click away.</p>

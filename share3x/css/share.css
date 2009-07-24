@@ -717,23 +717,29 @@ h1#header_title {
 	padding:12px;
 	height:16px;
 }
-#import_page #import_list {
+#import_page #import_list, 
+#signin_page #signin_list  {
 	list-style:none;
 	margin:15px 0;
 }
-#import_page #import_list li {
+#import_page #import_list li,
+#sign_page #sign_list li {
 	line-height:14px;
 }
-#import_list a {
+#import_list a,
+#signin_list a {
 	cursor:pointer;
 }
-#import_page #import_list li.selected {
+#import_page #import_list li.selected,
+#signin_page #signin_list li.selected {
 	font-weight: bold;
 }
-#import_page #import_list li.selected a {
+#import_page #import_list li.selected a,
+#signin_page #signin_list li.selected a {
 	text-decoration:none;
 }
-#import_contact_status {
+#import_contact_status,
+#signin_status {
 	margin:0 20px 0 0;
 	position:absolute;
 	right:0;
@@ -819,6 +825,13 @@ span.active a#home_button {
 	padding:3px 5px 4px;
 }
 #footer .signInIcon{
+	margin-left: 3px;
+	height: 13px;
+	display: inline;
+	margin-right: 0;
+	padding: 2px 0px 2px 20px;
+}
+#footer #signInFacebook {
 	margin-left: 3px;
 	height: 13px;
 	display: inline;

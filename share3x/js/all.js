@@ -718,7 +718,11 @@ var Widget = new Class({ Implements: Events,
 		}		
 	},
 
-
+	setSignInService: function(serviceTag) {
+		this.currentSignInService = this.contactSources[serviceTag];
+		this.fireEvent('signInServiceChanged', serviceTag);
+	},
+	
 	setImportContactService: function(serviceTag) {
 		this.currentImportContactService = this.contactSources[serviceTag];
 		this.fireEvent('importContactServiceChanged', serviceTag);
@@ -3384,51 +3388,52 @@ Widget.implement({
 				this.parent();
 			}
 		},
-	/*
 		'signin': {
 			id: 'signin_page',
-			nImportsOnShow: 0,
+			nSignInOnShow: 0,
 			onReady: function() {
-				$('import_list').getElements('li').each(function(item, index) {
+				$('signin_list').getElements('li').each(function(item, index) {
 					item.getElement('a').addEvents({
 						click: function(event) {
-							widget.setImportContactService(item.getChildren()[0].get('class'));
+							widget.setSignInService(item.getChildren()[0].get('class'));
 							event.stop();
 						}
 					});
 				});
 					
-				$('import_contacts_submit').addEvent('click', (function(event) {
+				/*$('signin_submit').addEvent('click', (function(event) {
 					Cookie.dispose('import', {domain: ".sharethis.com", path: '/'});
 					Cookie.dispose('import_delt', {domain: ".sharethis.com", path: '/'});
-					var service = widget.currentImportContactService;
+					var service = widget.currentSignInService;
 					if( service.protocolName == 'aol' || service.protocolName == 'yahoo' || service.protocolName == 'gmail') {
-						var username = $('import_contacts_username').get('value');
-						var password = $('import_contacts_password').get('value');
+						var username = $('signin_username').get('value');
+						var password = $('signin_password').get('value');
 						this.submitForm();
 					} else {
 						//this.fireEvent('importContactsRequested');
 						widget.pushModalWorkingSheet('Waiting for Authorization&hellip;');
-						window.open('/share3x/import.php?provider=' + service.protocolName,'import_contacts','scrollbars=yes,directories=no,menubar=yes,toolbar=yes,height=600,width=900');
+						window.open('/share3x/import.php?provider=' + service.protocolName,'signin','scrollbars=yes,directories=no,menubar=yes,toolbar=yes,height=600,width=900');
 						this.pollImportCookie();
 					}
 					event.stop();
 				}).bind(this));
-								
-				widget.addEvent('importContactsRequested', function() {
-					widget.pushModalWorkingSheet('Importing contacts&hellip;');
+				*/
+				
+				widget.addEvent('signInRequested', function() {
+					widget.pushModalWorkingSheet('Signing in&hellip;');
 				});
-				widget.addEvent('importContactsSucceeded', function(contactInfo) {
+				widget.addEvent('signInSucceeded', function(contactInfo) {
 					widget.popModalWorkingSheet();
 					widget.displayNotification('Success! ' + contactInfo.nContacts + ' contacts imported.');
 					emptyInputs();
 				});
-				widget.addEvent('importContactsFailed', function() {
+				widget.addEvent('signInFailed', function() {
 					widget.popModalWorkingSheet();
-					widget.pushModalErrorSheet('Could not retrieve your contacts.');
+					widget.pushModalErrorSheet('Could not sign in.');
 				})
-				$('import_contacts_done').addEvent('click', (function() {
-					if (this.nImportsOnShow != widget.user.contacts.length) {
+				
+				$('signin_done').addEvent('click', (function() {
+					if (this.nSignInOnShow != widget.user.contacts.length) {
 						widget.showPage('addressbook');
 						$("abLoading").setStyle("display","inline");
 						setTimeout("widget.pages.addressbook.addressBook.addBlock()",10);
@@ -3437,47 +3442,48 @@ Widget.implement({
 						widget.showPage('send');
 					}
 				}).bind(this));
-				widget.addEvent('importContactServiceChanged', (function(serviceTag) {
+				
+				widget.addEvent('signInServiceChanged', (function(serviceTag) {
 					if (this.isShown()) {
 						var service = widget.contactSources[serviceTag];
-						$('regAuth').setStyle('display', 'none');
-						$('oauthImport').setStyle('display', 'block');
+						$('signinAuth').setStyle('display', 'none');
+						$('oauthImport_signin').setStyle('display', 'block');
 						switch(serviceTag) {
 							case 'gmail':
-								$('regAuth').setStyle('display', 'block');
-								$('oauthImport').setStyle('display', 'none');
+								$('signinAuth').setStyle('display', 'block');
+								$('oauthImport_signin').setStyle('display', 'none');
 								//$('oauthImport').getElement('label').set('text','We\'ll take you to Gmail where you\'ll be asked to let ShareThis access your address book.');
 								break;
 							case 'yahoo':
-								$('regAuth').setStyle('display', 'block');
-								$('oauthImport').setStyle('display', 'none');
+								$('signinAuth').setStyle('display', 'block');
+								$('oauthImport_signin').setStyle('display', 'none');
 								//$('oauthImport').getElement('label').set('text','We\'ll take you to Yahoo where you\'ll be asked to let ShareThis access your address book.');
 								break;
 							case 'myspace':
-								$('oauthImport').getElement('label').set('text','We\'ll take you to Myspace where you\'ll be asked to let ShareThis access your friend list.');
+								$('oauthImport_signin').getElement('label').set('text','We\'ll take you to Myspace where you\'ll be asked to let ShareThis access your friend list.');
 								break;
 							case 'msn':
-								$('oauthImport').getElement('label').set('text','We\'ll take you to MSN/Hotmail where you\'ll be asked to let ShareThis access your address book.');
+								$('oauthImport_signin').getElement('label').set('text','We\'ll take you to MSN/Hotmail where you\'ll be asked to let ShareThis access your address book.');
 								break;
 							case 'aim':
-								$('oauthImport').getElement('label').set('text','We\'ll take you to AOL/AIM where you\'ll be asked to let ShareThis access your buddy list.');
+								$('oauthImport_signin').getElement('label').set('text','We\'ll take you to AOL/AIM where you\'ll be asked to let ShareThis access your buddy list.');
 								break;
 							case 'aol':
-								$('regAuth').setStyle('display', 'block');
-								$('oauthImport').setStyle('display', 'none');
+								$('signinAuth').setStyle('display', 'block');
+								$('oauthImport_signin').setStyle('display', 'none');
 								break;
 						}
-						var importBox = this.domContainer.getElement('.mbox');//$$('.mbox')[0];
-						importBox.getElement('h4').set('html', service.title);
-						importBox.getElement('h4').set('class', serviceTag);
+						var signIn = this.domContainer.getElement('.mbox');//$$('.mbox')[0];
+						signIn.getElement('h4').set('html', service.title);
+						signIn.getElement('h4').set('class', serviceTag);
 						var item = null;
-						$('import_list').getElements('li').each(function(i) {
+						$('signin_list').getElements('li').each(function(i) {
 							if (i.getElement('a').hasClass(serviceTag)) {
 								item = i;
 							}
 						});
 						if (item) {
-							this.pointImportPointerAt(item);
+							this.pointSignInPointerAt(item);
 						}
 					}
 				}).bind(this));
@@ -3485,7 +3491,7 @@ Widget.implement({
 				this.parent();
 			},
 							
-			pollImportCookie: function() {
+			pollSignInCookie: function() {
 				import_cookie_tid = setInterval('import_cookie = Cookie.read("import");'
 						    + 'if(import_cookie == -1) { clearInterval(import_cookie_tid);'
 							+ 		'widget.popModalWorkingSheet();'
@@ -3515,9 +3521,9 @@ Widget.implement({
 				widget.importContacts(widget.currentImportContactService, username, password, '', '');				
 			},
 			onShow: function() {
-				this.nImportsOnShow = widget.user.contacts.length;
+				this.nSignInOnShow = widget.user.contacts.length;
 				if (this.firstShow) {
-					setTimeout(function() {widget.setImportContactService('gmail')}, 1);
+					setTimeout(function() {widget.setSignInService('gmail')}, 1);
 				}
 				$('privacyLink').removeClass('hidden');
 				this.parent();
@@ -3542,14 +3548,14 @@ Widget.implement({
 					}
 				});
 			}
-		},*/
+		},
 		'import': {
 			id: 'import_page',
 			nImportsOnShow: 0,
 			onReady: function() {
 				$('import_list').getElements('li').each(function(item, index) {
 					item.getElement('a').addEvents({
-						click: function(event) {
+						click: function(event) {					
 							widget.setImportContactService(item.getChildren()[0].get('class'));
 							event.stop();
 						}
@@ -6648,7 +6654,7 @@ window.addEvent('domready', function() {
 	$('signInFacebook').addEvent('click', function(){
 		widget.pages.addressbook.addressBook.svc="all";
 		widget.showPage('signin');
-		event.stop();
+		//event.stop();
 	});
 	
 	$('textAuthUsername').addEvent('keydown', function(event){
