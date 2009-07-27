@@ -40,7 +40,7 @@ Ext.ux.CustomPaging = Ext.extend(Object, {
 							pbar.changePage(parseInt(elem.id.substring(9)));
 						}
 					});
-				}
+				} 
 			}
 		});
 
