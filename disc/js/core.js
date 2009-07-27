@@ -18,7 +18,7 @@ function genTopicCloud() {
 		idProperty: 'num',
 		fields: ['count', 'score', 'neigh'],
 		proxy: new Ext.data.HttpProxy({
-			url: 'http://wd.sharethis.com/api/getTopics_ws.php',
+			url: '/api/getTopics_ws.php',
 		}),
 		reader: new Ext.data.JsonReader({
 			totalProperty: 'topic_count',
@@ -84,7 +84,7 @@ function genContentList() {
 		root: 'items',
 		fields: ['oid', 'title', 'url', 'views', 'shares', 'services'],
 		proxy: new Ext.data.HttpProxy({
-			url: 'http://wd.sharethis.com/api/getTopics_ws.php',
+			url: '/api/getTopics_ws.php',
 		}),
 		reader: new Ext.data.JsonReader({
 			totalProperty: 'url_count',
@@ -179,6 +179,7 @@ Ext.onReady(function(){
 	merge(config, defaults);
 	merge(config, options);
 	
+	
 	view = new Ext.Viewport({
 		layout: 'border',
 		hideBorders: true,
@@ -264,11 +265,11 @@ Ext.onReady(function(){
 
 var defaults = {
 		width: 300,
-		height: 440,
+		height: 450,
 		title: "Discover what's popular right now!",
 		results: 4,
 		topic: '',
-		domain: location.host,
+		domain: 'foxnews.com',
 		components: {
 			header: true,
 			topics: true,

@@ -13,7 +13,7 @@ sharethis.widgets.discovery = function(container, options) {
 	this.location = 'http://wd.sharethis.com/disc/index.html';
 	this.defaults = {
 		width: 300,
-		height: 440,
+		height: 450,
 		title: "Discover what's popular right now!",
 		results: 4,
 		topic: '',
