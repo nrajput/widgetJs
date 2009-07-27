@@ -56,39 +56,27 @@
 					<h2>Most Popular Services</h2>
 					<ul class="hor">
 						<li><a id="send_email" class="email" href="#">Email</a></li>
-						<li style="display:none"><a id="send_myspace" class="myspace" href="#">Myspace</a></li>
 						<li><a id="send_aim" class="aim" href="#">AIM</a></li>
 						<li><a id="send_sms" class="sms" href="#">Text</a></li>
+						<li><a class="sharebox" id="sharebox_btn" href="#">Save</a></li>
 					</ul>
 					<div id="recent_recipients" class="hidden">
 						<h4>Recent:</h4>
 					</div>
 				</div>
 				<div class="carousel">
-					<a href="#" class="back">&laquo; back</a>
 					<div class="carousel-box">
 						<div id="swcontainer" class="view">
 							<div id="swdiv" class="groups"></div>
 						</div>
 					</div>
-					<a href="#" class="fwd">fwd &raquo;</a>
 				</div>
 				<div id="paginator" >
-					<span style="margin: auto;">
-						<a style="border: medium none ; margin-left: 2px; font-size: 12px; margin-right: 2px; font-weight: bold; text-decoration: none;" href="javascript:void(0);" onclick="widget.carousel.goToPage(1);" title="Go To Page # 1">•</a> 
-						<a style="border: medium none ; margin-left: 2px; font-size: 11px; margin-right: 2px; font-weight: normal; text-decoration: none;" href="javascript:void(0);" onclick="widget.carousel.goToPage(2);" title="Go To Page # 2">•</a> 
-						<a style="border: medium none ; margin-left: 2px; font-size: 11px; margin-right: 2px; font-weight: normal; text-decoration: none;" href="javascript:void(0);" onclick="widget.carousel.goToPage(3);" title="Go To Page # 3">•</a> 
-						<a style="border: medium none ; margin-left: 2px; font-size: 11px; margin-right: 2px; font-weight: normal; text-decoration: none;" href="javascript:void(0);" onclick="widget.carousel.goToPage(4);" title="Go To Page # 4">•</a> 
-					</span>
+				  <a href="#" class="paging_arrows" id="back_arrow"></a>
+				  <div id="circle_container">
+				  </div> 
+				  <a href="#" class="paging_arrows" id="fwd_arrow"></a>
 				</div>
-				<div id="save_section">
-					<a class="sharebox" href="#">Save to ShareBox</a>
-					<div class="clear"></div>
-				</div>
-				<ul id="myspace_menu" class="hidden">
-					<li><a id="myspace_send_to_friend" href="#">Send to a Friend</a></li>
-					<li><a id="myspace_post_to_profile" href="#">Post to Profile</a></li>
-				</ul>
 				<ul id="twitter_menu" class="hidden">
 					<li><a id="twitter_update_status" href="#">Update Status</a></li>
 					<li><a id="twitter_direct_message" href="#">Direct Message</a></li>
@@ -170,7 +158,6 @@
 					<li><a href="#" class="yahoo">Yahoo</a></li>
 					<li><a href="#" class="msn">MSN</a></li>
 					<li><a href="#" class="aol">AOL</a></li>
-					<li style="visibility: hidden"><a href="#" class="myspace">MySpace</a></li>
 					<!-- Once Twitter contact importing re-implementation goes live.
 					<li><a href="#" class="twitter">Twitter</a></li> -->                    
 				</ul>
@@ -214,7 +201,6 @@
 					<li><a href="#" class="msn">MSN</a></li>
 					<li><a href="#" class="aol">AOL</a></li>
 					<li><a href="#" class="aim">AIM</a></li>
-					<li style="visibility: hidden"><a href="#" class="myspace">MySpace</a></li>
 					<!-- Once Twitter contact importing re-implementation goes live.
 					<li><a href="#" class="twitter">Twitter</a></li> -->                    
 				</ul>
@@ -380,35 +366,6 @@
 						<span class="link" onclick="widget.showPreviousPage();">Go back</span>
 					</div>
 				</div>
-				<div id="post_orkut">
-					<h2 class="orkut">Orkut</h2>
-					<p>Post this to Orkut.</p>
-					<form action="#" id ="orkutForm" class="postForm" method="post">
-						<dl id="orkutPostData" class="col">
-							<dt><label for="inputOrkutUsername">Email:</label></dt>
-							<dd><input class="text" id="inputOrkutUsername" type="text"/></dd>
-							<dt><label for="inputOrkutPassword">Password:</label></dt>
-							<dd><input class="text" id="inputOrkutPassword" type="password"/></dd>
-							<dt><label for="txtOrkutComment">Comment:</label></dt>
-							<dd><textarea id="txtOrkutComment"></textarea></dd>
-							<dd><input class="remember_toggle" id="orkutRememberMe" type="checkbox"/>&nbsp;Remember Me</dd>
-						</dl>
-						<input class="forgetme" id="orkutForgetMe" value="false" type="hidden"/>
-					</form>
-					<dl id="orkutCaptcha" class="hidden">
-						<dt><label for="inputOrkutCaptcha">Please enter the text from the image</label></dt>
-						<dd>
-							<div id="orkutCaptchaImage" class="hidden"></div>
-							<input type="text" id="inputOrkutCaptcha"/>
-						</dd>
-					</dl>
-					<div class="col_foot">
-						<div class="col_act">
-							<input class="button" id="btnOrkutSubmit" value="Submit" type="button"/>
-						</div>
-						<span class="link" onclick="widget.showPreviousPage();">Go back</span>
-					</div>
-				</div>
 				<div id="post_twitter">
 					<h2 class="twitter">Twitter</h2>
 					<p>Post this to your Twitter status.</p>
@@ -541,9 +498,9 @@
 						<div id="textAuthInfoEmail" class="opposite_right"></div>
 					</div>
 					<div id="colophon_st" class="opposite">
-						<!--  <div id="boxFooterPowered" class="opposite_left">
+						 <div id="boxFooterPowered" class="opposite_left">
 							Powered by <a id="poweredByImg" rel="external" target="_blank" href="http://www.sharethis.com" onclick="if(glo_options_popup==true){popupOpen2(this);return false;}">ShareThis</a>
-						</div>-->
+						</div>
 						<div id="footerReg" class="opposite_right">
 							<!--  <a id="linkLearnMore" target="_blank" onclick="if(glo_options_popup==true){popupOpen2(this);return false;}" href="http://sharethis.com/users/">Learn More</a> | --><span class="link" id="linkSignIn">Sign In:</span>
 							<span><a id="signInFacebook" class="facebook signInIcon" href="#"></a></span>

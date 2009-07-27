@@ -2876,7 +2876,7 @@ Widget.implement({
 					}
 					event.stop();
 				}).bind(this))
-				$('save_section').getElement('a.sharebox').addEvent('click', (function(event) {
+				$('sharebox_btn').addEvent('click', (function(event) {
 					if (widget.userIsSignedIn()) {
 						widget.showPage('sharebox');
 					}
@@ -4522,13 +4522,13 @@ Widget.Carousel = new Class({ Implements: Events,
 			this.domContainer = $(idOrElement);
 		}
 		var poppet = this;
-		this.domContainer.getElement('.fwd').addEvent('click', function(event) {
+		$('fwd_arrow').addEvent('click', function(event) {
 			if (poppet.getNumPages() > 1) {
 				poppet.advance();
 			}
 			event.stop();
 		});
-		this.domContainer.getElement('.back').addEvent('click', function(event) {
+		$('back_arrow').addEvent('click', function(event) {
 			if (poppet.getNumPages() > 1) {
 				poppet.rewind();
 			}
@@ -4678,16 +4678,16 @@ Widget.Carousel = new Class({ Implements: Events,
 	
 	createPaginator: function(){
 		var pages=this.getNumPages();
-		var div_size=pages*20;
+		var div_size=pages*20 + 36;
 		div_size+="px";
-		var html="<div style='clear:both'></div><div id='circle_container' style='width:"+div_size+"' >";
+		$('paginator').setStyle('width', div_size);
+		var html= "";
 		for(var i=0;i<pages;i++){
 			var num=i+1;
 			html+='<div class="circles" onclick="widget.carousel.goToPage('+num+');" title="Go To Page # '+num+'"></div> ';			
 		}
-		html+="</div><div style='clear:both'></div>";
 		
-		$("paginator").set('html',html);
+		$("circle_container").set('html',html);
 		this.highlightNum(this.page+1);
 		this.paginatorExists=true;
 	},

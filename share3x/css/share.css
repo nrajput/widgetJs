@@ -8,6 +8,7 @@
 	display:none;
 }
 body {
+	width: 344px;
 	color: #666;
 	font-family: "Lucida Grande","Lucida Sans Unicode",Verdana,Tahoma,Arial,sans-serif;
 	font-size: 11px;
@@ -20,7 +21,7 @@ a:hover {
 	text-decoration: underline;
 }
 .link {
-	color: #222222;
+	color: #fff;
 	text-decoration: none;
 	cursor:pointer;
 }
@@ -327,7 +328,6 @@ a.addressbook_button {
 	overflow:hidden;
 }
 .carousel .carousel-box {
-	border:1px solid #ddd;
 	float:left;
 	position:relative;
 }
@@ -382,21 +382,18 @@ a.addressbook_button {
 	cursor:pointer;
 }
 
-
-.carousel .back,
-.carousel .fwd {
+.paging_arrows {
 	display:inline;
 	float:left;
 	height:18px;
 	width:18px;
-	text-indent:-32000px;
 }
 
-.carousel .back {
+#back_arrow {
 /*	background-position:0 0; */
 	background: url(../images/leftArrow.png) no-repeat;
 }
-.carousel .fwd {
+#fwd_arrow {
 	/*background-position:-13px 0;*/
 /*	background-position: -13px -196px; */
 	background: url(../images/rightArrow.png) no-repeat;
@@ -453,18 +450,17 @@ a.addressbook_button {
 }
 #paginator{
 	margin-top:5px;
-	height:7px;
+	height:20px;
+	margin-left:auto;
+	margin-right:auto;
 }
 #paginator a:hover{
 	text-decoration:underline;
 	color:red;
 }
 #circle_container{
-	width:80px;
+	display: inline;
 	height:7px;
-	clear:both;
-	margin-left:auto;
-	margin-right:auto;
 }
 
 .overlay {
@@ -676,7 +672,7 @@ a.addressbook_button {
 /* Structure */
 #container {
 	background: white;
-	border:6px solid #666;
+	border:2px solid #666;
 	position:relative;
 	width:340px; 
 	z-index: 999;
@@ -798,9 +794,15 @@ span.active a#home_button {
 	height:0;
 	position:absolute;
 }
+
+#footer a{
+	color: #fff;
+}
+
 #footer #colophon{
-	background: #ccc;
-	border-top: 1px solid #b6b6b6;
+	color: #fff;
+	background: #666;
+	border-top: 1px solid #666;
 	line-height:12px;
 	padding:3px 5px 4px;
 }
@@ -1155,9 +1157,6 @@ span.active a#home_button {
 	background-position: -26px -196px;
 	height:12px;
 	width:12px;
-	top:6px;
-	left:334px;
-	position:absolute;
 	z-index:10000;
 }
 
