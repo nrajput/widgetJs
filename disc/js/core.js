@@ -18,11 +18,11 @@ function genTopicCloud() {
 		idProperty: 'num',
 		fields: ['count', 'score', 'neigh'],
 		proxy: new Ext.data.HttpProxy({
-			url: '/api/getTopics_ws.php',
+			url: '/api/getTopics_ws.php'
 		}),
 		reader: new Ext.data.JsonReader({
 			totalProperty: 'topic_count',
-			root: 'topics',
+			root: 'topics'
 		}, [
 			{name: 'count'},
 			{name: 'score'},
@@ -84,12 +84,12 @@ function genContentList() {
 		root: 'items',
 		fields: ['oid', 'title', 'url', 'views', 'shares', 'services'],
 		proxy: new Ext.data.HttpProxy({
-			url: '/api/getTopics_ws.php',
+			url: '/api/getTopics_ws.php'
 		}),
 		reader: new Ext.data.JsonReader({
 			totalProperty: 'url_count',
 			root: 'urls',
-			idProperty: 'oid',
+			idProperty: 'oid'
 		}, [
 			{name: 'oid'},
 			{name: 'title'},
@@ -101,9 +101,10 @@ function genContentList() {
 		baseParams: {
 			domain: currentDomain,
 			period: currentPeriod, 
-			topic: currentTopic,
+			topic: currentTopic
 		},
-		autoLoad: { params: { start: 0, limit: 4, domain: currentDomain, period: currentPeriod, topic: currentTopic } },
+		autoLoad: { params: { start: 0, limit: 4, domain: currentDomain, period: currentPeriod, topic: currentTopic } }
+		
 	});
 	
 	var tpl = new Ext.XTemplate( 
@@ -125,7 +126,7 @@ function genContentList() {
 					returnStr += '<a class="' + arr[i] + '"></a>';
 				}
 				return returnStr;
-			},
+			}
 		}
 	);
 
@@ -133,7 +134,7 @@ function genContentList() {
 		pageSize: 4,
 		store: contentStore,
 		ctCls:'pagingBar',
-		plugins: new Ext.ux.CustomPaging(),
+		plugins: new Ext.ux.CustomPaging()
 	});
 
 	var panel = new Ext.Panel({
@@ -142,11 +143,10 @@ function genContentList() {
 			store: contentStore,
 	//		height:239,
 			tpl: tpl,
-			itemSelector:'div.thumb-wrap',
+			itemSelector:'div.thumb-wrap'
 		}),
 		bbar: pagebar,
-		border: false,
-
+		border: false
 	});
 	panel.render('content');
 }
@@ -154,6 +154,7 @@ function genContentList() {
 var contentStore;
 var topicStore;
 var currentTopic = "root";
+//var currentDomain = "usmagazine.com";
 var currentDomain = "foxnews.com";
 var currentPeriod = 7;
 var currentDestination = "";
@@ -165,10 +166,8 @@ Ext.override(Ext.PagingToolbar, {
         currentTopic = "root";
         currentPeriod = 7;
         currentDestination = "";
-				
 		var headerTemplate = new Ext.Template('<div id="headerText" class="headerText">Discover what\'s popular right now!</div>');
 		headerTemplate.overwrite('header');
-		 
  		reload();
     }
 });
@@ -258,7 +257,7 @@ Ext.onReady(function(){
 	
 	*/
 	
-	genTopicCloud();
+	//genTopicCloud();
 	genFilter();
 	genContentList();
 });
@@ -269,7 +268,7 @@ var defaults = {
 		title: "Discover what's popular right now!",
 		results: 4,
 		topic: '',
-		domain: 'foxnews.com',
+		domain: 'usmagazine.com',
 		components: {
 			header: true,
 			topics: true,
