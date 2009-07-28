@@ -75,7 +75,8 @@ function reload() {
 	// setup the parameters for contentStore
 	contentStore.setBaseParam('period', currentPeriod);
 	contentStore.setBaseParam('topic', currentTopic);
-	contentStore.load( { params: { start: 0, limit: 4, domain: currentDomain, period: currentPeriod, topic: currentTopic } });
+	console.log(parseInt(config.results));
+	contentStore.load( { params: { start: 0, limit: parseInt(config.results), domain: currentDomain, period: currentPeriod, topic: currentTopic } });
 }
 
 
@@ -104,14 +105,15 @@ function genContentList() {
 			period: currentPeriod, 
 			topic: currentTopic
 		},
-		autoLoad: { params: { start: 0, limit: 4, domain: currentDomain, period: currentPeriod, topic: currentTopic } }
+
+		autoLoad: { params: { start: 0, limit: parseInt(config.results), domain: currentDomain, period: currentPeriod, topic: currentTopic } }
 		
 	});
 	
 	var tpl = new Ext.XTemplate( 
 		'<tpl for=".">',
 		'<div class="listElement">',
-		    '<div class="resultTitle"><a href="{url}" title="{title}" target="_blank">{[Ext.util.ellipsis(values.title, 80, true)]}</a></div>',
+		    '<div class="resultTitle"><a href="{url}" title="{title}" target="_blank">{[Ext.util.Format.ellipsis(values.title, 80, true)]}</a></div>',
 		    '<div class="resultViews">viewed {views}</div>',
 			'<div class="viewsSharesSeparator"></div>',
 		    '<div class="resultShares">shared {shares}</div>',
@@ -132,7 +134,7 @@ function genContentList() {
 	);
 
 	var pagebar = new Ext.PagingToolbar({
-		pageSize: 4,
+		pageSize: parseInt(config.results),
 		store: contentStore,
 		ctCls:'pagingBar',
 		plugins: new Ext.ux.CustomPaging()
@@ -142,7 +144,6 @@ function genContentList() {
 		items: new Ext.DataView({                                                                                                                
 			id: 'resultsView',
 			store: contentStore,
-	//		height:239,
 			tpl: tpl,
 			itemSelector:'div.thumb-wrap'
 		}),
@@ -155,8 +156,8 @@ function genContentList() {
 var contentStore;
 var topicStore;
 var currentTopic = "root";
-var currentDomain = "usmagazine.com";
-// var currentDomain = "foxnews.com";
+// var currentDomain = "usmagazine.com";
+var currentDomain = "foxnews.com";
 var currentPeriod = 7;
 var currentDestination = "";
 var options = queryParameters(document.location.hash.substring(1));
@@ -207,57 +208,7 @@ Ext.onReady(function(){
 				  '</div>'
 		}]
 	});
-	
-	/*
-	new Ext.Viewport({
-	    layout: 'border',
-	    items: [{
-	        region: 'north',
-	        html: '<h1 class="x-panel-header">Page Title</h1>',
-	        autoHeight: true,
-	        border: false,
-	        margins: '0 0 5 0'
-	    }, {
-	        region: 'west',
-	        collapsible: true,
-	        title: 'Navigation',
-	        width: 200
-	        // the west region might typically utilize a TreePanel or a Panel with Accordion layout 
-
-	    }, {
-	        region: 'south',
-	        title: 'Title for Panel',
-	        collapsible: true,
-	        html: 'Information goes here',
-	        split: true,
-	        height: 100,
-	        minHeight: 100
-	    }, {
-	        region: 'east',
-	        title: 'Title for the Grid Panel',
-	        collapsible: true,
-	        split: true,
-	        width: 200,
-	        xtype: 'grid',
-	        // remaining grid configuration not shown ...
-
-	        // notice that the GridPanel is added directly as the region
-
-	        // it is not "overnested" inside another Panel
-
-	    }, {
-	        region: 'center',
-	        xtype: 'tabpanel', // TabPanel itself has no title
-
-	        items: {
-	            title: 'Default Tab',
-	            html: 'The first tab\'s content. Others may be added dynamically'
-	        }
-	    }]
-	});	
-	
-	*/
-	
+		
 	genTopicCloud();
 	genFilter();
 	genContentList();
