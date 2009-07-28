@@ -168,7 +168,8 @@ Ext.override(Ext.PagingToolbar, {
         currentTopic = "root";
         currentPeriod = 7;
         currentDestination = "";
-		var headerTemplate = new Ext.Template('<div id="headerText" class="headerText">Discover what\'s popular right now!</div>');
+
+		var headerTemplate = new Ext.Template(headerHTML);
 		headerTemplate.overwrite('header');
  		reload();
     }
@@ -179,7 +180,8 @@ Ext.onReady(function(){
 	// setup the options
 	merge(config, defaults);
 	merge(config, options);
-	
+    
+	headerHTML = '<div id="headerText" class="headerText">'+ config.title + '</div>';
 	
 	view = new Ext.Viewport({
 		layout: 'border',
@@ -187,7 +189,7 @@ Ext.onReady(function(){
 		items: [{
 			region: 'center',
 			html: '<div id="container">'+
-				  '<div id="header"><span id="headerText" class="headerText">Discover what\'s popular right now!</span></div>'+
+				  '<div id="header">' + headerHTML + '</div>'+
 				  '<div id="cloud"></div>' +
 				  '<div id="content">' +
 				  '<div class="clear"></div>' +
@@ -208,7 +210,13 @@ Ext.onReady(function(){
 				  '</div>'
 		}]
 	});
-		
+	
+    // enable & disable components
+	// console.log(options.components.header[0]);
+	// if (options.components.header[0] == "false") {
+	// 	Ext.fly('header').setDisplayed(false);
+	// }
+	
 	genTopicCloud();
 	genFilter();
 	genContentList();
@@ -220,7 +228,7 @@ var defaults = {
 		title: "Discover what's popular right now!",
 		results: 4,
 		topic: '',
-		domain: 'usmagazine.com',
+		domain: 'foxnews.com',
 		components: {
 			header: true,
 			topics: true,
@@ -241,6 +249,8 @@ var defaults = {
 		}
 	};
 var config = {};
+
+var headerHTML;
 
 
 function merge(destination, source) {

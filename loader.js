@@ -60,7 +60,7 @@ sharethis.widgets.discovery = function(container, options) {
 	
 	this.initialize = function(container, options) {
 		try {
-			this.frame = document.createElement('<iframe name="stw_discovery" allowTransparency="true" style="body{background:transparent;}"></iframe>');
+			this.frame = document.createElement('<iframe name="stw_discovery" allowTransparency="true" style="body{background:transparent;},display=inline"></iframe>');
 		} catch (err) {
 			this.frame = document.createElement('iframe');
 			this.frame.allowTransparency='true';	
