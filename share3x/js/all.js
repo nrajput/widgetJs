@@ -906,6 +906,7 @@ if (!window.console || !console.firebug) {
 	var glo_charset='utf-8';
 	var glo_services="";
 	var glo_default_services='facebook,myspace,digg,reddit,windows_live,twitter,google_bmarks,delicious,stumbleupon,yahoo_bmarks,linkedin,ybuzz,technorati,mixx,blogger,friendfeed,blinklist,furl,xanga,newsvine,propeller,wordpress,diigo,typepad,bus_exchange,fark,mister_wong,current,kirtsy,blogmarks,oknotizie,faves,livejournal,slashdot,care2,n4g,meneame,sphinn,simpy,dealsplus,fresqui,yigg,funp';
+    var glo_popular_services = 'email,facebook,twitter,sharebox';
 	var glo_default_swArray=[];
 		glo_default_swArray = glo_default_services.split(',');
 	var glo_style='default';
