@@ -78,6 +78,7 @@ function reload() {
 	contentStore.load( { params: { start: 0, limit: 4, domain: currentDomain, period: currentPeriod, topic: currentTopic } });
 }
 
+
 function genContentList() {
 	contentStore = new Ext.ux.data.PagingStore({
 		totalProperty: 'url_count',
@@ -110,7 +111,7 @@ function genContentList() {
 	var tpl = new Ext.XTemplate( 
 		'<tpl for=".">',
 		'<div class="listElement">',
-		    '<div class="resultTitle"><a href="{url}" title="{title}" target="_blank">{[Ext.util.Format.ellipsis(values.title, 80, true)]}</a></div>',
+		    '<div class="resultTitle"><a href="{url}" title="{title}" target="_blank">{[Ext.util.ellipsis(values.title, 80, true)]}</a></div>',
 		    '<div class="resultViews">viewed {views}</div>',
 			'<div class="viewsSharesSeparator"></div>',
 		    '<div class="resultShares">shared {shares}</div>',
@@ -154,8 +155,8 @@ function genContentList() {
 var contentStore;
 var topicStore;
 var currentTopic = "root";
-//var currentDomain = "usmagazine.com";
-var currentDomain = "foxnews.com";
+var currentDomain = "usmagazine.com";
+// var currentDomain = "foxnews.com";
 var currentPeriod = 7;
 var currentDestination = "";
 var options = queryParameters(document.location.hash.substring(1));
@@ -257,7 +258,7 @@ Ext.onReady(function(){
 	
 	*/
 	
-	//genTopicCloud();
+	genTopicCloud();
 	genFilter();
 	genContentList();
 });
