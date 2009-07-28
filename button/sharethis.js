@@ -341,6 +341,7 @@ try{
 			this.current_element=null;
 			this.opt_arr=[]
 			this.mousetimer=null;
+			this.autoPosition=true;
 			this.meta={
 				publisher: '',
 				hostname: location.host,
@@ -384,63 +385,55 @@ try{
 					leftVal+="px";
 					SHARETHIS.wrapper.style.top = topVal;
 					SHARETHIS.wrapper.style.left = leftVal;
-					
-					SHARETHIS.oldScroll=document.body.scrollTop;
-					//console.log("in position widget");
-					var pginfo=this.pageSize();
-					var effectiveH=pginfo.height+pginfo.scrY;
-					var effectiveW=pginfo.width+pginfo.scrX;
-					var widgetH=280;
-					var widgetW=355;
-					/*console.log(pginfo);
-					console.log(effectiveH); //501 //400
-					console.log(effectiveW); //1920
-					console.log(elemH); //221
-					console.log(elemW); //910
-					*/
-					var needH=widgetH+elemH; //500
-					var needW=widgetW+elemW; //1270
-					var diffH=needH-effectiveH; //~100
-					var diffW=needW-effectiveW;
-					var newH=elemH-diffH;// ~121
-					var newW=elemW-diffW;
-					function getHW(elem)
-					{
-					    var retH=0;
-						var retW=0;
-						while( elem!=null ) {
-							retH+= elem.offsetTop;
-							retW+= elem.offsetLeft;
-							elem= elem.offsetParent;
+					if(SHARETHIS.autoPosition==true){
+						SHARETHIS.oldScroll=document.body.scrollTop;
+						var pginfo=this.pageSize();
+						var effectiveH=pginfo.height+pginfo.scrY;
+						var effectiveW=pginfo.width+pginfo.scrX;
+						var widgetH=280;
+						var widgetW=355;
+						var needH=widgetH+elemH; //500
+						var needW=widgetW+elemW; //1270
+						var diffH=needH-effectiveH; //~100
+						var diffW=needW-effectiveW;
+						var newH=elemH-diffH;// ~121
+						var newW=elemW-diffW;
+						function getHW(elem)
+						{
+						    var retH=0;
+							var retW=0;
+							while( elem!=null ) {
+								retH+= elem.offsetTop;
+								retW+= elem.offsetLeft;
+								elem= elem.offsetParent;
+							}
+							return {height:retH,width:retW};
 						}
-						return {height:retH,width:retW};
-					}
-					
-					var buttonPos=getHW(shareel);
-					var leftA,rightA,topA,bottomA=false;
-					if(diffH>0){
-						//bottom space is not available assume top is 
-						bottomA=false;
-						topA=true;
-						if((buttonPos.height-widgetH)>0){
-							newH=buttonPos.height-widgetH;
+						
+						var buttonPos=getHW(shareel);
+						var leftA,rightA,topA,bottomA=false;
+						if(diffH>0){
+							//bottom space is not available assume top is 
+							bottomA=false;
+							topA=true;
+							if((buttonPos.height-widgetH)>0){
+								newH=buttonPos.height-widgetH;
+							}
+							SHARETHIS.wrapper.style.top = newH+"px";
 						}
-						SHARETHIS.wrapper.style.top = newH+"px";
-					}
-					
-					if(diffW>0){
-						//left is not avaialbe assume right is...
-						leftA=false;
-						rightA=true;
-						if((buttonPos.width-widgetW)>0){
-							newW=buttonPos.width-widgetW;
+						
+						if(diffW>0){
+							//left is not avaialbe assume right is...
+							leftA=false;
+							rightA=true;
+							if((buttonPos.width-widgetW)>0){
+								newW=buttonPos.width-widgetW;
+							}
+							SHARETHIS.wrapper.style.left = newW+"px";
 						}
-						SHARETHIS.wrapper.style.left = newW+"px";
-					}
-					
+					}	
 					SHARETHIS.wrapper.style.visibility="visible";
 					SHARETHIS.mainstframe.style.visibility = 'visible';
-					
 			},
 			this.hideWidget=function(){
 				if(SHARETHIS.wrapper.style.visibility !== 'hidden'){
@@ -664,6 +657,9 @@ try{
 							var pageFrag = "/page=" + o.page;
 							SHARETHIS.curr_offsetTop=Number(o.options.offsetTop);
 							SHARETHIS.curr_offsetLeft=Number(o.options.offsetLeft);
+							if(SHARETHIS.curr_offsetTop>0 || SHARETHIS.curr_offsetTop>0){
+								SHARETHIS.autoPosition=false;
+							}
 							SHARETHIS.curr_id=id;
 							if(o.options.onclick) {
 					        		var res = o.options.onclick.apply(document, [o]);
