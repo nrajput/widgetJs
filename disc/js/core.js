@@ -1,3 +1,42 @@
+var defaults = {
+		width: 300,
+		height: 450,
+		title: "Discover what's popular right now!",
+		results: 4,
+		topic: '',
+		domain: 'foxnews.com',
+		components: {
+			header: true,
+			topics: true,
+			time: true,
+			navigation: true,
+			refresh: true,
+			ad: true,
+			footer: true
+		},
+		colors: {
+			titlebg: '#58585a',
+			titlefg: '#ffffff',
+			topicbg: '#d1d2d4',
+			topicfg: '#0f75bc',
+			bodybg: '#000000',
+			bodyfg: '#3a3a3c',
+			metafg: '#a0a2a4'
+		}
+	};
+var config = {};
+var headerHTML;
+
+var contentStore;
+var topicStore;
+var currentTopic = "root";
+// var currentDomain = "usmagazine.com";
+var currentDomain = "foxnews.com";
+var currentPeriod = 7;
+var currentDestination = "";
+var options = queryParameters(document.location.hash.substring(1));
+
+
 function queryParameters(query) {
 	var keyValuePairs = query.split(/[&?]/g);
 	var params = {};
@@ -153,19 +192,10 @@ function genContentList() {
 	panel.render('content');
 }
 
-var contentStore;
-var topicStore;
-var currentTopic = "root";
-// var currentDomain = "usmagazine.com";
-var currentDomain = "foxnews.com";
-var currentPeriod = 7;
-var currentDestination = "";
-var options = queryParameters(document.location.hash.substring(1));
-
 
 Ext.override(Ext.PagingToolbar, {
     refresh: function(){
-        currentTopic = "root";
+        currentTopic = config.topic;
         currentPeriod = 7;
         currentDestination = "";
 
@@ -182,6 +212,7 @@ Ext.onReady(function(){
 	merge(config, options);
     
 	headerHTML = '<div id="headerText" class="headerText">'+ config.title + '</div>';
+//	currentTopic = config.topic;
 	
 	view = new Ext.Viewport({
 		layout: 'border',
@@ -213,44 +244,19 @@ Ext.onReady(function(){
 	
     // enable & disable components
 	// console.log(options.components.header[0]);
-	// if (options.components.header[0] == "false") {
-	// 	Ext.fly('header').setDisplayed(false);
-	// }
+	//if (config.components.header[0] == "false") {
+	// Ext.fly('header').setDisplayed(false);
+	Ext.fly('bottom_ad').setDisplayed(false);
+	Ext.fly('footer').setDisplayed(false);
+	Ext.fly('sorting').setDisplayed(false);
+	Ext.fly('cloud').setDisplayed(false);
+	// Ext.fly('x-toolBar').setDisplayed(false);
+	//}
 	
 	genTopicCloud();
 	genFilter();
 	genContentList();
 });
-
-var defaults = {
-		width: 300,
-		height: 450,
-		title: "Discover what's popular right now!",
-		results: 4,
-		topic: '',
-		domain: 'foxnews.com',
-		components: {
-			header: true,
-			topics: true,
-			time: true,
-			navigation: true,
-			refresh: true,
-			ad: true,
-			footer: true
-		},
-		colors: {
-			titlebg: '#58585a',
-			titlefg: '#ffffff',
-			topicbg: '#d1d2d4',
-			topicfg: '#0f75bc',
-			bodybg: '#000000',
-			bodyfg: '#3a3a3c',
-			metafg: '#a0a2a4'
-		}
-	};
-var config = {};
-
-var headerHTML;
 
 
 function merge(destination, source) {
