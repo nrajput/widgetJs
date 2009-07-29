@@ -8,7 +8,7 @@
 <p>Start of Discovery Widget</p>
 <div id="st_disc_container">
 </div>
-<script type="text/javascript" src="http://w.sharethis.com/loader.js"></script>
+<script type="text/javascript" src="http://wd.dev.sharethis.com/loader.js"></script>
 <script type="text/javascript">
 	try {
 		var container = document.getElementById("st_disc_container");
@@ -16,9 +16,11 @@
 			width: 350,
 			height: 460,
 			results: 4,
+			topic: 'root',
+			domain: 'foxnews.com',
 			components: {
-				header: false,
-				footer: false
+				header: true,
+				footer: true
 			}
 		};
 		var st_disc_widget = new sharethis.widgets.discovery(document.getElementById("st_disc_container"), options);

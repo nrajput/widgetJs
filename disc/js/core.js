@@ -30,7 +30,6 @@ var headerHTML;
 var contentStore;
 var topicStore;
 var currentTopic = "root";
-// var currentDomain = "usmagazine.com";
 var currentDomain = "foxnews.com";
 var currentPeriod = 7;
 var currentDestination = "";
@@ -44,7 +43,7 @@ function queryParameters(query) {
 		var m = keyValuePairs[i].match(/^([^=]+)(?:=([\s\S]*))?/);
 		if (m) {
 			var key = decodeURIComponent(m[1]);
-			(params[key] || (params[key] = [])).push(decodeURIComponent(m[2]));
+			params[key] = decodeURIComponent(m[2]);
 		}
 	}
 	return params;
@@ -195,7 +194,7 @@ function genContentList() {
 
 Ext.override(Ext.PagingToolbar, {
     refresh: function(){
-        currentTopic = config.topic[0];
+        currentTopic = config.topic;
         currentPeriod = 7;
         currentDestination = "";
 
@@ -212,8 +211,8 @@ Ext.onReady(function(){
 	merge(config, options);
     
 	headerHTML = '<div id="headerText" class="headerText">'+ config.title + '</div>';
-	currentTopic = config.topic[0];
-	currentDomain = config.domain[0];
+	currentTopic = config.topic;
+	currentDomain = config.domain;
 	
 	view = new Ext.Viewport({
 		layout: 'border',
@@ -244,13 +243,27 @@ Ext.onReady(function(){
 	});
 	
     // enable & disable components
-	// console.log(options.components.header[0]);
-	//if (config.components.header[0] == "false") {
-	// Ext.fly('header').setDisplayed(false);
-	Ext.fly('bottom_ad').setDisplayed(false);
-	Ext.fly('footer').setDisplayed(false);
-	Ext.fly('sorting').setDisplayed(false);
-	Ext.fly('cloud').setDisplayed(false);
+	
+	if (config["components.header"] == "false") {
+		Ext.fly('header').setDisplayed(false);
+	}
+	
+	if (config["components.ad"] == 'false') {
+		Ext.fly('bottom_ad').setDisplayed(false);
+	}
+	
+	if (config["components.footer"] == 'false') {
+		Ext.fly('footer').setDisplayed(false);
+	}
+	
+	if (config["components.time"] == 'false') {
+		Ext.fly('sorting').setDisplayed(false);
+	}
+	
+	if (config["components.topics"] == 'false') {
+		Ext.fly('cloud').setDisplayed(false);
+	}
+	
 	// Ext.fly('x-toolBar').setDisplayed(false);
 	//}
 	
