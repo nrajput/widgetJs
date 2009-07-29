@@ -1,6 +1,6 @@
 /*!
- * ShareThis Widget Version 3.9.3-rc1
- * 6/19/09 ShareThis.com 
+ * ShareThis Widget Version 3.9.5-rc1
+ * 7/20/09 ShareThis.com 
  */
 
 //widget-class.js
@@ -173,6 +173,14 @@ var Widget = new Class({ Implements: Events,
 					resp.data
 				]);
 			}
+			else if (resp.statusMessage && resp.statusMessage.toLowerCase()==="missing_parameter_token") {
+				this.fireEvent('postToServiceFailed', [
+					'blogger', 
+					'Remembering Credentials is for Signed in Users Only',
+					resp.data
+				]);
+			}
+			//MISSING_PARAMETER_TOKEN
 			else {
 				logError("get contacts",JSON.encode(resp));
 				this.fireEvent('postToServiceFailed', [
@@ -1014,7 +1022,7 @@ if (!window.console || !console.firebug) {
 	glo_tabArray=glo_tabs.split(",");
 	var glo_charset='utf-8';
 	var glo_services="";
-	var glo_default_services='facebook,myspace,digg,reddit,windows_live,twitter,google_bmarks,delicious,stumbleupon,yahoo_bmarks,linkedin,ybuzz,technorati,mixx,blogger,friendfeed,blinklist,furl,xanga,newsvine,propeller,wordpress,diigo,typepad,bus_exchange,fark,mister_wong,current,kirtsy,blogmarks,oknotizie,faves,livejournal,slashdot,care2,n4g,meneame,sphinn,simpy,orkut,friendster,dealsplus,fresqui,yigg,funp';
+	var glo_default_services='facebook,myspace,digg,reddit,windows_live,twitter,google_bmarks,delicious,stumbleupon,yahoo_bmarks,linkedin,ybuzz,technorati,mixx,blogger,friendfeed,blinklist,furl,xanga,newsvine,propeller,wordpress,diigo,typepad,bus_exchange,fark,mister_wong,current,kirtsy,blogmarks,oknotizie,faves,livejournal,slashdot,care2,n4g,meneame,sphinn,simpy,dealsplus,fresqui,yigg,funp';
 	var glo_default_swArray=[];
 		glo_default_swArray = glo_default_services.split(',');
 	var glo_style='default';
@@ -1981,6 +1989,11 @@ if (!window.console || !console.firebug) {
 				if(newResp[i].description){setGlobals("glo_description_array",newResp[i].description);}
 			}
 			setValues();
+			
+			if (glo_page == "post|twitter") {
+				createSharURL(glo_url, true);
+				widget.fireEvent('twitterClicked', getSharURL());
+			}
 		
 		}else{logError("getObjects","Ajax Failure");}
 	}
@@ -1989,9 +2002,9 @@ if (!window.console || !console.firebug) {
 
 	function processFrag(){
 		
-		//if(glo_browser.test("ff")==false){
+		if(glo_browser.test("ff")==false){
 		try{glo_jsonStr=decodeURIComponent(glo_jsonStr);}catch(err){}
-		//}
+		}
 		var tmp=glo_jsonStr;
 		var newResp=[];
 		newResp=eval(tmp);
@@ -3681,7 +3694,7 @@ Widget.implement({
 						this.parent();
 					},
 					submitForm: function() {
-						setGlobals("glo_bloggerDraft",0);
+						setGlobals("glo_bloggerDraft",1);
 						widget.postBlogger();
 					}
 				},
@@ -4149,18 +4162,13 @@ Widget.implement({
 		},
 		fresqui: {
 			title: 'Fresqui',
-			submitUrl: 'http://ocio.fresqui.com/post?url={url}&title={title}',
+			submitUrl: 'http://fresqui.com/enviar?url={url}&title={title}',
 			destination: 'ocio.fresqui.com'
 		},
 		friendfeed: {
 			title: 'FriendFeed',
 			submitUrl: 'http://friendfeed.com/share?url={url}&title={title}',
 			destination: 'friendfeed.com'
-		},
-		friendster: {
-			title: 'Friendster',
-			onClick: function(event) { widget.showPage('post|friendster'); event.stop(); },
-			type: 'post'
 		},
 		funp: {
 			title: 'Funp',
@@ -4239,11 +4247,6 @@ Widget.implement({
 			submitUrl: 'http://oknotizie.alice.it/post?url={url}&title={title}',
 			destination: 'oknotizie.alice.it'
 		},
-		orkut: {
-			title: 'Orkut',
-			onClick: function(event) { widget.showPage('post|orkut'); event.stop(); },
-			type: 'post'
-		},
 		propeller: {
 			title: 'Propeller',
 			submitUrl: 'http://www.propeller.com/submit/?U={url}&T={title}',
@@ -4266,7 +4269,7 @@ Widget.implement({
 		},
 		sphinn: {
 			title: 'Sphinn',
-			submitUrl: 'http://sphinn.com/submit.php?url={url}',
+			submitUrl: 'http://sphinn.com/index.php?c=post&m=submit&link={url}',
 			destination: 'sphinn.com'
 		},
 		stumbleupon: {

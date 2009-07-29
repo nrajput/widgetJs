@@ -13,7 +13,7 @@
 
 #only for loader cache for a day	
 	<FilesMatch sharethis.js>
-		Header set ETag "3.9.3"
+		Header set ETag "3.9.5"
 		Header set Cache-Control "max-age=86400, public"
 		Header unset Last-Modified
 		Header unset Expires

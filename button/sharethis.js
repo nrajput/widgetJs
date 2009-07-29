@@ -1,9 +1,10 @@
 /*
-ShareThis Loader Version 3.9.4-rc1
-7/8/09 ShareThis.com
+ShareThis Loader Version 3.9.6-rc1
+7/29/09 ShareThis.com
 */
 
-var STV="3.9.4-rc1";
+
+var STV="3.9.6-rc2";
 
 ST_JSON = new function(){
 
@@ -306,6 +307,7 @@ try{
 			this.popExists=false;
 			this.popup_win=null;
 			this.newwinfrag="";
+			this.page=null;
 			this.shareables=[];
 			this.readyList=[];
 			this.postUrl="";
@@ -342,6 +344,7 @@ try{
 			this.opt_arr=[]
 			this.mousetimer=null;
 			this.autoPosition=true;
+			this.buttonCount=0;
 			this.meta={
 				publisher: '',
 				hostname: location.host,
@@ -612,7 +615,11 @@ try{
 						clearInterval(stVisibleInterval);
 						added_tool="/glo_toolbar=true";
 						SHARETHIS.hideEmbeds();
-						SHARETHIS.mainstframe.src = SHARETHIS.frameUrl + SHARETHIS.newwinfrag +"/guid_index=" + oidx +"/guid=" + SHARETHIS.guid+added_tool;	
+						var pgval="";
+						if(SHARETHIS.page!=null){
+							pgval="/page="+SHARETHIS.page;
+						}
+						SHARETHIS.mainstframe.src = SHARETHIS.frameUrl + SHARETHIS.newwinfrag +"/guid_index=" + oidx +"/guid=" + SHARETHIS.guid+added_tool+pgval;	
 						SHARETHIS.wrapper.style.visibility="visible";
 						SHARETHIS.mainstframe.style.visibility = 'visible';
 		        	} else {
@@ -743,7 +750,7 @@ try{
 		            	x.appendChild(a);
 					}
 		        }
-				if(this.logFlag){this.log('view', o, null);}
+				if(this.logFlag){SHARETHIS.buttonCount++;}
 		        return o;
 		    },
 		
@@ -1042,7 +1049,21 @@ try{
 					this.wrapper.appendChild(this.closebutton);
 
 					this.defer(function(){
-						if(SHARETHIS_TOOLBAR===true){
+						//make button count call
+						var burl = "http://l.sharethis.com/log?event=view";
+				        burl+="&publisher=" + encodeURIComponent(SHARETHIS.meta.publisher)
+				            + "&hostname=" + encodeURIComponent(SHARETHIS.meta.hostname)
+				            + "&count="+SHARETHIS.buttonCount
+				            + "&sessionID="+SHARETHIS.sessionID
+				            + "&location="
+				            + "&url="
+				            + "&fpc="+SHARETHIS.fpc
+				            + "&ts" + (new Date()).getTime() + "." + SHARETHIS.counter++;		        		         
+				        var logger3 = new Image(1,1);
+				        logger3.src = burl;
+				        logger3.onload = function(){return;};
+
+				        if(SHARETHIS_TOOLBAR===true){
 							document.body.appendChild(SHARETHIS.fp);
 							SHARETHIS.postPopup(); //posts data to set cache
 							SHARETHIS_TOOLBAR_DIV.appendChild(SHARETHIS.wrapper);
