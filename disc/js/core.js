@@ -165,7 +165,7 @@ function genContentList() {
 				var arr = services.split(',');
 				var returnStr = '';
 				for ( var i = 0; i < arr.length; i++ ) {
-					returnStr += '<a class="' + arr[i] + '"></a>';
+					returnStr += '<span class="' + arr[i] + '">&nbsp;</span>';
 				}
 				return returnStr;
 			}
