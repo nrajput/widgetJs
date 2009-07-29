@@ -152,7 +152,7 @@ function genContentList() {
 	var tpl = new Ext.XTemplate( 
 		'<tpl for=".">',
 		'<div class="listElement">',
-		    '<div class="resultTitle"><a href="{url}" title="{title}" target="_blank">{[Ext.util.Format.ellipsis(values.title, 80, true)]}</a></div>',
+		    '<div class="resultTitle"><a href="{url}" title="{title}" target="_blank">{[Ext.util.Format.ellipsis(values.title.replace(/FOXNews.com - /,""), 80, true)]}</a></div>',
 		    '<div class="resultViews">viewed {views}</div>',
 			'<div class="viewsSharesSeparator"></div>',
 		    '<div class="resultShares">shared {shares}</div>',
@@ -195,7 +195,7 @@ function genContentList() {
 
 Ext.override(Ext.PagingToolbar, {
     refresh: function(){
-        currentTopic = config.topic;
+        currentTopic = config.topic[0];
         currentPeriod = 7;
         currentDestination = "";
 
@@ -212,7 +212,7 @@ Ext.onReady(function(){
 	merge(config, options);
     
 	headerHTML = '<div id="headerText" class="headerText">'+ config.title + '</div>';
-//	currentTopic = config.topic;
+	currentTopic = config.topic[0];
 	
 	view = new Ext.Viewport({
 		layout: 'border',
