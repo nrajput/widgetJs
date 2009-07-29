@@ -213,6 +213,7 @@ Ext.onReady(function(){
     
 	headerHTML = '<div id="headerText" class="headerText">'+ config.title + '</div>';
 	currentTopic = config.topic[0];
+	currentDomain = config.domain[0];
 	
 	view = new Ext.Viewport({
 		layout: 'border',
