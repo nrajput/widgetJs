@@ -10,7 +10,7 @@
 
 body {
 /*	color: #FFF;*/
-	font-family: "Lucida Grande","Lucida Sans Unicode",Verdana,Tahoma,Arial,sans-serif;
+	font-family: "Lucida Grande", Arial, "Lucida Sans Unicode",Verdana,Tahoma,sans-serif;
 	font-size: 11px;
 }
 a {
@@ -285,7 +285,7 @@ h6 {
 	display:inline;
 	font-size:0.8em;
 	position: absolute;
-	left: 25%;
+	left: 28%;
 	height: 10px;
 	width: 1px;
 }
@@ -304,7 +304,7 @@ h6 {
 	display:inline;
 	font-size:0.8em;
 	position: absolute;
-	left: 50%;
+	left: 52%;
 	height: 10px;
 	width: 1px;
 }
