@@ -5,6 +5,7 @@ var config = {
 		results: 4,
 		topic: '',
 		domain: 'foxnews.com',
+		border: '1px #58585A solid',
 		components: {
 			header: true,
 			topics: true,
@@ -19,7 +20,7 @@ var config = {
 			titlefg: '#ffffff',
 			topicbg: '#d1d2d4',
 			topicfg: '#0f75bc',
-			bodybg: '#000000',
+			bodybg: 'white',
 			bodyfg: '#3a3a3c',
 			metafg: '#a0a2a4'
 		}
@@ -73,6 +74,9 @@ function setGlobals(strArg,value) {
 		case "domain":
 			config.domain = value;
 			break;  
+		case "border":
+			config.border = value;
+			break;
 		case "components.header":
 			if (value == "true") {
 				config.components.header = true;
@@ -295,6 +299,10 @@ function genContentList() {
 	if (!config.components.navigation) {
 		pagebar.getEl().setDisplayed(false);
 	}
+	
+	Ext.fly('resultsView').setStyle('background-color', config.colors.bodybg);
+	Ext.fly('resultsView').setStyle('color', config.colors.bodyfg);
+//	Ext.fly('')
 }
 
 
@@ -349,9 +357,17 @@ Ext.onReady(function(){
 	});
 	
     // enable & disable components
+	if (config.border) {
+		Ext.fly('container').setStyle('border', config.border);
+		Ext.fly('header').setStyle('border', config.border);
+		Ext.fly('content').setStyle('border', config.border);
+	}
 	
 	if (!config.components.header) {
 		Ext.fly('header').setDisplayed(false);
+	} else {
+		Ext.fly('header').setStyle('color', config.colors.titlefg);
+		Ext.fly('header').setStyle('background-color', config.colors.titlebg);
 	}
 	
 	if (!config.components.ad) {
@@ -360,14 +376,23 @@ Ext.onReady(function(){
 	
 	if (!config.components.footer) {
 		Ext.fly('footer').setDisplayed(false);
+	} else {
+		Ext.fly('footer').setStyle('color', config.colors.titlefg);
+		Ext.fly('footer').setStyle('background-color', config.colors.titlebg);		
 	}
 	
 	if (!config.components.time) {
 		Ext.fly('sorting').setDisplayed(false);
+	} else {
+		Ext.fly('sorting').setStyle('color', config.colors.bodyfg);
 	}
+	
 	
 	if (!config.components.topics) {
 		Ext.fly('cloud').setDisplayed(false);
+	} else {
+		Ext.fly('cloud').setStyle('color', config.colors.topicfg);
+		Ext.fly('cloud').setStyle('background-color', config.colors.topicbg);
 	}
 	
 	genTopicCloud();

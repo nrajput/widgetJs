@@ -18,6 +18,7 @@ sharethis.widgets.discovery = function(container, options) {
 		results: 4,
 		topic: '',
 		domain: location.host,
+		border: '1px #58585A solid',
 		components: {
 			header: true,
 			topics: true,
@@ -32,7 +33,7 @@ sharethis.widgets.discovery = function(container, options) {
 			titlefg: '#ffffff',
 			topicbg: '#d1d2d4',
 			topicfg: '#0f75bc',
-			bodybg: '#000000',
+			bodybg: 'white',
 			bodyfg: '#3a3a3c',
 			metafg: '#a0a2a4'
 		}
@@ -42,7 +43,7 @@ sharethis.widgets.discovery = function(container, options) {
 	sharethis.utilities.merge(this.settings, options);
 	
 	this.createQueryString = function() {
-		var settings = new Array('width', 'height', 'title', 'results', 'topic', 'domain');
+		var settings = new Array('width', 'height', 'title', 'results', 'topic', 'domain', 'border');
 		var components = new Array('header', 'topics', 'time', 'navigation', 'refresh', 'ad', 'footer');
 		var colors = new Array('titlebg', 'titlefg', 'topicbg', 'topicfg', 'bodybg', 'bodyfg', 'metafg');
 		var params = new Array();

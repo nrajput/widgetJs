@@ -271,7 +271,7 @@ h6 {
 .resultViews{
 	font-size:9px;
 	display:inline;
-	color:#a0a2a4;
+	color:#857776;
 	min-height:150px;
 }
 
@@ -293,7 +293,7 @@ h6 {
 .resultShares{
 	font-size:9px;
 	display:inline;
-	color:#a0a2a4;
+	color:#857776;
 	position: absolute;
 	left: 30%;
 }
@@ -312,7 +312,7 @@ h6 {
 .resultServices{
 	display:inline;
 	font-size:9px;
-	color:#a0a2a4;
+	color:#857776;
 	white-space:nowrap;
 	position: absolute;
 	left: 55%;

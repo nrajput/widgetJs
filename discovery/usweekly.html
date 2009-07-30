@@ -9,7 +9,7 @@
 </div>
 <div id ="st_disc_container2" style="height:210px; width:350px; diplay:block; float: left;">
 </div>
-<script type="text/javascript" src="http://w.dev.sharethis.com/loader-demo.js"></script>
+<script type="text/javascript" src="http://w.dev.sharethis.com/loader.js"></script>
 <script type="text/javascript">
 	try {
 		var container = document.getElementById("st_disc_container1");
@@ -20,6 +20,7 @@
 			title: "Popular Stories",
 			topic: 'Michael_jackson',
 			domain: 'usmagazine.com',
+			border: '0px',
 			components: {
 				header: true,
 				topics: false,
@@ -28,6 +29,12 @@
 				refresh: false,
 				ad: false,
 				footer: false
+			},
+			colors: {
+				titlefg: "#DD2161",
+				titlebg: "white",
+				bodybg: "white",
+				bodyfg: "#DD2161"
 			}
 		};
 		var st_disc_widget = new sharethis.widgets.discovery(document.getElementById("st_disc_container1"), options);
@@ -45,6 +52,7 @@
 			title: "",
 			topic: 'Photos',
 			domain: 'usmagazine.com',
+			border: '0px',
 			components: {
 				header: true,
 				topics: false,
@@ -53,6 +61,12 @@
 				refresh: false,
 				ad: false,
 				footer: false
+			},
+			colors: {
+				titlefg: "#DD2161",
+				titlebg: "white",
+				bodybg: "white",
+				bodyfg: "#DD2161"
 			}
 		};
 		var st_disc_widget = new sharethis.widgets.discovery(document.getElementById("st_disc_container2"), options);
