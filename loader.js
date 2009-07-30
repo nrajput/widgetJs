@@ -10,7 +10,7 @@ sharethis.utilities = sharethis.utilities || {};
  * Discovery Widget
  */
 sharethis.widgets.discovery = function(container, options) {
-	this.location = 'http://wd.dev.sharethis.com/disc/index.html';
+	this.location = 'http://wd.sharethis.com/disc/index.html';
 	this.defaults = {
 		width: 300,
 		height: 450,
