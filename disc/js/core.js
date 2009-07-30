@@ -1,4 +1,4 @@
-var defaults = {
+var config = {
 		width: 300,
 		height: 450,
 		title: "Discover what's popular right now!",
@@ -24,7 +24,6 @@ var defaults = {
 			metafg: '#a0a2a4'
 		}
 	};
-var config = {};
 var headerHTML;
 
 var contentStore;
@@ -33,21 +32,125 @@ var currentTopic = "root";
 var currentDomain = "foxnews.com";
 var currentPeriod = 7;
 var currentDestination = "";
-var options = queryParameters(document.location.hash.substring(1));
 
 
-function queryParameters(query) {
+function configParameters(query) {
 	var keyValuePairs = query.split(/[&?]/g);
 	var params = {};
 	for (var i = 0, n = keyValuePairs.length; i < n; ++i) {
 		var m = keyValuePairs[i].match(/^([^=]+)(?:=([\s\S]*))?/);
-		if (m) {
-			var key = decodeURIComponent(m[1]);
-			params[key] = decodeURIComponent(m[2]);
+		if (m) {			
+			setGlobals(decodeURIComponent(m[1]), decodeURIComponent(m[2]) );
+			// params[key] = decodeURIComponent(m[2]);
 		}
 	}
-	return params;
+	// return params;
 }
+
+function setGlobals(strArg,value) {
+	var answer="";
+	if(value===0){answer="No";}
+	if(value===1){answer="Yes";}
+	try{value=decodeURIComponent(value);}catch(err){}
+	try{value=decodeURIComponent(value);}catch(err){}
+
+	switch(strArg) {
+		case "width":
+			config.width = parseInt(value);
+			break;    
+		case "height":
+			config.height = parseInt(value);
+		  break;
+		case "title":
+			config.title = value;
+			break;  
+		case "results":
+			config.results = parseInt(value);
+			break;  
+		case "topic":
+			config.topic = value;
+			break;  
+		case "domain":
+			config.domain = value;
+			break;  
+		case "components.header":
+			if (value == "true") {
+				config.components.header = true;
+			} else {
+				config.components.header = false;
+			}
+			break; 
+		case "components.topics":
+			if (value == "true") {
+				config.components.topics = true;
+			} else {
+				config.components.topics = false;
+			}
+			break; 
+		case "components.time":
+			if (value == "true") {
+				config.components.time = true;
+			} else {
+				config.components.time = false;
+			}
+			break; 
+		case "components.navigation":
+			if (value == "true") {
+				config.components.navigation = true;
+			} else {
+				config.components.navigation = false;
+			}
+			break; 
+		case "components.refresh":
+			if (value == "true") {
+				config.components.refresh = true;
+			} else {
+				config.components.refresh = false;
+			}
+			break; 
+		case "components.ad":
+			if (value == "true") {
+				config.components.ad = true;
+			} else {
+				config.components.ad = false;
+			}
+			break; 
+		case "components.footer":
+			if (value == "true") {
+				config.components.footer = true;
+			} else {
+				config.components.footer = false;
+			}
+			break; 
+		case "colors.titlebg":
+			config.colors.titlebg = value;
+			break;
+		case "colors.titlefg":
+			config.colors.titlefg = value;
+			break;
+		case "colors.topicbg":
+			config.colors.topicbg = value;
+			break;
+		case "colors.topicfg":
+			config.colors.topicfg = value;
+			break;
+		case "colors.bodyfg":
+			config.colors.bodyfg = value;
+			break;
+		case "colors.bodybg":
+			config.colors.bodybg = value;
+			break;
+		case "colors.metafg":
+			config.colors.metafg = value;
+			break;
+		default: 
+			// do nothing
+			break;
+	}
+}
+
+
+
 
 function genTopicCloud() {
 	topicStore = new Ext.ux.data.PagingStore({
@@ -113,8 +216,7 @@ function reload() {
 	// setup the parameters for contentStore
 	contentStore.setBaseParam('period', currentPeriod);
 	contentStore.setBaseParam('topic', currentTopic);
-	console.log(parseInt(config.results));
-	contentStore.load( { params: { start: 0, limit: parseInt(config.results), domain: currentDomain, period: currentPeriod, topic: currentTopic } });
+	contentStore.load( { params: { start: 0, limit: config.results, domain: currentDomain, period: currentPeriod, topic: currentTopic } });
 }
 
 
@@ -144,7 +246,7 @@ function genContentList() {
 			topic: currentTopic
 		},
 
-		autoLoad: { params: { start: 0, limit: parseInt(config.results), domain: currentDomain, period: currentPeriod, topic: currentTopic } }
+		autoLoad: { params: { start: 0, limit: config.results, domain: currentDomain, period: currentPeriod, topic: currentTopic } }
 		
 	});
 	
@@ -172,7 +274,7 @@ function genContentList() {
 	);
 
 	var pagebar = new Ext.PagingToolbar({
-		pageSize: parseInt(config.results),
+		pageSize: config.results,
 		store: contentStore,
 		ctCls:'pagingBar',
 		plugins: new Ext.ux.CustomPaging()
@@ -189,6 +291,10 @@ function genContentList() {
 		border: false
 	});
 	panel.render('content');
+	
+	if (!config.components.navigation) {
+		pagebar.getEl().setDisplayed(false);
+	}
 }
 
 
@@ -206,9 +312,9 @@ Ext.override(Ext.PagingToolbar, {
 
 Ext.onReady(function(){
 	//Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
+
 	// setup the options
-	merge(config, defaults);
-	merge(config, options);
+	configParameters(document.location.hash.substring(1));
     
 	headerHTML = '<div id="headerText" class="headerText">'+ config.title + '</div>';
 	currentTopic = config.topic;
@@ -244,28 +350,25 @@ Ext.onReady(function(){
 	
     // enable & disable components
 	
-	if (config["components.header"] == "false") {
+	if (!config.components.header) {
 		Ext.fly('header').setDisplayed(false);
 	}
 	
-	if (config["components.ad"] == 'false') {
+	if (!config.components.ad) {
 		Ext.fly('bottom_ad').setDisplayed(false);
 	}
 	
-	if (config["components.footer"] == 'false') {
+	if (!config.components.footer) {
 		Ext.fly('footer').setDisplayed(false);
 	}
 	
-	if (config["components.time"] == 'false') {
+	if (!config.components.time) {
 		Ext.fly('sorting').setDisplayed(false);
 	}
 	
-	if (config["components.topics"] == 'false') {
+	if (!config.components.topics) {
 		Ext.fly('cloud').setDisplayed(false);
 	}
-	
-	// Ext.fly('x-toolBar').setDisplayed(false);
-	//}
 	
 	genTopicCloud();
 	genFilter();
