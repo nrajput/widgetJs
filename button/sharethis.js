@@ -724,8 +724,8 @@ try{
 		        //if(o.options.onmouseover == false || o.options.onmouseover == "false") a.onclick = o.popup;
 		        if(o.options.onmouseover == true || o.options.onmouseover == "true") {
 		        	SHARETHIS.wrapper.onmouseover=function(){stCancelClose();};
-		        	a.onmouseover=function(){console.log("button mouseover");stCancelClose();SHARETHIS.mousetimer=setTimeout(o.popup,300);};
-		        	a.onmouseout=function(){console.log("button mouse out");clearInterval(SHARETHIS.mousetimer);stClose();};
+		        	a.onmouseover=function(){/*console.log("button mouseover");*/stCancelClose();SHARETHIS.mousetimer=setTimeout(o.popup,300);};
+		        	a.onmouseout=function(){/*console.log("button mouse out");*/clearInterval(SHARETHIS.mousetimer);stClose();};
 		        		//function(){SHARETHIS.mousetimer=setTimeout(o.popup,100);};
 		        		//a.onmouseover = o.popup;
 		        }
@@ -1050,15 +1050,24 @@ try{
 
 					this.defer(function(){
 						//make button count call
-						var burl = "http://l.sharethis.com/log?event=view";
-				        burl+="&publisher=" + encodeURIComponent(SHARETHIS.meta.publisher)
+						var burl = "http://l.sharethis.com/log?event=bview";
+				        var additional=dbrInfo();
+				        if(additional==false){
+				        	additional="";
+				        }
+						burl+="&publisher=" + encodeURIComponent(SHARETHIS.meta.publisher)
 				            + "&hostname=" + encodeURIComponent(SHARETHIS.meta.hostname)
-				            + "&count="+SHARETHIS.buttonCount
-				            + "&sessionID="+SHARETHIS.sessionID
 				            + "&location="
 				            + "&url="
+				            + "&sessionID="+SHARETHIS.sessionID
 				            + "&fpc="+SHARETHIS.fpc
-				            + "&ts" + (new Date()).getTime() + "." + SHARETHIS.counter++;		        		         
+				            + "&ts" + (new Date()).getTime() + "." + SHARETHIS.counter++
+				            + "&count="+SHARETHIS.buttonCount
+				            +	additional;
+				        
+				        
+				       				        
+				        
 				        var logger3 = new Image(1,1);
 				        logger3.src = burl;
 				        logger3.onload = function(){return;};
@@ -1096,12 +1105,12 @@ try{
 		var closetimeout;
 
 		function stClose(){
-			console.log("in stClose");
+			/*console.log("in stClose");*/
 			if(stautoclose==true) closetimeout = setTimeout("stcloseWidget()",1500);	
 		}
 
 		function stCancelClose() {
-			console.log("in stCancelClose");
+			/*console.log("in stCancelClose");*/
 			clearTimeout(closetimeout);
 		}
 
@@ -1223,6 +1232,25 @@ try{
 			}
 			return rScript;			
 		}
+		
+		function dbrInfo(){
+			var dbr=document.referrer;
+			if(dbr && dbr.length>0){
+				var re1=/(http:\/\/)(.*?)\/.*/i;
+				var re2=/(^.*\?)(.*)/ig;
+				var retVal="";
+				var domain=dbr.replace(re1, "$2");
+				if(domain.length>0){retVal+="&refDomain="+domain;}
+				else{return false;}
+				var query=dbr.replace(re2,"$2");
+				if(query.length>0){retVal+="&refQuery="+encodeURIComponent(query);}
+				return retVal;
+			}
+			else{
+				return false;
+			}
+		}
+		
 		
 		_thisScript=getShareThisScript();		
 		if (_thisScript){
