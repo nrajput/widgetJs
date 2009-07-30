@@ -6308,12 +6308,6 @@ window.addEvent('domready', function() {
 		widget.signOut();
 	});
 
-	$('signInFacebook').addEvent('click', function(){
-		widget.pages.addressbook.addressBook.svc="all";
-		widget.showPage('signin');
-		//event.stop();
-	});
-	
 	$('textAuthUsername').addEvent('keydown', function(event){
 		event = new Event(event); 
 	if (event.key === 'enter'){
