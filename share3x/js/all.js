@@ -905,8 +905,8 @@ if (!window.console || !console.firebug) {
 	glo_tabArray=glo_tabs.split(",");
 	var glo_charset='utf-8';
 	var glo_services="";
-	var glo_default_services='facebook,myspace,digg,reddit,windows_live,twitter,google_bmarks,delicious,stumbleupon,yahoo_bmarks,linkedin,ybuzz,technorati,mixx,blogger,friendfeed,blinklist,furl,xanga,newsvine,propeller,wordpress,diigo,typepad,bus_exchange,fark,mister_wong,current,kirtsy,blogmarks,oknotizie,faves,livejournal,slashdot,care2,n4g,meneame,sphinn,simpy,dealsplus,fresqui,yigg,funp';
-    var glo_popular_services = 'email,facebook,twitter,sharebox';
+	var glo_default_services='facebook,myspace,digg,aim,sms,email,reddit,windows_live,twitter,google_bmarks,delicious,stumbleupon,yahoo_bmarks,linkedin,ybuzz,technorati,mixx,blogger,friendfeed,blinklist,furl,xanga,newsvine,propeller,wordpress,diigo,typepad,bus_exchange,fark,mister_wong,current,kirtsy,blogmarks,oknotizie,faves,livejournal,slashdot,care2,n4g,meneame,sphinn,simpy,dealsplus,fresqui,yigg,funp';
+    var glo_top_services = 'email,facebook,twitter,sharebox';
 	var glo_default_swArray=[];
 		glo_default_swArray = glo_default_services.split(',');
 	var glo_style='default';
@@ -1767,7 +1767,30 @@ if (!window.console || !console.firebug) {
 		}
 	}
 
+    function genTopServices() {
+		var serviceNames = glo_top_services.split(",");
+        $each(serviceNames, function(provider) {
+            console.log(provider);
+
+			var link = widget.getServiceLink(provider);
+			link.inject('top_services');
+
+				/*
+            var serviceLink = new Element('a', { 'class': provider + '_icon' + ' topServiceLink' , 'id': provider + '_top_link', 'rel': 'external',
+                                                 'target': '_blank', 'html': shareServices.services[provider]['title'],
+                                                 href: 'javascript:void(0)',
+											   });
+            serviceLink.inject('top_services');
+				*/
+        });
+
+
+	}
+
 	function createSwList() {
+
+		genTopServices();
+
 		var carouselItems = [];
 		var defaultServicesCSV = glo_default_services;
 		var defaultServices = glo_default_swArray;
@@ -2808,29 +2831,6 @@ Widget.implement({
 				this.hideTwitterMenu();
 			},
 			onReady: function() {
-				$('send_email').addEvent('click', function(event) {
-					widget.pages.addressbook.addressBook.svc="email";
-					widget.showPage('send');
-					event.stop();
-				});
-				$('send_aim').addEvent('click', function(event) {
-					if (widget.user.hasContactsOnService('aim')) {
-						widget.showPage('addressbook');
-						widget.sortAddressBook('service');
-						$("abLoading").setStyle("display","inline");
-						widget.pages.addressbook.addressBook._clearList();
-						widget.pages.addressbook.addressBook.svc="aim";
-						setTimeout("widget.pages.addressbook.addressBook.sort('aim')",1);
-					}
-					else {
-						widget.showPage('import');
-						// on first show we have to drop out of the event handling stack
-						setTimeout(function() {
-							widget.setImportContactService('aim');
-						}, 1);
-					}
-					event.stop();
-				})
 				$('twitter_direct_message').addEvent('click', (function(event) {
 					if (widget.user.hasContactsOnService('twitter')) {
 						widget.showPage('addressbook');
@@ -2863,43 +2863,6 @@ Widget.implement({
 					widget.showPage('post|twitter');
 					event.stop();
 				});
-				$('send_sms').addEvent('click', (function(event) {
-					if (widget.user.hasContactsOnService('sms')) {
-						widget.showPage('addressbook');
-						widget.sortAddressBook('service');
-						$("abLoading").setStyle("display","inline");
-						widget.pages.addressbook.addressBook._clearList();
-						widget.pages.addressbook.addressBook.svc="sms";
-						setTimeout("widget.pages.addressbook.addressBook.sort('sms')",1);
-					}
-					else {
-						widget.showPage('send');
-					}
-					event.stop();
-				}).bind(this))
-				$('sharebox_btn').addEvent('click', (function(event) {
-					if (widget.userIsSignedIn()) {
-						widget.showPage('sharebox');
-					}
-					else {
-						widget.showPage('register');
-						widget.displayNotification('You must register to save items to a ShareBox.');
-						var signedIn = leftPage = null;
-						signedIn = function() {
-							widget.showPage('sharebox');
-							widget.removeEvent('signInComplete', signedIn);
-							widget.removeEvent('pageHidden', leftPage);
-						};
-						leftPage = function(page) {
-							widget.removeEvent('signInComplete', signedIn);
-							widget.removeEvent('pageHidden', leftPage);
-						};
-						widget.addEvent('signInComplete', signedIn);
-						// if we leave the reg page without registering/logging in, forget that we were going to the sharebox
-						widget.addEvent('pageHidden', leftPage);
-					}
-					event.stop();
-				}));
 				widget.user.addEvent('infoChanged', (function() {
 					// rebuild the carousel based on user prefs, if any
 					// @todo: re-factor the function.
@@ -3787,6 +3750,10 @@ Widget.implement({
 	pageHistory: [],
 	_currentPage: null,
 	
+	showSharebox: function() {
+
+	},
+	
 	/**
 	 * @param 	string|array path: pipe-delimited path to the page to show using 
 	 * 			property names in structure above. eg, 'post/wordpress' or just 'done'. 
@@ -4008,6 +3975,80 @@ Widget.implement({
 
 Widget.implement({
 	services: {
+		aim: {
+			title: 'AIM',
+			onClick: function(event) {
+				if (widget.user.hasContactsOnService('aim')) {
+					widget.showPage('addressbook');
+					widget.sortAddressBook('service');
+					$("abLoading").setStyle("display","inline");
+					widget.pages.addressbook.addressBook._clearList();
+					widget.pages.addressbook.addressBook.svc="aim";
+					setTimeout("widget.pages.addressbook.addressBook.sort('aim')",1);
+				}
+				else {
+					widget.showPage('import');
+					// on first show we have to drop out of the event handling stack
+					setTimeout(function() {
+						widget.setImportContactService('aim');
+					}, 1);
+				}
+				event.stop();
+			},
+			type: 'aim',
+		},
+		sms: {
+            title: 'Text',
+			onClick: function(event) {
+				if (widget.user.hasContactsOnService('sms')) {
+					widget.showPage('addressbook');
+					widget.sortAddressBook('service');
+					$("abLoading").setStyle("display","inline");
+					widget.pages.addressbook.addressBook._clearList();
+					widget.pages.addressbook.addressBook.svc="sms";
+					setTimeout("widget.pages.addressbook.addressBook.sort('sms')",1);
+				} else {
+					widget.showPage('send');
+				}
+				event.stop();
+			},
+            type: 'sms',
+        },
+		email: {
+            title: 'Email',
+			onClick: function(event) {
+				widget.pages.addressbook.addressBook.svc="email";
+				widget.showPage('send');
+				event.stop();
+			},
+            type: 'email',
+        },
+        sharebox: {
+            title: 'Save',
+			onClick: function(event) { 
+				if (widget.userIsSignedIn()) {
+					widget.showPage('sharebox');
+				} else {
+					widget.showPage('register');
+					widget.displayNotification('You must register to save items to a ShareBox.');
+					var signedIn = leftPage = null;
+					signedIn = function() {
+						widget.showPage('sharebox');
+						widget.removeEvent('signInComplete', signedIn);
+						widget.removeEvent('pageHidden', leftPage);
+					};
+					leftPage = function(page) {
+						widget.removeEvent('signInComplete', signedIn);
+						widget.removeEvent('pageHidden', leftPage);
+					};
+					widget.addEvent('signInComplete', signedIn);
+					// if we leave the reg page without registering/logging in, forget that we were going to the sharebox
+					widget.addEvent('pageHidden', leftPage);
+				}
+				event.stop();
+			},
+            type: 'sharebox',
+        },
 		blinklist: {
 			title: 'Blinklist',
 			submitUrl: 'http://blinklist.com/index.php?Action=Blink/addblink.php&Url={url}&Title={title}',
@@ -4315,7 +4356,7 @@ Widget.implement({
 		if(!service){
 			return;
 		}
-		var link = '#';
+		var link = 'javascript:void(0)';
 		var aTitle='';
 		
 		if(service.aTitle){

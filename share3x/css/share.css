@@ -892,17 +892,19 @@ span.active a#home_button {
 #registerStatus {
 	clear:both;
 }
+
 .sharebox {
 	/* background:url(http://w.sharethis.com/share3x/images/sharebox_logo.gif) no-repeat; */
 	background-image:url(http://w.sharethis.com/share3x/images/sprite_main_1.gif);
 	background-position: -16px -177px;
 	background-repeat:no-repeat;
+	display: inline;
 	display:block;
-	padding:3px 4px 2px 22px !important;
-	padding:2px 4px 2px 22px;
+	padding:2px 4px 2px 20px;
 	white-space:nowrap;
+	float: left;
 }
- 
+
 #addressbook_goto_import {
 	float:right;
 }
@@ -973,6 +975,7 @@ span.active a#home_button {
 	margin-right:11px;
 	padding:2px 4px 2px 20px;
 	white-space:nowrap;
+	float: left;
 }
 .sharethis {
 	background:url(http://w.sharethis.com/share3x/images/share-icon.gif) no-repeat left center;
