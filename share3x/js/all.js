@@ -1721,13 +1721,18 @@ if (!window.console || !console.firebug) {
 	}
 
     function genTopServices() {
+
+		var top_elm = new Element('div', { id: 'top_services' } );
+
 		var serviceNames = glo_top_services.split(",");
         $each(serviceNames, function(provider) {
             console.log(provider);
 
 			var link = widget.getServiceLink(provider);
-			link.inject('top_services');
+			link.inject(top_elm);
         });
+		
+		top_elm.replaces( $('top_services') );
 	}
 
 	function createSwList() {
