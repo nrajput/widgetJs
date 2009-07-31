@@ -1,6 +1,6 @@
 /*
 ShareThis Loader Version 3.9.6-rc1
-7/29/09 ShareThis.com
+7/31/09 ShareThis.com
 */
 
 
@@ -136,9 +136,9 @@ ST_JSON = new function(){
 	catch(z){rc=/^(true|false|null|\[.*\]|\{.*\}|".*"|\d+|\d+\.\d+)$/}
 };
 
-/*
+
 try{
-*/
+
 	if (!SHARETHIS) {
 		if(!SHARETHIS_TOOLBAR){
 			var SHARETHIS_TOOLBAR=false;
@@ -1106,12 +1106,10 @@ try{
 		var closetimeout;
 
 		function stClose(){
-			/*console.log("in stClose");*/
 			if(stautoclose==true) closetimeout = setTimeout("stcloseWidget()",1500);	
 		}
 
 		function stCancelClose() {
-			/*console.log("in stCancelClose");*/
 			clearTimeout(closetimeout);
 		}
 
@@ -1271,8 +1269,6 @@ try{
 		var obj = SHARETHIS.addEntry();
 	}
 
-/*
 }
 catch(err){
 }
-*/
