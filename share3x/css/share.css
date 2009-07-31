@@ -64,6 +64,15 @@ p {
 img {
 	border: none;
 }
+
+#top_services_title {
+    font-size: 16px;
+}
+
+#top_services_section {
+	padding: 0 9px 9px 9px;				  
+}
+
 .small {
 	font-size:9px;
 	font-family: "Lucida Grande","Lucida Sans Unicode",Verdana,Tahoma,Arial,sans-serif;

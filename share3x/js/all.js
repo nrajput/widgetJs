@@ -899,8 +899,6 @@ if (!window.console || !console.firebug) {
 
 
 	var glo_tabs='web,post,email';
-	//var glo_send_services="email,myspace,aim,sms";
-	var glo_send_services="email,aim,sms";
 	var glo_tabArray=[];
 	glo_tabArray=glo_tabs.split(",");
 	var glo_charset='utf-8';
@@ -1273,10 +1271,6 @@ if (!window.console || !console.firebug) {
 				glo_headerfg = value;
 				widget.fireEvent('headerFGColorChanged', value);
 			break;
-			case 'send_services':
-				glo_send_servicesArray=value;
-				send_servicesChanged(value);
-				break;
 			case 'post_services':
 				setGlobals("services",value);
 				break;			
@@ -1468,41 +1462,6 @@ if (!window.console || !console.firebug) {
 			request.send();
 		}
 	}
-	function send_servicesChanged(services) {
-		var svc_arr=[];
-		svc_arr=services.split(",");
-		var email=false;
-		var aim=false;
-		var sms=false;
-		for(var i=0;i<svc_arr.length;i++)
-		{
-			if(svc_arr[i]=="email"){
-				email=true;
-			}
-			else if(svc_arr[i]=="aim"){
-				aim=true;
-			}else if(svc_arr[i]=="sms"){
-				sms=true;
-			}
-		}
-		
-		if(email==false){
-			$("send_email").setStyle("display","none");
-		}
-		if(aim==false){
-			$("send_aim").setStyle("display","none");
-		}
-		if(sms==false){
-			$("send_sms").setStyle("display","none");
-		}
-		if(email==false && aim==false && sms==false){
-				$('send_section').getChildren().each(function(child) { child.setStyle("display","none"); });
-		}
-		
-		
-		return "services_changed";
-	}
-	
 
 	// frag pump start	
 	var FragmentPump = new Class({
@@ -1774,17 +1733,7 @@ if (!window.console || !console.firebug) {
 
 			var link = widget.getServiceLink(provider);
 			link.inject('top_services');
-
-				/*
-            var serviceLink = new Element('a', { 'class': provider + '_icon' + ' topServiceLink' , 'id': provider + '_top_link', 'rel': 'external',
-                                                 'target': '_blank', 'html': shareServices.services[provider]['title'],
-                                                 href: 'javascript:void(0)',
-											   });
-            serviceLink.inject('top_services');
-				*/
         });
-
-
 	}
 
 	function createSwList() {
@@ -2723,7 +2672,6 @@ Widget.implement({
 		home: {
 			id: 'home_page',
 			twitterMenuOpen: false,
-			_resizeShortcutsOnShow: false,
 			showTwitterMenu: function() {
 				$('twitter_menu').removeClass('hidden');
 				this.twitterMenuOpen = true;
@@ -2749,82 +2697,8 @@ Widget.implement({
 				$('twitter_menu').addClass('hidden');
 				this.twitterMenuOpen = false;
 			},
-			buildShortcutList: function(recipients) {
-				$('recent_recipients').getChildren().each(function(child) { 
-					if (child.nodeName.toLowerCase() != 'h4') { child.destroy(); } 
-				});
-				for (var i = 0; i < 3 && i < recipients.length; i++) {
-					var e = new Element('span', { 'class': 'shortcut' });
-					var a = new Element('a', { href: '#', title: recipients[i].address + ' (' + recipients[i].service + ')' });
-					a.set('html', recipients[i].name);
-					a.addEvent('click', (function() {
-						var enclosedRecipient = recipients[i];	// peel off a copy for the closure
-						return (function(event) {
-							var existingContact = widget.user.searchContactsExact(
-								enclosedRecipient.service.toLowerCase(),
-								enclosedRecipient.address
-							);
-							if (existingContact) {
-								existingContact.select();
-							}
-							else {
-								var newContacts = widget.user.addContactsLocally([enclosedRecipient]);
-								setTimeout(function() {
-									newContacts[0].select();
-								}, 1);
-							}
-							widget.showPage('send');
-							event.stop();
-						});
-					})());
-					$('recent_recipients').grab(e.grab(a));
-				}
-				if (this.isShown()) {
-					this.resizeShortcuts();
-				}
-				else if (recipients.length) {
-					this._resizeShortcutsOnShow = true;
-				}
-				else {
-					$('recent_recipients').addClass('hidden');
-				}
-			},
-			hideShortcutList: function() {
-				$('recent_recipients').getChildren().each(function(child) { 
-					if (child.nodeName.toLowerCase() != 'h4') { child.destroy(); } 
-				});
-				$('recent_recipients').addClass('hidden');
-			},
-			resizeShortcuts: function() {
-				$('recent_recipients').removeClass('hidden');
-				$('recent_recipients').getChildren().getLast().addClass('last');
-				var anchors = [];
-				var total = 0;
-				$('recent_recipients').getChildren().each(function(item) {
-					var anchor = item.getElement('a');
-					var width = item.getSize().x;
-					if (anchor) {
-						anchors.push({ anchor: anchor, width: width });
-					}
-					total += width;
-				});
-				while (total > 295) {
-					anchors.sort(function(a, b) { return b.width - a.width; });
-					var str = anchors[0].anchor.get('html');
-					anchors[0].anchor.set('html', str.substring(0, str.length - 3) + '&hellip;');
-					anchors[0].width = anchors[0].anchor.getSize().x;
-					total = 0;
-					$('recent_recipients').getChildren().each(function(item){
-						total += item.getSize().x;
-					});
-				}
-			},
 			onShow: function() {
 				this.parent();
-				if (this._resizeShortcutsOnShow) {
-					this.resizeShortcuts();
-					this._resizeShortcutsOnShow = false;
-				}
 			},
 			onHide: function() {
 				this.parent();
@@ -2869,16 +2743,7 @@ Widget.implement({
 					createSwList();
 				}).bind(this));
 				
-				widget.user.addEvent('recipientHistoryChanged', (function(recipientsContainer) {
-					widget.deferWhile('recipientHistoryIsChanging', (function() {
-						if (widget.user.isSignedIn() && glo_tabArray.contains('email')) {
-							this.buildShortcutList(recipientsContainer.recipients);
-						}
-					}).bind(this));
-				}).bind(this));
-				
 				widget.user.addEvent('signedOut', (function() {
-					this.hideShortcutList();
 				}).bind(this));
 				
 				widget.carousel = this.carousel = new Widget.Carousel(
@@ -2886,13 +2751,6 @@ Widget.implement({
 					(!glo_tabArray.contains('email') ? Widget.Carousel.initialState_more : Widget.Carousel.initialState_less)
 				);
 
-				// support for publisher prefs
-				widget.addEvent('tabPrefsChanged', function(tabsContainer) {
-					if (!tabsContainer.tabs.contains('email')) {
-						$('send_section').getChildren().each(function(child) { child.addClass('hidden') });
-						//widget.carousel.showMore();
-					}
-				});
 				this.parent();
 			}
 		},
@@ -5275,7 +5133,6 @@ Widget.User = new Class({ Implements: Events,
 	addRecentRecipient: function(data) {
 		// @todo: match with current contact list; use references to those. bleh.
 		this.shareHistory.recipients.push(data);
-		this.fireEvent('recipientHistoryChanged', { 'recipients': this.shareHistory.recipients });
 	},
 	getRecentRecipients: function() {
 		return this.shareHistory.recipients;
@@ -6370,12 +6227,6 @@ window.addEvent('domready', function() {
 		for (var p in widget.pages) {
 			$(widget.pages[p].id).getElements('a').each(function(anchor){ anchor.setStyle('color', color); });
 		}
-
-		$('send_section').getElements('a').each(function(anchor){ 
-			anchor.setStyle('color',color);
-		 });
-		
-		
 	});
 	
 	var authCookie = widget.getCookie("ShareUT");
