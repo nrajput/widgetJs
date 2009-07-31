@@ -3691,7 +3691,7 @@ Widget.implement({
 				}
 				event.stop();
 			},
-			type: 'aim',
+			type: 'aim'
 		},
 		sms: {
             title: 'Text',
@@ -3708,7 +3708,7 @@ Widget.implement({
 				}
 				event.stop();
 			},
-            type: 'sms',
+            type: 'sms'
         },
 		email: {
             title: 'Email',
@@ -3717,7 +3717,7 @@ Widget.implement({
 				widget.showPage('send');
 				event.stop();
 			},
-            type: 'email',
+            type: 'email'
         },
         sharebox: {
             title: 'Save',
@@ -3743,7 +3743,7 @@ Widget.implement({
 				}
 				event.stop();
 			},
-            type: 'sharebox',
+            type: 'sharebox'
         },
 		blinklist: {
 			title: 'Blinklist',
