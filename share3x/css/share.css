@@ -67,10 +67,22 @@ img {
 
 #top_services_title {
     font-size: 16px;
+	padding: 0px 0px 5px 0px;
 }
 
 #top_services_section {
-	padding: 0 9px 9px 9px;				  
+	padding: 10px 10px 10px 10px;				  
+	display: block;
+}
+
+#top_services {
+	display: block;
+}
+
+#home_separator {
+	margin: 0px 10px 5px 10px;
+	height: 0px;
+	border-top: 2px groove #000000;
 }
 
 .small {
@@ -907,11 +919,8 @@ span.active a#home_button {
 	background-image:url(http://w.sharethis.com/share3x/images/sprite_main_1.gif);
 	background-position: -16px -177px;
 	background-repeat:no-repeat;
-	display: inline;
-	display:block;
 	padding:2px 4px 2px 20px;
 	white-space:nowrap;
-	float: left;
 }
 
 #addressbook_goto_import {
@@ -979,12 +988,10 @@ span.active a#home_button {
 .yigg {
 	background-image:url(http://w.sharethis.com/share3x/images/sprite2_033109.gif);
 	background-repeat:no-repeat;
-	display:inline;
-	display:block;
 	margin-right:11px;
 	padding:2px 4px 2px 20px;
 	white-space:nowrap;
-	float: left;
+	height: 14px;
 }
 .sharethis {
 	background:url(http://w.sharethis.com/share3x/images/share-icon.gif) no-repeat left center;
