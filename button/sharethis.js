@@ -4,7 +4,7 @@ ShareThis Loader Version 3.9.6-rc1
 */
 
 
-var STV="3.9.6-rc2";
+var STV="3.9.6-rc1";
 
 ST_JSON = new function(){
 
@@ -224,7 +224,7 @@ try{
 			//onmouseover set to true for default
 			this.options={
 				button: true,
-				onmouseover: true,
+				onmouseover: false,
 				buttonText: 'ShareThis',
 				popup: false,
 				offsetLeft: 0,
@@ -606,7 +606,7 @@ try{
 				}
 		        o.popup = function(e){
 		        	o.options.autoclose=true;
-		        	o.options.onmouseover=true;//setting to true for default...
+		        	//o.options.onmouseover=true;//setting to true for default...
 		        	if(SHARETHIS_TOOLBAR===true){
 		        		if(st_showing===false){
 		        			SHARETHIS.log('widget',o,'toolbar');
@@ -721,10 +721,11 @@ try{
 			    a.title = "ShareThis via email, AIM, social bookmarking and networking sites, etc.";
 		        a.href = "javascript:void(0)";
 		        a.setAttribute("st_page", "home");
-		        //if(o.options.onmouseover == false || o.options.onmouseover == "false") a.onclick = o.popup;
+		        //mouse over
+		        if(o.options.onmouseover == false || o.options.onmouseover == "false") a.onclick = o.popup;
 		        if(o.options.onmouseover == true || o.options.onmouseover == "true") {
 		        	SHARETHIS.wrapper.onmouseover=function(){stCancelClose();};
-		        	a.onmouseover=function(){/*console.log("button mouseover");*/stCancelClose();SHARETHIS.mousetimer=setTimeout(o.popup,300);};
+		        	a.onmouseover=function(){/*console.log("button mouseover");*/stCancelClose();SHARETHIS.mousetimer=setTimeout(o.popup,150);};
 		        	a.onmouseout=function(){/*console.log("button mouse out");*/clearInterval(SHARETHIS.mousetimer);stClose();};
 		        		//function(){SHARETHIS.mousetimer=setTimeout(o.popup,100);};
 		        		//a.onmouseover = o.popup;
