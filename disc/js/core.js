@@ -281,7 +281,7 @@ function genContentList() {
 		pageSize: config.results,
 		store: contentStore,
 		ctCls:'pagingBar',
-		plugins: new Ext.ux.CustomPaging()
+		plugins: new Ext.ux.CustomPaging({navigationDisplay: config.components.navigation, refreshDisplay: config.components.refresh})
 	});
 
 	var panel = new Ext.Panel({
@@ -296,7 +296,8 @@ function genContentList() {
 	});
 	panel.render('content');
 	
-	if (!config.components.navigation) {
+	
+	if (!config.components.navigation && !config.components.refresh) {
 		pagebar.getEl().setDisplayed(false);
 	}
 	

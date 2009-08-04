@@ -1,17 +1,57 @@
-Ext.ux.CustomPaging = Ext.extend(Object, {
+// create namespace for plugins
+Ext.namespace('Ext.ux');
+ 
+/**
+ * Ext.ux.plugins.IconCombo plugin for Ext.form.Combobox
+ *
+ * @author  Ing. Jozef Sakalos
+ * @date    January 7, 2008
+ *
+ * @class Ext.ux.plugins.IconCombo
+ * @extends Ext.util.Observable
+ */
+Ext.ux.CustomPaging = function(config) {
+    Ext.apply(this, config);
+};
+
+Ext.extend(Ext.ux.CustomPaging, Ext.util.Observable, {
 	init : function(pbar){
+		
+		Ext.apply(pbar, {
+				  customNumPages: 1,
+				  navigationDisplay: true,
+				  refreshDisplay: true
+		});
+
+		if (this.navigationDisplay !== undefined) {
+			pbar.navigationDisplay = this.navigationDisplay;
+		}
+		
+		if (this.refreshDisplay !== undefined) {
+			pbar.refreshDisplay = this.refreshDisplay;
+		}
+		
 		pbar.items.getRange()[0].hide();
 		pbar.items.getRange()[8].hide();
 		Ext.each(pbar.items.getRange(2,6), function(c){
 			c.hide();
 		});
 
-		Ext.apply(pbar, {
-			customNumPages: 1
-		});
-
+		if (!pbar.navigationDisplay) {
+			pbar.items.getRange()[1].hide();
+			pbar.items.getRange()[7].hide();
+		}
+		
+		if (!pbar.refreshDisplay) {
+			pbar.items.getRange()[10].hide();
+		}
+		
 		pbar.insert(5, '<div id="pagingDotContainer"><div id="pagingDot1" class="pagingDot"></div></div>');
 
+		if (!pbar.navigationDisplay) {
+			pbar.items.getRange()[5].hide();
+		}
+		
 		pbar.on({
 			change: function(pb, data){
 
