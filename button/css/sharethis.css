@@ -6,11 +6,10 @@ a.stbutton{padding:1px 5px 5px 22px;}
 .stframe{position:absolute;z-index:1000020;left:0;top:0;}
 .stclose{
 	cursor:pointer;
-	z-index:1000030;
+	z-index:2000000;
 	position:absolute;
-	text-align:right;
-	top:5px;
-	right:8px;
+	right:11px;
 	text-decoration:none;
-	font-family:Helvetica,Verdana,Arial,sans-serif;
+	height:12px;
+	width:12px;
 }

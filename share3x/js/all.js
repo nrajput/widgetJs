@@ -336,120 +336,6 @@ var Widget = new Class({ Implements: Events,
 		}
 	},
 
-
-	postOrkut: function(){ 
-		var username=$('inputOrkutUsername').value;
-		var password=$('inputOrkutPassword').value;
-		var comment=$('txtOrkutComment').value;
-		if(comment==="optional"){comment="";}
-		comment=encodeURIComponent(comment);
-		if ($('orkutRememberMe').checked) {
-			var rememberme=1;
-		}
-		else {
-			var rememberme=0;
-		}
-		if ($('orkutForgetMe').value === 'true') {
-			var forgetme=1;
-		}
-		else {
-			var forgetme=0;
-		}
-		var err="";
-		var err_set=false;
-		var captcha="";
-		var tmpTitle=glo_title;
-		try{tmpTitle=decodeURIComponent(glo_title);}catch(err){}
-		var atag="<a href="+getSharURL()+">"+tmpTitle+"</a>";
-		if(glo_content!==""){
-			atag="";
-		}
-		atag=encodeURIComponent(atag);
-		if(!username){
-			err_set=true;
-			err+="Please enter a username.\n";	
-		}
-		if(!password){
-			err_set=true;	
-			err+="Please enter a password.\n";	
-		}
-		if(Orkutcaptcha){
-			if($('inputOrkutCaptcha').value==="")
-			{
-				err_set=true;
-				err="Please enter the captcha.\n";	
-			}
-			else{
-				captcha=$('inputOrkutCaptcha').value;
-			}
-		}
-		if(err_set){
-			widget.validationFailed(err);
-		}
-		else{
-			var data="";
-				if(Orkutcaptcha){
-					var tmp="cookiefile="+encodeURIComponent(glo_Orkutcookiefile)+"&post_token="+encodeURIComponent(glo_Orkutpost_token)+"&signature="+encodeURIComponent(glo_Orkutsignature)+"&postdata="+encodeURIComponent(glo_Orkutpostdata)+"&captcha="+captcha+"&rememberme="+rememberme+"&forgetme="+forgetme;					
-					data=tmp;
-				}
-				else{
-					data="username="+username+"&password="+password+"&d="+glo_content+atag+"&t="+"glo_title"+"&comments="+comment+"&return=json&rememberme="+rememberme+"&forgetme="+forgetme;
-				}
-			var request=new Request({
-				method: "post",
-				url: "/api/postOrkut_ws.php",
-				data: data,
-				onFailure: function(){logError("postOrkut","Ajax Failure");},
-				onSuccess:this.postOrkut_onSuccess.bind(this)
-			});
-			this.fireEvent('postToServiceRequested', 'orkut');
-			request.send();
-		}
-	},
-	postOrkut_onSuccess: function(responseText, responseXML) {	
-	
-		try{var resp = JSON.decode(responseText);}
-		catch(err){logError("postOrkut",responseText);}
-		if(resp.status.toLowerCase()==="success"){			
-			glo_Orkutcaptchaurl="";
-			glo_Orkutcookiefile="";
-			glo_Orkutpost_token="";
-			glo_Orkutsignature="";
-			glo_Orkutpostdata="";
-			Orkutcaptcha=false;
-			$('orkutCaptchaImage').addClass('hidden');
-			$('orkutCaptcha').addClass('hidden');
-			this.fireEvent('postToServiceSucceeded', 'orkut');
-		}	
-		else if(resp.statusMessage && resp.statusMessage.toLowerCase()==="need_captcha"){
-			glo_Orkutcaptchaurl=resp.data.captchaurl;
-			glo_Orkutcookiefile=resp.data.cookiefile;
-			glo_Orkutpost_token=resp.data.post_token;
-			glo_Orkutsignature=resp.data.signature;
-			glo_Orkutpostdata=resp.data.postdata;
-			Orkutcaptcha=true;
-			
-			$('orkutPostData').addClass('hidden');
-			$('orkutCaptcha').removeClass('hidden');
-			
-			var img='<img alt="orkut captcha image" src="'+glo_Orkutcaptchaurl+'" height="70" width="200">';
-			$('orkutCaptchaImage').set('html',img);
-			$('orkutCaptchaImage').removeClass('hidden');
-			this.fireEvent('postToServiceNeedsMoreInfo', [
-				'orkut', 
-				'Captcha entry required.'
-			]);
-		}
-		else {
-			logError("postOrkut",JSON.encode(resp));
-			this.fireEvent('postToServiceFailed', [
-				'orkut', 
-				resp.statusMessage
-			]);
-		}
-	},
-
-
 	postTwitter: function() { 
 		var username=$('twitterUsername').value;
 		var password=$('twitterPassword').value;
@@ -601,6 +487,7 @@ var Widget = new Class({ Implements: Events,
 			request.send();
 		}
 	},	
+
 	postTypePad_onSuccess: function(responseText, responseXML) {
 		try{var resp = JSON.decode(responseText);}
 		catch(err){logError("post typepad",responseText);}
@@ -630,7 +517,6 @@ var Widget = new Class({ Implements: Events,
 			}
 		}
 	},
-	
 	
 	postWordpress: function()
 	{ 
@@ -689,6 +575,7 @@ var Widget = new Class({ Implements: Events,
 			request.send();
 		}
 	},
+
 	postWordpress_onSuccess: function(responseText, responseXML) {
 		try{var resp = JSON.decode(responseText);}
 		catch(err){logError("post wordpress",responseText);}
@@ -724,9 +611,7 @@ var Widget = new Class({ Implements: Events,
 				}
 			}		
 		}		
-	},
-
-
+	},	
 	setImportContactService: function(serviceTag) {
 		this.currentImportContactService = this.contactSources[serviceTag];
 		this.fireEvent('importContactServiceChanged', serviceTag);
@@ -1016,13 +901,12 @@ if (!window.console || !console.firebug) {
 
 
 	var glo_tabs='web,post,email';
-	//var glo_send_services="email,myspace,aim,sms";
-	var glo_send_services="email,aim,sms";
 	var glo_tabArray=[];
 	glo_tabArray=glo_tabs.split(",");
 	var glo_charset='utf-8';
 	var glo_services="";
-	var glo_default_services='facebook,myspace,digg,reddit,windows_live,twitter,google_bmarks,delicious,stumbleupon,yahoo_bmarks,linkedin,ybuzz,technorati,mixx,blogger,friendfeed,blinklist,furl,xanga,newsvine,propeller,wordpress,diigo,typepad,bus_exchange,fark,mister_wong,current,kirtsy,blogmarks,oknotizie,faves,livejournal,slashdot,care2,n4g,meneame,sphinn,simpy,dealsplus,fresqui,yigg,funp';
+	var glo_default_services='facebook,myspace,digg,aim,sms,email,reddit,windows_live,twitter,google_bmarks,delicious,stumbleupon,yahoo_bmarks,linkedin,ybuzz,technorati,mixx,blogger,friendfeed,blinklist,furl,xanga,newsvine,propeller,wordpress,diigo,typepad,bus_exchange,fark,mister_wong,current,kirtsy,blogmarks,oknotizie,faves,livejournal,slashdot,care2,n4g,meneame,sphinn,simpy,dealsplus,fresqui,yigg,funp';
+    var glo_top_services = 'email,facebook,twitter,sharebox';
 	var glo_default_swArray=[];
 		glo_default_swArray = glo_default_services.split(',');
 	var glo_style='default';
@@ -1041,7 +925,6 @@ if (!window.console || !console.firebug) {
 	var glo_authToken="";
 	var glo_userName="";
 	var glo_userEmail="";
-	var glo_myspace="";
 	var glo_facebook="";
 	var glo_aim="";
 	var glo_greyBoxNum=0;
@@ -1087,12 +970,6 @@ if (!window.console || !console.firebug) {
 	var glo_thumb="";
 	var glo_tags="";
 	var glo_description="";
-	var glo_Orkutcaptchaurl="";
-	var glo_Orkutcookiefile="";
-	var glo_Orkutpost_token="";
-	var glo_Orkutsignature="";
-	var glo_Orkutpostdata="";
-	var Orkutcaptcha=false;
 	var glo_num_diggs=0;
 	var glo_digg_comments=0;
 	var glo_pageOptions=false;
@@ -1217,9 +1094,6 @@ if (!window.console || !console.firebug) {
 				break;
 			case "facebook":
 				glo_facebook=value;
-				break;
-			case "myspace":
-				glo_myspace=value;
 				break;
 			case "aim":
 				glo_aim=value;
@@ -1399,10 +1273,6 @@ if (!window.console || !console.firebug) {
 				glo_headerfg = value;
 				widget.fireEvent('headerFGColorChanged', value);
 			break;
-			case 'send_services':
-				glo_send_servicesArray=value;
-				send_servicesChanged(value);
-				break;
 			case 'post_services':
 				setGlobals("services",value);
 				break;			
@@ -1594,48 +1464,6 @@ if (!window.console || !console.firebug) {
 			request.send();
 		}
 	}
-	function send_servicesChanged(services) {
-		var svc_arr=[];
-		svc_arr=services.split(",");
-		var email=false;
-		var myspace=false;
-		var aim=false;
-		var sms=false;
-		for(var i=0;i<svc_arr.length;i++)
-		{
-			if(svc_arr[i]=="email"){
-				email=true;
-			}
-			else if(svc_arr[i]=="myspace"){
-				myspace=true;
-			}
-			else if(svc_arr[i]=="aim"){
-				aim=true;
-			}else if(svc_arr[i]=="sms"){
-				sms=true;
-			}
-		}
-		
-		if(email==false){
-			$("send_email").setStyle("display","none");
-		}
-		if(myspace==false){
-			$("send_myspace").setStyle("display","none");
-		}
-		if(aim==false){
-			$("send_aim").setStyle("display","none");
-		}
-		if(sms==false){
-			$("send_sms").setStyle("display","none");
-		}
-		if(email==false && myspace==false && aim==false && sms==false){
-				$('send_section').getChildren().each(function(child) { child.setStyle("display","none"); });
-		}
-		
-		
-		return "services_changed";
-	}
-	
 
 	// frag pump start	
 	var FragmentPump = new Class({
@@ -1774,7 +1602,6 @@ if (!window.console || !console.firebug) {
 		setGlobals("auth","");
 		setGlobals("userName","");
 		setGlobals("userEmail","");
-		setGlobals("myspace","");
 		setGlobals("facebook","");
 		setGlobals("aim","");
 		setGlobals("contProto",[]);
@@ -1901,7 +1728,25 @@ if (!window.console || !console.firebug) {
 		}
 	}
 
+    function genTopServices() {
+
+		var top_elm = new Element('div', { id: 'top_services' } );
+
+		var serviceNames = glo_top_services.split(",");
+        $each(serviceNames, function(provider) {
+            console.log(provider);
+
+			var link = widget.getServiceLink(provider);
+			link.inject(top_elm);
+        });
+		
+		top_elm.replaces( $('top_services') );
+	}
+
 	function createSwList() {
+
+		genTopServices();
+
 		var carouselItems = [];
 		var defaultServicesCSV = glo_default_services;
 		var defaultServices = glo_default_swArray;
@@ -2240,9 +2085,6 @@ if (!window.console || !console.firebug) {
 		if(type==="AIM"){
 			type="AIM";
 		}
-		if(type==="MYSPACE"){
-			type="MySpace";
-		}
 		if(type==="SMS"){
 			type="SMS";
 		}
@@ -2468,13 +2310,8 @@ if (!window.console || !console.firebug) {
 					if(!blur){alert("Not a valid E-mail address");	}	
 				}
 			}
-			else if(selectedType==="MYSPACE"){
-				if(isEmail(str)){type="EMAIL"}
-				else if(isAIM(str)){type="AIM"}
-				else if(isPhone(str)){type="SMS"}
-			}
 
-			if( document.getElementById("txtTo").value!=="" && (type=="MYSPACE" || type=="EMAIL" || type=="AIM" || type=="SMS") && type!=="undefined" &&type!==undefined )
+			if( document.getElementById("txtTo").value!=="" && (type=="EMAIL" || type=="AIM" || type=="SMS") && type!=="undefined" &&type!==undefined )
 			{
 				setGlobals("contProto",type);
 				setGlobals("contName",str);
@@ -2841,34 +2678,7 @@ Widget.implement({
 	pages: {
 		home: {
 			id: 'home_page',
-			myspaceMenuOpen: false,
 			twitterMenuOpen: false,
-			_resizeShortcutsOnShow: false,
-			showMyspaceMenu: function() {
-				$('myspace_menu').removeClass('hidden');
-				$('send_myspace').getParent().addClass('active');
-				this.myspaceMenuOpen = true;
-				var f = null;
-				f = (function(event) {
-					if (event.target != $('myspace_send_to_friend')
-						&& event.target != $('myspace_post_to_profile')) {
-						this.hideMyspaceMenu();
-						this.domContainer.removeEvent('click', f);
-						this.domContainer.getElement('.carousel').getElements('a').each(function(element) {
-							element.removeEvent('click', f);
-						});
-					}
-				}).bind(this);
-				this.domContainer.addEvent('click', f);
-				this.domContainer.getElement('.carousel').getElements('a').each(function(element) {
-					element.addEvent('click', f);
-				});
-			},
-			hideMyspaceMenu: function() {
-				$('myspace_menu').addClass('hidden');
-				$('send_myspace').getParent().removeClass('active');
-				this.myspaceMenuOpen = false;
-			},
 			showTwitterMenu: function() {
 				$('twitter_menu').removeClass('hidden');
 				this.twitterMenuOpen = true;
@@ -2894,146 +2704,14 @@ Widget.implement({
 				$('twitter_menu').addClass('hidden');
 				this.twitterMenuOpen = false;
 			},
-			buildShortcutList: function(recipients) {
-				$('recent_recipients').getChildren().each(function(child) { 
-					if (child.nodeName.toLowerCase() != 'h4') { child.destroy(); } 
-				});
-				for (var i = 0; i < 3 && i < recipients.length; i++) {
-					var e = new Element('span', { 'class': 'shortcut' });
-					var a = new Element('a', { href: '#', title: recipients[i].address + ' (' + recipients[i].service + ')' });
-					a.set('html', recipients[i].name);
-					a.addEvent('click', (function() {
-						var enclosedRecipient = recipients[i];	// peel off a copy for the closure
-						return (function(event) {
-							var existingContact = widget.user.searchContactsExact(
-								enclosedRecipient.service.toLowerCase(),
-								enclosedRecipient.address
-							);
-							if (existingContact) {
-								existingContact.select();
-							}
-							else {
-								var newContacts = widget.user.addContactsLocally([enclosedRecipient]);
-								setTimeout(function() {
-									newContacts[0].select();
-								}, 1);
-							}
-							widget.showPage('send');
-							event.stop();
-						});
-					})());
-					$('recent_recipients').grab(e.grab(a));
-				}
-				if (this.isShown()) {
-					this.resizeShortcuts();
-				}
-				else if (recipients.length) {
-					this._resizeShortcutsOnShow = true;
-				}
-				else {
-					$('recent_recipients').addClass('hidden');
-				}
-			},
-			hideShortcutList: function() {
-				$('recent_recipients').getChildren().each(function(child) { 
-					if (child.nodeName.toLowerCase() != 'h4') { child.destroy(); } 
-				});
-				$('recent_recipients').addClass('hidden');
-			},
-			resizeShortcuts: function() {
-				$('recent_recipients').removeClass('hidden');
-				$('recent_recipients').getChildren().getLast().addClass('last');
-				var anchors = [];
-				var total = 0;
-				$('recent_recipients').getChildren().each(function(item) {
-					var anchor = item.getElement('a');
-					var width = item.getSize().x;
-					if (anchor) {
-						anchors.push({ anchor: anchor, width: width });
-					}
-					total += width;
-				});
-				while (total > 295) {
-					anchors.sort(function(a, b) { return b.width - a.width; });
-					var str = anchors[0].anchor.get('html');
-					anchors[0].anchor.set('html', str.substring(0, str.length - 3) + '&hellip;');
-					anchors[0].width = anchors[0].anchor.getSize().x;
-					total = 0;
-					$('recent_recipients').getChildren().each(function(item){
-						total += item.getSize().x;
-					});
-				}
-			},
 			onShow: function() {
 				this.parent();
-				$('home_button').getParent().addClass('active');
-				if (this._resizeShortcutsOnShow) {
-					this.resizeShortcuts();
-					this._resizeShortcutsOnShow = false;
-				}
 			},
 			onHide: function() {
 				this.parent();
-				this.hideMyspaceMenu();
 				this.hideTwitterMenu();
-				$('home_button').getParent().removeClass('active');
 			},
 			onReady: function() {
-				$('myspace_menu').setStyles({
-					top: ($('send_myspace').getCoordinates().bottom - 6) + 'px',
-					left: ($('send_myspace').getCoordinates().left - 6) + 'px'
-				});
-				$('send_email').addEvent('click', function(event) {
-					widget.pages.addressbook.addressBook.svc="email";
-					widget.showPage('send');
-					event.stop();
-				});
-				$('send_aim').addEvent('click', function(event) {
-					if (widget.user.hasContactsOnService('aim')) {
-						widget.showPage('addressbook');
-						widget.sortAddressBook('service');
-						$("abLoading").setStyle("display","inline");
-						widget.pages.addressbook.addressBook._clearList();
-						widget.pages.addressbook.addressBook.svc="aim";
-						setTimeout("widget.pages.addressbook.addressBook.sort('aim')",1);
-					}
-					else {
-						widget.showPage('import');
-						// on first show we have to drop out of the event handling stack
-						setTimeout(function() {
-							widget.setImportContactService('aim');
-						}, 1);
-					}
-					event.stop();
-				})
-				$('send_myspace').addEvent('click', (function(event) {
-					if (!this.myspaceMenuOpen) {
-						if (this.twitterMenuOpen) this.hideTwitterMenu();
-						this.showMyspaceMenu();
-					}
-					else {
-						this.hideMyspaceMenu();
-					}
-					event.stop();
-				}).bind(this));
-				$('myspace_send_to_friend').addEvent('click', (function(event) {
-					if (widget.user.hasContactsOnService('myspace')) {
-						widget.showPage('addressbook');
-						widget.sortAddressBook('service');
-						$("abLoading").setStyle("display","inline");
-						widget.pages.addressbook.addressBook._clearList();
-						widget.pages.addressbook.addressBook.svc="myspace";
-						setTimeout("widget.pages.addressbook.addressBook.sort('myspace')",1);
-					}
-					else {
-						widget.showPage('import');						
-						// on first show we have to drop out of the event handling stack
-						setTimeout(function() {
-							widget.setImportContactService('myspace');
-						}, 1);
-					}
-					event.stop();
-				}).bind(this));
 				$('twitter_direct_message').addEvent('click', (function(event) {
 					if (widget.user.hasContactsOnService('twitter')) {
 						widget.showPage('addressbook');
@@ -3066,64 +2744,13 @@ Widget.implement({
 					widget.showPage('post|twitter');
 					event.stop();
 				});
-				widget.addEvent('shareableValuesUpdated', function() {
-					var link = widget.getServiceLink('myspace');
-					link.set('id', 'myspace_post_to_profile').set('text', 'Post To Profile').removeClass('myspace');
-					link.replaces($('myspace_post_to_profile'));
-				});
-				$('send_sms').addEvent('click', (function(event) {
-					if (widget.user.hasContactsOnService('sms')) {
-						widget.showPage('addressbook');
-						widget.sortAddressBook('service');
-						$("abLoading").setStyle("display","inline");
-						widget.pages.addressbook.addressBook._clearList();
-						widget.pages.addressbook.addressBook.svc="sms";
-						setTimeout("widget.pages.addressbook.addressBook.sort('sms')",1);
-					}
-					else {
-						widget.showPage('send');
-					}
-					event.stop();
-				}).bind(this))
-				$('save_section').getElement('a.sharebox').addEvent('click', (function(event) {
-					if (widget.userIsSignedIn()) {
-						widget.showPage('sharebox');
-					}
-					else {
-						widget.showPage('register');
-						widget.displayNotification('You must register to save items to a ShareBox.');
-						var signedIn = leftPage = null;
-						signedIn = function() {
-							widget.showPage('sharebox');
-							widget.removeEvent('signInComplete', signedIn);
-							widget.removeEvent('pageHidden', leftPage);
-						};
-						leftPage = function(page) {
-							widget.removeEvent('signInComplete', signedIn);
-							widget.removeEvent('pageHidden', leftPage);
-						};
-						widget.addEvent('signInComplete', signedIn);
-						// if we leave the reg page without registering/logging in, forget that we were going to the sharebox
-						widget.addEvent('pageHidden', leftPage);
-					}
-					event.stop();
-				}));
 				widget.user.addEvent('infoChanged', (function() {
 					// rebuild the carousel based on user prefs, if any
 					// @todo: re-factor the function.
 					createSwList();
 				}).bind(this));
 				
-				widget.user.addEvent('recipientHistoryChanged', (function(recipientsContainer) {
-					widget.deferWhile('recipientHistoryIsChanging', (function() {
-						if (widget.user.isSignedIn() && glo_tabArray.contains('email')) {
-							this.buildShortcutList(recipientsContainer.recipients);
-						}
-					}).bind(this));
-				}).bind(this));
-				
 				widget.user.addEvent('signedOut', (function() {
-					this.hideShortcutList();
 				}).bind(this));
 				
 				widget.carousel = this.carousel = new Widget.Carousel(
@@ -3131,14 +2758,6 @@ Widget.implement({
 					(!glo_tabArray.contains('email') ? Widget.Carousel.initialState_more : Widget.Carousel.initialState_less)
 				);
 
-				// support for publisher prefs
-				widget.addEvent('tabPrefsChanged', function(tabsContainer) {
-					if (!tabsContainer.tabs.contains('email')) {
-						$('send_section').getChildren().each(function(child) { child.addClass('hidden') });
-						$('contacts_info').addClass('hidden');
-						//widget.carousel.showMore();
-					}
-				});
 				this.parent();
 			}
 		},
@@ -3243,7 +2862,7 @@ Widget.implement({
 					maxCharacterCount = 140;
 					$('boxToYourAddrInfo').style.display = 'block';
 				}
-				else if (this.hasMySpaceRecipients() || this.hasAIMRecipients()) {
+				else if (this.hasAIMRecipients()) {
 					$('boxToYourAddrInfo').style.display = 'block';
 				}
 				$('spanMessageCounter').set('html', maxCharacterCount - $('txtMessage').value.length);
@@ -3255,19 +2874,6 @@ Widget.implement({
 					if ( (contact.service && contact.service.toLowerCase() == 'twitter')
 						||
 						 (contact.type && contact.type.toLowerCase() == 'twitter')
-						) {
-						retval = true;
-					}
-				});
-				return retval;
-			},
-			hasMySpaceRecipients: function() {
-				var retval = false;
-				var recipients = widget.user.getSelectedContacts();
-				recipients.each(function(contact) {
-					if ( (contact.service && contact.service.toLowerCase() == 'myspace')
-						||
-						 (contact.type && contact.type.toLowerCase() == 'myspace')
 						) {
 						retval = true;
 					}
@@ -3398,7 +3004,7 @@ Widget.implement({
 			onReady: function() {
 				$('import_list').getElements('li').each(function(item, index) {
 					item.getElement('a').addEvents({
-						click: function(event) {
+						click: function(event) {					
 							widget.setImportContactService(item.getChildren()[0].get('class'));
 							event.stop();
 						}
@@ -3732,31 +3338,6 @@ Widget.implement({
 						widget.postLive_journal();
 					}
 				},
-				orkut:{
-					id: 'post_orkut',
-					onReady: function() {
-						$('txtOrkutComment').value="optional";
-						$('txtOrkutComment').addEvent('focus',function(){
-							if($('txtOrkutComment').value==="optional"){$('txtOrkutComment').value="";}
-						});
-						$('btnOrkutSubmit').addEvent('click', function(){
-							widget.postOrkut(); 
-						});
-						this.bindReturnKeyToSubmission();
-						this.parent();
-					},
-					submitForm: function() {
-						widget.postOrkut();
-					},
-					onShow: function() {
-						glo_Orkutcaptchaurl="";
-						glo_Orkutcookiefile="";
-						glo_Orkutpost_token="";
-						glo_Orkutsignature="";
-						glo_Orkutpostdata="";
-						Orkutcaptcha=false;
-					}
-				},
 				twitter: {
 					id: 'post_twitter',
 					statusMessage: null,
@@ -3872,6 +3453,10 @@ Widget.implement({
 
 	pageHistory: [],
 	_currentPage: null,
+	
+	showSharebox: function() {
+
+	},
 	
 	/**
 	 * @param 	string|array path: pipe-delimited path to the page to show using 
@@ -4094,6 +3679,80 @@ Widget.implement({
 
 Widget.implement({
 	services: {
+		aim: {
+			title: 'AIM',
+			onClick: function(event) {
+				if (widget.user.hasContactsOnService('aim')) {
+					widget.showPage('addressbook');
+					widget.sortAddressBook('service');
+					$("abLoading").setStyle("display","inline");
+					widget.pages.addressbook.addressBook._clearList();
+					widget.pages.addressbook.addressBook.svc="aim";
+					setTimeout("widget.pages.addressbook.addressBook.sort('aim')",1);
+				}
+				else {
+					widget.showPage('import');
+					// on first show we have to drop out of the event handling stack
+					setTimeout(function() {
+						widget.setImportContactService('aim');
+					}, 1);
+				}
+				event.stop();
+			},
+			type: 'aim'
+		},
+		sms: {
+            title: 'Text',
+			onClick: function(event) {
+				if (widget.user.hasContactsOnService('sms')) {
+					widget.showPage('addressbook');
+					widget.sortAddressBook('service');
+					$("abLoading").setStyle("display","inline");
+					widget.pages.addressbook.addressBook._clearList();
+					widget.pages.addressbook.addressBook.svc="sms";
+					setTimeout("widget.pages.addressbook.addressBook.sort('sms')",1);
+				} else {
+					widget.showPage('send');
+				}
+				event.stop();
+			},
+            type: 'sms'
+        },
+		email: {
+            title: 'Email',
+			onClick: function(event) {
+				widget.pages.addressbook.addressBook.svc="email";
+				widget.showPage('send');
+				event.stop();
+			},
+            type: 'email'
+        },
+        sharebox: {
+            title: 'Save',
+			onClick: function(event) { 
+				if (widget.userIsSignedIn()) {
+					widget.showPage('sharebox');
+				} else {
+					widget.showPage('register');
+					widget.displayNotification('You must register to save items to a ShareBox.');
+					var signedIn = leftPage = null;
+					signedIn = function() {
+						widget.showPage('sharebox');
+						widget.removeEvent('signInComplete', signedIn);
+						widget.removeEvent('pageHidden', leftPage);
+					};
+					leftPage = function(page) {
+						widget.removeEvent('signInComplete', signedIn);
+						widget.removeEvent('pageHidden', leftPage);
+					};
+					widget.addEvent('signInComplete', signedIn);
+					// if we leave the reg page without registering/logging in, forget that we were going to the sharebox
+					widget.addEvent('pageHidden', leftPage);
+				}
+				event.stop();
+			},
+            type: 'sharebox'
+        },
 		blinklist: {
 			title: 'Blinklist',
 			submitUrl: 'http://blinklist.com/index.php?Action=Blink/addblink.php&Url={url}&Title={title}',
@@ -4298,15 +3957,7 @@ Widget.implement({
 				 * for now. It should be uncommented in the April/May Sprint
 				 * for re-implement of Twitter direct messageing. -- KJW
 				 */
-				/*
-				if (!page.twitterMenuOpen) {
-					if (page.myspaceMenuOpen) page.hideMyspaceMenu();
-					page.showTwitterMenu();
-				}
-				else {
-					page.hideTwitterMenu();
-				}
-				*/
+
 				/*
 				 * This next line "widget.showPage('post|twitter');"
 				 * should be removed when we uncomment the above code
@@ -4386,10 +4037,6 @@ Widget.implement({
 			title: 'MSN',
 			protocolName: 'hotmail'
 		},
-//		myspace: {
-//			title: 'MySpace',
-//			protocolName: 'myspace'
-//		},
 		twitter: {
 			title: 'Twitter',
 			protocolName: 'twitter'
@@ -4413,7 +4060,7 @@ Widget.implement({
 		if(!service){
 			return;
 		}
-		var link = '#';
+		var link = 'javascript:void(0)';
 		var aTitle='';
 		
 		if(service.aTitle){
@@ -4621,64 +4268,25 @@ Widget.Carousel = new Class({ Implements: Events,
 			this.domContainer = $(idOrElement);
 		}
 		var poppet = this;
-		this.domContainer.getElement('.fwd').addEvent('click', function(event) {
+		$('fwd_arrow').addEvent('click', function(event) {
 			if (poppet.getNumPages() > 1) {
 				poppet.advance();
 			}
 			event.stop();
 		});
-		this.domContainer.getElement('.back').addEvent('click', function(event) {
+		$('back_arrow').addEvent('click', function(event) {
 			if (poppet.getNumPages() > 1) {
 				poppet.rewind();
 			}
 			event.stop();
 		});
 
-		
-		if (initialState == undefined || initialState == Widget.Carousel.initialState_less) {
-			//this.showLess();
-		}
-		else {
-			//this.showMore();
-		}
-			
-	},
-	
-	
-	showMore: function() {
-		/*this.setNumRows(4);
-		this.domContainer.getElement('#linkWebMore').addClass('hidden');
-		this.domContainer.getElement('#linkWebLess').removeClass('hidden');
-		var poppet = this;
-			poppet.isShowingMore = true;
-			poppet.domContainer.getElement('.fwd').addClass('fwd-big');
-			poppet.domContainer.getElement('.back').addClass('back-big');
-			poppet.render();
-		});
-		this.domContainer.getElement('.view').tween('height', 87);*/
-		//this.advance();
-	},
-	
-	showLess: function() {
-	/*	this.setNumRows(2);
-		this.domContainer.getElement('#linkWebMore').removeClass('hidden');
-		this.domContainer.getElement('#linkWebLess').addClass('hidden');
-		var poppet = this;
-		this.domContainer.getElement('.view').get('tween').removeEvents('complete').addEvent('complete', function() {
-			poppet.isShowingMore = false;
-			poppet.domContainer.getElement('.fwd').removeClass('fwd-big');
-			poppet.domContainer.getElement('.back').removeClass('back-big');
-			poppet.render();
-		});
-		this.domContainer.getElement('.view').tween('height', 44);*/
 	},
 	
 	autoSize: function(){
 		//console.log("autosize dummies are: "+this.totalDummies);
 		if(this.totalDummies>6){
 			this.nRows=2;
-			$$(".fwd")[0].removeClass('fwd-big');
-			$$(".back")[0].removeClass('back-big');
 			this.createPaginator();
 			this.domContainer.getElement('.view').setStyle('height', '44px');
 		}
@@ -4812,25 +4420,20 @@ Widget.Carousel = new Class({ Implements: Events,
 		view.grab(this._buildPage(this.page));
 				
 		this.fireEvent('renderComplete');
-		//if(this.paginatorExists==false){this.createPaginator()};
 	},
 	
 	createPaginator: function(){
-	//	console.log("create paginator");
 		var pages=this.getNumPages();
-		var div_size=pages*20;
+		var div_size=pages*20 + 36;
 		div_size+="px";
-		var html="<div style='clear:both'></div><div id='circle_container' style='width:"+div_size+"' >";
+		$('paginator').setStyle('width', div_size);
+		var html= "";
 		for(var i=0;i<pages;i++){
 			var num=i+1;
-			//html+='<a href="javascript:void(0);" onclick="widget.carousel.goToPage('+num+');"  onmouseover="widget.carousel.goToPage('+num+');" title="Go To Page # '+num+'">'+num+'</a> ';
-			//html+='<a href="javascript:void(0);" onclick="widget.carousel.goToPage('+num+');"  class="circles" title="Go To Page # '+num+'">.</a> ';
 			html+='<div class="circles" onclick="widget.carousel.goToPage('+num+');" title="Go To Page # '+num+'"></div> ';			
 		}
-		html+="</div><div style='clear:both'></div>";
 		
-	//	$('circle_container').set('style',div_size);
-		$("paginator").set('html',html);
+		$("circle_container").set('html',html);
 		this.highlightNum(this.page+1);
 		this.paginatorExists=true;
 	},
@@ -4842,35 +4445,18 @@ Widget.Carousel = new Class({ Implements: Events,
 		if(num<1){
 			num=4;
 		}
-	//	console.log("here "+maxSize);
-	//	console.log("highlight num "+num);
 		var i=num-1;
 		if($('paginator')){
-			//var a=$('paginator').getChildren()[0].getChildren();
 			var a=$('circle_container').getChildren();
 			a.removeClass('circles-selected');
 			a.addClass('circles');
 			a[i].addClass('circles-selected');
 			a[i].removeClass('circles');
-		/*	a.setStyle('margin-left','2px');
-			a.setStyle('border','none');
-			a.setStyle('hover','2px');
-			a.setStyle('font-size','11px');
-			a.setStyle('margin-right','2px');
-			a.setStyle('font-weight','normal');
-			a.setStyle('text-decoration','none');
-			a[i].setStyle('font-weight','bold');
-			a[i].setStyle('font-size','12px');
-		//	a[i].setStyle('border','1px solid #666');
-			//a[i].setStyle('color','blue');
-			*/
 			var pgInfo="("+num+"/"+this.getNumPages()+")";
-			//$("whatpage").set("html",pgInfo);
 		}
 	},
 	goToPage: function(num){
 		this.page=num-1;
-	//	console.log("page is "+this.page);
 		this.render();
 		this.highlightNum(num);
 	},
@@ -4892,12 +4478,6 @@ Widget.Carousel = new Class({ Implements: Events,
 			currentGroup.dispose();
 			groups.setStyle('left', 0);
 			poppet.page = poppet.getEffectivePageNum(poppet.page + 1);
-	/*		if (poppet.page == 0) {
-				poppet.domContainer.getElement('#moreorless').fade('in');
-			}
-			else {
-				poppet.domContainer.getElement('#moreorless').fade('out');
-			}*/
 			poppet.fireEvent('advanceComplete');
 			poppet.rotating = false;
 		});
@@ -4922,12 +4502,6 @@ Widget.Carousel = new Class({ Implements: Events,
 		groups.get('tween').removeEvents('complete').addEvent('complete', function() {
 			currentGroup.dispose();
 			poppet.page = poppet.getEffectivePageNum(poppet.page - 1);
-			if (poppet.page == 0) {
-				//poppet.domContainer.getElement('#moreorless').fade('in');
-			}
-			else {
-				//poppet.domContainer.getElement('#moreorless').fade('out');
-			}
 			poppet.fireEvent('rewindComplete');
 			poppet.rotating = false;
 		});
@@ -4955,13 +4529,11 @@ Widget.AddressBookView = new Class({ Implements: Events,
 	aimHTML:[],
 	smsHTML:[],
 	emailHTML:[],
-	myspaceHTML:[],
 	twitterHTML:[],
 	aimArr:[],
 	smsArr:[],
 	emailArr:[],
 	sortedArr:[],
-	myspaceArr:[],
 	twitterArr:[],
 	domContainer: null,
 	sortBy: 'name',
@@ -4988,12 +4560,10 @@ Widget.AddressBookView = new Class({ Implements: Events,
 		this.aimHTML=[];
 		this.smsHTML=[];
 		this.emailHTML=[];
-		this.myspaceHTML=[];
 		this.twitterHTML=[];
 		this.contacts=[];
 		this.aimArr=[];
 		this.smsArr=[];
-		this.myspaceArr=[];
 		this.sortedArr=[];
 		this.emailArr=[];
 		this.twitterArr=[];
@@ -5013,11 +4583,9 @@ Widget.AddressBookView = new Class({ Implements: Events,
 		this.aimHTML=[];
 		this.smsHTML=[];
 		this.emailHTML=[];
-		this.myspaceHTML=[];
 		this.twitterHTML=[];
 		this.aimArr=[];
 		this.smsArr=[];
-		this.myspaceArr=[];
 		this.twitterArr=[];
 		this.sortedArr=[];
 		this.emailArr=[];
@@ -5026,12 +4594,11 @@ Widget.AddressBookView = new Class({ Implements: Events,
 			this.contacts[i].added=false;
 			if(this.contacts[i].service=="aim"){this.aimArr.push(this.contacts[i]);}
 			else if(this.contacts[i].service=="email"){this.emailArr.push(this.contacts[i]);}
-			else if(this.contacts[i].service=="myspace"){/*this.myspaceArr.push(this.contacts[i]);*/}
 			else if(this.contacts[i].service=="sms"){this.smsArr.push(this.contacts[i]);}
 			else if(this.contacts[i].service=="twitter"){this.twitterArr.push(this.contacts[i]);}
 		}
-		var temp=this.aimArr.length+this.emailArr.length+this.smsArr.length+this.myspaceArr.length+this.twitterArr.length;
-		this.sortedArr=this.sortedArr.concat(this.aimArr,this.emailArr,this.myspaceArr,this.twitterArr,this.smsArr);
+		var temp=this.aimArr.length+this.emailArr.length+this.smsArr.length+this.twitterArr.length;
+		this.sortedArr=this.sortedArr.concat(this.aimArr,this.emailArr,this.twitterArr,this.smsArr);
 		this.arrReady=true;
 	},
 	
@@ -5183,7 +4750,6 @@ Widget.AddressBookView = new Class({ Implements: Events,
 		var cArray=this.contacts;
 		if(service=="aim"){cArray=this.aimArr;}
 		else if(service=="email"){cArray=this.emailArr;}
-		else if(service=="myspace"){cArray=this.myspaceArr;}
 		else if(service=="twitter"){cArray=this.twitterArr;}
 		else if(service=="sms"){cArray=this.smsArr;}
 		else if(service=="service"){cArray=this.sortedArr;}
@@ -5209,11 +4775,6 @@ Widget.AddressBookView = new Class({ Implements: Events,
 					}
 					else if( (cArray[i].service=="sms"  && service=="sms") && cArray[i].added==false){
 						this.smsHTML.push(this.makeHTML(cArray[i],this.smsHTML.length));
-						inHand++;
-						cArray[i].added=true;
-					}
-					else if( (cArray[i].service=="myspace" && service=="myspace") && cArray[i].added==false){
-						this.myspaceHTML.push(this.makeHTML(cArray[i],this.myspaceHTML.length));
 						inHand++;
 						cArray[i].added=true;
 					}
@@ -5297,12 +4858,6 @@ Widget.AddressBookView = new Class({ Implements: Events,
 			if(this.arrReady==false){this.makeArray();}
 			this.contactsOnDemand("email",this.blockStart);
 			currArr=this.emailHTML;
-			cLength=currArr.length;
-		}
-		else if(this.svc=="myspace"){
-			if(this.arrReady==false){this.makeArray();}
-			this.contactsOnDemand("myspace",this.blockStart);
-			currArr=this.myspaceHTML;
 			cLength=currArr.length;
 		}
 		else if(this.svc=="twitter"){
@@ -5424,7 +4979,6 @@ Widget.User = new Class({ Implements: Events,
 	addRecentRecipient: function(data) {
 		// @todo: match with current contact list; use references to those. bleh.
 		this.shareHistory.recipients.push(data);
-		this.fireEvent('recipientHistoryChanged', { 'recipients': this.shareHistory.recipients });
 	},
 	getRecentRecipients: function() {
 		return this.shareHistory.recipients;
@@ -6369,24 +5923,8 @@ Widget.ToField = new Class({ Implements: Events,
 			}
 			this.domContainer.set('html', html);
 			this.domContainer.getElements('.token').each((function(element, index) {
-			//alert("attatch behaviour");
 				this._attachTokenBehavior(element, this.contacts[index]);
 			}).bind(this));
-		/*if (Browser.Engine.trident) {
-			var html = '';
-			for (var i = 0; i < this.contacts.length; i++) {
-				html += this._createToken(this.contacts[i], Widget.ToField.createToken_asHTML);
-			}
-			this.domContainer.set('html', html);
-			this.domContainer.getElements('.token').each((function(element, index) {
-				this._attachTokenBehavior(element, this.contacts[index]);
-			}).bind(this));
-		}
-		else {
-			for (var i = 0; i < this.contacts.length; i++) {
-				this.domContainer.grab(this._createToken(this.contacts[i]));
-			}
-		}*/
 		var h = this._getContentsHeight();
 		if (h * 2 < 14) {
 			this.domContainer.setStyles({
@@ -6410,27 +5948,6 @@ Widget.ToField = new Class({ Implements: Events,
 	},
 	
 	onPageShown: function() {
-		/*
-		if (!this._windowKeyDownHandler) {
-			this._windowKeyDownHandler = (function(event) {
-				switch (event.key) {
-					case 'backspace':
-					case 'delete':
-						if (this.selectedTokens.length) {
-							this._deleteSelectedTokens();
-							event.stop();
-						}
-					break;
-				}
-			}).bind(this);
-		}
-		document.addEvent('keydown', this._windowKeyDownHandler);
-		*/
-		
-		/*setTimeout((function() {
-			this._insertInputField();
-		}).bind(this), 100);
-		*/
 		setTimeout((function() {
 			this._insertInputField();
 		}).bind(this), 100);
@@ -6493,7 +6010,7 @@ window.addEvent('domready', function() {
 		}
 		widget.signOut();
 	});
-	
+
 	$('textAuthUsername').addEvent('keydown', function(event){
 		event = new Event(event); 
 	if (event.key === 'enter'){
@@ -6506,25 +6023,10 @@ window.addEvent('domready', function() {
 			widget.signIn()
 		};
 	});
-	$('contacts_header_link').addEvent('click', function(event) {
-		widget.pages.addressbook.addressBook.svc="all";
-		widget.showPage('import');
-		//setTimeout("widget.pages.addressbook.addressBook.addBlock()",10);
-		event.stop();
-	});	
-	
-	widget.user.addEvent('infoChanged', function(user) {
-		if (user.name.length) {
-			$('greeting').set('text', 'Hello, ' + user.name + '.');
-		}
-		else if (user.email.length) {
-			$('greeting').set('text', 'Hello, ' + user.email + '.');
-		}
-	});
 	
 	widget.user.addEvent('signedOut', function() {
 		$('colophon').removeClass('signed_in');
-		$('greeting').set('text', 'Hello.');
+			//		$('greeting').set('text', 'Hello.');
 	});
 	widget.user.addEvent('signInRequested', function() {
 		widget.pushModalWorkingSheet('Logging in&hellip;');
@@ -6551,15 +6053,6 @@ window.addEvent('domready', function() {
 				$('header_title').removeClass('hidden');
 			}
 		}
-		// if header has collapsed, remove the top-border on the sub-header
-		if ($('header_title').getSize().y < 2) {
-			if (glo_ads == false) {
-				$('sub_header').addClass('headerless');
-			}
-		}
-		else {
-			$('sub_header').removeClass('headerless');
-		}
 	});
 	widget.addEvent('headerFGColorChanged', function(newColor) {
 		$('header_title').setStyle('color', newColor);
@@ -6570,41 +6063,9 @@ window.addEvent('domready', function() {
 		widget.fireEvent('headerFGColorChanged', glo_headerfg);
 	}
 
-	
-	widget.user.addEvent('contactsChanged', function() {
-		var nContacts = widget.user.contacts.length;
-		if (nContacts) {
-			$('contacts_header_link').removeClass('dim').set('text', nContacts + ' Contacts').removeEvents().addEvent('click', function(event) {
-				widget.pages.addressbook.addressBook.svc="all";
-				widget.pages.addressbook.addressBook._clearList();
-				//widget.pages.addressbook.addressBook.domContainer.set("html","");
-				widget.pages.addressbook.addressBook.blockStart=0;
-				widget.showPage('addressbook');	
-				$("abLoading").setStyle("display","inline");
-				setTimeout("widget.pages.addressbook.addressBook.addBlock()",10);
-				event.stop();
-			});
-		}
-		else {
-			$('contacts_header_link').removeClass('dim').set('text', 'Import Contacts').removeEvents().addEvent('click', function(event) {				
-				widget.showPage('import');				
-				event.stop();
-			});
-		}
-	});
-	widget.user.addEvent('getContactsRequested', function() {
-		$('contacts_header_link').set('text', 'Requesting Addressbook').removeEvents().addClass('dim');
-	});
-	widget.user.addEvent('getContactsFailed', function() {
-		$('contacts_header_link').set('text', 'Could not retrieve Addressbook').removeEvents();
-	});
 	$('createAccount').addEvent('click', function(event) {
 		widget.closeLoginBox();
 		widget.showPage('register');
-		event.stop();
-	});
-	$('home_button').addEvent('click', function(event) {
-		widget.showPage('home');
 		event.stop();
 	});
 	
@@ -6612,13 +6073,6 @@ window.addEvent('domready', function() {
 		for (var p in widget.pages) {
 			$(widget.pages[p].id).getElements('a').each(function(anchor){ anchor.setStyle('color', color); });
 		}
-//		$('send_email').setStyle('color',glo_linkfg);
-
-		$('send_section').getElements('a').each(function(anchor){ 
-			anchor.setStyle('color',color);
-		 });
-		
-		
 	});
 	
 	var authCookie = widget.getCookie("ShareUT");
@@ -6658,5 +6112,6 @@ window.addEvent('domready', function() {
 	} else {
 		widget.showPage('home');
 	}
+
 });
 

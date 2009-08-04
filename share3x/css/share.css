@@ -8,6 +8,7 @@
 	display:none;
 }
 body {
+	width: 344px;
 	color: #666;
 	font-family: "Lucida Grande","Lucida Sans Unicode",Verdana,Tahoma,Arial,sans-serif;
 	font-size: 11px;
@@ -20,9 +21,13 @@ a:hover {
 	text-decoration: underline;
 }
 .link {
-	color: #222222;
+	color: #222;
 	text-decoration: none;
 	cursor:pointer;
+}
+
+.link .light {
+	color: #fff;
 }
 .link:hover {
 	text-decoration: underline;
@@ -63,6 +68,28 @@ p {
 img {
 	border: none;
 }
+
+#top_services_title {
+    font-size: 15px;
+	font-weight: bold;
+	padding: 0px 0px 10px 0px;
+}
+
+#top_services_section {
+	padding: 10px 10px 10px 10px;				  
+	display: block;
+}
+
+#top_services {
+	display: block;
+}
+
+#home_separator {
+	margin: 0px 10px 5px 10px;
+	height: 0px;
+	border-top: 2px groove #666;
+}
+
 .small {
 	font-size:9px;
 	font-family: "Lucida Grande","Lucida Sans Unicode",Verdana,Tahoma,Arial,sans-serif;
@@ -323,11 +350,10 @@ a.addressbook_button {
 }
 .carousel {
 	clear:both;
-	padding:0 4px;
+	padding: 5px 4px 10px 4px;
 	overflow:hidden;
 }
 .carousel .carousel-box {
-	border:1px solid #ddd;
 	float:left;
 	position:relative;
 }
@@ -341,28 +367,25 @@ a.addressbook_button {
 	top:0;
 }
 .carousel .back,
-.carousel .fwd,
-.carousel .back-big,
-.carousel .fwd-big {
-	/*background-image:url(http://w.sharethis.com/share3x/images/slider-btn-sprite2.gif);*/
+.carousel .fwd {
+/*
 	background-image:url(http://w.sharethis.com/share3x/images/sprite_main_1.gif);
 	background-position:0 -196px;
 	background-repeat:no-repeat;
+*/
 }
 
 .circles{
-	 /*background-image:url(http://w.sharethis.com/share3x/images/circle_light.gif); */
-	background-image:url(http://w.sharethis.com/share3x/images/sprite_main_1.gif);
+/*	
+	background-image:url(http://w.sharethis.com/share3x/images/sprite_main_1.gif); 
 	background-position:0 -124px;
+*/
+	background-image:url(../images/dotUnselected.png);
 	background-repeat:no-repeat;	
-	height:7px;
-	width:7px;
-	margin-left:5px;
-	margin-right:5px;
-	margin-top:0px;
-	margin-bottom:0px;	
+	height:10px;
+	width:10px;
+	margin: 3px 5px 0px 5px;
 	font-size:0px;
-	padding:0px;
 	float:left;
 	cursor:pointer;
 	display:inline;
@@ -370,71 +393,50 @@ a.addressbook_button {
 }
 
 .circles-selected{
-	/* background-image:url(http://w.sharethis.com/share3x/images/circle_dark.gif); */
+/*
 	background-image:url(http://w.sharethis.com/share3x/images/sprite_main_1.gif);
 	background-position: -120px -69px;
+*/
+	background-image:url(../images/dotSelected.png);
 	background-repeat:no-repeat;
-	height:7px;
-	width:7px;
-	margin-left:5px;
-	margin-right:5px;	
+	height:10px;
+	width:10px;
+	margin: 3px 5px 0px 5px;
 	text-indent:-32000px;
 	float:left;		
 	cursor:pointer;
 }
 
-
-.carousel .back,
-.carousel .fwd {
+.paging_arrows {
 	display:inline;
 	float:left;
-	height:66px;
-	width:13px;
-	text-indent:-32000px;
+	height:18px;
+	width:18px;
 }
-.carousel .fwd-big,
-.carousel .back-big {
-	height:109px;
+
+#back_arrow {
+/*	background-position:0 0; */
+	background: url(../images/leftArrow.png) no-repeat;
 }
-.carousel .back {
-	background-position:0 0;
-}
-.carousel .fwd {
+#fwd_arrow {
 	/*background-position:-13px 0;*/
-	background-position: -13px -196px;
+/*	background-position: -13px -196px; */
+	background: url(../images/rightArrow.png) no-repeat;
 }
 .carousel .back:hover {
 	/*background-position:0 -175px;*/
-	background-position:0 -371px;
+	/*background-position:0 -371px;*/
 }
 .carousel .fwd:hover {
-	background-position:-13px -371px;
+/*	background-position:-13px -371px; */
 }
-
-.carousel .back-big {
-	/*background-position:0 -66px;*/
-	background-position:0 -262px;
-}
-.carousel .fwd-big {
-	/*background-position:-13px -66px;*/
-	background-position:-13px -262px;
-}
-.carousel .back-big:hover {
-	/*background-position:0 -241px;*/
-	background-position:0 -437px;
-}
-.carousel .fwd-big:hover {
-	/*background-position:-13px -241px;*/
-	background-position:-13px -437px;
-}
-
 
 .carousel .view {
 	height:87px;
 	margin:0 5px;
 	overflow:hidden;
 	position:relative;
-	width:291px;
+	width:300px;
 }
 .carousel .view .groups {
 	width:1000px;
@@ -446,7 +448,7 @@ a.addressbook_button {
 }
 .carousel .view a {
 	float:left;
-	margin:1px 0 2px;
+	margin:1px 0 3px;
 	overflow:hidden;
 	width:73px;
 }
@@ -473,18 +475,18 @@ a.addressbook_button {
 }
 #paginator{
 	margin-top:5px;
-	height:7px;
+	margin-bottom: 10px;
+	height:20px;
+	margin-left:auto;
+	margin-right:auto;
 }
 #paginator a:hover{
 	text-decoration:underline;
 	color:red;
 }
 #circle_container{
-	width:80px;
+	display: inline;
 	height:7px;
-	clear:both;
-	margin-left:auto;
-	margin-right:auto;
 }
 
 .overlay {
@@ -696,7 +698,7 @@ a.addressbook_button {
 /* Structure */
 #container {
 	background: white;
-	border:6px solid #666;
+	border:2px solid #666;
 	position:relative;
 	width:340px; 
 	z-index: 999;
@@ -717,23 +719,29 @@ h1#header_title {
 	padding:12px;
 	height:16px;
 }
-#import_page #import_list {
+#import_page #import_list, 
+#signin_page #signin_list  {
 	list-style:none;
 	margin:15px 0;
 }
-#import_page #import_list li {
+#import_page #import_list li,
+#sign_page #sign_list li {
 	line-height:14px;
 }
-#import_list a {
+#import_list a,
+#signin_list a {
 	cursor:pointer;
 }
-#import_page #import_list li.selected {
+#import_page #import_list li.selected,
+#signin_page #signin_list li.selected {
 	font-weight: bold;
 }
-#import_page #import_list li.selected a {
+#import_page #import_list li.selected a,
+#signin_page #signin_list li.selected a {
 	text-decoration:none;
 }
-#import_contact_status {
+#import_contact_status,
+#signin_status {
 	margin:0 20px 0 0;
 	position:absolute;
 	right:0;
@@ -812,11 +820,31 @@ span.active a#home_button {
 	height:0;
 	position:absolute;
 }
+
+#footer a{
+	color: #fff;
+}
+
 #footer #colophon{
-	background: #ccc;
-	border-top: 1px solid #b6b6b6;
+	color: #fff;
+	background: #666;
+	border-top: 1px solid #666;
 	line-height:12px;
 	padding:3px 5px 4px;
+}
+#footer .signInIcon{
+	margin-left: 3px;
+	height: 13px;
+	display: inline;
+	margin-right: 0;
+	padding: 2px 0px 2px 20px;
+}
+#footer #signInFacebook {
+	margin-left: 3px;
+	height: 13px;
+	display: inline;
+	margin-right: 0;
+	padding: 2px 0px 2px 20px;
 }
 #signedInFooter {
 	display:none;
@@ -890,17 +918,16 @@ span.active a#home_button {
 #registerStatus {
 	clear:both;
 }
+
 .sharebox {
 	/* background:url(http://w.sharethis.com/share3x/images/sharebox_logo.gif) no-repeat; */
 	background-image:url(http://w.sharethis.com/share3x/images/sprite_main_1.gif);
 	background-position: -16px -177px;
 	background-repeat:no-repeat;
-	display:block;
-	padding:3px 4px 2px 22px !important;
-	padding:2px 4px 2px 22px;
+	padding:2px 4px 2px 20px;
 	white-space:nowrap;
 }
- 
+
 #addressbook_goto_import {
 	float:right;
 }
@@ -966,11 +993,10 @@ span.active a#home_button {
 .yigg {
 	background-image:url(http://w.sharethis.com/share3x/images/sprite2_033109.gif);
 	background-repeat:no-repeat;
-	display:inline;
-	display:block;
 	margin-right:11px;
 	padding:2px 4px 2px 20px;
 	white-space:nowrap;
+	height: 14px;
 }
 .sharethis {
 	background:url(http://w.sharethis.com/share3x/images/share-icon.gif) no-repeat left center;
@@ -1155,8 +1181,9 @@ span.active a#home_button {
 	background-position: -26px -196px;
 	height:12px;
 	width:12px;
-	top:6px;
-	left:334px;
+	z-index:10000;
+	top:2px;
+	left:330px;
 	position:absolute;
 	z-index:10000;
 }
