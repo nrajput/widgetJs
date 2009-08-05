@@ -3552,25 +3552,8 @@ Widget.implement({
 	services: {
 		aim: {
 			title: 'AIM',
-			onClick: function(event) {
-				if (widget.user.hasContactsOnService('aim')) {
-					widget.showPage('addressbook');
-					widget.sortAddressBook('service');
-					$("abLoading").setStyle("display","inline");
-					widget.pages.addressbook.addressBook._clearList();
-					widget.pages.addressbook.addressBook.svc="aim";
-					setTimeout("widget.pages.addressbook.addressBook.sort('aim')",1);
-				}
-				else {
-					widget.showPage('import');
-					// on first show we have to drop out of the event handling stack
-					setTimeout(function() {
-						widget.setImportContactService('aim');
-					}, 1);
-				}
-				event.stop();
-			},
-			type: 'aim'
+			submitUrl: 'http://share.aim.com/share/?url={url}&title={title}',
+			destination: 'aim.com'
 		},
 		sms: {
             title: 'Text',
