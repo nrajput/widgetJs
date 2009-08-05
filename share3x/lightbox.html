@@ -45,6 +45,7 @@
 	</head>
 	<body id="or">
 		<div id="close_button"></div>
+		<div id="outer_container">
 		<div id="container" class="border-color">
 			<div id="header" class="header-color">
 				<h1 id="header_title" class="hidden"></h1>
@@ -81,10 +82,9 @@
 				<p>Make sending simple: <a href="javascript:widget.showPage('import');">Import your contacts</a>.</p>
 				<div id="boxAddressList"></div>
 				<dl class="col" id="send_container">
-					<dt><label for="txtTo" title="Type the name or address of a contact we previously gathered and matches will appear below. Click to add to recipients. You can also send to email addresses, AIM screen names and SMS numbers that are not in your contacts by entering the address and pressing enter.">To:</label></dt>
+					<dt><label for="txtTo" title="Type the name or address of a contact we previously gathered and matches will appear below. Click to add to recipients. You can also send to email addresses and SMS numbers that are not in your contacts by entering the address and pressing enter.">To:</label></dt>
 					<dd>
 						<div class="addresses">
-							<a id="addressbook_button" class="addressbook_button" href="#">Address Book</a>
 							<div class="to_field" id="send_to_field">
 
 							</div>
@@ -153,13 +153,7 @@
 					<li><a href="#" class="yahoo">Yahoo</a></li>
 					<li><a href="#" class="msn">MSN</a></li>
 					<li><a href="#" class="aol">AOL</a></li>
-					<li><a href="#" class="aim">AIM</a></li>
-					<!-- Once Twitter contact importing re-implementation goes live.
-					<li><a href="#" class="twitter">Twitter</a></li> -->                    
 				</ul>
-				<div class="clear"></div>
-				<p><a target="_blank" href="http://sharethis.com/account/import/" onclick="if(glo_options_popup==true){popupOpen2(this);return false;}">Import from Outlook, Outlook Express, ACT and CSV</a></p>
-				
 				<div class="col_foot">
 					<div class="col_act">
 						<input id="import_contacts_done" type="submit" class="button" value="Done" />
@@ -196,22 +190,6 @@
 					<div class="loading hidden">Creating account...</div>
 					<div class="success hidden" id="registerSuccess">Account created successfully.</div>
 					<div class="error hidden" id="registerError"></div>
-				</div>
-			</div>
-			<div id="addressbook_page" class="panel">
-				<h1>Address Book</h1>
-				<p>Select those you want to send to.</p>
-				<p>Sort by: <a href="#" id="addressbook_sort_by_name" class="sort_switch">Name</a> | <a href="#" id="addressbook_sort_by_service" class="sort_switch">Service</a><span id="abLoading" style="background:#FFF1A8;display:none;font:14px;margin-left:115px;">Loading...</span></p>
-				<ul class="scroll" id="addressbook_container">
-				</ul>
-				<p>
-					<a href="#" id="addressbook_goto_import">Import Contacts</a>
-				</p>
-				<div class="col_foot">
-					<div class="col_act">
-						<input onclick="javascript:widget.showPage('send');" id="addressbook_next" value="Next" type="button" class="button"/>
-					</div>
-					<span class="link" onclick="widget.showPreviousPage();">Go back</span>
 				</div>
 			</div>
 			<div id="sharebox_page" class="panel hidden">
@@ -467,6 +445,7 @@
 				</div>
 			</div>
 			<span class="link" id="close_widget">close</span>
+		</div>
 		</div>
 	</body>
 </html>

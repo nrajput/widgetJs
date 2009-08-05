@@ -84,6 +84,10 @@ img {
 	display: block;
 }
 
+.top_service {
+	padding: 2px 4px 2px 20px;
+}
+
 #home_separator {
 	margin: 0px 10px 5px 10px;
 	height: 0px;
@@ -444,7 +448,7 @@ a.addressbook_button {
 }
 .carousel .view .group {
 	float:left;
-	width:291px;
+	width: 330px;
 }
 .carousel .view a {
 	float:left;
@@ -452,9 +456,13 @@ a.addressbook_button {
 	overflow:hidden;
 	width:73px;
 }
+
+/*
 .carousel .view a.first {
 	clear:left;
 }
+*/
+
 .panel {
 	padding:20px;
 	position:relative;
@@ -703,6 +711,12 @@ a.addressbook_button {
 	width:340px; 
 	z-index: 999;
 }
+
+#outer_container {
+	width:344px;
+	border:1px groove #000;
+}
+
 #header {
 	background:#ccc;
 }
@@ -994,7 +1008,7 @@ span.active a#home_button {
 	background-image:url(http://w.sharethis.com/share3x/images/sprite2_033109.gif);
 	background-repeat:no-repeat;
 	margin-right:11px;
-	padding:2px 4px 2px 20px;
+	padding:2px 12px 2px 20px;
 	white-space:nowrap;
 	height: 14px;
 }
@@ -1183,7 +1197,7 @@ span.active a#home_button {
 	width:12px;
 	z-index:10000;
 	top:2px;
-	left:330px;
+	left:331px;
 	position:absolute;
 	z-index:10000;
 }

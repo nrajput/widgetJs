@@ -51,18 +51,6 @@ var Widget = new Class({ Implements: Events,
 		this.user.signOut();
 	},
 
-	sortAddressBook: function(by) {
-		if (this.pages.addressbook && this.pages.addressbook.addressBook) {
-			this.pages.addressbook.addressBook.sort(by);
-		}
-	},
-	
-	jumpToServiceInAddressBook: function(serviceTag) {
-		if (this.pages.addressbook && this.pages.addressbook.addressBook) {
-			this.pages.addressbook.addressBook.scrollToService(serviceTag);
-		}
-	},
-	
 	limitCharacters: function(inputField, maxCharacterCount, counterSpan, event) {
 		var retval = true;
 		if(inputField.value.length >= maxCharacterCount) {
@@ -1364,19 +1352,6 @@ if (!window.console || !console.firebug) {
 		bufferValue.push(temp[1]);
 	}
 	
-	
-	function selectContact(blah){
-		var id=blah.id;
-		id=id.replace(/select_contact_/,"");
-
-		for(var i=0;i<widget.pages.addressbook.addressBook.contacts.length;i++)
-		{
-			if(widget.pages.addressbook.addressBook.contacts[i].id==id){
-				widget.pages.addressbook.addressBook.contacts[i].toggleSelect();
-			}
-		}			
-	}
-	
 	function checkBufferArg(testStr){
 		var returnVal=false;
 		for(var i=0;i<bufferRunArgs.length;i++){
@@ -1737,6 +1712,7 @@ if (!window.console || !console.firebug) {
             console.log(provider);
 
 			var link = widget.getServiceLink(provider);
+			link.addClass('top_service');
 			link.inject(top_elm);
         });
 		
@@ -2712,34 +2688,6 @@ Widget.implement({
 				this.hideTwitterMenu();
 			},
 			onReady: function() {
-				$('twitter_direct_message').addEvent('click', (function(event) {
-					if (widget.user.hasContactsOnService('twitter')) {
-						widget.showPage('addressbook');
-						widget.sortAddressBook('service');
-						$("abLoading").setStyle("display","inline");
-						widget.pages.addressbook.addressBook._clearList();
-						widget.pages.addressbook.addressBook.svc="twitter";
-						setTimeout("widget.pages.addressbook.addressBook.sort('twitter')",1);
-					}
-					else {
-						widget.showPage('import');
-						// on first show we have to drop out of the event handling stack
-						setTimeout(function() {
-							widget.setImportContactService('twitter');
-						}, 1);
-					}
-					if (glo_sharURL) {
-						var tempTitle=glo_title;
-						try{tempTitle=decodeURIComponent(glo_title);}catch(err){}
-						var message = empTitle + ' - ' + getSharURL() + ' via @ShareThis';
-						var i=0
-						while ( message.length > 140 ) {
-							message = glo_title.substr(0, glo_title.length - i++) + '... ' + glo_sharURL;
-						}
-						$('txtMessage').value = message;
-					}
-					event.stop();
-				}).bind(this));
 				$('twitter_update_status').addEvent('click', function(event) {
 					widget.showPage('post|twitter');
 					event.stop();
@@ -2911,21 +2859,6 @@ Widget.implement({
 			},
 			onReady: function() {
 				this.toField = new Widget.ToField(widget, $('send_to_field'));
-				$('addressbook_button').addEvent('click', (function(event) {
-					if (widget.user.contacts.length) {
-						widget.pages.addressbook.addressBook.blockStart=0;
-						widget.pages.addressbook.addressBook.domContainer.set("html","");
-						widget.pages.addressbook.addressBook.makeArray();
-						widget.showPage('addressbook');
-						$("abLoading").setStyle("display","inline");
-						setTimeout("widget.pages.addressbook.addressBook.addBlock()",10);
-					}
-					else {	
-						widget.showPage('import');
-						widget.displayNotification('Import contacts to add them to your address book.');
-					}
-					event.stop();
-				}.bind(this)))
 				$('previewCloseLink').addEvent('click',function(event){
 					$('preview').addClass('hidden');
 					$('linkPreview').removeClass('hidden');
@@ -3041,14 +2974,7 @@ Widget.implement({
 					widget.pushModalErrorSheet('Could not retrieve your contacts.');
 				})
 				$('import_contacts_done').addEvent('click', (function() {
-					if (this.nImportsOnShow != widget.user.contacts.length) {
-						widget.showPage('addressbook');
-						$("abLoading").setStyle("display","inline");
-						setTimeout("widget.pages.addressbook.addressBook.addBlock()",10);
-					}
-					else {
 						widget.showPage('send');
-					}
 				}).bind(this));
 				widget.addEvent('importContactServiceChanged', (function(serviceTag) {
 					if (this.isShown()) {
@@ -3071,9 +2997,6 @@ Widget.implement({
 								break;
 							case 'msn':
 								$('oauthImport').getElement('label').set('text','We\'ll take you to MSN/Hotmail where you\'ll be asked to let ShareThis access your address book.');
-								break;
-							case 'aim':
-								$('oauthImport').getElement('label').set('text','We\'ll take you to AOL/AIM where you\'ll be asked to let ShareThis access your buddy list.');
 								break;
 							case 'aol':
 								$('regAuth').setStyle('display', 'block');
@@ -3154,58 +3077,6 @@ Widget.implement({
 						selectedItem.addClass('selected');
 					}
 				});
-			}
-		},
-		addressbook: {
-			id: 'addressbook_page',
-			addressBook: null,
-			onReady: function() {
-				this.addressBook = new Widget.AddressBookView(widget, $('addressbook_container'));
-				$('addressbook_goto_import').addEvent('click', (function(event) {
-					widget.pages.addressbook.addressBook.svc="all";
-					widget.showPage('import');					
-					event.stop();
-				}));
-				widget.user.addEvent('contactsChanged', function() {
-					if (widget.user.contacts.length == 0) {
-						$('addressbook_goto_import').set('text', 'Import Contacts');
-					}
-					else {
-						$('addressbook_goto_import').set('text', 'Import More Contacts');
-					}
-				});
-				$('addressbook_sort_by_name').addEvent('click', (function(event) {
-					this.addressBook.sort('name');
-					event.stop();
-				}).bind(this));
-				$('addressbook_sort_by_service').addEvent('click', (function(event) {
-					this.addressBook.sort('service');
-					event.stop();
-				}).bind(this));
-				this.addressBook.addEvent('sortingChanged', function(newSortType) {
-					if (newSortType == 'service') {
-						$('addressbook_sort_by_service').addClass('selected');
-						$('addressbook_sort_by_name').removeClass('selected');
-					}
-					else if (newSortType == 'name') {
-						$('addressbook_sort_by_name').addClass('selected');
-						$('addressbook_sort_by_service').removeClass('selected');
-					}
-				});
-				if (this.addressBook.sortBy == 'name') {
-					$('addressbook_sort_by_name').addClass('selected');
-				}
-				else if (this.addressBook.sortBy == 'service') {
-					$('addressbook_sort_by_service').addClass('selected');
-				}
-				this.parent();
-			},
-			onShow: function() {
-				this.addressBook.renderIfWaiting();
-				this.addressBook.deferRendering = false;
-			},
-			onHide: function() {
-				this.addressBook.deferRendering = true;
 			}
 		},
 		done: {
@@ -3704,16 +3575,7 @@ Widget.implement({
 		sms: {
             title: 'Text',
 			onClick: function(event) {
-				if (widget.user.hasContactsOnService('sms')) {
-					widget.showPage('addressbook');
-					widget.sortAddressBook('service');
-					$("abLoading").setStyle("display","inline");
-					widget.pages.addressbook.addressBook._clearList();
-					widget.pages.addressbook.addressBook.svc="sms";
-					setTimeout("widget.pages.addressbook.addressBook.sort('sms')",1);
-				} else {
-					widget.showPage('send');
-				}
+				widget.showPage('send');
 				event.stop();
 			},
             type: 'sms'
@@ -3721,7 +3583,6 @@ Widget.implement({
 		email: {
             title: 'Email',
 			onClick: function(event) {
-				widget.pages.addressbook.addressBook.svc="email";
 				widget.showPage('send');
 				event.stop();
 			},
@@ -4348,12 +4209,14 @@ Widget.Carousel = new Class({ Implements: Events,
 		for (var i = (pageNum * itemsPerPage); i < (pageNum * itemsPerPage) + itemsPerPage; i++) {
 			if (i < data.length) {
 				var element = data[i].getContent();
+					/*
 				if (i % this.nCols == 0) {
 					element.addClass('first');
 				}
 				else {
 					element.removeClass('first');
 				}
+					*/
 				groupDiv.grab(element);
 			}
 		}
@@ -4521,408 +4384,6 @@ Widget.Carousel.initialState_more = 0;
 Widget.Carousel.initialState_less = 1;
 
 //addressbook.js
-Widget.AddressBookView = new Class({ Implements: Events,
-	contacts: [],
-	sortedContacts:[],
-	sortedHTML:[],
-	contactsHTML: [],
-	aimHTML:[],
-	smsHTML:[],
-	emailHTML:[],
-	twitterHTML:[],
-	aimArr:[],
-	smsArr:[],
-	emailArr:[],
-	sortedArr:[],
-	twitterArr:[],
-	domContainer: null,
-	sortBy: 'name',
-	widget: null,
-	numWanted:50,
-	abHTML: "",
-	blockEnd: this.numWanted,
-	blockStart: 0,
-	deferRendering: true,
-	wantsToRender: false,
-	isRendering: false,
-	blockInt: null,
-	svc: "all",
-	prepared: false,
-	preparedService: false,
-	addInProgress:false,
-	arrReady:false,
-	lastSvc:'',
-	
-	resetArrays: function(){
-		this.sortedContacts=[];
-		this.sortedHTML=[];
-		this.contactsHTML=[];
-		this.aimHTML=[];
-		this.smsHTML=[];
-		this.emailHTML=[];
-		this.twitterHTML=[];
-		this.contacts=[];
-		this.aimArr=[];
-		this.smsArr=[];
-		this.sortedArr=[];
-		this.emailArr=[];
-		this.twitterArr=[];
-	},
-	
-	resetAdded: function(){
-		for(var i=0;i<this.contacts.length;i++){
-			this.contacts[i].added=false;
-		}
-	}, 
-	
-	makeArray:function(){
-		this.resetAdded();
-		this.sortedContacts=[];
-		this.sortedHTML=[];
-		this.contactsHTML=[];
-		this.aimHTML=[];
-		this.smsHTML=[];
-		this.emailHTML=[];
-		this.twitterHTML=[];
-		this.aimArr=[];
-		this.smsArr=[];
-		this.twitterArr=[];
-		this.sortedArr=[];
-		this.emailArr=[];
-		this.domContainer.set("html","");
-		for(var i=0;i<this.contacts.length;i++){
-			this.contacts[i].added=false;
-			if(this.contacts[i].service=="aim"){this.aimArr.push(this.contacts[i]);}
-			else if(this.contacts[i].service=="email"){this.emailArr.push(this.contacts[i]);}
-			else if(this.contacts[i].service=="sms"){this.smsArr.push(this.contacts[i]);}
-			else if(this.contacts[i].service=="twitter"){this.twitterArr.push(this.contacts[i]);}
-		}
-		var temp=this.aimArr.length+this.emailArr.length+this.smsArr.length+this.twitterArr.length;
-		this.sortedArr=this.sortedArr.concat(this.aimArr,this.emailArr,this.twitterArr,this.smsArr);
-		this.arrReady=true;
-	},
-	
-	
-	initialize: function(widget, listElement) {
-		this.widget = widget;
-		this.domContainer = listElement;
-		if(glo_browser.test("ff")==true){
-			this.numWanted=300;
-			this.blockEnd=this.numWanted;
-		}
-		widget.user.addEvent('contactsChanged', this._onUserContactsChanged.bind(this));
-		this.domContainer.addEvent('scroll',this.scrollCatch.bind(this),true);
-		// internal contacts changed event ... 
-		// fire a render when we change our internal list
-		this.addEvent('contactsChanged', this._render.bind(this), true);
-		this.addEvent('sortingChanged', this._render.bind(this), true);
-	},
-	
-	_onUserContactsChanged: function() {
-		this.contacts.empty();
-		for (var i = 0; i < this.widget.user.contacts.length; i++) {
-			this.contacts.push(this.widget.user.contacts[i]);
-		}
-		var start = new Date().valueOf();
-		this.contacts.sort();
-		this.arrReady=false;
-		widget.pages.addressbook.addressBook.blockStart=0;
-		this.fireEvent('contactsChanged','change');
-	},
-	
-	addContact: function(contact) {
-		this.contacts.push(contact);
-		var start = new Date().valueOf();
-		this.contacts.sort();
-		this.arrReady=false;
-		this.resetAdded();
-		this.fireEvent('contactsChanged')
-	},
-	
-	clearContacts: function() {
-		this.contacts = [];
-		this.fireEvent('contactsChanged');
-	},
-	
-	sort: function(by) {
-		by = (by ? by : 'name');
-		if (by != this.sortBy) {
-			this.sortBy = by;
-			this.widget.user.setContactSortMode(this.sortBy);
-			var start = new Date().valueOf();
-			this.contacts.sort();			// note: sorting our own array, not the master list
-			this.blockStart=0;
-			this.blockEnd=this.numWanted;
-			this.resetAdded();
-			this.arrReady=false;
-			this.domContainer.set("html","");
-			this.fireEvent('sortingChanged', by);
-		}
-	},
-	
-	scrollToService: function(serviceTag) {
-		var children = this.domContainer.getChildren();
-		for (var i = 0; i < children.length; i++) {
-			if ('_contact' in children[i] && children[i]._contact.service == serviceTag) {
-				this.domContainer.scrollTo(0, children[i].getPosition(this.domContainer).y);
-				return;
-			}
-		}
-	},
-
-	_clearList: function() {
-	this.domContainer.set("html","");
-	},
-	
-
-	
-	_attachItemBehavior: function(item, contact) {
-		var checkbox = item.getElement('input');
-		var label = item.getElement('label');
-		// two-way binding between contact selection and checkbox
-		contact.addEvent('selected', function(isSelected) {
-			if (checkbox.get('checked') != isSelected) {
-				checkbox.set('checked', isSelected);
-			}
-		});
-		checkbox.addEvent('change', function() {
-			if (checkbox.get('checked') != contact.selected) {
-				(checkbox.get('checked') ? contact.select() : contact.deselect());
-			}
-		});
-		item.addEvent('click', function(event) {
-			if (event.target != checkbox && event.target != label) {
-				if (contact.selected) {
-					contact.deselect();
-				}
-				else {
-					contact.select();
-				}
-				event.stop();
-			}
-		});
-		item._contact = contact;
-	},
-	
-	
-	_removeItemBehavior: function(item, contact) {
-		var checkbox = item.getElement('input');
-		var label = item.getElement('label');
-		contact.removeEvents('selected');
-		checkbox.removeEvents('change');
-		item.removeEvents('click');
-		if(contact.selected){contact.deselect();}
-	},
-	
-	_render: function(el) {
-		this.domContainer.scrollTop=0;
-		this.blockStart=0;
-		this.blockEnd=this.numWanted;
-		if(el){this.svc=el;}
-		else{this.svc="all";}
-		if (this.deferRendering==true) {
-			this.wantsToRender = true;
-			return true;
-		}
-		this.isRendering = true;
-		var start = new Date().valueOf();
-		widget.showPage('addressbook');	
-		$("abLoading").setStyle("display","inline");
-		setTimeout("widget.pages.addressbook.addressBook.addBlock()",10);
-		var end = new Date().valueOf();
-		this.isRendering = false;
-	},
-	scrollCatch: function(){
-		if( (this.domContainer.scrollTop+this.domContainer.offsetHeight)>=this.domContainer.scrollHeight){
-			if(this.addInProgress==false){
-				$("abLoading").setStyle("display","inline");
-				setTimeout("widget.pages.addressbook.addressBook.addBlock()",10);
-			}
-			
-		}		
-	},
-	contactsOnDemand: function(service,strt){
-		var start2 = new Date().valueOf();
-		var conStart=strt;
-		var conEnd=conStart+this.numWanted;
-		var inHand=0;
-		var intSvc=service;
-		var cArray=this.contacts;
-		if(service=="aim"){cArray=this.aimArr;}
-		else if(service=="email"){cArray=this.emailArr;}
-		else if(service=="twitter"){cArray=this.twitterArr;}
-		else if(service=="sms"){cArray=this.smsArr;}
-		else if(service=="service"){cArray=this.sortedArr;}
-		var cLength=cArray.length;
-		while(inHand<this.numWanted){
-			if(conEnd>=cLength){conEnd=cLength;}
-			for(var i=conStart;i<conEnd;i++){
-				if(service=="all" && cArray[i].added==false){
-					this.contactsHTML.push(this.makeHTML(cArray[i],this.contactsHTML.length%2));
-					inHand++;
-					cArray[i].added=true;
-				}
-				else{
-					if( (cArray[i].service=="aim" && service=="aim") && cArray[i].added==false){
-						this.aimHTML.push(this.makeHTML(cArray[i],this.aimHTML.length));
-						inHand++;
-						cArray[i].added=true;
-					}
-					else if( (cArray[i].service=="email" && service=="email" ) && cArray[i].added==false){
-						this.emailHTML.push(this.makeHTML(cArray[i],this.emailHTML.length));
-						inHand++;
-						cArray[i].added=true;
-					}
-					else if( (cArray[i].service=="sms"  && service=="sms") && cArray[i].added==false){
-						this.smsHTML.push(this.makeHTML(cArray[i],this.smsHTML.length));
-						inHand++;
-						cArray[i].added=true;
-					}
-					else if( (cArray[i].service=="twitter" && service=="twitter") && cArray[i].added==false){
-						this.twitterHTML.push(this.makeHTML(cArray[i],this.twitterHTML.length));
-						inHand++;
-						cArray[i].added=true;
-					}
-					else if(service=="service" && cArray[i].added==false ){
-						this.sortedHTML.push(this.makeHTML(cArray[i],this.sortedHTML.length));
-						inHand++;
-						cArray[i].added=true;
-					}
-				}
-			if(inHand>=this.numWanted){break;}
-			}
-			conStart=conEnd;
-			conEnd+=this.numWanted;
-			if(conEnd>=cArray.length){conEnd=cArray.length;}
-			if(conStart>=cArray.length){conStart=cArray.length;}
-			if(conStart==conEnd){inHand=this.numWanted;break;}
-			inHand++;
-		}
-		var end2 = new Date().valueOf();
-	},
-	makeHTML: function(contact,index){
-		var liClass="";
-		var cid=contact.id;
-		var name=contact.name;
-		var checked="";
-		if(contact.selected){
-			checked=" checked='checked' ";
-		}
-		var address=contact.address;
-		if(!contact.service.length){
-			var service="email";
-		}
-		else{
-			var service=contact.service;
-		}
-		var selected=contact.selected;
-		if(index%2==0){
-			liClass=" class='even'";
-		}	
-		var mm ="<li"+liClass+">";
-			mm+="<input type='checkbox' id='select_contact_"+cid+"'"+checked+" onclick='selectContact(this);'/>";
-			mm+="<label for='select_contact_" + cid + "'>";
-			mm+="<span class='"+service+"'>"+name+"</span>";
-			mm+="<span class='address'>"+address+"</span>";
-			mm+="</label>";
-			mm+="</li>";
-		return mm;		
-	},
-	addBlock: function(){
-		$("abLoading").setStyle("display","inline");
-		if(this.svc!==this.lastSvc){
-			this.makeArray();
-			this.lastSvc=this.svc;
-		}
-		this.addInProgress=true;
-		var start = new Date().valueOf();
-		var cLength=0;
-		var currArr=[];
-		
-		if(this.blockStart==0){
-			this.domContainer.innerHTML="";
-		}
-		if(this.svc=="aim"){
-			if(this.arrReady==false){this.makeArray();}
-			this.contactsOnDemand("aim",this.blockStart);
-			currArr=this.aimHTML;
-			cLength=currArr.length;
-		}
-		else if(this.svc=="sms"){
-			if(this.arrReady==false){this.makeArray();}
-			this.contactsOnDemand("sms",this.blockStart);
-			currArr=this.smsHTML;
-			cLength=currArr.length;			
-		}
-		else if(this.svc=="email"){
-			if(this.arrReady==false){this.makeArray();}
-			this.contactsOnDemand("email",this.blockStart);
-			currArr=this.emailHTML;
-			cLength=currArr.length;
-		}
-		else if(this.svc=="twitter"){
-			if(this.arrReady==false){this.makeArray();}
-			this.contactsOnDemand("twitter",this.blockStart);
-			currArr=this.twitterHTML;
-			cLength=currArr.length;
-		}
-		else if(this.svc=="service"){
-			if(this.arrReady==false){this.makeArray();}
-			this.contactsOnDemand("service",this.blockStart);
-			currArr=this.sortedHTML;
-			cLength=currArr.length;
-		}
-		else if(this.svc=="all" || this.svc=="name"){
-			if(this.arrReady==false){this.makeArray();}
-			this.contactsOnDemand("all",this.blockStart);
-			currArr=this.contactsHTML;
-			cLength=currArr.length;	
-		}else if(this.svc=="change" ){
-			this.makeArray();
-			this.contacts.sort();			// note: sorting our own array, not the master list
-			this.blockStart=0;
-			this.blockEnd=this.numWanted;
-			this.arrReady=false;
-			this.fireEvent('sortingChanged', 'name');
-			$("abLoading").setStyle("display","none");return true;	
-		}
-		if(this.blockStart==cLength){$("abLoading").setStyle("display","none");return true;}
-		if(this.blockEnd>=cLength)
-		{
-			this.blockEnd=cLength;
-		}
-		else{
-			this.blockEnd+=this.numWanted;
-			if(this.blockEnd>=cLength)
-			{
-				this.blockEnd=cLength;
-			}
-		}				
-		var html="";		
-		
-		for (var i = this.blockStart; i <this.blockEnd ; i++) {
-			var temp=currArr[i];
-			html += temp;				
-		}
-		this.blockStart=this.blockEnd;
-		this.domContainer.innerHTML+=html;
-		var end = new Date().valueOf();
-		var tmp=(end-start)/1000;
-		this.addInProgress=false;
-		$("abLoading").setStyle("display","none");
-						
-	},
-	renderIfWaiting: function() {
-		if (this.deferRendering && this.wantsToRender) {
-			this.deferRendering = false;
-			this._render();
-			this.wantsToRender = false;
-		}
-	}
-
-});
-Widget.AddressBookView.createItem_asNode = 0;
-Widget.AddressBookView.createItem_asHTML = 1;
 
 
 //user.js
@@ -5038,8 +4499,6 @@ Widget.User = new Class({ Implements: Events,
 		this.email = '';
 		this.name = '';
 		this.userID = '';
-		widget.pages.addressbook.addressBook.resetArrays();
-		widget.pages.addressbook.addressBook.sortBy="";
 		this.fireEvent('contactsChanged');
 		this.fireEvent('contactSelectionChanged');
 		this.authToken = '';
