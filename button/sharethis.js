@@ -1,10 +1,10 @@
 /*
-ShareThis Loader Version 3.9.6-rc1
-7/31/09 ShareThis.com
+ShareThis Loader Version 4.0.0-rc1
+8/5/09 ShareThis.com
 */
 
 
-var STV="3.9.6-rc1";
+var STV="4.0.0-rc1";
 
 ST_JSON = new function(){
 
@@ -1034,23 +1034,11 @@ try{
 					this.wrapper.style.visibility = 'hidden';
 					this.wrapper.style.top = "-999px";
 					this.wrapper.style.left = "-999px";
-					this.wrapper.appendChild(this.mainstframe);
-					//this.closebutton = document.createElement('a');
 					this.closewrapper= document.createElement('div');
 					this.closewrapper.className = 'stclose';
-					this.closebutton = document.createElement('img');
-					this.closebutton.src = 'http://w.sharethis.com/images/pic3.gif';
-					this.closebutton.title = 'close';
-					this.closebutton.height = '8';
-					this.closebutton.width = '8';
-					//this.closebutton.className = 'stclose_img';
-					this.closebutton.onclick = stcloseWidget;
-					//this.closebutton.style.color = '#fff';
-					//var closetext = document.createTextNode('X');
-					//this.closebutton.appendChild(closetext);
-					//this.closebutton.style.position = "absolute";
-					this.closewrapper.appendChild(this.closebutton)
+					this.closewrapper.onclick = stcloseWidget;
 					this.wrapper.appendChild(this.closewrapper);
+					this.wrapper.appendChild(this.mainstframe);
 
 					this.defer(function(){
 						//make button count call
