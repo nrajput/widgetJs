@@ -23,7 +23,7 @@ sharethis.widgets.discovery = function(container, options) {
 			header: true,
 			topics: true,
 			time: true,
-			navigation: true,
+			pagination: true,
 			refresh: true,
 			ad: true,
 			footer: true
@@ -44,7 +44,7 @@ sharethis.widgets.discovery = function(container, options) {
 	
 	this.createQueryString = function() {
 		var settings = new Array('width', 'height', 'title', 'results', 'topic', 'domain', 'border');
-		var components = new Array('header', 'topics', 'time', 'navigation', 'refresh', 'ad', 'footer');
+		var components = new Array('header', 'topics', 'time', 'pagination', 'refresh', 'ad', 'footer');
 		var colors = new Array('titlebg', 'titlefg', 'topicbg', 'topicfg', 'bodybg', 'bodyfg', 'metafg');
 		var params = new Array();
 		for (i=0; i<settings.length; i++) {

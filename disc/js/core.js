@@ -3,14 +3,14 @@ var config = {
 		height: 450,
 		title: "Discover what's popular right now!",
 		results: 4,
-		topic: '',
+		topic: 'root',
 		domain: 'foxnews.com',
 		border: '1px #58585A solid',
 		components: {
 			header: true,
 			topics: true,
 			time: true,
-			navigation: true,
+			pagination: true,
 			refresh: true,
 			ad: true,
 			footer: true
@@ -98,11 +98,11 @@ function setGlobals(strArg,value) {
 				config.components.time = false;
 			}
 			break; 
-		case "components.navigation":
+		case "components.pagination":
 			if (value == "true") {
-				config.components.navigation = true;
+				config.components.pagination = true;
 			} else {
-				config.components.navigation = false;
+				config.components.pagination = false;
 			}
 			break; 
 		case "components.refresh":
@@ -281,7 +281,7 @@ function genContentList() {
 		pageSize: config.results,
 		store: contentStore,
 		ctCls:'pagingBar',
-		plugins: new Ext.ux.CustomPaging({navigationDisplay: config.components.navigation, refreshDisplay: config.components.refresh})
+		plugins: new Ext.ux.CustomPaging({paginationDisplay: config.components.pagination, refreshDisplay: config.components.refresh})
 	});
 
 	var panel = new Ext.Panel({
@@ -297,7 +297,7 @@ function genContentList() {
 	panel.render('content');
 	
 	
-	if (!config.components.navigation && !config.components.refresh) {
+	if (!config.components.pagination && !config.components.refresh) {
 		pagebar.getEl().setDisplayed(false);
 	}
 	
