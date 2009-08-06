@@ -92,9 +92,10 @@ Ext.onReady(function(){
 			height:315,
 			labelPad: 10,
 			labelWidth:150,
+			monitorValid: true,
 			defaults: {bodyStyle:'padding:15px'},
 //			itemCls: 'indent'
-			buttons: [{xtype: 'button', minWidth: 30, text: 'Reload', fieldLabel: 'Reload', 
+			buttons: [{xtype: 'button', minWidth: 30, text: 'Reload', fieldLabel: 'Reload', formBind: true, 
 						listeners: {
 							scope: this, 
 							'click': function(event, elem) {
@@ -178,6 +179,4 @@ Ext.onReady(function(){
 	wrc.add({xtype: 'checkbox', allowBlank: false, emptyText: config.width, fieldLabel: 'Remove Refresh'});
 
 	wrc.doLayout();
-	
-	
 })
