@@ -19,12 +19,12 @@ Ext.extend(Ext.ux.CustomPaging, Ext.util.Observable, {
 		
 		Ext.apply(pbar, {
 				  customNumPages: 1,
-				  navigationDisplay: true,
+				  paginationDisplay: true,
 				  refreshDisplay: true
 		});
 
-		if (this.navigationDisplay !== undefined) {
-			pbar.navigationDisplay = this.navigationDisplay;
+		if (this.paginationDisplay !== undefined) {
+			pbar.paginationDisplay = this.paginationDisplay;
 		}
 		
 		if (this.refreshDisplay !== undefined) {
@@ -37,7 +37,7 @@ Ext.extend(Ext.ux.CustomPaging, Ext.util.Observable, {
 			c.hide();
 		});
 
-		if (!pbar.navigationDisplay) {
+		if (!pbar.paginationDisplay) {
 			pbar.items.getRange()[1].hide();
 			pbar.items.getRange()[7].hide();
 		}
@@ -48,7 +48,7 @@ Ext.extend(Ext.ux.CustomPaging, Ext.util.Observable, {
 		
 		pbar.insert(5, '<div id="pagingDotContainer"><div id="pagingDot1" class="pagingDot"></div></div>');
 
-		if (!pbar.navigationDisplay) {
+		if (!pbar.paginationDisplay) {
 			pbar.items.getRange()[5].hide();
 		}
 		

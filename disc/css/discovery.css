@@ -40,7 +40,6 @@ h6 {
 }
 
 #container{
-	width:300px;
 	border:1px #58585A solid;
 }
 
@@ -50,7 +49,6 @@ h6 {
 	background:#58585A;
 	font-size:17px;
 	color:#fff;
-	width:299px;
 }
 #sorting{
 	height:15px;
@@ -131,7 +129,7 @@ h6 {
 	background #888888;
 }			
 .pagingBar{
-	margin-left:60px;
+	margin-left:25%;
 }
 
 .pagingBar .pagingDot {
@@ -177,7 +175,7 @@ h6 {
 
 .pagingBar .xtb-sep {
 	background-image:none;
-	margin-right:50px;
+	margin-right:92%;
 }
 
 .pagingBar .x-btn-mc {
@@ -200,9 +198,7 @@ h6 {
 
 /* Tag Cloud CSS */
 
-
-
-.cloud_div  {
+.cloud-div  {
 	color:#0F75BC;
 	font-family:Arial,sans-serif;
 	min-height:20px;
@@ -212,6 +208,13 @@ h6 {
 	overflow:hidden;
 	border:1px #58585A solid;
 	background:#D1D2D4;
+}
+
+
+.x-cloud  {
+	overflow:hidden;
+	padding: 5px;
+	vertical-align: middle;
 }
 .x-cloud-item  {
 	display:inline;
