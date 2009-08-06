@@ -256,7 +256,7 @@ function genContentList() {
 	
 	var tpl = new Ext.XTemplate( 
 		'<tpl for=".">',
-		'<div class="listElement">',
+		'<div class="{[xindex === xcount ? "lastListElement" : "listElement"]}">',
 		    '<div class="resultTitle"><a href="{url}" title="{title}" target="_blank">{[Ext.util.Format.ellipsis(values.title.replace(/FOXNews.com - /,""), 80, true)]}</a></div>',
 		    '<div class="resultViews">viewed {[Ext.util.Format.number(parseInt(values.views), "0,000")]}</div>',
 			'<div class="viewsSharesSeparator"></div>',

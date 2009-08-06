@@ -92,7 +92,7 @@ Ext.onReady(function(){
 			height:315,
 			labelPad: 10,
 			labelWidth:150,
-			monitorValid: true,
+	//		monitorValid: true,
 			defaults: {bodyStyle:'padding:15px'},
 //			itemCls: 'indent'
 			buttons: [{xtype: 'button', minWidth: 30, text: 'Reload', fieldLabel: 'Reload', formBind: true, 
@@ -161,22 +161,75 @@ Ext.onReady(function(){
 	wrc.removeAll();
 	wrc.add(combo);
 	
-	wrc.add({xtype: 'textfield', allowBlank: false, emptyText: config.title, fieldLabel: 'Custom Header Text'});
-	wrc.add({xtype: 'textfield', allowBlank: false, emptyText: config.topic, fieldLabel: 'Custom Topic', 
+	wrc.add({xtype: 'textarea', allowBlank: false, emptyText: config.title, fieldLabel: 'Custom Header Text', maxLength: 140, grow: true, id: 'customHeader',
 	    listeners:{
 			scope: this,
 			'change': function(event, elem) {
-	//			config.topic = elem.data.displayText;
+				config.title = Ext.get('customHeader').dom.value;
 			}	
 		}
 	});
-	wrc.add({xtype: 'textfield', allowBlank: false, emptyText: config.adTopic, fieldLabel: 'Custom Ad Topic'});
-	wrc.add({xtype: 'textfield', allowBlank: false, emptyText: config.results, fieldLabel: 'No of Results'});
-	wrc.add({xtype: 'textfield', allowBlank: false, emptyText: config.width, fieldLabel: 'Width (300-340)'});
-	wrc.add({xtype: 'checkbox', allowBlank: false, emptyText: config.width, fieldLabel: 'Remove Topic Cloud'});
-	wrc.add({xtype: 'checkbox', allowBlank: false, emptyText: config.width, fieldLabel: 'Remove Time Dimension'});
-	wrc.add({xtype: 'checkbox', allowBlank: false, emptyText: config.width, fieldLabel: 'Remove Pagination'});
-	wrc.add({xtype: 'checkbox', allowBlank: false, emptyText: config.width, fieldLabel: 'Remove Refresh'});
+	
+	wrc.add({xtype: 'textfield', allowBlank: false, emptyText: config.topic, fieldLabel: 'Custom Topic', id: 'customTopic',
+	    listeners:{
+			scope: this,
+			'change': function(event, elem) {
+				config.topic = Ext.get('customTopic').dom.value;
+			}	
+		}
+	});
+	
+	wrc.add({xtype: 'textfield', allowBlank: false, emptyText: config.adTopic, fieldLabel: 'Custom Ad Topic', vtype: 'alphanum', id: 'customAdTopic',
+	    listeners:{
+			scope: this,
+			'change': function(event, elem) {
+				config.adTopic = Ext.get('customAdTopic').dom.value;
+			}	
+		}
+	});
+	
+	wrc.add({xtype: 'numberfield', allowBlank: false, emptyText: config.results, fieldLabel: 'No of Results', allowDecimals: false, allowNegative: false, maxValue: 20,
+		listeners: {
+			scope: this,
+			'change': function(elem, newvalue, oldvalue) {
+				config.results = newvalue;
+			}
+		}
+	});
+	
+	
+	wrc.add({xtype: 'numberfield', allowBlank: false, emptyText: config.width, fieldLabel: 'Width (300-340)', allowDecimals: false, allowNegative: false, maxValue: 340, 
+		minValue: 300,
+		listeners: {
+			scope: this,
+			'change': function(elem, newvalue, oldvalue) {
+				config.width = newvalue;
+			}
+		}
+	});
+	
+	wrc.add({xtype: 'checkbox', allowBlank: false, emptyText: config.width, fieldLabel: 'Remove Topic Cloud',
+		handler: function(checkbox, checked) {
+			config.components.topics = !checked;
+		}
+	});
+	
+	wrc.add({xtype: 'checkbox', allowBlank: false, emptyText: config.width, fieldLabel: 'Remove Time Dimension',
+		handler: function(checkbox, checked) {
+			config.components.time = !checked;
+		}
+	});
+	
+	wrc.add({xtype: 'checkbox', allowBlank: false, emptyText: config.width, fieldLabel: 'Remove Pagination',
+		handler: function(checkbox, checked) {
+			config.components.pagination = !checked;
+		}	
+	});
+	wrc.add({xtype: 'checkbox', allowBlank: false, emptyText: config.width, fieldLabel: 'Remove Refresh',
+		handler: function(checkbox, checked) {
+			config.components.refresh = !checked;
+		}
+	});
 
 	wrc.doLayout();
 })
