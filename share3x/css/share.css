@@ -840,9 +840,10 @@ span.active a#home_button {
 	color: #fff;
 }
 
-#linkForgotPassword {
-    color: #000;
+#footer .link_dark {
+	color: #fff;
 }
+
 
 #footer #colophon{
 	color: #fff;
