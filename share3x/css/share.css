@@ -351,6 +351,7 @@ a.addressbook_button {
 }
 .opposite_right {
 	text-align:right;
+	cursor:pointer;
 }
 .carousel {
 	clear:both;
