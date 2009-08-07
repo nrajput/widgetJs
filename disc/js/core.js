@@ -1,7 +1,7 @@
 var config = {
 		width: 300,
 		height: 450,
-		title: "Discover what's popular right now!",
+		title: "<b>Discover</b> what's popular right now!",
 		results: 4,
 		topic: 'root',
 		domain: 'foxnews.com',

@@ -1,7 +1,36 @@
 var config = {
 		width: 300,
-		height: 450,
-		title: "Discover what's popular right now!",
+		height: 800,
+		title: "<b>Discover</b> what's popular right now!",
+		results: 4,
+		topic: 'root',
+		adTopic: 'television',
+		domain: 'foxnews.com',
+		border: '1px #58585A solid',
+		components: {
+			header: true,
+			topics: true,
+			time: true,
+			pagination: true,
+			refresh: true,
+			ad: true,
+			footer: true
+		},
+		colors: {
+			titlebg: '#58585a',
+			titlefg: '#ffffff',
+			topicbg: '#d1d2d4',
+			topicfg: '#0f75bc',
+			bodybg: 'white',
+			bodyfg: '#3a3a3c',
+			metafg: '#a0a2a4'
+		}
+	};
+
+var defaults = {
+		width: 300,
+		height: 800,
+		title: "<b>Discover</b> what's popular right now!",
 		results: 4,
 		topic: 'root',
 		adTopic: 'television',
@@ -117,15 +146,7 @@ Ext.onReady(function(){
 //			id: 'st_disc_container',
 			layout: 'fit',
 			items: [{html: "<div id = 'st_disc_container'></div>"}]
-			},
-		{
-			region: 'east',
-			height: 500,
-			minHeight: 300,
-			width: 350,
-			xtype: 'panel',
-			title: 'Customize and See your Ad Widget'	
-		}]
+			}]
 	});
 	
 	var container = Ext.fly("st_disc_container");
@@ -150,6 +171,7 @@ Ext.onReady(function(){
 	    valueField: 'myId',
 	    displayField: 'displayText',
 	    fieldLabel: 'Publisher(Data)',
+	    emptyText: defaults.domain,
 	    listeners:{
 			scope: this,
 			'select': function(event, elem) {
@@ -161,71 +183,91 @@ Ext.onReady(function(){
 	wrc.removeAll();
 	wrc.add(combo);
 	
-	wrc.add({xtype: 'textarea', allowBlank: false, emptyText: config.title, fieldLabel: 'Custom Header Text', maxLength: 140, grow: true, id: 'customHeader',
+	wrc.add({xtype: 'textarea', allowBlank: true, emptyText: '(default)', fieldLabel: 'Custom Header Text', maxLength: 140, grow: true, id: 'customHeader',
 	    listeners:{
 			scope: this,
-			'change': function(event, elem) {
-				config.title = Ext.get('customHeader').dom.value;
+			'change': function(elem, newvalue, oldvalue) {
+				if (Ext.isEmpty(newvalue)) {
+					config.title = defaults.title;
+				} else {
+					config.title = newvalue;
+				}
 			}	
 		}
 	});
 	
-	wrc.add({xtype: 'textfield', allowBlank: false, emptyText: config.topic, fieldLabel: 'Custom Topic', id: 'customTopic',
+	wrc.add({xtype: 'textfield', allowBlank: true, emptyText: '(default)', fieldLabel: 'Custom Topic', id: 'customTopic',
 	    listeners:{
 			scope: this,
-			'change': function(event, elem) {
-				config.topic = Ext.get('customTopic').dom.value;
+			'change': function(elem, newvalue, oldvalue) {
+				if (Ext.isEmpty(newvalue)) {
+					config.topic = defaults.topic;
+				} else {
+					config.topic = newvalue;
+				}
 			}	
 		}
 	});
 	
-	wrc.add({xtype: 'textfield', allowBlank: false, emptyText: config.adTopic, fieldLabel: 'Custom Ad Topic', vtype: 'alphanum', id: 'customAdTopic',
+	wrc.add({xtype: 'textfield', allowBlank: true, emptyText: '(default)', fieldLabel: 'Custom Ad Topic', vtype: 'alphanum', id: 'customAdTopic',
 	    listeners:{
 			scope: this,
-			'change': function(event, elem) {
-				config.adTopic = Ext.get('customAdTopic').dom.value;
+			'change': function(elem, newvalue, oldvalue) {
+				if (Ext.isEmpty(newvalue)) {
+					config.adTopic = defaults.adTopic;
+				} else {
+					config.adTopic = newvalue;
+				}
 			}	
 		}
 	});
 	
-	wrc.add({xtype: 'numberfield', allowBlank: false, emptyText: config.results, fieldLabel: 'No of Results', allowDecimals: false, allowNegative: false, maxValue: 20,
+	wrc.add({xtype: 'numberfield', allowBlank: true, emptyText: '(default = '+config.results+')', fieldLabel: 'No of Results', allowDecimals: false, allowNegative: false, maxValue: 20,
 		listeners: {
 			scope: this,
 			'change': function(elem, newvalue, oldvalue) {
-				config.results = newvalue;
-			}
+				if (Ext.isEmpty(newvalue)) {
+					config.results = defaults.results;
+				} else {
+					config.results = newvalue;
+				}
+			}	
 		}
 	});
 	
 	
-	wrc.add({xtype: 'numberfield', allowBlank: false, emptyText: config.width, fieldLabel: 'Width (300-340)', allowDecimals: false, allowNegative: false, maxValue: 340, 
+	wrc.add({xtype: 'numberfield', allowBlank: true, emptyText: '(default = '+config.width+'px)', fieldLabel: 'Width (300-340)', allowDecimals: false, allowNegative: false, maxValue: 340, 
 		minValue: 300,
 		listeners: {
 			scope: this,
 			'change': function(elem, newvalue, oldvalue) {
-				config.width = newvalue;
-			}
+				if (Ext.isEmpty(newvalue)) {
+					config.width = defaults.width;
+				} else {
+					config.width = newvalue;
+				}
+			}	
 		}
 	});
 	
-	wrc.add({xtype: 'checkbox', allowBlank: false, emptyText: config.width, fieldLabel: 'Remove Topic Cloud',
+	wrc.add({xtype: 'checkbox', emptyText: config.width, fieldLabel: 'Remove Topic Cloud',
 		handler: function(checkbox, checked) {
 			config.components.topics = !checked;
 		}
 	});
 	
-	wrc.add({xtype: 'checkbox', allowBlank: false, emptyText: config.width, fieldLabel: 'Remove Time Dimension',
+	wrc.add({xtype: 'checkbox', emptyText: config.width, fieldLabel: 'Remove Time Dimension',
 		handler: function(checkbox, checked) {
 			config.components.time = !checked;
 		}
 	});
 	
-	wrc.add({xtype: 'checkbox', allowBlank: false, emptyText: config.width, fieldLabel: 'Remove Pagination',
+	wrc.add({xtype: 'checkbox', emptyText: config.width, fieldLabel: 'Remove Pagination',
 		handler: function(checkbox, checked) {
 			config.components.pagination = !checked;
 		}	
 	});
-	wrc.add({xtype: 'checkbox', allowBlank: false, emptyText: config.width, fieldLabel: 'Remove Refresh',
+	wrc.add({xtype: 'checkbox', emptyText: config.width, fieldLabel: 'Remove Refresh',
 		handler: function(checkbox, checked) {
 			config.components.refresh = !checked;
 		}
