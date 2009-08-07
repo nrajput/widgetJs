@@ -440,7 +440,7 @@ a.addressbook_button {
 	margin:0 5px;
 	overflow:hidden;
 	position:relative;
-	width:300px;
+	width:310px;
 }
 .carousel .view .groups {
 	width:1000px;
@@ -938,7 +938,7 @@ span.active a#home_button {
 	background-image:url(http://w.sharethis.com/share3x/images/sprite_main_1.gif);
 	background-position: -16px -177px;
 	background-repeat:no-repeat;
-	padding:2px 4px 2px 20px;
+	padding:3px 4px 2px 24px;
 	white-space:nowrap;
 }
 

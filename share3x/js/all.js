@@ -889,12 +889,14 @@ if (!window.console || !console.firebug) {
 
 
 	var glo_tabs='web,post,email';
+	var glo_send_services="email,myspace,aim,sms";
 	var glo_tabArray=[];
 	glo_tabArray=glo_tabs.split(",");
 	var glo_charset='utf-8';
 	var glo_services="";
-	var glo_default_services='facebook,myspace,digg,aim,sms,email,reddit,windows_live,twitter,google_bmarks,delicious,stumbleupon,yahoo_bmarks,linkedin,ybuzz,technorati,mixx,blogger,friendfeed,blinklist,furl,xanga,newsvine,propeller,wordpress,diigo,typepad,bus_exchange,fark,mister_wong,current,kirtsy,blogmarks,oknotizie,faves,livejournal,slashdot,care2,n4g,meneame,sphinn,simpy,dealsplus,fresqui,yigg,funp';
+	var glo_default_services='myspace,digg,sms,windows_live,delicious,stumbleupon,reddit,google_bmarks,linkedin,ybuzz,blogger,yahoo_bmarks,mixx,technorati,friendfeed,propeller,wordpress,newsvine,xanga,blinklist,diigo,fark,faves,mister_wong,current,livejournal,kirtsy,slashdot,oknotizie,care2,aim,meneame,simpy,blogmarks,n4g,bus_exchange,funp,sphinn,fresqui,dealsplus,typepad,yigg';
     var glo_top_services = 'email,facebook,twitter,sharebox';
+    var glo_send_servicesArray = [];
 	var glo_default_swArray=[];
 		glo_default_swArray = glo_default_services.split(',');
 	var glo_style='default';
@@ -1027,7 +1029,7 @@ if (!window.console || !console.firebug) {
 			case "tabs":
 				glo_tabs=value;
 				glo_tabArray = value.split(',');
-				widget.fireEvent('tabPrefsChanged', {tabs:glo_tabArray});	// can't pass the raw array; mootools interprets it as multiple args
+			    tab_servicesChanged();
 			  break;    
 			case "charset":
 			  glo_charset=value;
@@ -1263,7 +1265,11 @@ if (!window.console || !console.firebug) {
 			break;
 			case 'post_services':
 				setGlobals("services",value);
-				break;			
+			    break;			
+		    case 'send_services':
+			    glo_send_servicesArray=value;
+			    send_servicesChanged(value);
+			    break;
 			case 'glo_toolbar':
 				glo_toolbar=value;
 				$("close_button").set("style","display:inline");
@@ -1438,6 +1444,78 @@ if (!window.console || !console.firebug) {
 			});
 			request.send();
 		}
+	}
+
+    function send_servicesChanged(services) {
+		var svc_arr=[];
+		svc_arr=services.split(",");
+		var email=false;
+		var aim=false;
+		var sms=false;
+		for(var i=0;i<svc_arr.length;i++)
+		{
+			if(svc_arr[i]=="email"){
+				email=true;
+			}
+			else if(svc_arr[i]=="aim"){
+				aim=true;
+			}else if(svc_arr[i]=="sms"){
+				sms=true;
+			}
+		}
+		
+		if( email == false || aim == false || sms == false ) {
+			var newServices = [];
+			$each(glo_default_swArray, function(name, i) {
+				if( name == 'aim' && aim == false ) {
+				} else if( name == 'sms' && sms == false ) {
+				} else {
+					newServices.push(name);
+				}
+			});
+			glo_default_swArray = newServices;
+			
+			if( email == false ) {
+				glo_top_services = 'facebook,twitter,sharebox';
+			}
+
+			createSwList();
+
+		}
+
+		return "services_changed";
+	}
+
+    function tab_servicesChanged() {
+		var email = false;
+		var sms = false;
+		var aim = false;
+
+		for(var i=0;i<glo_tabArray.length;i++)
+		{
+			if(glo_tabArray[i]=="email"){
+				email=true;
+			}
+		}
+		
+		if( email == false ) {
+			var newServices = [];
+			$each(glo_default_swArray, function(name, i) {
+				if( name == 'aim' && aim == false ) {
+				} else if( name == 'sms' && sms == false ) {
+				} else {
+					newServices.push(name);
+				}
+			});
+			glo_default_swArray = newServices;
+			
+			glo_top_services = 'facebook,twitter,sharebox';
+
+			createSwList();
+
+		}
+
+		return "services_changed";
 	}
 
 	// frag pump start	
@@ -3678,11 +3756,6 @@ Widget.implement({
 			submitUrl: 'http://funp.com/pages/submit/add.php?title={title}&url={url}&via=tools',
 			destination: 'funp.com'
 		},
-		furl: {
-			title: 'Furl',
-			submitUrl: 'http://furl.net/storeIt.jsp?u={url}&t={title}',
-			destination: 'furl.net'
-		},
 		google_bmarks: {
 			title: 'G Bookmarks',
 			submitUrl: 'http://www.google.com/bookmarks/mark?op=edit&bkmk={url}&title={title}',
@@ -5411,7 +5484,6 @@ Widget.ToField.scrollBehavior_scroll = 1;
 //domready.js
 
 window.addEvent('domready', function() {
-
 	domReady=true;
 	if(glo_options_popup===true && glo_toolbar==false)
 	{
@@ -5427,6 +5499,7 @@ window.addEvent('domready', function() {
 	else{
 		createSwList();
 	}
+
 	var a=[];
 	a=$$('input');
 	for(i=0;i<a.length;i++){
