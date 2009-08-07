@@ -835,8 +835,12 @@ span.active a#home_button {
 	position:absolute;
 }
 
-#footer a{
+#poweredByLink {
 	color: #fff;
+}
+
+#linkForgotPassword {
+    color: #000;
 }
 
 #footer #colophon{
