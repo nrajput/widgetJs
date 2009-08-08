@@ -223,6 +223,44 @@ function reload() {
 	contentStore.load( { params: { start: 0, limit: config.results, domain: currentDomain, period: currentPeriod, topic: currentTopic } });
 }
 
+// override the default left align and use center alignment instead
+Ext.override(Ext.layout.ToolbarLayout, {
+	
+	onLayout : function(ct, target){
+    	if(!this.leftTr){
+    		target.addClass('x-toolbar-layout-ct');
+    		target.insertHtml('beforeEnd',
+    			'<table cellspacing="0" class="x-toolbar-ct"><tbody><tr><td class="x-toolbar-left" align="center"><table cellspacing="0"><tbody><tr class="x-toolbar-left-row"></tr></tbody></table></td><td class="x-toolbar-right" align="right"><table cellspacing="0" class="x-toolbar-right-ct"><tbody><tr><td><table cellspacing="0"><tbody><tr class="x-toolbar-right-row"></tr></tbody></table></td><td><table cellspacing="0"><tbody><tr class="x-toolbar-extras-row"></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table>');
+    		this.leftTr = target.child('tr.x-toolbar-left-row', true);
+    		this.rightTr = target.child('tr.x-toolbar-right-row', true);
+    		this.extrasTr = target.child('tr.x-toolbar-extras-row', true);
+    	}
+    	var side = this.leftTr;
+    	var pos = 0;
+
+    	var items = ct.items.items;
+    	for(var i = 0, len = items.length, c; i < len; i++, pos++) {
+    		c = items[i];
+    		if(c.isFill){
+    			side = this.rightTr;
+    			pos = -1;
+    		}else if(!c.rendered){
+    			c.render(this.insertCell(c, side, pos));
+    		}else{
+    			if(!c.xtbHidden && !this.isValidParent(c, side.childNodes[pos])){
+    				var td = this.insertCell(c, side, pos);
+    				td.appendChild(c.getDomPositionEl().dom);
+    				c.container = Ext.get(td);
+    			}
+    		}
+    	}
+    	//strip extra empty cells
+    	this.cleanup(this.leftTr);
+    	this.cleanup(this.rightTr);
+    	this.cleanup(this.extrasTr);
+    	this.fitToSize(target);
+	}
+});
 
 function genContentList() {
 	contentStore = new Ext.ux.data.PagingStore({
@@ -277,13 +315,14 @@ function genContentList() {
 		}
 	);
 
-	var pagebar = new Ext.PagingToolbar({
+	var pagebar = new Ext.ux.CustomPagingToolbar({
 		pageSize: config.results,
 		store: contentStore,
 		ctCls:'pagingBar',
 		plugins: new Ext.ux.CustomPaging({paginationDisplay: config.components.pagination, refreshDisplay: config.components.refresh})
 	});
-
+	
+	
 	var panel = new Ext.Panel({
 		items: new Ext.DataView({                                                                                                                
 			id: 'resultsView',
@@ -296,6 +335,7 @@ function genContentList() {
 	});
 	panel.render('content');
 	
+	pagebar.getEl().child("table").wrap({tag:'center'})
 	
 	if (!config.components.pagination && !config.components.refresh) {
 		pagebar.getEl().setDisplayed(false);
@@ -352,9 +392,17 @@ Ext.onReady(function(){
 				  '<span class="ad_text">advertisement</span>' +
 				  '<div id="bottom_ad_img"></div>' +
 				  '</div>' +
-				  '<div id="footer"><span id="footerText" class="footerText"><a href="http://www.sharethis.com">Powered by ShareThis</a></span></div>' +
+				  '<div id="footer"><span id="footerText" class="footerText"><a href="http://www.sharethis.com">Powered by ShareThis</a></span></div>'+
 				  '</div>'
-		}]
+		}/*,
+		{
+            region: 'north',
+            xtype: 'panel',
+            height: '100',
+   //         layout: 'fit',
+            items: [{html: "<div id = 'bottom_ad'><span class='ad_text'>advertisement</span> <div id='bottom_ad_img'></div></div>"},
+                    {html: '<div id="footer"><span id="footerText" class="footerText"><a href="http://www.sharethis.com">Powered by ShareThis</a></span></div>'} ]		
+		}*/]
 	});
 	
     // enable & disable components

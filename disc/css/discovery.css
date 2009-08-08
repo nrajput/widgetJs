@@ -129,9 +129,7 @@ h6 {
 .share_title {
 	background #888888;
 }			
-.pagingBar{
-	margin-left:25%;
-}
+
 
 .pagingBar .pagingDot {
     float: left;
@@ -182,10 +180,10 @@ h6 {
 .pagingBar .x-btn-mc {
 }
 
-.pagingBar .x-toolbar-right{
-	display:none;
-}
 
+.x-toolbar-left {
+	width: 100%;
+}
 
 .pagingBar .x-toolbar-ct{
 	width:auto;

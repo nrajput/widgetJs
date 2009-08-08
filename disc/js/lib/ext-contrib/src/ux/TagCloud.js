@@ -99,14 +99,19 @@ Ext.extend(Ext.ux.TagCloud, Ext.Component, {
 		this.getWeightDistribution();
         
 		var records = this.store.getRange();
+		var charCount = 0;
 		for(var i=0; i < records.length; i++){
 
             var count = records[i].data[this.weightField];
             
+            charCount = charCount + records[i].data[this.displayField].length;
+            if (charCount > 45) {
+            	break;
+            }
 			var child = this.list.createChild({
                 tag: "li", 
                 cls: "x-cloud-item "+this.getWeightClassification(count),
-                html: '<a href="javascript:void(0)">'+records[i].data[this.displayField].replace(/_/g, ' ')+(this.displayWeight ? ' ('+count+')' : '')+'</a>'
+                html: '<a href="javascript:void(0)">'+records[i].data[this.displayField].replace(/_/g, ' ')+(this.displayWeight ? ' ('+count+')' : ' ')+'</a>'
                 });
 			
 			child.on('click', this.onSelect, this);
