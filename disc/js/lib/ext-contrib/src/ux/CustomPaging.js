@@ -46,41 +46,41 @@ Ext.extend(Ext.ux.CustomPaging, Ext.util.Observable, {
 			pbar.items.getRange()[10].hide();
 		}
 		
-		pbar.insert(5, '<div id="pagingDotContainer"><div id="pagingDot1" class="pagingDot"></div></div>');
-
+		pbar.insert(5, '<div id="pagingDotContainer"><div id="pagingDot1" class="pagingDot_disabled"></div></div>');
+	
 		if (!pbar.paginationDisplay) {
 			pbar.items.getRange()[5].hide();
 		}
 		
 		pbar.on({
 			change: function(pb, data){
-
-				var pagingDivs = "";
-				
-				if(pb.customNumPages < data.pages){
-					for( var i = pb.customNumPages + 1; i <= data.pages; i++ ){                                                    
-						var headerTemplate = new Ext.Template(
-							'<div id="pagingDot{num}" class="pagingDot"></div>'
-						);
-						headerTemplate.append('pagingDotContainer', {num: i} );
-					}
-					pb.customNumPages = data.pages;
-				} else if( pb.customNumPages > data.pages){
-					for( var i = pb.customNumPages; i > data.pages; i-- ){                                                    
-						Ext.fly('pagingDot' + i).remove();
-					}
-					pb.customNumPages = data.pages;
-				}  
+			
+				if (pb.customNumPages < 5) {
+					for (var ix = pb.customNumPages; ix < 5; ix++) {
+						var headerTemplate = new Ext.Template('<div id="pagingDot{num}" class="pagingDot_disabled"></div>');
+							headerTemplate.append('pagingDotContainer', {num: ix + 1} );
+					}	
+					pb.customNumPages = 5;
+				}
+			
 				Ext.fly('pagingDot' + data.activePage).radioClass('pagingDot_selected');
 				
 				// setup the handlers for on click
-				for( var i = 1; i <= data.pages; i++ ){                                                    
+				for( var i = 1; i <= data.pages; i++ ){
+					Ext.fly('pagingDot'+i).removeClass('pagingDot_disabled');
+					Ext.fly('pagingDot'+i).addClass('pagingDot')
 					Ext.fly('pagingDot'+i).on('click' , function(clickEvent, elem) {
 						if (elem.id.match('pagingDot')) {
 							pbar.changePage(parseInt(elem.id.substring(9)));
 						}
 					});
-				} 
+				}
+				
+				for (var ix = data.pages + 1; ix <= pb.customNumPages; ix++) {
+					Ext.fly('pagingDot'+ix).removeClass('pagingDot');
+					Ext.fly('pagingDot'+ix).addClass('pagingDot_disabled');
+					Ext.fly('pagingDot'+ix).removeAllListeners();
+				}
 			}
 		});
 

@@ -130,6 +130,20 @@ h6 {
 	background #888888;
 }			
 
+.pagingBar{
+   	margin-left:20px;
+}
+
+.pagingBar .pagingDot_disabled {
+	float: left;
+	width: 20px;
+	height: 20px;
+	background: url(../images/arrowUnselected.png) no-repeat;
+    cursor: default;
+    opacity: .6;
+    -moz-opacity: .6;
+    filter: alpha(opacity=60);
+}
 
 .pagingBar .pagingDot {
     float: left;
