@@ -4,6 +4,7 @@ var config = {
 		title: "<b>Discover</b> what's popular right now!",
 		results: 4,
 		topic: 'root',
+		adTopic: '',
 		domain: 'foxnews.com',
 		border: '1px #58585A solid',
 		components: {
@@ -33,6 +34,7 @@ var currentTopic = "root";
 var currentDomain = "foxnews.com";
 var currentPeriod = 7;
 var currentDestination = "";
+var currentAdTopic = "";
 
 
 function configParameters(query) {
@@ -71,6 +73,9 @@ function setGlobals(strArg,value) {
 		case "topic":
 			config.topic = value;
 			break;  
+		case "adTopic":
+			config.adTopic = value;
+			break;  	
 		case "domain":
 			config.domain = value;
 			break;  
@@ -322,7 +327,6 @@ function genContentList() {
 		plugins: new Ext.ux.CustomPaging({paginationDisplay: config.components.pagination, refreshDisplay: config.components.refresh})
 	});
 	
-	
 	var panel = new Ext.Panel({
 		items: new Ext.DataView({                                                                                                                
 			id: 'resultsView',
@@ -335,15 +339,12 @@ function genContentList() {
 	});
 	panel.render('content');
 	
-	pagebar.getEl().child("table").wrap({tag:'center'})
-	
 	if (!config.components.pagination && !config.components.refresh) {
 		pagebar.getEl().setDisplayed(false);
 	}
 	
 	Ext.fly('resultsView').setStyle('background-color', config.colors.bodybg);
 	Ext.fly('resultsView').setStyle('color', config.colors.bodyfg);
-//	Ext.fly('')
 }
 
 
@@ -368,6 +369,11 @@ Ext.onReady(function(){
 	headerHTML = '<div id="headerText" class="headerText">'+ config.title + '</div>';
 	currentTopic = config.topic;
 	currentDomain = config.domain;
+	if (!Ext.isEmpty(config.adTopic)) {
+		currentAdTopic = config.adTopic;
+	} else {
+		currentAdTopic = config.topic;
+	}
 	
 	view = new Ext.Viewport({
 		layout: 'border',
@@ -389,8 +395,9 @@ Ext.onReady(function(){
 				  '<div class="clear"></div>' +
 				  '</div>' +
 				  '<div id="bottom_ad">' +
-				  '<span class="ad_text">advertisement</span>' +
-				  '<div id="bottom_ad_img"></div>' +
+				  '<iframe src="/api/getAFS.php?query='+ currentAdTopic + '" height="80" width="234" scrolling="no" frameborder="0"> </iframe>' + 
+				 /* '<span class="ad_text">advertisement</span>' +
+				  '<div id="bottom_ad_img"></div>' + */
 				  '</div>' +
 				  '<div id="footer"><span id="footerText" class="footerText"><a href="http://www.sharethis.com">Powered by ShareThis</a></span></div>'+
 				  '</div>'

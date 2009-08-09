@@ -64,8 +64,9 @@ h6 {
 	border-bottom:1px #58585A solid;
 }
 #bottom_ad{
-	height:72px;
+	height:80px;
 	border:1px #58585A solid;
+	text-align: center;
 }
 
 #bottom_ad_img{

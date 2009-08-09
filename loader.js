@@ -17,6 +17,7 @@ sharethis.widgets.discovery = function(container, options) {
 		title: "<b>Discover</b> what's popular right now!",
 		results: 4,
 		topic: '',
+		adTopic: '',
 		domain: location.host,
 		border: '1px #58585A solid',
 		components: {
@@ -43,7 +44,7 @@ sharethis.widgets.discovery = function(container, options) {
 	sharethis.utilities.merge(this.settings, options);
 	
 	this.createQueryString = function() {
-		var settings = new Array('width', 'height', 'title', 'results', 'topic', 'domain', 'border');
+		var settings = new Array('width', 'height', 'title', 'results', 'topic', 'domain', 'border', 'adTopic');
 		var components = new Array('header', 'topics', 'time', 'pagination', 'refresh', 'ad', 'footer');
 		var colors = new Array('titlebg', 'titlefg', 'topicbg', 'topicfg', 'bodybg', 'bodyfg', 'metafg');
 		var params = new Array();
