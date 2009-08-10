@@ -1,6 +1,6 @@
-/*!
- * ShareThis Widget Version 3.9.5-rc1
- * 7/20/09 ShareThis.com 
+/*
+ * ShareThis Widget Version 4.0.0-rc5
+ * 8/10/09 ShareThis.com 
  */
 
 //widget-class.js
@@ -4015,7 +4015,7 @@ Widget.implement({
 			else{
 				widget.showPage('done'); //show done screen on click of service
 			}
-			if (link != '#') {
+			if (link != 'javascript:void(0)') {
 				if (glo_options_popup == true) {
 					popupOpen2(this);
 					event.stop();
