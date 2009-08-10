@@ -1021,6 +1021,22 @@ span.active a#home_button {
 .sharethis {
 	background:url(http://w.sharethis.com/share3x/images/share-icon.gif) no-repeat left center;
 }
+.bebo {
+	background:url(http://w.sharethis.com/share3x/images/bebo.gif) no-repeat left center;
+	background-repeat:no-repeat;
+	margin-right:11px;
+	padding:2px 12px 2px 20px;
+	white-space:nowrap;
+	height: 14px;
+}
+.twine {
+	background:url(http://w.sharethis.com/share3x/images/twine.gif) no-repeat left center;
+	background-repeat:no-repeat;
+	margin-right:11px;
+	padding:2px 12px 2px 20px;
+	white-space:nowrap;
+	height: 14px;
+}
 .aim {
 	background-position:0 -420px;
 }

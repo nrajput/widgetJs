@@ -894,7 +894,7 @@ if (!window.console || !console.firebug) {
 	glo_tabArray=glo_tabs.split(",");
 	var glo_charset='utf-8';
 	var glo_services="";
-	var glo_default_services='myspace,digg,sms,windows_live,delicious,stumbleupon,reddit,google_bmarks,linkedin,ybuzz,blogger,yahoo_bmarks,mixx,technorati,friendfeed,propeller,wordpress,newsvine,xanga,blinklist,diigo,fark,faves,mister_wong,current,livejournal,kirtsy,slashdot,oknotizie,care2,aim,meneame,simpy,blogmarks,n4g,bus_exchange,funp,sphinn,fresqui,dealsplus,typepad,yigg';
+	var glo_default_services='myspace,digg,sms,windows_live,delicious,stumbleupon,reddit,google_bmarks,linkedin,bebo,ybuzz,blogger,yahoo_bmarks,mixx,technorati,friendfeed,propeller,wordpress,newsvine,xanga,blinklist,twine,diigo,fark,faves,mister_wong,current,livejournal,kirtsy,slashdot,oknotizie,care2,aim,meneame,simpy,blogmarks,n4g,bus_exchange,funp,sphinn,fresqui,dealsplus,typepad,yigg';
     var glo_top_services = 'email,facebook,twitter,sharebox';
     var glo_send_servicesArray = [];
 	var glo_default_swArray=[];
@@ -1787,8 +1787,6 @@ if (!window.console || !console.firebug) {
 
 		var serviceNames = glo_top_services.split(",");
         $each(serviceNames, function(provider) {
-            console.log(provider);
-
 			var link = widget.getServiceLink(provider);
 			link.addClass('top_service');
 			link.inject(top_elm);
@@ -3675,6 +3673,11 @@ Widget.implement({
 			},
             type: 'sharebox'
         },
+		bebo: {
+			title: 'bebo',
+			submitUrl: 'http://www.bebo.com/c/share?Url={url}&Title={title}',
+			destination: 'bebo.com'
+		},
 		blinklist: {
 			title: 'Blinklist',
 			submitUrl: 'http://blinklist.com/index.php?Action=Blink/addblink.php&Url={url}&Title={title}',
@@ -3858,6 +3861,11 @@ Widget.implement({
 			submitUrl: 'http://www.technorati.com/faves?add={url}',
 			destination: 'technorati.com',
 			dontUseEncodedURL: 'Encoded URLs are not allowed'
+		},
+		twine: {
+			title: 'Twine',
+			submitUrl: 'http://www.twine.com/bookmark/basic?u={url}',
+			destination: 'twine.com'
 		},
 		twitter: {
 			title: 'Twitter',
