@@ -3674,7 +3674,7 @@ Widget.implement({
             type: 'sharebox'
         },
 		bebo: {
-			title: 'bebo',
+			title: 'Bebo',
 			submitUrl: 'http://www.bebo.com/c/share?Url={url}&Title={title}',
 			destination: 'bebo.com'
 		},
