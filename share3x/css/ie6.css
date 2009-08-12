@@ -9,6 +9,7 @@
 #home_button,
 #recent_recipients {
 	zoom:1;
+	
 }
 #sub_header #greeting {
 	float:left; /* workaround for peekaboo bug */

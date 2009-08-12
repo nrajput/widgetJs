@@ -32,7 +32,7 @@
 	</head>
 	<body id="or">
 		<div id="close_button"></div>
-		<div id="closeX" ><img width="8" height="8" src="http://w.sharethis.com/images/pic3.gif" title="close" style="left:1px;top:1px;"/></div>
+		<div id="closeX" ><img width="8" height="8" src="http://w.sharethis.com/images/pic3.gif" title="close" alt=""/></div>
 		<div id="outer_container">
 		<div id="container" class="border-color">
 			<div id="header" class="header-color">
@@ -47,6 +47,7 @@
 					</div>
 				</div>
 				<div id="home_separator"></div>
+				<div class="clear"></div>
 				<div class="carousel">
 					<div class="carousel-box">
 						<div id="swcontainer" class="view">
@@ -54,6 +55,7 @@
 						</div>
 					</div>
 				</div>
+				<div class="clear"></div>
 				<div id="paginator" >
 				  <a href="#" class="paging_arrows" id="back_arrow"></a>
 				  <div id="circle_container">
@@ -111,6 +113,7 @@
 					<span class="link" onclick="widget.showPreviousPage();">Go back</span>
 				</div>
 			</div>
+			<div class="clear"></div>
 			<div id="import_page" class="panel">
 				<h1>Import Contacts</h1>
 				<p>Choose a service, import and all your contacts will be a click away.</p>
@@ -149,6 +152,7 @@
 					<span class="link" onclick="widget.showPreviousPage();">Go back</span>
 				</div>
 			</div>
+			<div class="clear"></div>
 			<div id="register_page" class="panel"> 	
 				<div id="registerText">
 					<h1>Register for ShareThis</h1>
@@ -189,7 +193,7 @@
 					<dt><label></label></dt>
 					<dd>
 						<div id="sharebox_preview" class="preview_container hidden">
-							<div class="preview_thumb_container"><img id="sharebox_previewThumb" src="" width="100" /></div>
+							<div class="preview_thumb_container"><img id="sharebox_previewThumb" src="" width="100" alt="" /></div>
 							<div id="sharebox_previewTextContainer" class="preview_text_container">
 								<div id="sharebox_previewTitle" class="preview_title"></div>
 								<div id="sharebox_previewUrl" class="preview_url"></div>
@@ -372,18 +376,18 @@
 					<p id="doneRegOther">Drag this <a class="bookmark" onclick="javascript:alert('Drag this to your bookmarks bar.'); return false;" href="javascript:var%20e=document.createElement('script');e.setAttribute('language','javascript');e.setAttribute('src','http://sharethis.com/share/load');document.body.appendChild(e);void(0);">ShareThis</a> link to your browser to share from any website.</p>
 				</div>
 				<div class="doneText guest" id="doneRegister">
-					<span class="link" onclick="window.open('http://sharethis.com/users/register/','register','resizable=1,location=1,status=1,scrollbars=1,toolbar=1'); return false;"><div id="bullet_3"></div></span>
+					<span class="link" onclick="window.open('http://sharethis.com/users/register/','register','resizable=1,location=1,status=1,scrollbars=1,toolbar=1'); return false;"><span id="bullet_3"></span></span>
 					<h2><span class="link" onclick="window.open('http://sharethis.com/users/register/','register','resizable=1,location=1,status=1,scrollbars=1,toolbar=1'); return false;">Register Now!</span></h2>
 					<p>Instantly Share with your friends using Email, AIM, MySpace and more.</p>
 				</div>
 				<div class="doneText">
-					<span class="link" onclick="window.open('http://sharethis.com/publishers/getbutton/','getthebutton','resizable=1,location=1,status=1,scrollbars=1,toolbar=1'); return false;"><div id="bullet_2"></div></span>
+					<span class="link" onclick="window.open('http://sharethis.com/publishers/getbutton/','getthebutton','resizable=1,location=1,status=1,scrollbars=1,toolbar=1'); return false;"><span id="bullet_2"></span></span>
 					<h2><span class="link" onclick="window.open('http://sharethis.com/publishers/getbutton/ ','getthebutton','resizable=1,location=1,status=1,scrollbars=1,toolbar=1'); return false;">Get the Button!</span></h2>
 					<p>Put ShareThis on your website or blog in minutes!</p>
 				</div>
 				<div id="contest" style="float:left;width:140px;"><span class="link" style="font-size:13px;color:#0000FF;" onclick="window.open('http://sharethis.com/flipcontest ','flipcontest','resizable=1,location=1,status=1,scrollbars=1,toolbar=1'); return false;">Win a Flip MinoHD Click here for details</span></div>
 				<div class="col_act">
-					<button onClick="javascript:widget.showPage('home')" id="doneScreenOk" class="button">&#171; Send to more friends</button>
+					<button onclick="javascript:widget.showPage('home')" id="doneScreenOk" class="button">&#171; Send to more friends</button>
 				</div>
 				<div class="clear"></div>
 			</div>
