@@ -1024,7 +1024,7 @@ if (!window.console || !console.firebug) {
 		if(value===1){answer="Yes";}
 		try{value=decodeURIComponent(value);}catch(err){}
 		try{value=decodeURIComponent(value);}catch(err){}
-	
+		//console.log(strArg+":"+value);
 		switch(strArg) {
 			case "tabs":
 				glo_tabs=value;
@@ -1311,6 +1311,7 @@ if (!window.console || !console.firebug) {
 						widget.fireEvent('twitterClicked', getSharURL());
 					}
 					widget.showPage(glo_page);
+					event.stop();
 				} else {
 					widget.showPage('home');
 				}
