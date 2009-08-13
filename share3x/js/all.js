@@ -1311,6 +1311,9 @@ if (!window.console || !console.firebug) {
 						widget.fireEvent('twitterClicked', getSharURL());
 					}
 					widget.showPage(glo_page);
+				} else if (glo_page == "import" ) {
+					widget.showPage('import');
+					event.stop();
 				} else {
 					widget.showPage('home');
 				}
@@ -3049,9 +3052,11 @@ Widget.implement({
 					widget.popModalWorkingSheet();
 					widget.pushModalErrorSheet('Could not retrieve your contacts.');
 				})
+					/*
 				$('import_contacts_done').addEvent('click', (function() {
 						widget.showPage('send');
 				}).bind(this));
+					*/
 				widget.addEvent('importContactServiceChanged', (function(serviceTag) {
 					if (this.isShown()) {
 						var service = widget.contactSources[serviceTag];
@@ -3080,8 +3085,8 @@ Widget.implement({
 								break;
 						}
 						var importBox = this.domContainer.getElement('.mbox');//$$('.mbox')[0];
-						importBox.getElement('h4').set('html', service.title);
-						importBox.getElement('h4').set('class', serviceTag);
+						importBox.getElementById('h4').set('html', service.title);
+						importBox.getElementById('h4').set('class', serviceTag);
 						var item = null;
 						$('import_list').getElements('li').each(function(i) {
 							if (i.getElement('a').hasClass(serviceTag)) {

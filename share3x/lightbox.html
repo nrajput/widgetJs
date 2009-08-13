@@ -116,26 +116,27 @@
 			<div class="clear"></div>
 			<div id="import_page" class="panel">
 				<h1>Import Contacts</h1>
-				<p>Choose a service, import and all your contacts will be a click away.</p>
+				<p>Import contacts to access them during email sharing.</p>
 				<p id="import_contact_status" class="error"></p>
 				<div class="mbox">
-					<dl class="col">
+					<div id="import_box">
 						<div id="oauthImport">
 							<label></label>
 						</div>
 						<div id='regAuth' style="display:none">						
-						<dt><label>Username:</label></dt>
-						<dd><input id="import_contacts_username" type="text" class="text" value="" /></dd>
-						<dt><label>Password:</label></dt>
-						<dd><input id="import_contacts_password" type="password" class="text" value="" /></dd>
+						  <label>Username:</label>
+						  <input id="import_contacts_username" type="text" class="text" value="" />
+						  <label>Password:</label>
+						  <input id="import_contacts_password" type="password" class="text" value="" />
 						</div>
-					</dl>
+					</div>
 					<div class="col_foot">
 						<div class="col_act">
 							<div class="loading hidden"></div>
-							<input id="import_contacts_submit" class="button" type="submit" value="Import" />
 						</div>
-						<h4 class="gmail">GMail</h4>
+						<div id="import_service_icon">
+						  <span id="h4" class="gmail">GMail</span>
+						</div>
 					</div>
 					<div class="mboxpoint"></div>
 				</div>
@@ -145,11 +146,10 @@
 					<li><a href="#" class="msn">MSN</a></li>
 					<li><a href="#" class="aol">AOL</a></li>
 				</ul>
-				<div class="col_foot">
-					<div class="col_act">
-						<input id="import_contacts_done" type="submit" class="button" value="Done" />
-					</div>
-					<span class="link" onclick="widget.showPreviousPage();">Go back</span>
+				<div id="import_foot">
+					<input id="import_contacts_cancel" class="button" type="button" value="Cancel" onclick="widget.showPreviousPage();"/>
+					<input id="import_contacts_submit" class="button" type="submit" value="Import" />
+
 				</div>
 			</div>
 			<div class="clear"></div>

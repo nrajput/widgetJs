@@ -256,52 +256,113 @@ li.search_result div.address  {
 ul.scroll li.even {
 	background:#eee;
 }
+
+#import_box {
+	border:0;
+}
+
+#import_box label {
+	display: inline;
+	clear: left;
+	float: left;
+	font-weight: bold;
+	display: block;
+	margin: 5px 0;
+	width: 70px;
+}
+
+#import_box input {
+	width: 100px;
+	margin: 0 0 8px 0;
+}
+
+.mbox .col_foot {
+	margin: 12px 0 0 0;
+}
+
+#oauthImport label{
+    margin: 0 0 18px 24px;
+	font-weight: normal;
+	width: 150px;
+}
+
+#import_foot {
+    clear: both;
+	line-height: 24px;
+	margin: 10px 8px 10px 0;
+	display: block;
+	height: 30px;
+	float: right;
+}
+
+#import_foot .button {
+	margin: 0px 2px 0 2px;			 
+}
+
+#import_service_icon {
+    width: 80px;					 
+	margin: 0 auto;				 
+	font-weight: bold;
+}
+
 .col,
 .col_w {
 	border:0;
 }
+
 .col dt,
 .col_w dt{
 	clear:left;
 	float:left;
 	font-weight:bold;
 }
+
 .col dt label,
 .col_w dt label {
 	display:block;
 	margin:5px 0;
 }
+
 .col dt {
 	width:70px;
 }
+
 .col_w dt {
 	width:110px;
 }
+
 .col dd,
 .col_w dd {
 	margin-bottom:8px;
 }
+
 .col dd {
 	margin-left:80px;
 }
+
 .col_w dd {
 	margin-left:120px;
 }
+
 .col dd input.text,
 .col dd textarea {
 	width:205px;
 }
+
 .mbox .col dd {
 	text-align:right;
 }
+
 .mbox .col dd input.text,
 .mbox .col dd textarea {
 	width:100px;
 }
+
 .col_w dd input.text,
 .col_w dd textarea {
 	width:163px;
 }
+
 .col dd .addresses .to_field,
 .col dd .addresses input.text,
 .col dd .addresses textarea{
@@ -318,14 +379,12 @@ a.addressbook_button {
 	width:24px;
 	margin-right:2px;
 }
+
 .col_foot {
 	clear:both;
 	line-height:24px;
 	margin-top: 16px;
 	overflow:hidden;
-}
-.col_foot h4 {
-	margin:5px 0;
 }
 .col_foot p{
 	margin:0;
@@ -468,7 +527,7 @@ a.addressbook_button {
 */
 
 .panel {
-	padding:20px;
+	padding:12px;
 	position:relative;
 }
 #send_section{
@@ -510,7 +569,8 @@ a.addressbook_button {
 	background:#fff;
 	border:1px solid #ccc;
 	margin-right:20px;
-	padding:8px;
+	margin-bottom: 10px;
+	padding:8px 8px 0 8px;
 	position:absolute;
 	right:0;
 	width:190px;
@@ -741,10 +801,11 @@ h1#header_title {
 #signin_page #signin_list  {
 	list-style:none;
 	margin:15px 0;
+	height: 100px;
 }
 #import_page #import_list li,
 #sign_page #sign_list li {
-	line-height:14px;
+	line-height:18px;
 }
 #import_list a,
 #signin_list a {
