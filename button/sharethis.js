@@ -260,18 +260,26 @@ try{
 				switch (type) {
 					case "facebook":
 						chicklet.setAttribute("st_dest", "facebook.com");
+						var children=chicklet.childNodes;
+						for(var i=0;i<children.length;i++){var child=children[i];try{child.setAttribute("st_dest", "facebook.com");}catch(err){}}
 						chicklet.onclick = this.chicklet;
 						break;
 					case "digg":
 						chicklet.setAttribute("st_dest", "digg.com");
+						var children=chicklet.childNodes;
+						for(var i=0;i<children.length;i++){var child=children[i];try{child.setAttribute("st_dest", "digg.com");}catch(err){}}
 						chicklet.onclick = this.chicklet;
 						break;
 					case "yahoo_buzz":
 						chicklet.setAttribute("st_dest", "buzz.yahoo.com");
+						var children=chicklet.childNodes;
+						for(var i=0;i<children.length;i++){var child=children[i];try{child.setAttribute("st_dest", "buzz.yahoo.com");}catch(err){}}
 						chicklet.onclick = this.chicklet;
 						break;
 					case "email":
 						chicklet.setAttribute("st_page", "send");
+						var children=chicklet.childNodes;
+						for(var i=0;i<children.length;i++){var child=children[i];try{child.setAttribute("st_page", "send");}catch(err){}}
 						if(this.options.onmouseover) {
 							chicklet.onmouseover = this.popup;
 						} else {
@@ -280,6 +288,8 @@ try{
 						break;
 					case "twitter":
 						chicklet.setAttribute("st_page", "post|twitter");
+						var children=chicklet.childNodes;
+						for(var i=0;i<children.length;i++){var child=children[i];try{child.setAttribute("st_page", "post|twitter");}catch(err){}}
 						if(this.options.onmouseover) {
 							chicklet.onmouseover = this.popup;
 						} else {
@@ -288,10 +298,14 @@ try{
 						break;
 					case "myspace":
 						chicklet.setAttribute("st_dest", "myspace.com");
+						var children=chicklet.childNodes;
+						for(var i=0;i<children.length;i++){var child=children[i];try{child.setAttribute("st_dest", "myspace.com");}catch(err){}}
 						chicklet.onclick = this.chicklet;
 						break;
 					case "aim":
 						chicklet.setAttribute("st_dest", "aim.com");
+						var children=chicklet.childNodes;
+						for(var i=0;i<children.length;i++){var child=children[i];try{child.setAttribute("st_dest", "aim.com");}catch(err){}}
 						chicklet.onclick = this.chicklet;
 						break;	
 				}
