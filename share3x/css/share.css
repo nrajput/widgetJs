@@ -289,7 +289,7 @@ ul.scroll li.even {
 #import_foot {
     clear: both;
 	line-height: 24px;
-	margin: 10px 8px 10px 0;
+	margin: 10px 5px 10px 0;
 	display: block;
 	height: 30px;
 	float: right;
@@ -299,9 +299,27 @@ ul.scroll li.even {
 	margin: 0px 2px 0 2px;			 
 }
 
+#import_contacts_cancel,
+#import_contacts_submit {
+	background-image:url(http://w.sharethis.com/share3x/images/button.gif);
+	background-repeat:no-repeat;
+	background-position: 0 0;
+	font: 11px "Lucida Grande","Lucida Sans Unicode",Verdana,Tahoma,Arial,sans-serif;
+	vertical-align:middle;			   
+	border: 0;
+	height: 25px;
+	width: 56px;
+	margin: 0px 2px 0 2px;			 
+}
+
+#import_contacts_submit {
+	background-image:url(http://w.sharethis.com/share3x/images/button_green.gif);
+	color: #fff;
+	font-weight: bold;
+}
+
 #import_service_icon {
-    width: 80px;					 
-	margin: 0 auto;				 
+	margin: 0 0 0 70px;				 
 	font-weight: bold;
 }
 
@@ -382,9 +400,7 @@ a.addressbook_button {
 
 .col_foot {
 	clear:both;
-	line-height:24px;
 	margin-top: 16px;
-	overflow:hidden;
 }
 .col_foot p{
 	margin:0;
@@ -579,7 +595,7 @@ a.addressbook_button {
      * Twitter contact importing. -- KJW
      * height:113px;
      */
-	height:98px;
+	height:110px;
 }
 .mboxcontent {
 	margin-left:10px;
