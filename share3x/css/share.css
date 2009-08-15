@@ -917,6 +917,7 @@ span.active a#home_button {
 
 #poweredByLink {
 	color: #fff;
+	margin-left: 4px;
 }
 
 #footer .link_dark {
@@ -961,6 +962,8 @@ span.active a#home_button {
 	bottom: 0;
 	position:absolute;
 	_position: relative;
+	margin-left: -2px;
+	margin-bottom: -2px;
 }
 
 #colophon.signed_in #footerReg {
