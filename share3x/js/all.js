@@ -3136,11 +3136,11 @@ Widget.implement({
 				if (this.firstShow) {
 					setTimeout(function() {widget.setImportContactService('gmail')}, 1);
 				}
-				$('privacyLink').removeClass('hidden');
+				$('privacyLink_import').removeClass('hidden');
 				this.parent();
 			},
 			onHide: function() {
-				$('privacyLink').addClass('hidden');
+				$('privacyLink_import').addClass('hidden');
 				this.parent();
 			},
 			pointImportPointerAt: function(pointToItem) {

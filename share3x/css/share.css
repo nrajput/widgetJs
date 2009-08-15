@@ -289,14 +289,13 @@ ul.scroll li.even {
 #import_foot {
     clear: both;
 	line-height: 24px;
-	margin: 10px 5px 10px 0;
 	display: block;
 	height: 30px;
-	float: right;
 }
 
-#import_foot .button {
-	margin: 0px 2px 0 2px;			 
+#import_foot_buttons {
+    float: right;
+	margin: 10px 5px 10px 0;
 }
 
 #import_contacts_cancel,
@@ -949,10 +948,21 @@ span.active a#home_button {
 #signedInFooter {
 	display:none;
 }
+
 #privacyLink {
 	color:#888888;
 	font-size:9px;
 }
+
+#privacyLink_import {
+	color:#888888;
+	font-size:9px;
+	float: left;
+	bottom: 0;
+	position:absolute;
+	_position: relative;
+}
+
 #colophon.signed_in #footerReg {
 	display:none;
 }
