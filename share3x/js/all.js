@@ -894,7 +894,7 @@ if (!window.console || !console.firebug) {
 	glo_tabArray=glo_tabs.split(",");
 	var glo_charset='utf-8';
 	var glo_services="";
-	var glo_default_services='myspace,digg,sms,windows_live,delicious,stumbleupon,reddit,google_bmarks,linkedin,bebo,ybuzz,blogger,yahoo_bmarks,mixx,technorati,friendfeed,propeller,wordpress,newsvine,xanga,blinklist,twine,diigo,fark,faves,mister_wong,current,livejournal,kirtsy,slashdot,oknotizie,care2,aim,meneame,simpy,blogmarks,n4g,bus_exchange,funp,sphinn,fresqui,dealsplus,typepad,yigg';
+	var glo_default_services='myspace,digg,sms,windows_live,delicious,stumbleupon,reddit,google_bmarks,linkedin,bebo,ybuzz,blogger,yahoo_bmarks,mixx,technorati,friendfeed,propeller,wordpress,newsvine,xanga,blinklist,twine,twackle,diigo,fark,faves,mister_wong,current,livejournal,kirtsy,slashdot,oknotizie,care2,aim,meneame,simpy,blogmarks,n4g,bus_exchange,funp,sphinn,fresqui,dealsplus,typepad,yigg';
     var glo_top_services = 'email,facebook,twitter,sharebox';
     var glo_send_servicesArray = [];
 	var glo_default_swArray=[];
@@ -3866,6 +3866,11 @@ Widget.implement({
 			submitUrl: 'http://www.technorati.com/faves?add={url}',
 			destination: 'technorati.com',
 			dontUseEncodedURL: 'Encoded URLs are not allowed'
+		},
+		twackle: {
+			title: 'Twackle',
+			submitUrl: 'http://www.twackle.com/chicklet?site={url}',
+			destination: 'twackle.com'
 		},
 		twine: {
 			title: 'Twine',

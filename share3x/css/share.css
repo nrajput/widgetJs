@@ -1114,6 +1114,7 @@ span.active a#home_button {
 .sharethis {
 	background:url(http://w.sharethis.com/share3x/images/share-icon.gif) no-repeat left center;
 }
+
 .bebo {
 	background:url(http://w.sharethis.com/share3x/images/bebo.gif) no-repeat left center;
 	background-repeat:no-repeat;
@@ -1122,6 +1123,16 @@ span.active a#home_button {
 	white-space:nowrap;
 	height: 14px;
 }
+
+.twackle {
+	background:url(http://w.sharethis.com/share3x/images/twackle.gif) no-repeat left center;
+	background-repeat:no-repeat;
+	margin-right:23px;
+	padding:2px 0px 2px 20px;
+	white-space:nowrap;
+	height: 14px;
+}
+
 .twine {
 	background:url(http://w.sharethis.com/share3x/images/twine.gif) no-repeat left center;
 	background-repeat:no-repeat;
