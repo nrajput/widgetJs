@@ -1,5 +1,5 @@
 /*
- * ShareThis Widget Version 4.0.0-rc5
+ * ShareThis Widget Version 4.0.1-rc1
  * 8/10/09 ShareThis.com 
  */
 
@@ -4021,6 +4021,7 @@ Widget.implement({
 			id: 'post_'+serviceTag+'_link'
 		});
 		a.addEvent('click', (function(event) {
+			pageTracker._trackEvent("Home", "chicklet_click", serviceTag);
 			if ('destination' in service) {
 				logSW(service.destination);
 				if (widget.user) {
