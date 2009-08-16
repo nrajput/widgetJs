@@ -4199,12 +4199,14 @@ Widget.Carousel = new Class({ Implements: Events,
 		}
 		var poppet = this;
 		$('fwd_arrow').addEvent('click', function(event) {
+			pageTracker._trackEvent("Home", "carousel_fwd_arrow", "Carousel Forward Arrow"); 
 			if (poppet.getNumPages() > 1) {
 				poppet.advance();
 			}
 			event.stop();
 		});
 		$('back_arrow').addEvent('click', function(event) {
+			pageTracker._trackEvent("Home", "carousel_back_arrow", "Carousel Backward Arrow"); 
 			if (poppet.getNumPages() > 1) {
 				poppet.rewind();
 			}
@@ -4362,7 +4364,7 @@ Widget.Carousel = new Class({ Implements: Events,
 		var html= "";
 		for(var i=0;i<pages;i++){
 			var num=i+1;
-			html+='<div class="circles" onclick="widget.carousel.goToPage('+num+');" title="Go To Page # '+num+'"></div> ';			
+			html+='<div class="circles" onclick="pageTracker._trackEvent("Home", "carousel_paging_dot", "Carousel Paging Dot"); widget.carousel.goToPage('+num+');" title="Go To Page # '+num+'"></div> ';			
 		}
 		
 		$("circle_container").set('html',html);
@@ -5528,9 +5530,11 @@ window.addEvent('domready', function() {
 		widget.closeLoginBox();
 	});
 	$('linkSignIn').addEvent('click', function(){
+		pageTracker._trackEvent("Footer", "signin_link", "Sign In Link"); 
 		widget.openLoginBox();
 	});
 	$('linkSignOut').addEvent('click', function(){
+		pageTracker._trackEvent("Footer", "signout_link", "Sign Out Link"); 
 		if (glo_page == "send" || glo_page == "post|twitter") {
 			widget.showPage(glo_page);
 		} else {
