@@ -4370,7 +4370,7 @@ Widget.Carousel = new Class({ Implements: Events,
 		var html= "";
 		for(var i=0;i<pages;i++){
 			var num=i+1;
-			html+='<div class="circles" onclick="pageTracker._trackEvent("Home", "carousel_paging_dot", "Carousel Paging Dot"); widget.carousel.goToPage('+num+');" title="Go To Page # '+num+'"></div> ';			
+			html+='<div class="circles" onclick="pageTracker._trackEvent(\'Home\', \'carousel_paging_dot\', \'Carousel Paging Dot\'); widget.carousel.goToPage('+num+');" title="Go To Page # '+num+'"></div> ';			
 		}
 		
 		$("circle_container").set('html',html);
