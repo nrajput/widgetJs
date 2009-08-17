@@ -3605,6 +3605,7 @@ Widget.implement({
 		$('loginBox').get('morph').removeEvents('complete').addEvent('complete', function() {
 			$('loginBox').addClass('hidden');
 			$('linkSignIn').addEvent('click', function() {
+				pageTracker._trackEvent("Footer", "signin_link", "Sign In Link"); 
 				widget.openLoginBox();
 			});
 		});
