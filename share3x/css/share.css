@@ -1333,7 +1333,7 @@ span.active a#home_button {
 }
 #closeX{
 	top:3px !important;
-	top:7px;
+	top:4px;
 	left:334px;
 	position:absolute;
 	z-index:10000;
