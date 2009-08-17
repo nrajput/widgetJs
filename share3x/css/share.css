@@ -298,8 +298,8 @@ ul.scroll li.even {
 	margin: 10px 5px 10px 0;
 }
 
-#import_contacts_cancel,
-#import_contacts_submit {
+.button_new,
+.button_new_green {
 	background-image:url(http://w.sharethis.com/share3x/images/button.gif);
 	background-repeat:no-repeat;
 	background-position: 0 0;
@@ -308,14 +308,20 @@ ul.scroll li.even {
 	border: 0;
 	height: 25px;
 	width: 56px;
-	margin: 0px 2px 0 2px;			 
+
 }
 
-#import_contacts_submit {
+.button_new_green {
 	background-image:url(http://w.sharethis.com/share3x/images/button_green.gif);
 	color: #fff;
 	font-weight: bold;
 }
+
+#import_contacts_cancel,
+#import_contacts_submit {
+	margin: 0px 2px 0 2px;			 
+}
+
 
 #import_service_icon {
 	margin: 0 0 0 70px;				 
@@ -383,7 +389,7 @@ ul.scroll li.even {
 .col dd .addresses .to_field,
 .col dd .addresses input.text,
 .col dd .addresses textarea{
-	width:177px;
+	width:205px;
 }
 a.addressbook_button {
 	/*background:url(http://w.sharethis.com/share3x/images/address-book.gif) no-repeat;*/
@@ -653,6 +659,10 @@ a.addressbook_button {
 	height:16px;
 	background:url(http://w.sharethis.com/share3x/images/spinner.gif) no-repeat 0 0;
 	padding-left:66px;
+}
+
+#character_counter {
+    float: right;
 }
 
 .preview_container {

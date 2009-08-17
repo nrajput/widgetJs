@@ -69,7 +69,7 @@
 			</div>
 			<div id="send_page" class="panel">
 				<h1>Send to a Friend</h1>
-				<p>Make sending simple: <a href="javascript:widget.showPage('import');">Import your contacts</a>.</p>
+				<p><a href="javascript:widget.showPage('import');">Import your contacts</a></p>
 				<div id="boxAddressList"></div>
 				<dl class="col" id="send_container">
 					<dt><label for="txtTo" title="Type the name or address of a contact we previously gathered and matches will appear below. Click to add to recipients. You can also send to email addresses and SMS numbers that are not in your contacts by entering the address and pressing enter.">To:</label></dt>
@@ -80,7 +80,7 @@
 							</div>
 							<!--<input type="text" class="text" name="sharethisTo" id="txtTo"  onkeyup="searchContacts();" value=""/>-->
 						</div>
-						<div id="boxToInfo" class="small">Enter emails, screen names, or numbers</div>
+						<div id="boxToInfo" class="small">Enter emails or phone numbers</div>
 					</dd>					
 					<dt id="boxToFromLabel">
 						<label>From:</label>
@@ -92,10 +92,8 @@
 					<dt><label>Message:</label></dt>
 					<dd id="boxToMessage">
 						<textarea id="txtMessage" cols="10" rows="3" onkeydown="if(event.keyCode==9) {$('contact_search_field').focus();return false;}"></textarea>
-						<div>Characters remaining: <span id="spanMessageCounter"></span></div>
+						<div id="character_counter"><span id="spanMessageCounter"></span> characters left</div>
 						<div id="textToPreview" class="small">
-							<span class="link" id="linkPreview">Preview</span>
-							<span class="link hidden" id="previewCloseLink">Close Preview</span>
 						</div>
 						<div id="preview" class="preview_container hidden">
 							<div id="previewThumb" class="preview_thumb_container"></div>
@@ -109,8 +107,12 @@
 					</dd>
 				</dl>
 				<div class="col_foot">
-					<div class="col_act"><input class="button" type="button" value="Send" id="btnShareSend"/></div>
-					<span class="link" onclick="widget.showPreviousPage();">Go back</span>
+					<div class="col_act">
+					  <input class="button_new" type="button" value="Cancel" onclick="widget.showPreviousPage();"/>
+					  <input id="linkPreview" class="button_new" type="button" value="Preview"/>
+					  <input id="previewCloseLink" class="button_new hidden" type="button" value="Close Preview"/>
+					  <input class="button_new_green" type="button" value="Send" id="btnShareSend"/>
+					</div>
 				</div>
 			</div>
 			<div class="clear"></div>
@@ -148,8 +150,8 @@
 				</ul>
 				<div id="import_foot">
 				    <div id="import_foot_buttons">
-					  <input id="import_contacts_cancel" type="button" value="Cancel" onclick="widget.showPreviousPage();"/>
-					  <input id="import_contacts_submit" type="submit" value="Import" />
+					  <input id="import_contacts_cancel" class="button_new" type="button" value="Cancel" onclick="widget.showPreviousPage();"/>
+					  <input id="import_contacts_submit" class="button_new_green" type="submit" value="Import" />
 					</div>
 					<div class="hidden opposite_left" id="privacyLink_import"><a target="_blank" href="http://sharethis.com/privacy">Privacy Policy</a></div>
 				</div>
