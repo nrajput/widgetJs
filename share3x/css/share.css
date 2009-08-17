@@ -386,8 +386,11 @@ ul.scroll li.even {
 	width:163px;
 }
 
-#import_contacts_link a {
+#import_contacts_link {
 	color: #4997CC;		
+	font-size: 10px;
+	cursor: pointer;
+	
 }
 
 .col dd .addresses .to_field,
