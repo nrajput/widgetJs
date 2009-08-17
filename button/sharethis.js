@@ -1,10 +1,10 @@
 /*
-ShareThis Loader Version 4.0.1-rc1
-8/6/09 ShareThis.com
+ShareThis Loader Version 4.0.1-rc3
+8/17/09 ShareThis.com
 */
 
 
-var STV="4.0.1-rc1";
+var STV="4.0.1-rc3";
 
 ST_JSON = new function(){
 
@@ -825,6 +825,7 @@ try{
 			this.sendJSON=function(){
 					if(SHARETHIS.sendNum<SHARETHIS.sendArray.length){		
 						//SHARETHIS.mainstframe.src=SHARETHIS.frameUrl+SHARETHIS.sendArray[SHARETHIS.sendNum];
+						//console.log(SHARETHIS.frameUrl+SHARETHIS.sendArray[SHARETHIS.sendNum]);
 						window.frames['stframe'].location.replace(SHARETHIS.frameUrl+SHARETHIS.sendArray[SHARETHIS.sendNum]);
 					}
 					else{

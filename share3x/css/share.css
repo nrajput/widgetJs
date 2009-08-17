@@ -1351,9 +1351,13 @@ span.active a#home_button {
     display: none;
 }
 #closeX{
-	top:0px !important;
-	top:4px;
+	top:3px !important;
+	top:7px;
 	left:334px;
 	position:absolute;
 	z-index:10000;
+	height:8px;
+	width:8px;
+	background-image:url(http://w.sharethis.com/share3x/images/closeX4.gif);
+	background-repeat:no-repeat;
 }
