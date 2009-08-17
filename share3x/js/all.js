@@ -1,6 +1,6 @@
 /*
- * ShareThis Widget Version 4.0.1-rc1
- * 8/10/09 ShareThis.com 
+ * ShareThis Widget Version 4.0.3-rc1
+ * 8/17/09 ShareThis.com 
  */
 
 //widget-class.js
@@ -1907,7 +1907,8 @@ if (!window.console || !console.firebug) {
 		}
 		var tmp=glo_jsonStr;
 		var newResp=[];
-		newResp=eval(tmp);
+		//console.log(tmp);
+		try{newResp=eval(tmp);}catch(err){tmp=decodeURIComponent(tmp);newResp=eval(tmp);}
 		for(var i=0;i<newResp.length;i++){
 			setGlobals("glo_title_array",newResp[i].title);
 			setGlobals("glo_type_array",newResp[i].type);
