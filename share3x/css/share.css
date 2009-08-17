@@ -386,6 +386,10 @@ ul.scroll li.even {
 	width:163px;
 }
 
+#import_contacts_link a {
+	color: #4997CC;		
+}
+
 .col dd .addresses .to_field,
 .col dd .addresses input.text,
 .col dd .addresses textarea{

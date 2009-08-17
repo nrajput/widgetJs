@@ -3045,6 +3045,8 @@ Widget.implement({
 				});
 				widget.addEvent('importContactsSucceeded', function(contactInfo) {
 					widget.popModalWorkingSheet();
+					$('send_title').set('html', 'Email');
+					widget.showPage('send');
 					widget.displayNotification('Success! ' + contactInfo.nContacts + ' contacts imported.');
 					emptyInputs();
 				});
@@ -3640,6 +3642,7 @@ Widget.implement({
 		sms: {
             title: 'Text',
 			onClick: function(event) {
+				$('send_title').set('html', 'Text');
 				widget.showPage('send');
 				event.stop();
 			},
@@ -3648,6 +3651,7 @@ Widget.implement({
 		email: {
             title: 'Email',
 			onClick: function(event) {
+				$('send_title').set('html', 'Email');
 				widget.showPage('send');
 				event.stop();
 			},

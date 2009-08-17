@@ -32,7 +32,7 @@
 	</head>
 	<body id="or">
 		<div id="close_button"></div>
-		<div id="closeX" ><img width="8" height="8" src="http://w.sharethis.com/images/pic3.gif" title="close" alt=""/></div>
+		<div id="closeX" ><img src="http://w.sharethis.com/images/pic3.gif" title="close" alt=""/></div>
 		<div id="outer_container">
 		<div id="container" class="border-color">
 			<div id="header" class="header-color">
@@ -68,8 +68,7 @@
 				</ul>
 			</div>
 			<div id="send_page" class="panel">
-				<h1>Send to a Friend</h1>
-				<p><a href="javascript:widget.showPage('import');">Import your contacts</a></p>
+				<h1><span id="send_title">Email</span> to a Friend</h1>
 				<div id="boxAddressList"></div>
 				<dl class="col" id="send_container">
 					<dt><label for="txtTo" title="Type the name or address of a contact we previously gathered and matches will appear below. Click to add to recipients. You can also send to email addresses and SMS numbers that are not in your contacts by entering the address and pressing enter.">To:</label></dt>
@@ -80,7 +79,9 @@
 							</div>
 							<!--<input type="text" class="text" name="sharethisTo" id="txtTo"  onkeyup="searchContacts();" value=""/>-->
 						</div>
-						<div id="boxToInfo" class="small">Enter emails or phone numbers</div>
+						<div id="import_contacts_link">
+						  <a href="javascript:widget.showPage('import');">Import contacts to share quickly</a>
+						</div>
 					</dd>					
 					<dt id="boxToFromLabel">
 						<label>From:</label>
