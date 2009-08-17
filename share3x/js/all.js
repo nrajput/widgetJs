@@ -3046,6 +3046,7 @@ Widget.implement({
 				});
 				widget.addEvent('importContactsSucceeded', function(contactInfo) {
 					widget.popModalWorkingSheet();
+					widget.showPage('send');
 					widget.displayNotification('Success! ' + contactInfo.nContacts + ' contacts imported.');
 					emptyInputs();
 				});
