@@ -387,6 +387,7 @@ ul.scroll li.even {
 }
 
 #import_contacts_link {
+	margin: 2px 0 0 0;
 	color: #4997CC;		
 	font-size: 10px;
 	cursor: pointer;
@@ -970,6 +971,7 @@ span.active a#home_button {
 #privacyLink {
 	color:#888888;
 	font-size:9px;
+	margin: -12px 0 0 9px;
 }
 
 #privacyLink_import {
