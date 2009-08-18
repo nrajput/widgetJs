@@ -2989,12 +2989,10 @@ Widget.implement({
 					this.updateCharacterCounter();
 				}).bind(this));
 				widget.user.addEvent('signedIn', function() {
-					$('boxToYourAddr').addClass('hidden');
-					$('boxToFromLabel').addClass('hidden');
+					$('from_box').addClass('hidden');
 				});
 				widget.user.addEvent('signedOut', function() {
-					$('boxToYourAddr').removeClass('hidden');
-					$('boxToFromLabel').removeClass('hidden');
+					$('from_box').removeClass('hidden');
 				});
 				widget.addEvent('createMessageRequested', (function() {
 					widget.pushModalWorkingSheet();

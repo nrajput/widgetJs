@@ -387,11 +387,46 @@ ul.scroll li.even {
 }
 
 #import_contacts_link {
-	margin: 2px 0 0 0;
+	margin: 2px 0 0 70px;
 	color: #4997CC;		
 	font-size: 10px;
 	cursor: pointer;
 	
+}
+
+#send_container {
+	margin: 12px 0 0 0;
+}
+
+.send_units .label {
+	margin: 5px 0 0 0;
+	width: 70px;	
+	float: left;
+	font-weight: bold;
+}
+
+#send_container input.text,
+#send_container textarea,
+#send_container .to_field {
+	width:235px;
+}
+
+#from_box {
+    margin: 5px 0 10px 0;
+}
+
+#character_counter {
+    float: right;
+	margin: 2px 0 5px 0;
+}
+
+#send_foot_buttons {
+    float: right;
+	margin: 10px 0 10px 0;
+}
+
+#send_foot_buttons input {
+	margin: 0 1px 0 1px;			   
 }
 
 .col dd .addresses .to_field,
@@ -669,9 +704,6 @@ a.addressbook_button {
 	padding-left:66px;
 }
 
-#character_counter {
-    float: right;
-}
 
 .preview_container {
 	background:#ddd;
