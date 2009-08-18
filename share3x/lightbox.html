@@ -78,7 +78,9 @@
 					  <div class="to_field" id="send_to_field"></div>
 					</div>
 				  </div>
-				  <div id="import_contacts_link" onclick="javascript:widget.showPage('import');">Import contacts to share quickly</div>
+				  <div id="import_blurb" onclick="javascript:widget.showPage('import');">
+					<div id="import_contacts_link">Import contacts to share quickly</div>
+				  </div>
 				  <div id="from_box" class="send_units">
 					<div class="label">From:</div>
 					<div id="boxToYourAddr">
@@ -90,7 +92,7 @@
 					<div class="label">Message:</div>
 					<div id="boxToMessage">
 						<textarea id="txtMessage" cols="10" rows="3" onkeydown="if(event.keyCode==9) {$('contact_search_field').focus();return false;}"></textarea>
-						<div id="character_counter"><span id="spanMessageCounter"></span> characters left</div>
+						<div class="character_counter"><span id="spanMessageCounter"></span> characters left</div>
 						<div id="textToPreview" class="small"></div>
 						<div id="preview" class="preview_container hidden">
 							<div id="previewThumb" class="preview_thumb_container"></div>
@@ -306,16 +308,18 @@
 							<dd><input class="text" id="twitterPassword" type="password"/></dd>
 							<dt><label for="twitterStatus">Message:</label></dt>
 							<dd><textarea id="twitterStatus"></textarea></dd>
-							<dd>Characters remaining: <span id="spanTwitterCounter"></span></dd>
+							<dd><div class="character_counter"><span id="spanTwitterCounter"></span> characters left</div></dd>
 							<dd><input class="remember_toggle" id="twitterRememberMe" type="checkbox"/>&nbsp;Remember Me</dd>
 						</dl>
 						<input class="forgetme" id="twitterForgetMe" value="false" type="hidden"/>
 					</form>
 					<div class="col_foot">
 						<div class="col_act">
-							<input class="button" id="btnTwitterSubmit" value="Post" type="button"/>
+						  <div id="post_foot_buttons">
+							<div class="button_new"><span>Cancel</span></div>
+							<div style="display:block" id="btnTwitterSubmit" class="button_new_green" onclick="widget.showPreviousPage();"><span>Post</span></div>
+						  </div>
 						</div>
-						<span class="link" onclick="widget.showPreviousPage();">Go back</span>
 					</div>
 				</div>
 				<div id="post_typepad">

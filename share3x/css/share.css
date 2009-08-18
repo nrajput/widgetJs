@@ -305,7 +305,7 @@ ul.scroll li.even {
     float: left;
     font: normal 13px arial, sans-serif;
     height: 20px;
-    margin-right: 6px;
+    margin-right: 0px;
     padding-right: 10px; /* sliding doors padding */
     text-decoration: none;
 	cursor: pointer;
@@ -322,6 +322,7 @@ ul.scroll li.even {
     display: block;
     line-height: 14px;
     padding: 3px 0 5px 10px;
+	margin-left: 6px;
 	cursor: pointer;
 } 
 
@@ -349,12 +350,6 @@ ul.scroll li.even {
 	font-weight: bold;
 }
 */
-
-#import_contacts_cancel,
-#import_contacts_submit {
-	margin: 0px 2px 0 2px;			 
-}
-
 
 #import_service_icon {
 	margin: 0 0 0 70px;				 
@@ -419,11 +414,20 @@ ul.scroll li.even {
 	width:163px;
 }
 
-#import_contacts_link {
+#import_blurb {
+	background-image:url(http://w.sharethis.com/share3x/images/import.gif);
+	background-repeat:no-repeat;
 	margin: 2px 0 0 70px;
+	cursor: pointer;
+	height: 15px;
+
+}
+
+#import_contacts_link {
+	line-height: 15px;					  
+	margin: 2px 0 0 18px;
 	color: #4997CC;		
 	font-size: 10px;
-	cursor: pointer;
 	
 }
 
@@ -449,7 +453,7 @@ ul.scroll li.even {
     margin: 5px 0 10px 0;
 }
 
-#character_counter {
+.character_counter {
     float: right;
 	margin: 2px 0 5px 0;
 }
@@ -461,6 +465,11 @@ ul.scroll li.even {
 
 #send_foot_buttons input {
 	margin: 0 1px 0 1px;			   
+}
+
+#post_foot_buttons {
+    float: right;
+	margin: 0 0 10px 0;
 }
 
 .col dd .addresses .to_field,
