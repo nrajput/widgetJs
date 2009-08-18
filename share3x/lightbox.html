@@ -108,10 +108,10 @@
 				<div class="col_foot">
 					<div class="col_act">
 				      <div id="send_foot_buttons">
-						<input class="button_new" type="button" value="Cancel" onclick="widget.showPreviousPage();"/>
-						<input id="linkPreview" class="button_new" type="button" value="Preview"/>
-						<input id="previewCloseLink" class="button_new hidden" type="button" value="Close Preview"/>
-						<input class="button_new_green" type="button" value="Send" id="btnShareSend"/>
+						<div class="button_new" onclick="widget.showPreviousPage();"><span>Cancel</span></div>
+						<div id="linkPreview" class="button_new"><span>Preview</span></div>
+						<div id="previewCloseLink" class="button_new hidden"><span>Close Preview</span></div>
+						<div id="btnShareSend" class="button_new_green"><span>Send</span></div>
 					  </div>
 					</div>
 				</div>
@@ -151,8 +151,8 @@
 				</ul>
 				<div id="import_foot">
 				    <div id="import_foot_buttons">
-					  <input id="import_contacts_cancel" class="button_new" type="button" value="Cancel" onclick="widget.showPreviousPage();"/>
-					  <input id="import_contacts_submit" class="button_new_green" type="submit" value="Import" />
+					  <div id="import_contacts_cancel" class="button_new" onclick="widget.showPreviousPage();"><span>Cancel</span></div>
+					  <div id="import_contacts_submit" class="button_new_green"><span>Import</span></div>
 					</div>
 					<div class="hidden opposite_left" id="privacyLink_import"><a target="_blank" href="http://sharethis.com/privacy">Privacy Policy</a></div>
 				</div>

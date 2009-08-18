@@ -300,6 +300,38 @@ ul.scroll li.even {
 
 .button_new,
 .button_new_green {
+	background: transparent url('../images/button_a.gif') no-repeat scroll top right;
+    color: #444;
+    float: left;
+    font: normal 13px arial, sans-serif;
+    height: 20px;
+    margin-right: 6px;
+    padding-right: 10px; /* sliding doors padding */
+    text-decoration: none;
+	cursor: pointer;
+}
+
+.button_new_green {
+	background: transparent url('../images/button_green_a.gif') no-repeat scroll top right;
+	color: #fff;
+}
+
+.button_new span,
+.button_new_green span {
+    background: transparent url('../images/button_span.gif') no-repeat;
+    display: block;
+    line-height: 14px;
+    padding: 3px 0 5px 10px;
+	cursor: pointer;
+} 
+
+.button_new_green span {
+	background: transparent url('../images/button_green_span.gif') no-repeat;
+}
+
+/*
+.button_new,
+.button_new_green {
 	background-image:url(http://w.sharethis.com/share3x/images/button.gif);
 	background-repeat:no-repeat;
 	background-position: 0 0;
@@ -316,6 +348,7 @@ ul.scroll li.even {
 	color: #fff;
 	font-weight: bold;
 }
+*/
 
 #import_contacts_cancel,
 #import_contacts_submit {
@@ -409,6 +442,7 @@ ul.scroll li.even {
 #send_container textarea,
 #send_container .to_field {
 	width:235px;
+	_width: 230px;
 }
 
 #from_box {
@@ -706,9 +740,11 @@ a.addressbook_button {
 
 
 .preview_container {
+	clear:both;
 	background:#ddd;
 	border:1px solid #aaa;
-	width:213px;
+	width:243px;
+	margin: 0 0 0 70px;
 }
 .preview_thumb_container {
 	float:left;
