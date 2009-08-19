@@ -2701,9 +2701,6 @@ Widget.implement({
 					createSwList();
 				}).bind(this));
 				
-				widget.user.addEvent('signedOut', (function() {
-				}).bind(this));
-				
 				widget.carousel = this.carousel = new Widget.Carousel(
 					this.domContainer.getElement('.carousel'),
 					(!glo_tabArray.contains('email') ? Widget.Carousel.initialState_more : Widget.Carousel.initialState_less)
@@ -2807,6 +2804,77 @@ Widget.implement({
 		send: {
 			id: 'send_page',
 			toField: null,
+			_resizeShortcutsOnShow: false,
+			buildShortcutList: function(recipients) {
+				$('recent_recipients').getChildren().each(function(child) { 
+					if (child.nodeName.toLowerCase() != 'h4') { child.destroy(); } 
+				});
+				for (var i = 0; i < 3 && i < recipients.length; i++) {
+					var e = new Element('span', { 'class': 'shortcut' });
+					var a = new Element('a', { href: '#', title: recipients[i].address + ' (' + recipients[i].service + ')' });
+					a.set('html', recipients[i].name);
+					a.addEvent('click', (function() {
+						var enclosedRecipient = recipients[i];	// peel off a copy for the closure
+						return (function(event) {
+							var existingContact = widget.user.searchContactsExact(
+								enclosedRecipient.service.toLowerCase(),
+								enclosedRecipient.address
+							);
+							if (existingContact) {
+								existingContact.select();
+							}
+							else {
+								var newContacts = widget.user.addContactsLocally([enclosedRecipient]);
+								setTimeout(function() {
+									newContacts[0].select();
+								}, 1);
+							}
+							widget.showPage('send');
+							event.stop();
+						});
+					})());
+					$('recent_recipients').grab(e.grab(a));
+				}
+				if (this.isShown()) {
+					this.resizeShortcuts();
+				}
+				else if (recipients.length) {
+					this._resizeShortcutsOnShow = true;
+				}
+				else {
+					$('recent_recipients').addClass('hidden');
+				}
+			},
+			hideShortcutList: function() {
+				$('recent_recipients').getChildren().each(function(child) { 
+					if (child.nodeName.toLowerCase() != 'h4') { child.destroy(); } 
+				});
+				$('recent_recipients').addClass('hidden');
+			},
+			resizeShortcuts: function() {
+				$('recent_recipients').removeClass('hidden');
+				$('recent_recipients').getChildren().getLast().addClass('last');
+				var anchors = [];
+				var total = 0;
+				$('recent_recipients').getChildren().each(function(item) {
+					var anchor = item.getElement('a');
+					var width = item.getSize().x;
+					if (anchor) {
+						anchors.push({ anchor: anchor, width: width });
+					}
+					total += width;
+				});
+				while (total > 295) {
+					anchors.sort(function(a, b) { return b.width - a.width; });
+					var str = anchors[0].anchor.get('html');
+					anchors[0].anchor.set('html', str.substring(0, str.length - 3) + '&hellip;');
+					anchors[0].width = anchors[0].anchor.getSize().x;
+					total = 0;
+					$('recent_recipients').getChildren().each(function(item){
+						total += item.getSize().x;
+					});
+				}
+			},
 			updateCharacterCounter: function() {
 				var maxCharacterCount = widget.maxSendMessageLength;
 				if ( this.hasTwitterRecipients() ) {
@@ -2853,6 +2921,10 @@ Widget.implement({
 				$('privacyLink').removeClass('hidden');
 				this.parent();
 				this.toField.onPageShown();
+				if (this._resizeShortcutsOnShow) {
+					this.resizeShortcuts();
+					this._resizeShortcutsOnShow = false;
+				}
 			},
 			onHide: function() {
 				this.parent();
@@ -2929,6 +3001,19 @@ Widget.implement({
 					widget.popModalWorkingSheet();
 					widget.pushModalErrorSheet('Could not send your message.');
 				}).bind(this));
+
+				widget.user.addEvent('recipientHistoryChanged', (function(recipientsContainer) {
+					widget.deferWhile('recipientHistoryIsChanging', (function() {
+						if (widget.user.isSignedIn() && glo_tabArray.contains('email')) {
+							this.buildShortcutList(recipientsContainer.recipients);
+						}
+					}).bind(this));
+				}).bind(this));
+				
+				widget.user.addEvent('signedOut', (function() {
+					this.hideShortcutList();
+				}).bind(this));
+
 				this.parent();
 			}
 		},
@@ -4427,6 +4512,7 @@ Widget.User = new Class({ Implements: Events,
 	addRecentRecipient: function(data) {
 		// @todo: match with current contact list; use references to those. bleh.
 		this.shareHistory.recipients.push(data);
+		this.fireEvent('recipientHistoryChanged', { 'recipients': this.shareHistory.recipients });
 	},
 	getRecentRecipients: function() {
 		return this.shareHistory.recipients;
