@@ -180,83 +180,6 @@ var Widget = new Class({ Implements: Events,
 	},
 
 
-	postFriendster: function(){ 
-		var username=$('inputFriendsterUsername').value;
-		var password=$('inputFriendsterPassword').value;
-		var section=$('txtFriendster').get('value');
-		var comment=$('txtFriendsterComment').value;
-		if(comment==="optional"){comment="";}
-		comment=encodeURIComponent(comment);
-		if ($('friendsterRememberMe').checked) {
-			var rememberme=1;
-		}
-		else {
-			var rememberme=0;
-		}
-		if ($('friendsterForgetMe').value === 'true') {
-			var forgetme=1;
-		}
-		else {
-			var forgetme=0;
-		}
-		var err="";
-		var err_set=false;
-		if(!username){
-			err_set=true;
-			err+="Please enter a username.\n";	
-		}
-		if(!password){
-			err_set=true;	
-			err+="Please enter a password.\n";	
-		}
-		if(err_set){
-			widget.validationFailed(err);
-		}
-		else {
-			//"+atag+"
-			var tmpTitle=glo_title;
-			try{tmpTitle=decodeURIComponent(glo_title);}catch(err){}
-			var atag="<a href="+getSharURL()+">"+tmpTitle+"</a>";
-			atag=encodeURIComponent(atag);
-			if(glo_content!==""){
-				atag="";
-			}
-			var data="";
-			data="username="+username+"&password="+password+"&d="+glo_content+comment+"<br/><br/>"+atag+"&t="+glo_title+"&category="+section+"&return=json&rememberme="+rememberme+"&forgetme="+forgetme;
-
-			var request=new Request({
-				method: "post",
-				url: "/api/postFriendster_ws.php",
-				data: data,
-				onFailure: function(){logError("postFriendster","Ajax Failure");},
-				onSuccess:this.postFriendster_onSuccess.bind(this)
-			});
-			this.fireEvent('postToServiceRequested', 'friendster');
-			request.send();
-		}
-	},
-	postFriendster_onSuccess: function(responseText, responseXML) {
-		try{var resp = JSON.decode(responseText);}
-		catch(err){logError("post friendster",responseText);}
-		if(resp.status.toLowerCase()==="success"){
-			this.fireEvent('postToServiceSucceeded', 'friendster');
-		}
-		else if (resp.errorMessage && resp.errorMessage.toLowerCase()=="auth_failed"){
-			this.fireEvent('postToServiceFailed', [
-				'friendster', 
-				'Incorrect Username or Password'
-			]);
-		}	
-		else {
-			logError("postFriendster",JSON.encode(resp));
-			this.fireEvent('postToServiceFailed', [
-				'friendster', 
-				resp.errorMessage || 'Could not post to Friendster.'
-			]);
-		}
-	},
-
-
 	postLive_journal: function(){ 
 		var username=$('inputLive_journalUsername').value;
 		var password=$('inputLive_journalPassword').value;
@@ -3255,23 +3178,6 @@ Widget.implement({
 					submitForm: function() {
 						setGlobals("glo_bloggerDraft",1);
 						widget.postBlogger();
-					}
-				},
-				friendster: {
-					id: 'post_friendster',
-					onReady: function() {
-						$('txtFriendsterComment').value="optional";
-						$('txtFriendsterComment').addEvent('focus',function(){
-							if($('txtFriendsterComment').value==="optional"){$('txtFriendsterComment').value="";}
-						});
-						$('btnFriendsterSubmit').addEvent('click', function() {
-							widget.postFriendster(); 
-						});
-						this.bindReturnKeyToSubmission();
-						this.parent();
-					},
-					submitForm: function() {
-						widget.postFriendster();
 					}
 				},
 				livejournal:{
