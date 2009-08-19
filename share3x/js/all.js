@@ -248,9 +248,9 @@ var Widget = new Class({ Implements: Events,
 	},
 
 	postTwitter: function() { 
-		var username=$('twitterUsername').value;
-		var password=$('twitterPassword').value;
-		var status=$('twitterStatus').value;
+		var username=$('post_username').value;
+		var password=$('post_password').value;
+		var status=$('post_message').value;
 		if ($('twitterRememberMe').checked) {
 			var rememberme=1;
 		}
@@ -3222,18 +3222,6 @@ Widget.implement({
 				blogger: {
 					id: 'post_blogger',
 					onReady: function() {
-						$('btnBloggerPost').addEvent('click', function(){
-							setGlobals("glo_bloggerDraft",0);
-							widget.postBlogger();
-						});
-						$('btnBloggerPublish').addEvent('click', function(){
-							setGlobals("glo_bloggerDraft",1);
-							widget.postBlogger(); 
-						});
-						$('btnBloggerSubmit').addEvent('click', function(){
-							widget.postBlogger(); 
-						});
-						
 						widget.addEvent('postToServiceNeedsMoreInfo', function(serviceTag, message, data) {
 							var blogname = [];
 							var blogid = [];
@@ -3257,8 +3245,21 @@ Widget.implement({
 							$('bloggerSelectContainer').removeClass('hidden');
 						});
 						
-						this.bindReturnKeyToSubmission();
 						this.parent();
+					},
+					onShow: function() {
+						$('btnBloggerPost').addEvent('click', function(){
+							setGlobals("glo_bloggerDraft",0);
+							widget.postBlogger();
+						});
+						$('btnBloggerPublish').addEvent('click', function(){
+							setGlobals("glo_bloggerDraft",1);
+							widget.postBlogger(); 
+						});
+						$('btnBloggerSubmit').addEvent('click', function(){
+							widget.postBlogger(); 
+						});
+						this.bindReturnKeyToSubmission();
 					},
 					submitForm: function() {
 						setGlobals("glo_bloggerDraft",1);
@@ -3268,6 +3269,8 @@ Widget.implement({
 				livejournal:{
 					id: 'post_livejournal',
 					onReady: function() {
+					},
+					onShow: function() {
 						$('txtLive_journalComment').value="optional";
 						$('txtLive_journalComment').addEvent('focus',function(){
 							if($('txtLive_journalComment').value==="optional"){$('txtLive_journalComment').value="";}
@@ -3294,15 +3297,18 @@ Widget.implement({
 							while ( this.statusMessage.length > 140 ) {
 								this.statusMessage = glo_title.substr(0, glo_title.length - i++) + '... ' + getSharURL();
 							}
-							$('twitterStatus').value = this.statusMessage;
+							$('post_message').value = this.statusMessage;
 							this.updateCharacterCounter();
 						}).bind(this));
-						$('twitterStatus').addEvent('keypress',(function(event){
+						this.parent();
+					},
+					onShow: function() {
+						$('post_message').addEvent('keypress',(function(event){
 							event = new Event(event);
 							var retval = true;
-							var inputField = $('twitterStatus');
+							var inputField = $('post_message');
 							var maxCharacterCount = 140;
-							var counterSpan = $('spanTwitterCounter');
+							var counterSpan = $('post_character_counter');
 							if( 'enter' === event.key && status.length <= 140) {
 								widget.postTwitter();
 							}
@@ -3311,22 +3317,20 @@ Widget.implement({
 							}
 							return retval;
 						}).bind(this));
-						$('twitterStatus').addEvent('keyup',(function(){
-							this.statusMessage = $('twitterStatus').value;
+						$('post_message').addEvent('keyup',(function(){
+							this.statusMessage = $('post_message').value;
 							this.updateCharacterCounter();
 						}).bind(this));
 						$('btnTwitterSubmit').addEvent('click', function(){
 							widget.postTwitter(); 
 						});
 						this.bindReturnKeyToSubmission();
-						this.parent();
-					},
-					onShow: function() {
-						$('twitterStatus').value = this.statusMessage;
+
+						$('post_message').value = this.statusMessage;
 						this.updateCharacterCounter();
 					},
 					updateCharacterCounter: function() {
-						$('spanTwitterCounter').set('html', 140 - $('twitterStatus').value.length);
+						$('post_character_counter').set('html', 140 - $('post_message').value.length);
 					},
 					submitForm: function() {
 						widget.postTwitter();
@@ -3335,17 +3339,6 @@ Widget.implement({
 				typepad: {
 					id: 'post_typepad',
 					onReady: function() {
-						$('btnTpPost').addEvent('click', function(){
-							setGlobals("glo_tpDraft",0);
-							widget.postTypePad();
-						});
-						$('btnTpPublish').addEvent('click', function(){
-							setGlobals("glo_tpDraft",1);
-							widget.postTypePad(); 
-						});
-						$('btnTpSubmit').addEvent('click', function(){
-							widget.postTypePad(); 
-						});
 						widget.addEvent('postToServiceNeedsMoreInfo', function(serviceTag, message, data) {
 							if (serviceTag == 'typepad') {
 								var blogname = [];
@@ -3370,8 +3363,21 @@ Widget.implement({
 								$('typepadSelectContainer').removeClass('hidden');
 							}
 						});
-						this.bindReturnKeyToSubmission();
 						this.parent();
+					},
+					onShow: function() {
+						$('btnTpPost').addEvent('click', function(){
+							setGlobals("glo_tpDraft",0);
+							widget.postTypePad();
+						});
+						$('btnTpPublish').addEvent('click', function(){
+							setGlobals("glo_tpDraft",1);
+							widget.postTypePad(); 
+						});
+						$('btnTpSubmit').addEvent('click', function(){
+							widget.postTypePad(); 
+						});
+						this.bindReturnKeyToSubmission();
 					},
 					submitForm: function() {
 						setGlobals("glo_tpDraft",0);
@@ -3381,11 +3387,13 @@ Widget.implement({
 				wordpress: {
 					id: 'post_wordpress',
 					onReady: function() {
+						this.parent();
+					},
+					onShow: function() {
 						$('btnWpSubmit').addEvent('click', function() {
 							widget.postWordpress(); 
 						});
 						this.bindReturnKeyToSubmission();
-						this.parent();
 					},
 					submitForm: function() {
 						widget.postWordpress();
@@ -3429,8 +3437,15 @@ Widget.implement({
 			}
 		}
 		if (path.length) {
+			if(page == 'post'){
+				this.initPost(path[0]);
+			}
 			this.showPage(path, obj.pages[page]);
 		}
+	},
+	initPost: function(page) {
+		$('post_username').set('value', '');
+		$('post_password').set('value', '');
 	},
 	showPreviousPage: function() {
 		if (this.pageHistory.length > 1) {
@@ -3877,22 +3892,7 @@ Widget.implement({
 			onClick: function(event) {
 				page = widget.pages.home;
 				createSharURL(glo_url, true);
-				$('twitter_menu').setStyles({
-					top: ($('post_twitter_link').getCoordinates().bottom - 6) + 'px',
-					left: ($('post_twitter_link').getCoordinates().left - 6) + 'px'
-				});
 				widget.fireEvent('twitterClicked', glo_url);
-				/*
-				 * The following if/else block has been commented out 
-				 * for now. It should be uncommented in the April/May Sprint
-				 * for re-implement of Twitter direct messageing. -- KJW
-				 */
-
-				/*
-				 * This next line "widget.showPage('post|twitter');"
-				 * should be removed when we uncomment the above code
-				 * for re-implement of Twitter direct messageing. -- KJW
-				 */
 				widget.showPage('post|twitter');
 				event.stop();
 			},

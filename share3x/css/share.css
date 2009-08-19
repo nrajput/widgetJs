@@ -439,6 +439,7 @@ ul.scroll li.even {
 	margin: 5px 0 0 0;
 	width: 70px;	
 	float: left;
+	font-size: 12px;
 	font-weight: bold;
 }
 
@@ -454,6 +455,7 @@ ul.scroll li.even {
 }
 
 .character_counter {
+	clear: both;
     float: right;
 	margin: 2px 0 5px 0;
 }
@@ -469,7 +471,7 @@ ul.scroll li.even {
 
 #post_foot_buttons {
     float: right;
-	margin: 0 0 10px 0;
+	margin: 10px 0 0 0;
 }
 
 .col dd .addresses .to_field,
@@ -734,6 +736,41 @@ a.addressbook_button {
 	margin:4px auto;
 }
 */
+
+#post_title {
+
+}
+
+#post_desc {
+	margin-bottom: 10px;	   
+}
+
+.post_box {
+    margin: 10px 0 0 0;
+}
+
+.post_box .label {
+    width: 100px;
+	float: left;
+	font-weight: bold;
+	font-size: 12px;
+	margin: 5px 0 0 0;
+}
+
+.post_box .text {
+    width: 205px;
+}
+
+.post_box textarea {
+    width: 205px;
+}
+
+#remember_box {
+	margin-left: 100px;
+	clear: both;		  
+	float: right;
+}
+
 #posterBoxStatus {
 	clear:both;
 	padding-top:8px;
