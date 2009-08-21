@@ -112,8 +112,8 @@ var Widget = new Class({ Implements: Events,
 			widget.validationFailed(err);
 		}
 		else {
-			if (document.getElementById('bloggerSelect')) {
-				var blogid = $('bloggerSelect').get('value');
+			if (document.getElementById('post_select')) {
+				var blogid = $('post_select').get('value');
 			}
 			var data = "";
 			var tmpTitle=glo_title;
@@ -3220,7 +3220,7 @@ Widget.implement({
 			},
 			pages: {
 				blogger: {
-					id: 'post_blogger',
+					id: 'post_template',
 					desc: 'Post this to your blog.',
 					onReady: function() {
 						widget.addEvent('postToServiceNeedsMoreInfo', function(serviceTag, message, data) {
@@ -3238,26 +3238,25 @@ Widget.implement({
 							blOptions += '</select>';
 							this.freezeTextInput($('post_username'));
 							this.freezeTextInput($('post_password'));
-							$('btnBloggerSubmit').removeClass('hidden');
-							$('btnBloggerPost').addClass('hidden');
-							$('btnBloggerPublish').addClass('hidden');
-							$('bloggerSelectContainer').set('html', blOptions);
-							$('bloggerSelectLabel').removeClass('hidden');
-							$('bloggerSelectContainer').removeClass('hidden');
+							$('post_publish_btn').removeClass('hidden');
+							$('post_draft_btn').addClass('hidden');
+							$('post_submit_btn').addClass('hidden');
+							$('post_select_container').set('html', blOptions);
+							$('post_select_box').removeClass('hidden');
 						});
 						
 						this.parent();
 					},
 					onShow: function() {
-						$('btnBloggerPost').addEvent('click', function(){
+						$('post_draft_btn').addEvent('click', function(){
 							setGlobals("glo_bloggerDraft",0);
 							widget.postBlogger();
 						});
-						$('btnBloggerPublish').addEvent('click', function(){
+						$('post_submit_btn').addEvent('click', function(){
 							setGlobals("glo_bloggerDraft",1);
 							widget.postBlogger(); 
 						});
-						$('btnBloggerSubmit').addEvent('click', function(){
+						$('post_publish_btn').addEvent('click', function(){
 							widget.postBlogger(); 
 						});
 						this.bindReturnKeyToSubmission();
@@ -3460,6 +3459,9 @@ Widget.implement({
 		$('post_message').set('value', '');
 		$('post_remember_me').checked = false;
 		$('post_forget_me').checked = false;
+		this.unfreezeTextInput($('post_username'));
+		this.unfreezeTextInput($('post_password'));
+
 		var postElements = new Array( "post_message_box", "post_character_counter_div", "post_select_box", 
 									  "post_draft_btn", "post_submit_btn", "post_publish_btn" );
 		postElements.each( function(item) {
@@ -3485,8 +3487,12 @@ Widget.implement({
 		    case 'livejournal':
 			    $('post_message_label').set('html', 'Comment:');
 			    $('post_message_box').removeClass('hidden');
+			    $('post_submit_btn').removeClass('hidden');
+
 			    break;
 		    case 'blogger':
+			    $('post_draft_btn').removeClass('hidden');
+			    $('post_submit_btn').removeClass('hidden');
 			    break;
 
 		}

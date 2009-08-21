@@ -67,7 +67,7 @@
 					<li><a id="twitter_direct_message" href="#">Direct Message</a></li>
 				</ul>
 			</div>
-			<div id="send_page" class="panel">
+			<div id="send_page" class="panel hidden">
 				<h1><span id="send_title">Email</span> to a Friend</h1>
 				<div id="boxAddressList"></div>
 
@@ -122,7 +122,7 @@
 				</div>
 			</div>
 			<div class="clear"></div>
-			<div id="import_page" class="panel">
+			<div id="import_page" class="panel hidden">
 				<h1>Import Contacts</h1>
 				<p>Import contacts to access them during email sharing.</p>
 				<p id="import_contact_status" class="error"></p>
@@ -164,7 +164,7 @@
 
 			</div>
 			<div class="clear"></div>
-			<div id="register_page" class="panel"> 	
+			<div id="register_page" class="panel hidden"> 	
 				<div id="registerText">
 					<h1>Register for ShareThis</h1>
 					<p>Save contacts, create groups, set up your ShareBox and more.</p>
@@ -223,31 +223,6 @@
 			</div>
 			<div id="post_page" class="panel hidden">
 				<div class="clear"></div>
-				<div id="post_blogger" class="hidden">
-					<h2 class="blogger">Blogger</h2>
-					<p>Post this to your blog.</p>
-					<form action="#" id ="bloggerForm" class="postForm" method="post">
-						<dl class="col">
-							<dt><label for="inputBloggerUsername">Username:</label></dt>
-							<dd><input class="text" id="inputBloggerUsername" type="text"/></dd>
-							<dt><label for="inputBloggerPassword">Password:</label></dt>
-							<dd><input class="text" id="inputBloggerPassword" type="password"/></dd>
-							<dt id="bloggerSelectLabel" class="hidden"><label for="bloggerSelect">Select Blog:</label></dt>
-							<dd id="bloggerSelectContainer" class="hidden"></dd>
-							<dd><input class="remember_toggle" id="bloggerRememberMe" type="checkbox"/>&nbsp;Remember Me</dd>
-						</dl>
-						<input class="forgetme" id="bloggerForgetMe" value="false" type="hidden"/>
-					</form>
-					<div class="col_foot">
-						<div id="bloggerButton" class="col_act">
-							<input class="button" id="btnBloggerPost" value="Save as Draft" type="button"/>
-							<input class="button hidden" id="btnBloggerDone" value="Done" type="button" />
-							<input class="button hidden" id="btnBloggerSubmit" value="Submit" type="button" />
-							<input class="button" id="btnBloggerPublish" value="Post" type="button"/>
-						</div>
-						<span class="link" onclick="widget.showPreviousPage();">Go back</span>
-					</div>
-				</div>
 				<div id="post_template">
 				  <h1 id="post_title" class="twitter">Twitter</h1>
 				  <div id="post_desc">Post this to your Twitter status.</div>
@@ -266,9 +241,9 @@
 					</div>
 				  </div>
 				  <div class="character_counter" id="post_character_counter_div"><span id="post_character_counter"></span> characters left</div>
-				  <div id="post_select_box" class="hidden">
-					<div id="post_select_label" class="hidden"><label for="post_select">Select Blog:</label></div>
-					<div id="post_select_container" class="hidden"></div>
+				  <div id="post_select_box" class="post_box hidden">
+					<div id="post_select_label" class="label"><label for="post_select">Select Blog:</label></div>
+					<div id="post_select_container"</div>
 				  </div>
 				  <div id="remember_box">
 					<input class="remember_toggle" id="post_remember_me" type="checkbox"/>&nbsp;Remember Me
@@ -331,7 +306,7 @@
 					</div>
 				</div>
 			</div>
-			<div id="done_page" class="panel">
+			<div id="done_page" class="panel hidden">
 				<p id="done_message" class="success">Your message was successfully shared!</p>
 				
 				<h1>Thanks for Sharing!</h1>
