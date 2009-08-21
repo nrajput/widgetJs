@@ -766,6 +766,7 @@ a.addressbook_button {
 }
 
 #remember_box {
+    margin-top: 6px;
 	margin-left: 100px;
 	clear: both;		  
 	float: right;

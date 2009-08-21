@@ -84,15 +84,15 @@ var Widget = new Class({ Implements: Events,
 	
 	
 	postBlogger: function() {
-		var username=$('inputBloggerUsername').value;
-		var password=$('inputBloggerPassword').value;
-		if ($('bloggerRememberMe').checked) {
+		var username=$('post_username').value;
+		var password=$('post_password').value;
+		if ($('post_remember_me').checked) {
 			var rememberme=1;
 		}
 		else {
 			var rememberme=0;
 		}
-		if ($('bloggerForgetMe').value === 'true') {
+		if ($('post_forget_me').value === 'true') {
 			var forgetme=1;
 		}
 		else {
@@ -181,18 +181,18 @@ var Widget = new Class({ Implements: Events,
 
 
 	postLive_journal: function(){ 
-		var username=$('inputLive_journalUsername').value;
-		var password=$('inputLive_journalPassword').value;
-		var comment=$('txtLive_journalComment').value;
+		var username=$('post_username').value;
+		var password=$('post_password').value;
+		var comment=$('post_message').value;
 		if(comment==="optional"){comment="";}
 		comment=encodeURIComponent(comment);
-		if ($('livejournalRememberMe').checked) {
+		if ($('post_remember_me').checked) {
 			var rememberme=1;
 		}
 		else {
 			var rememberme=0;
 		}
-		if ($('livejournalForgetMe').value === 'true') {
+		if ($('post_forget_me').value === 'true') {
 			var forgetme=1;
 		}
 		else {
@@ -251,13 +251,13 @@ var Widget = new Class({ Implements: Events,
 		var username=$('post_username').value;
 		var password=$('post_password').value;
 		var status=$('post_message').value;
-		if ($('twitterRememberMe').checked) {
+		if ($('post_remember_me').checked) {
 			var rememberme=1;
 		}
 		else {
 			var rememberme=0;
 		}
-		if ($('twitterForgetMe').value === 'true') {
+		if ($('post_remember_me').value === 'true') {
 			var forgetme=1;
 		}
 		else {
@@ -1228,7 +1228,7 @@ if (!window.console || !console.firebug) {
 				break;
 			case "page":
 				glo_page=value;
-				if (glo_page == "send" || glo_page == "post|twitter") {
+			    if (glo_page == "send" || glo_page.match('post|')) {
 					if (glo_page == "post|twitter") {
 						createSharURL(glo_url, true);
 						widget.fireEvent('twitterClicked', getSharURL());
@@ -1605,7 +1605,7 @@ if (!window.console || !console.firebug) {
 		$$('textarea').set('value','');
 		$('typepadSelectContainer').set('html',"");
 		$('bloggerSelectContainer').set('html',"");
-
+		$('post_select_container').set('html',"");
 	}
 
 	//creates a social web log event
@@ -3221,6 +3221,7 @@ Widget.implement({
 			pages: {
 				blogger: {
 					id: 'post_blogger',
+					desc: 'Post this to your blog.',
 					onReady: function() {
 						widget.addEvent('postToServiceNeedsMoreInfo', function(serviceTag, message, data) {
 							var blogname = [];
@@ -3230,13 +3231,13 @@ Widget.implement({
 								blogname.push(data.blogs[i].blogname);
 								blogid.push(data.blogs[i].blogid);
 							}
-							blOptions = '<select id="bloggerSelect">';
+							blOptions = '<select id="post_select">';
 							for (i = 0; i < blogname.length; i++) {
 								blOptions += '<option value="' + blogid[i] + '">' + blogname[i] + '</option>';
 							}
 							blOptions += '</select>';
-							this.freezeTextInput($('inputBloggerUsername'));
-							this.freezeTextInput($('inputBloggerPassword'));
+							this.freezeTextInput($('post_username'));
+							this.freezeTextInput($('post_password'));
 							$('btnBloggerSubmit').removeClass('hidden');
 							$('btnBloggerPost').addClass('hidden');
 							$('btnBloggerPublish').addClass('hidden');
@@ -3267,15 +3268,16 @@ Widget.implement({
 					}
 				},
 				livejournal:{
-					id: 'post_livejournal',
+					id: 'post_template',
+					desc: 'Post this to Livejournal.',
 					onReady: function() {
 					},
 					onShow: function() {
-						$('txtLive_journalComment').value="optional";
-						$('txtLive_journalComment').addEvent('focus',function(){
-							if($('txtLive_journalComment').value==="optional"){$('txtLive_journalComment').value="";}
+						$('post_message').value="optional";
+						$('post_message').addEvent('focus',function(){
+							if($('post_message').value==="optional"){$('post_message').value="";}
 						});
-						$('btnLive_journalSubmit').addEvent('click', function(){
+						$('post_submit_btn').addEvent('click', function(){
 							widget.postLive_journal(); 
 						});
 						this.bindReturnKeyToSubmission();
@@ -3286,7 +3288,8 @@ Widget.implement({
 					}
 				},
 				twitter: {
-					id: 'post_twitter',
+					id: 'post_template',
+					desc: 'Post this to your Twitter status.',
 					statusMessage: null,
 					onReady: function() {
 						widget.addEvent('twitterClicked', (function() {
@@ -3321,7 +3324,7 @@ Widget.implement({
 							this.statusMessage = $('post_message').value;
 							this.updateCharacterCounter();
 						}).bind(this));
-						$('btnTwitterSubmit').addEvent('click', function(){
+						$('post_submit_btn').addEvent('click', function(){
 							widget.postTwitter(); 
 						});
 						this.bindReturnKeyToSubmission();
@@ -3338,6 +3341,7 @@ Widget.implement({
 				},
 				typepad: {
 					id: 'post_typepad',
+					desc: 'ost this to your Typepad blog.',
 					onReady: function() {
 						widget.addEvent('postToServiceNeedsMoreInfo', function(serviceTag, message, data) {
 							if (serviceTag == 'typepad') {
@@ -3386,6 +3390,7 @@ Widget.implement({
 				},
 				wordpress: {
 					id: 'post_wordpress',
+					desc: 'Post this to your WordPress blog.',
 					onReady: function() {
 						this.parent();
 					},
@@ -3416,37 +3421,78 @@ Widget.implement({
 	 * 			during internal recursion the argument is an array, so that'll work too.
 	 * @param	[object obj]: only used during internal recursion.
 	 */
-	showPage: function(path, obj) {
+	showPage: function(path, obj, isPost) {
 		if (!obj && path != this.pageHistory.getLast()) { 
 			this.pageHistory.push(path); 
 		}
 		path = (typeof path == 'string' ? path.split('|') : path);
 		obj = (obj ? obj : widget);
 		var page = path.shift();
-		for (var name in obj.pages) {
-			if (name == page) {
-				$(obj.pages[name].id).removeClass('hidden');
-				this.fireEvent('pageShown', obj.pages[name]);
-				this._currentPage = obj.pages[name];
-			}
-			else {
-				if (!$(obj.pages[name].id).hasClass('hidden')) {
-					$(obj.pages[name].id).addClass('hidden');
-					this.fireEvent('pageHidden', obj.pages[name]);
+		if( isPost ) {
+			this.fireEvent('pageShown', obj.pages[page]);
+		} else {
+			for (var name in obj.pages) {
+				if (name == page) {
+					$(obj.pages[name].id).removeClass('hidden');
+					this.fireEvent('pageShown', obj.pages[name]);
+					this._currentPage = obj.pages[name];
+				}
+				else {
+					if (!$(obj.pages[name].id).hasClass('hidden')) {
+						$(obj.pages[name].id).addClass('hidden');
+						this.fireEvent('pageHidden', obj.pages[name]);
+					}
 				}
 			}
 		}
 		if (path.length) {
 			if(page == 'post'){
 				this.initPost(path[0]);
+				this.showPage(path, obj.pages[page], true);
+			} else {
+				this.showPage(path, obj.pages[page], false);
 			}
-			this.showPage(path, obj.pages[page]);
 		}
 	},
 	initPost: function(page) {
 		$('post_username').set('value', '');
 		$('post_password').set('value', '');
+		$('post_message').set('value', '');
+		$('post_remember_me').checked = false;
+		$('post_forget_me').checked = false;
+		var postElements = new Array( "post_message_box", "post_character_counter_div", "post_select_box", 
+									  "post_draft_btn", "post_submit_btn", "post_publish_btn" );
+		postElements.each( function(item) {
+			if( !$(item).hasClass('hidden') ) {
+				$(item).addClass('hidden');
+			console.log(item);
+
+			}
+		});
+
+		$('post_title').set('html', widget.services[page].title);
+		$('post_title').set('class', page);
+
+		$('post_desc').set('html', widget.pages.post.pages[page].desc);
+
+		switch(page) {
+		    case 'twitter':
+			    $('post_message_label').set('html', 'Message:');
+			    $('post_character_counter_div').removeClass('hidden');
+			    $('post_message_box').removeClass('hidden');
+			    $('post_submit_btn').removeClass('hidden');
+			    break;
+		    case 'livejournal':
+			    $('post_message_label').set('html', 'Comment:');
+			    $('post_message_box').removeClass('hidden');
+			    break;
+		    case 'blogger':
+			    break;
+
+		}
+
 	},
+
 	showPreviousPage: function() {
 		if (this.pageHistory.length > 1) {
 			this.pageHistory.pop();

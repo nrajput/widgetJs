@@ -223,7 +223,7 @@
 			</div>
 			<div id="post_page" class="panel hidden">
 				<div class="clear"></div>
-				<div id="post_blogger">
+				<div id="post_blogger" class="hidden">
 					<h2 class="blogger">Blogger</h2>
 					<p>Post this to your blog.</p>
 					<form action="#" id ="bloggerForm" class="postForm" method="post">
@@ -248,29 +248,7 @@
 						<span class="link" onclick="widget.showPreviousPage();">Go back</span>
 					</div>
 				</div>
-				<div id="post_livejournal">
-					<h2 class="livejournal">Livejournal</h2>
-					<p>Post this to Livejournal.</p>
-					<form action="#" id ="livejournalForm" class="postForm" method="post">
-						<dl class="col">
-							<dt><label for="inputLive_journalUsername">Username:</label></dt>
-							<dd><input class="text" id="inputLive_journalUsername" type="text"/></dd>
-							<dt><label for="inputLive_journalPassword">Password:</label></dt>
-							<dd><input class="text" id="inputLive_journalPassword" type="password"/></dd>
-							<dt><label for="txtLive_journalComment">Comment:</label></dt>
-							<dd><textarea id="txtLive_journalComment"></textarea></dd>
-							<dd><input class="remember_toggle" id="livejournalRememberMe" type="checkbox"/>&nbsp;Remember Me</dd>
-						</dl>
-						<input class="forgetme" id="livejournalForgetMe" value="false" type="hidden"/>
-					</form>
-					<div class="col_foot">
-						<div class="col_act">
-							<input class="button" id="btnLive_journalSubmit" value="Submit" type="button"/>
-						</div>
-						<span class="link" onclick="widget.showPreviousPage();">Go back</span>
-					</div>
-				</div>
-				<div id="post_twitter">
+				<div id="post_template">
 				  <h1 id="post_title" class="twitter">Twitter</h1>
 				  <div id="post_desc">Post this to your Twitter status.</div>
 				  <div id="post_container">
@@ -287,19 +265,25 @@
 					  <textarea id="post_message"></textarea>
 					</div>
 				  </div>
-				  <div class="character_counter"><span id="post_character_counter"></span> characters left</div>
+				  <div class="character_counter" id="post_character_counter_div"><span id="post_character_counter"></span> characters left</div>
+				  <div id="post_select_box" class="hidden">
+					<div id="post_select_label" class="hidden"><label for="post_select">Select Blog:</label></div>
+					<div id="post_select_container" class="hidden"></div>
+				  </div>
 				  <div id="remember_box">
-					<input class="remember_toggle" id="twitterRememberMe" type="checkbox"/>&nbsp;Remember Me
-					<input class="forgetme" id="twitterForgetMe" value="false" type="hidden"/>
+					<input class="remember_toggle" id="post_remember_me" type="checkbox"/>&nbsp;Remember Me
+					<input class="forgetme" id="post_forget_me" value="false" type="hidden"/>
 				  </div>
 				  <div class="clear"></div>
 				  <div id="post_foot_buttons">
 					<div class="button_new" onclick="widget.showPreviousPage();"><span>Cancel</span></div>
-					<div style="display:block" id="btnTwitterSubmit" class="button_new_green" ><span>Post</span></div>
+					<div id="post_draft_btn" class="button_new_green" ><span>Save as Draft</span></div>
+					<div id="post_submit_btn" class="button_new_green" ><span>Post</span></div>
+					<div id="post_publish_btn" class="button_new_green" ><span>Submit</span></div>
 				  </div>
 				  <div class="clear"></div>
 				</div>
-				<div id="post_typepad">
+				<div id="post_typepad" class="hidden">
 					<h2 class="typepad">Typepad</h2>
 					<p>Post this to your Typepad blog.</p>
 					<form action="#" id ="typepadForm" class="postForm" method="post">
@@ -324,7 +308,7 @@
 						<span class="link" onclick="widget.showPreviousPage();">Go back</span>
 					</div>
 				</div>
-				<div id="post_wordpress">	
+				<div id="post_wordpress" class="hidden">	
 					<h2 class="wordpress">WordPress</h2>
 					<p>Post this to your WordPress blog.</p>
 					<form action="#" id="wordpressForm" class="postForm" method="post">
