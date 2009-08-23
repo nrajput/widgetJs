@@ -262,7 +262,9 @@ try{
 						chicklet.setAttribute("st_dest", "facebook.com");
 						var children=chicklet.childNodes;
 						for(var i=0;i<children.length;i++){var child=children[i];try{child.setAttribute("st_dest", "facebook.com");}catch(err){}}
-						chicklet.onclick = this.chicklet;
+					    chicklet.onclick = this.chicklet;
+						//					chicklet.onclick = "window.open(shared_object.chicklet());";
+						//					chicklet.onclick = alert('foo');
 						break;
 					case "digg":
 						chicklet.setAttribute("st_dest", "digg.com");
@@ -608,15 +610,13 @@ try{
 						+ "&fpc=" + SHARETHIS.options.fpc;
 					var logger = new Image(1,1);
 					logger.src = loggerUrl;
-					logger.onload = function(){
-						var url  = "http://wd.sharethis.com/button/redirect.php";
-						url += "?d="  + dest;
-						url += "&pk=" + SHARETHIS.options.publisher;
-						url += "&s="  + SHARETHIS.options.sessionID;
-						url += "&p="  + encodeURIComponent(ST_JSON.encode(o.properties));
-						top.location.href = url;
-						return;
-					};
+					
+					var url  = "http://wd.sharethis.com/button/redirect.php";
+					url += "?d="  + dest;
+					url += "&pk=" + SHARETHIS.options.publisher;
+					url += "&s="  + SHARETHIS.options.sessionID;
+					url += "&p="  + encodeURIComponent(ST_JSON.encode(o.properties));
+					window.open(url,"stpopup","width=970,height=700,location=1,toolbar=1,scrollbars=1,menubar=1,resizable=1"); 
 				}
 		        o.popup = function(e){
 		        	o.options.autoclose=true;

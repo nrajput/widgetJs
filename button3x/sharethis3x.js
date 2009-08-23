@@ -537,7 +537,8 @@ try{
 						url += "&pk=" + SHARETHIS.options.publisher;
 						url += "&s="  + SHARETHIS.options.sessionID;
 						url += "&p="  + encodeURIComponent(ST_JSON.encode(o.properties));
-						top.location.href = url;
+						window.open(url,"stpopup","width=970,height=700,location=1,toolbar=1,scrollbars=1,menubar=1,resizable=1"); 
+							//top.location.href = url;
 						return;
 					};
 				}

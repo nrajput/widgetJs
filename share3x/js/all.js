@@ -3465,8 +3465,6 @@ Widget.implement({
 		postElements.each( function(item) {
 			if( !$(item).hasClass('hidden') ) {
 				$(item).addClass('hidden');
-			console.log(item);
-
 			}
 		});
 
