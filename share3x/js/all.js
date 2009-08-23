@@ -1603,7 +1603,6 @@ if (!window.console || !console.firebug) {
 		$$('input[type=password]').set('value','');
 		//blank out tp select box
 		$$('textarea').set('value','');
-		$('typepadSelectContainer').set('html',"");
 		$('post_select_container').set('html',"");
 	}
 
@@ -3339,7 +3338,7 @@ Widget.implement({
 				},
 				typepad: {
 					id: 'post_template',
-					desc: 'ost this to your Typepad blog.',
+					desc: 'Post this to your Typepad blog.',
 					onReady: function() {
 						widget.addEvent('postToServiceNeedsMoreInfo', function(serviceTag, message, data) {
 							if (serviceTag == 'typepad') {
