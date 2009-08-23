@@ -220,6 +220,7 @@ try{
 				published:  '',
 				author:     ''
 			};
+			//onmouseover set to true for default
 			this.options={
 				button: true,
 				onmouseover: false,
@@ -258,18 +259,26 @@ try{
 				switch (type) {
 					case "facebook":
 						chicklet.setAttribute("st_dest", "facebook.com");
-						chicklet.onclick = this.chicklet;
+						var children=chicklet.childNodes;
+						for(var i=0;i<children.length;i++){var child=children[i];try{child.setAttribute("st_dest", "facebook.com");}catch(err){}}
+					    chicklet.onclick = this.chicklet;
 						break;
 					case "digg":
 						chicklet.setAttribute("st_dest", "digg.com");
+						var children=chicklet.childNodes;
+						for(var i=0;i<children.length;i++){var child=children[i];try{child.setAttribute("st_dest", "digg.com");}catch(err){}}
 						chicklet.onclick = this.chicklet;
 						break;
 					case "yahoo_buzz":
 						chicklet.setAttribute("st_dest", "buzz.yahoo.com");
+						var children=chicklet.childNodes;
+						for(var i=0;i<children.length;i++){var child=children[i];try{child.setAttribute("st_dest", "buzz.yahoo.com");}catch(err){}}
 						chicklet.onclick = this.chicklet;
 						break;
 					case "email":
 						chicklet.setAttribute("st_page", "send");
+						var children=chicklet.childNodes;
+						for(var i=0;i<children.length;i++){var child=children[i];try{child.setAttribute("st_page", "send");}catch(err){}}
 						if(this.options.onmouseover) {
 							chicklet.onmouseover = this.popup;
 						} else {
@@ -278,12 +287,26 @@ try{
 						break;
 					case "twitter":
 						chicklet.setAttribute("st_page", "post|twitter");
+						var children=chicklet.childNodes;
+						for(var i=0;i<children.length;i++){var child=children[i];try{child.setAttribute("st_page", "post|twitter");}catch(err){}}
 						if(this.options.onmouseover) {
 							chicklet.onmouseover = this.popup;
 						} else {
 							chicklet.onclick = this.popup;
 						}
 						break;
+					case "myspace":
+						chicklet.setAttribute("st_dest", "myspace.com");
+						var children=chicklet.childNodes;
+						for(var i=0;i<children.length;i++){var child=children[i];try{child.setAttribute("st_dest", "myspace.com");}catch(err){}}
+						chicklet.onclick = this.chicklet;
+						break;
+					case "aim":
+						chicklet.setAttribute("st_dest", "aim.com");
+						var children=chicklet.childNodes;
+						for(var i=0;i<children.length;i++){var child=children[i];try{child.setAttribute("st_dest", "aim.com");}catch(err){}}
+						chicklet.onclick = this.chicklet;
+						break;	
 				}
 			}
 		}
@@ -297,6 +320,7 @@ try{
 			this.popExists=false;
 			this.popup_win=null;
 			this.newwinfrag="";
+			this.page=null;
 			this.shareables=[];
 			this.readyList=[];
 			this.postUrl="";
@@ -331,6 +355,9 @@ try{
 			this.curr_id=null;
 			this.current_element=null;
 			this.opt_arr=[]
+			this.mousetimer=null;
+			this.autoPosition=true;
+			this.buttonCount=0;
 			this.meta={
 				publisher: '',
 				hostname: location.host,
@@ -360,19 +387,69 @@ try{
 					var elleft=0;
 					var topVal=0;
 					var leftVal=0;
+					var elemH=0;
+					var elemW=0;
 					eltop = curtop+shareel.offsetHeight+5;
 					elleft = curleft+5;
 					topVal=(eltop + SHARETHIS.curr_offsetTop);
 					topVal=eval(topVal);
+					elemH=topVal;
 					topVal+="px";
 					leftVal=(elleft + SHARETHIS.curr_offsetLeft);
 					leftVal=eval(leftVal);
+					elemW=leftVal;
 					leftVal+="px";
 					SHARETHIS.wrapper.style.top = topVal;
 					SHARETHIS.wrapper.style.left = leftVal;
+					if(SHARETHIS.autoPosition==true){
+						SHARETHIS.oldScroll=document.body.scrollTop;
+						var pginfo=this.pageSize();
+						var effectiveH=pginfo.height+pginfo.scrY;
+						var effectiveW=pginfo.width+pginfo.scrX;
+						var widgetH=280;
+						var widgetW=355;
+						var needH=widgetH+elemH; //500
+						var needW=widgetW+elemW; //1270
+						var diffH=needH-effectiveH; //~100
+						var diffW=needW-effectiveW;
+						var newH=elemH-diffH;// ~121
+						var newW=elemW-diffW;
+						function getHW(elem)
+						{
+						    var retH=0;
+							var retW=0;
+							while( elem!=null ) {
+								retH+= elem.offsetTop;
+								retW+= elem.offsetLeft;
+								elem= elem.offsetParent;
+							}
+							return {height:retH,width:retW};
+						}
+						
+						var buttonPos=getHW(shareel);
+						var leftA,rightA,topA,bottomA=false;
+						if(diffH>0){
+							//bottom space is not available assume top is 
+							bottomA=false;
+							topA=true;
+							if((buttonPos.height-widgetH)>0){
+								newH=buttonPos.height-widgetH;
+							}
+							SHARETHIS.wrapper.style.top = newH+"px";
+						}
+						
+						if(diffW>0){
+							//left is not avaialbe assume right is...
+							leftA=false;
+							rightA=true;
+							if((buttonPos.width-widgetW)>0){
+								newW=buttonPos.width-widgetW;
+							}
+							SHARETHIS.wrapper.style.left = newW+"px";
+						}
+					}	
 					SHARETHIS.wrapper.style.visibility="visible";
 					SHARETHIS.mainstframe.style.visibility = 'visible';
-					SHARETHIS.oldScroll=document.body.scrollTop;
 			},
 			this.hideWidget=function(){
 				if(SHARETHIS.wrapper.style.visibility !== 'hidden'){
@@ -410,8 +487,7 @@ try{
 			   		winX= document.documentElement.offsetWidth;
 			        winY=document.documentElement.offsetHeight;
 			   }
-		
-				pScroll=[scX,scY,winX,winY];
+				pScroll={scrX:scX,scrY:scY,width:winX,height:winY};
 		        return pScroll;
 		    }
 			this.postPopup=function(){
@@ -531,18 +607,17 @@ try{
 						+ "&fpc=" + SHARETHIS.options.fpc;
 					var logger = new Image(1,1);
 					logger.src = loggerUrl;
-					logger.onload = function(){
-						var url  = "http://wd.sharethis.com/button/redirect.php";
-						url += "?d="  + dest;
-						url += "&pk=" + SHARETHIS.options.publisher;
-						url += "&s="  + SHARETHIS.options.sessionID;
-						url += "&p="  + encodeURIComponent(ST_JSON.encode(o.properties));
-						window.open(url,"stpopup","width=970,height=700,location=1,toolbar=1,scrollbars=1,menubar=1,resizable=1"); 
-							//top.location.href = url;
-						return;
-					};
+					
+					var url  = "http://wd.sharethis.com/button/redirect.php";
+					url += "?d="  + dest;
+					url += "&pk=" + SHARETHIS.options.publisher;
+					url += "&s="  + SHARETHIS.options.sessionID;
+					url += "&p="  + encodeURIComponent(ST_JSON.encode(o.properties));
+					window.open(url,"stpopup","width=970,height=700,location=1,toolbar=1,scrollbars=1,menubar=1,resizable=1"); 
 				}
 		        o.popup = function(e){
+		        	o.options.autoclose=true;
+		        	//o.options.onmouseover=true;//setting to true for default...
 		        	if(SHARETHIS_TOOLBAR===true){
 		        		if(st_showing===false){
 		        			SHARETHIS.log('widget',o,'toolbar');
@@ -551,7 +626,11 @@ try{
 						clearInterval(stVisibleInterval);
 						added_tool="/glo_toolbar=true";
 						SHARETHIS.hideEmbeds();
-						SHARETHIS.mainstframe.src = SHARETHIS.frameUrl + SHARETHIS.newwinfrag +"/guid_index=" + oidx +"/guid=" + SHARETHIS.guid+added_tool;	
+						var pgval="";
+						if(SHARETHIS.page!=null){
+							pgval="/page="+SHARETHIS.page;
+						}
+						SHARETHIS.mainstframe.src = SHARETHIS.frameUrl + SHARETHIS.newwinfrag +"/guid_index=" + oidx +"/guid=" + SHARETHIS.guid+added_tool+pgval;	
 						SHARETHIS.wrapper.style.visibility="visible";
 						SHARETHIS.mainstframe.style.visibility = 'visible';
 		        	} else {
@@ -564,7 +643,7 @@ try{
 								else if (typeof(event) != "undefined" && typeof(event) != "unknown" && event) {
 									o.trigger = event.srcElement;
 								}
-								if (o.trigger !== null) {
+								if (o.trigger !== null && o.trigger) {
 									id=o.trigger.id;
 									SHARETHIS.current_element=o.trigger;
 									o.page = o.trigger.getAttribute('st_page');
@@ -596,6 +675,9 @@ try{
 							var pageFrag = "/page=" + o.page;
 							SHARETHIS.curr_offsetTop=Number(o.options.offsetTop);
 							SHARETHIS.curr_offsetLeft=Number(o.options.offsetLeft);
+							if(SHARETHIS.curr_offsetTop>0 || SHARETHIS.curr_offsetTop>0){
+								SHARETHIS.autoPosition=false;
+							}
 							SHARETHIS.curr_id=id;
 							if(o.options.onclick) {
 					        		var res = o.options.onclick.apply(document, [o]);
@@ -634,7 +716,7 @@ try{
 									st_showing = true;
 								}
 								else{
-								stcloseWidget();
+									if(o.options.onmouseover==false || o.options.onmouseover=="false"){stcloseWidget();}
 								}
 							}
 		        		}
@@ -650,8 +732,15 @@ try{
 			    a.title = "ShareThis via email, AIM, social bookmarking and networking sites, etc.";
 		        a.href = "javascript:void(0)";
 		        a.setAttribute("st_page", "home");
+		        //mouse over
 		        if(o.options.onmouseover == false || o.options.onmouseover == "false") a.onclick = o.popup;
-		        if(o.options.onmouseover == true) a.onmouseover = o.popup;
+		        if(o.options.onmouseover == true || o.options.onmouseover == "true") {
+		        	SHARETHIS.wrapper.onmouseover=function(){stCancelClose();};
+		        	a.onmouseover=function(){/*console.log("button mouseover");*/stCancelClose();SHARETHIS.mousetimer=setTimeout(o.popup,150);};
+		        	a.onmouseout=function(){/*console.log("button mouse out");*/clearInterval(SHARETHIS.mousetimer);stClose();};
+		        		//function(){SHARETHIS.mousetimer=setTimeout(o.popup,100);};
+		        		//a.onmouseover = o.popup;
+		        }
 		        var t = document.createElement("span");
 		        t.className = 'stbuttontext';
 		        t.setAttribute("st_page", "home");
@@ -673,7 +762,7 @@ try{
 		            	x.appendChild(a);
 					}
 		        }
-				if(this.logFlag){this.log('view', o, null);}
+				if(this.logFlag){SHARETHIS.buttonCount++;}
 		        return o;
 		    },
 		
@@ -733,6 +822,7 @@ try{
 			this.sendJSON=function(){
 					if(SHARETHIS.sendNum<SHARETHIS.sendArray.length){		
 						//SHARETHIS.mainstframe.src=SHARETHIS.frameUrl+SHARETHIS.sendArray[SHARETHIS.sendNum];
+						//console.log(SHARETHIS.frameUrl+SHARETHIS.sendArray[SHARETHIS.sendNum]);
 						window.frames['stframe'].location.replace(SHARETHIS.frameUrl+SHARETHIS.sendArray[SHARETHIS.sendNum]);
 					}
 					else{
@@ -835,9 +925,8 @@ try{
 			        }
 			        return toReturn;        
 				}
-			}
-
-			
+			},
+		    		
 			this.onStFrameLoad=function(){
 				if(SHARETHIS.frameLoaded===false){	
 					SHARETHIS.postEntries();
@@ -957,23 +1046,37 @@ try{
 					this.wrapper.style.visibility = 'hidden';
 					this.wrapper.style.top = "-999px";
 					this.wrapper.style.left = "-999px";
+					this.closewrapper= document.createElement('div');
+					this.closewrapper.className = 'stclose';
+					this.closewrapper.onclick = stcloseWidget;
+					this.wrapper.appendChild(this.closewrapper);
 					this.wrapper.appendChild(this.mainstframe);
-					//this.closebutton = document.createElement('a');
-					this.closebutton = document.createElement('img');
-					this.closebutton.src = 'http://w.sharethis.com/images/pic3.gif';
-					this.closebutton.title = 'close';
-					this.closebutton.height = '8';
-					this.closebutton.width = '8';
-					this.closebutton.className = 'stclose';
-					this.closebutton.onclick = stcloseWidget;
-					//this.closebutton.style.color = '#fff';
-					//var closetext = document.createTextNode('X');
-					//this.closebutton.appendChild(closetext);
-					this.closebutton.style.position = "absolute";
-					this.wrapper.appendChild(this.closebutton);
 
 					this.defer(function(){
-						if(SHARETHIS_TOOLBAR===true){
+						//make button count call
+						var burl = "http://l.sharethis.com/log?event=bview";
+				        var additional=dbrInfo();
+				        if(additional==false){
+				        	additional="";
+				        }
+						burl+="&publisher=" + encodeURIComponent(SHARETHIS.meta.publisher)
+				            + "&hostname=" + encodeURIComponent(SHARETHIS.meta.hostname)
+				            + "&location="
+				            + "&url="
+				            + "&sessionID="+SHARETHIS.sessionID
+				            + "&fpc="+SHARETHIS.fpc
+				            + "&ts" + (new Date()).getTime() + "." + SHARETHIS.counter++
+				            + "&count="+SHARETHIS.buttonCount
+				            +	additional;
+				        
+				        
+				       				        
+				        
+				        var logger3 = new Image(1,1);
+				        logger3.src = burl;
+				        logger3.onload = function(){return;};
+
+				        if(SHARETHIS_TOOLBAR===true){
 							document.body.appendChild(SHARETHIS.fp);
 							SHARETHIS.postPopup(); //posts data to set cache
 							SHARETHIS_TOOLBAR_DIV.appendChild(SHARETHIS.wrapper);
@@ -985,6 +1088,7 @@ try{
 						}
 						if(SHARETHIS.widgetCalled===false && SHARETHIS.widgetExists===true){
 							document.body.appendChild(SHARETHIS.wrapper);
+							try{window.frames['stframe'].location.replace(SHARETHIS.mainstframe.src);}catch(err){}
 							SHARETHIS.readyTestInterval=setInterval(SHARETHIS.readyTest,250);
 				
 						}
@@ -1005,7 +1109,7 @@ try{
 		var closetimeout;
 
 		function stClose(){
-		if(stautoclose==true) closetimeout = setTimeout("stcloseWidget()",750);	
+			if(stautoclose==true) closetimeout = setTimeout("stcloseWidget()",1500);	
 		}
 
 		function stCancelClose() {
@@ -1051,6 +1155,9 @@ try{
 				var guid="";
 				var hashD=_stGetD();
 				hashD=hashD.split(/\./)[1];
+				if(!hashD){
+					return false;
+				}
 				guid=_stdHash(hashD)+"-"+time+"-"+bigRan+"-1";
 				cVal=guid;
 				_stSetFpc(cVal);
@@ -1128,6 +1235,25 @@ try{
 			return rScript;			
 		}
 		
+		function dbrInfo(){
+			var dbr=document.referrer;
+			if(dbr && dbr.length>0){
+				var re1=/(http:\/\/)(.*?)\/.*/i;
+				var re2=/(^.*\?)(.*)/ig;
+				var retVal="";
+				var domain=dbr.replace(re1, "$2");
+				if(domain.length>0){retVal+="&refDomain="+domain;}
+				else{return false;}
+				var query=dbr.replace(re2,"$2");
+				if(query.length>0){retVal+="&refQuery="+encodeURIComponent(query);}
+				return retVal;
+			}
+			else{
+				return false;
+			}
+		}
+		
+		
 		_thisScript=getShareThisScript();		
 		if (_thisScript){
 			SHARETHIS = new ShareThis(parseQueryString(_thisScript.src));
@@ -1145,7 +1271,6 @@ try{
 	if (_thisScript2 && _thisScript2.parentNode.tagName != "HEAD" && typeof(_sttoolbar) == "undefined") {
 		var obj = SHARETHIS.addEntry();
 	}
-
 
 }
 catch(err){

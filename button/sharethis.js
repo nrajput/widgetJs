@@ -263,8 +263,6 @@ try{
 						var children=chicklet.childNodes;
 						for(var i=0;i<children.length;i++){var child=children[i];try{child.setAttribute("st_dest", "facebook.com");}catch(err){}}
 					    chicklet.onclick = this.chicklet;
-						//					chicklet.onclick = "window.open(shared_object.chicklet());";
-						//					chicklet.onclick = alert('foo');
 						break;
 					case "digg":
 						chicklet.setAttribute("st_dest", "digg.com");
