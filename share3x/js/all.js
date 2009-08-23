@@ -431,16 +431,16 @@ var Widget = new Class({ Implements: Events,
 	
 	postWordpress: function()
 	{ 
-		var username=$('inputWpUsername').value;
-		var password=$('inputWpPassword').value;
-		var url=$('inputWpURL').value;
-		if ($('wordpressRememberMe').checked) {
+		var username=$('post_username').value;
+		var password=$('post_password').value;
+		var url=$('post_url').value;
+		if ($('post_remember_me').checked) {
 			var rememberme=1;
 		}
 		else {
 			var rememberme=0;
 		}
-		if ($('wordpressForgetMe').value === 'true') {
+		if ($('post_forget_me').value === 'true') {
 			var forgetme=1;
 		}
 		else {
@@ -1604,7 +1604,6 @@ if (!window.console || !console.firebug) {
 		//blank out tp select box
 		$$('textarea').set('value','');
 		$('typepadSelectContainer').set('html',"");
-		$('bloggerSelectContainer').set('html',"");
 		$('post_select_container').set('html',"");
 	}
 
@@ -3339,7 +3338,7 @@ Widget.implement({
 					}
 				},
 				typepad: {
-					id: 'post_typepad',
+					id: 'post_template',
 					desc: 'ost this to your Typepad blog.',
 					onReady: function() {
 						widget.addEvent('postToServiceNeedsMoreInfo', function(serviceTag, message, data) {
@@ -3351,19 +3350,18 @@ Widget.implement({
 									blogname.push(data.blogs[i].blogName);
 									blogid.push(data.blogs[i].blogid);
 								}
-								tpOptions = "<select id='tpSelect'>";
+								tpOptions = "<select id='post_select'>";
 								for (i = 0; i < blogname.length; i++) {
 									tpOptions += '<option value="' + blogid[i] + '">' + blogname[i] + '</option>';
 								}
 								tpOptions += "</select>";
-								this.freezeTextInput($('inputTpUsername'));
-								this.freezeTextInput($('inputTpPassword'));
-								$('btnTpSubmit').removeClass('hidden');
-								$('btnTpPost').addClass('hidden');
-								$('btnTpPublish').addClass('hidden');
-								$('typepadSelectContainer').set('html', tpOptions);
-								$('typepadSelectLabel').removeClass('hidden');
-								$('typepadSelectContainer').removeClass('hidden');
+								this.freezeTextInput($('post_username'));
+								this.freezeTextInput($('post_password'));
+								$('post_publish_btn').removeClass('hidden');
+								$('post_draft_btn').addClass('hidden');
+								$('post_submit_btn').addClass('hidden');
+								$('post_select_container').set('html', tpOptions);
+								$('post_select_box').removeClass('hidden');
 							}
 						});
 						this.parent();
@@ -3388,13 +3386,13 @@ Widget.implement({
 					}
 				},
 				wordpress: {
-					id: 'post_wordpress',
+					id: 'post_template',
 					desc: 'Post this to your WordPress blog.',
 					onReady: function() {
 						this.parent();
 					},
 					onShow: function() {
-						$('btnWpSubmit').addEvent('click', function() {
+						$('post_submit_btn').addEvent('click', function() {
 							widget.postWordpress(); 
 						});
 						this.bindReturnKeyToSubmission();
@@ -3454,6 +3452,7 @@ Widget.implement({
 		}
 	},
 	initPost: function(page) {
+		$('post_url').set('value', '');
 		$('post_username').set('value', '');
 		$('post_password').set('value', '');
 		$('post_message').set('value', '');
@@ -3462,7 +3461,7 @@ Widget.implement({
 		this.unfreezeTextInput($('post_username'));
 		this.unfreezeTextInput($('post_password'));
 
-		var postElements = new Array( "post_message_box", "post_character_counter_div", "post_select_box", 
+		var postElements = new Array( "post_url_box", "post_message_box", "post_character_counter_div", "post_select_box", 
 									  "post_draft_btn", "post_submit_btn", "post_publish_btn" );
 		postElements.each( function(item) {
 			if( !$(item).hasClass('hidden') ) {
@@ -3488,15 +3487,20 @@ Widget.implement({
 			    $('post_message_label').set('html', 'Comment:');
 			    $('post_message_box').removeClass('hidden');
 			    $('post_submit_btn').removeClass('hidden');
-
 			    break;
 		    case 'blogger':
 			    $('post_draft_btn').removeClass('hidden');
 			    $('post_submit_btn').removeClass('hidden');
 			    break;
-
+		    case 'wordpress':
+			    $('post_url_box').removeClass('hidden');
+			    $('post_submit_btn').removeClass('hidden');
+			    break;
+		    case 'typepad':
+			    $('post_draft_btn').removeClass('hidden');
+			    $('post_submit_btn').removeClass('hidden');
+			    break;
 		}
-
 	},
 
 	showPreviousPage: function() {
@@ -5693,7 +5697,7 @@ window.addEvent('domready', function() {
 		});
 	});
 
-	if (glo_page == "send" || glo_page == "post|twitter") {
+	if (glo_page == "send" || glo_page.match('post|')) {
 		widget.showPage(glo_page);
 	} else {
 		widget.showPage('home');

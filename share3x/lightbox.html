@@ -227,6 +227,10 @@
 				  <h1 id="post_title" class="twitter">Twitter</h1>
 				  <div id="post_desc">Post this to your Twitter status.</div>
 				  <div id="post_container">
+					<div id="post_url_box" class="post_box">
+					  <div class="label" id="post_url_label">Blog Url:</div>
+					  <input class="text" id="post_url" type="text"/>
+					</div>
 					<div id="post_username_box" class="post_box">
 					  <div class="label" id="post_username_label">Username:</div>
 					  <input class="text" id="post_username" type="text"/>
@@ -279,28 +283,6 @@
 							<input class="button hidden" id="btnTpDone" value="Done" type="button"/>
 							<input class="button hidden" id="btnTpSubmit" value="Submit" type="button"/>
 							<input class="button" id="btnTpPublish" value="Post" type="button"/>
-						</div>
-						<span class="link" onclick="widget.showPreviousPage();">Go back</span>
-					</div>
-				</div>
-				<div id="post_wordpress" class="hidden">	
-					<h2 class="wordpress">WordPress</h2>
-					<p>Post this to your WordPress blog.</p>
-					<form action="#" id="wordpressForm" class="postForm" method="post">
-						<dl class="col">
-							<dt><label for="inputWpURL">Blog URL:</label></dt>
-							<dd><input class="text" id="inputWpURL" type="text"/></dd>
-							<dt><label for="inputWpUsername">Username:</label></dt>
-							<dd><input class="text" id="inputWpUsername" type="text"/></dd>
-							<dt><label for="inputWpPassword">Password:</label></dt>
-							<dd><input class="text" id="inputWpPassword" type="password"/></dd>
-							<dd><input class="remember_toggle" id="wordpressRememberMe" type="checkbox"/>&nbsp;Remember Me</dd>
-						</dl>
-						<input class="forgetme" id="wordpressForgetMe" value="false" type="hidden"/>
-					</form>
-					<div class="col_foot">
-						<div class="col_act">
-							<input class="button" id="btnWpSubmit" value="Post" type="button"/>
 						</div>
 						<span class="link" onclick="widget.showPreviousPage();">Go back</span>
 					</div>
