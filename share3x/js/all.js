@@ -1828,8 +1828,9 @@ if (!window.console || !console.firebug) {
 		}
 		var tmp=glo_jsonStr;
 		var newResp=[];
-		//console.log(tmp);
 		try{newResp=eval(tmp);}catch(err){tmp=decodeURIComponent(tmp);newResp=eval(tmp);}
+			//		console.log(newResp);
+
 		for(var i=0;i<newResp.length;i++){
 			setGlobals("glo_title_array",newResp[i].title);
 			setGlobals("glo_type_array",newResp[i].type);
@@ -3420,12 +3421,18 @@ Widget.implement({
 	 * @param	[object obj]: only used during internal recursion.
 	 */
 	showPage: function(path, obj, isPost) {
+		if( path == null) {
+			return;
+		}
 		if (!obj && path != this.pageHistory.getLast()) { 
 			this.pageHistory.push(path); 
 		}
 		path = (typeof path == 'string' ? path.split('|') : path);
 		obj = (obj ? obj : widget);
 		var page = path.shift();
+		if(page == "null") {
+			return;
+		}
 		if( isPost ) {
 			this.fireEvent('pageShown', obj.pages[page]);
 		} else {

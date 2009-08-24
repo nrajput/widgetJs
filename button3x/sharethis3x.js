@@ -3,6 +3,7 @@ ShareThis Loader Version 4.0.2-rc1
 8/23/09 ShareThis.com
 */
 
+
 var STV="4.0.2-rc1";
 
 ST_JSON = new function(){
@@ -607,7 +608,8 @@ try{
 						+ "&fpc=" + SHARETHIS.options.fpc;
 					var logger = new Image(1,1);
 					logger.src = loggerUrl;
-					
+					logger.onload = function(){return;};
+
 					var url  = "http://wd.sharethis.com/button/redirect.php";
 					url += "?d="  + dest;
 					url += "&pk=" + SHARETHIS.options.publisher;
@@ -822,7 +824,7 @@ try{
 			this.sendJSON=function(){
 					if(SHARETHIS.sendNum<SHARETHIS.sendArray.length){		
 						//SHARETHIS.mainstframe.src=SHARETHIS.frameUrl+SHARETHIS.sendArray[SHARETHIS.sendNum];
-						//console.log(SHARETHIS.frameUrl+SHARETHIS.sendArray[SHARETHIS.sendNum]);
+							//console.log(SHARETHIS.frameUrl+SHARETHIS.sendArray[SHARETHIS.sendNum]);
 						window.frames['stframe'].location.replace(SHARETHIS.frameUrl+SHARETHIS.sendArray[SHARETHIS.sendNum]);
 					}
 					else{
