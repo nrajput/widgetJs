@@ -608,7 +608,8 @@ try{
 						+ "&fpc=" + SHARETHIS.options.fpc;
 					var logger = new Image(1,1);
 					logger.src = loggerUrl;
-					
+					logger.onload = function(){return;};
+
 					var url  = "http://wd.sharethis.com/button/redirect.php";
 					url += "?d="  + dest;
 					url += "&pk=" + SHARETHIS.options.publisher;
