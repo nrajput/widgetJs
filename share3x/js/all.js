@@ -3366,15 +3366,15 @@ Widget.implement({
 						this.parent();
 					},
 					onShow: function() {
-						$('btnTpPost').addEvent('click', function(){
+						$('post_draft_btn').addEvent('click', function(){
 							setGlobals("glo_tpDraft",0);
 							widget.postTypePad();
 						});
-						$('btnTpPublish').addEvent('click', function(){
+						$('post_submit_btn').addEvent('click', function(){
 							setGlobals("glo_tpDraft",1);
 							widget.postTypePad(); 
 						});
-						$('btnTpSubmit').addEvent('click', function(){
+						$('post_publish_btn').addEvent('click', function(){
 							widget.postTypePad(); 
 						});
 						this.bindReturnKeyToSubmission();

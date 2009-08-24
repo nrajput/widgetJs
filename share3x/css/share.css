@@ -462,6 +462,7 @@ ul.scroll li.even {
 
 #send_foot_buttons {
     float: right;
+	_float: none;
 	margin: 10px 0 10px 0;
 }
 
