@@ -893,8 +893,8 @@ a.addressbook_button {
 	left: 0;
 	width:100%;
 	background: #fff;
-	opacity: .8;
-	filter: alpha(opacity=80);
+	opacity: .95;
+	filter: alpha(opacity=95);
 	zoom:1;
 }
 .dim {
@@ -909,11 +909,11 @@ a.addressbook_button {
 .modal_message_container .notification {
 	font-weight:bold;
 }
-.modal_message_container .button {
+.modal_message_container .button_new {
 	position:absolute;
 	bottom:30%;
-	left:135px;
-	width:100px;
+	left:125px;
+	width:75px;
 }
 /* Structure */
 #container {
