@@ -171,11 +171,12 @@ textarea {
 	padding:2px 4px 0;
 }
 .search_results {
+	margin-left: 70px;
 	position:absolute;
 	background:#efefef;
 	border:1px solid #ccc;
 	padding: 0;
-	width:200px;
+	width:235px;
 	overflow:auto;
 	overflow-x:hidden;
 	z-index:99999;
