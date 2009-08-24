@@ -81,7 +81,7 @@
 					  <div class="to_field" id="send_to_field"></div>
 					</div>
 				  </div>
-				  <div id="import_blurb" onclick="javascript:widget.showPage('import');">
+				  <div id="import_blurb" onclick="pageTracker._trackEvent('Send', 'import_link'); widget.showPage('import');">
 					<div id="import_contacts_link">Import contacts to share quickly</div>
 				  </div>
 				  <div id="from_box" class="send_units">
@@ -159,7 +159,7 @@
 					  <div id="import_contacts_cancel" class="button_new" onclick="widget.showPreviousPage();"><span>Cancel</span></div>
 					  <div id="import_contacts_submit" class="button_new_green"><span>Import</span></div>
 					</div>
-					<div class="hidden opposite_left" id="privacyLink_import"><a target="_blank" href="http://sharethis.com/privacy">Privacy Policy</a></div>
+					<div class="hidden opposite_left" id="privacyLink_import"><a target="_blank" href="http://sharethis.com/privacy" onclick='pageTracker._trackEvent("Footer", "privacy_link")'>Privacy Policy</a></div>
 				</div>
 
 			</div>
@@ -182,12 +182,12 @@
 					<dd><input class="text" type="password" id="registerPassword2Input" name="cpassword"/></dd>
 					<dd id="registerLegal">By clicking Register, you agree electronically to our <span class="link" onclick="window.open('http://sharethis.com/terms/','terms','resizable=1,location=1,status=1,scrollbars=1,toolbar=1'); return false;">terms of use</span> and <span class="link" onclick="window.open('http://sharethis.com/privacy/','privacy','resizable=1,location=1,status=1,scrollbars=1,toolbar=1'); return false;">privacy policy</span>, and are at least 13 years old.</dd>
 				</dl>
-				<div class="col_foot">
+				<div class="col_foot" style="margin-right: 22px">
 					<div id="registerButtons" class="col_act">
-						<input type="submit" class="button" value="Register" id="registerSubmit"/>
-						<span class="hidden" id="regOK"><input type="submit" value="OK" id="registerOK"/></span>
+					  <div class="button_new" onclick="widget.showPreviousPage();"><span>Cancel</span></div>
+					  <div id="registerSubmit" class="button_new_green" ><span>Register</span></div>
+					  <span class="hidden" id="regOK"><input type="submit" value="OK" id="registerOK"/></span>
 					</div>
-					<span class="link" onclick="widget.showPreviousPage();">Go back</span>
 				</div>
 				<div id="registerStatus">
 					<div class="loading hidden">Creating account...</div>
@@ -299,7 +299,7 @@
 			</div>
 			<div id="footer">
 						<div class="hidden opposite_left" id="privacyLink">
-						  <a target="_blank" href="http://sharethis.com/privacy">Privacy Policy</a>
+						  <a target="_blank" href="http://sharethis.com/privacy" onclick='pageTracker._trackEvent("Footer", "privacy_link")'>Privacy Policy</a>
 						</div>
 
 				<div id="loginBox" class="overlay hidden">
@@ -313,11 +313,12 @@
 								<div id="textAuthPassword_forgot"><a rel="external" target="_blank" href="http://sharethis.com/account/lostpassword/" id="linkForgotPassword" onclick="if(glo_options_popup==true){popupOpen2(this);return false;}">Forgot?</a></div>
 							</dd>
 						</dl>
-						<div class="col_foot">
+						<div class="col_foot" style="margin-right: 22px">
 							<div id="loginButton" class="col_act">
-								<span class="link light" id="loginClose">Cancel</span>&nbsp;<input type="submit" value="Sign in" class="button" id="linkAuthSignIn"/>
+							  <div id="loginClose" class="button_new"><span>Cancel</span></div>
+							  <div id="createAccount" class="button_new_green"><span>Create an Account</span></div>
+							  <div id="linkAuthSignIn" class="button_new_green"><span>Sign in</span></div>
 							</div>
-							<span class="link" id="createAccount">Create an Account</span>
 						</div>
 						<!--<div class="loading hidden"><img src="images/loading2.gif" alt=""/></div>-->
 					</div>
