@@ -5694,7 +5694,6 @@ window.addEvent('domready', function() {
 		});
 	});
 
-	console.log(glo_page);
 	if (glo_page && (glo_page == "send" || glo_page.match('post|')) ) {
 		widget.showPage(glo_page);
 	} else {
