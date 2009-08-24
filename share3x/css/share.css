@@ -1053,6 +1053,23 @@ span.active a#home_button {
 	margin-left: 4px;
 }
 
+#ff_plugin_link {
+	display: none;
+	color: #fff;
+	margin-left: 4px;
+}
+
+@-moz-document url-prefix() {
+    #poweredByLink {
+	    display: none;
+    }
+
+    #ff_plugin_link {
+	    display: block;
+    }
+
+}
+
 #footer .link_dark {
 	color: #fff;
 }
