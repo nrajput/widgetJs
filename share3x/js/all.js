@@ -340,15 +340,15 @@ var Widget = new Class({ Implements: Events,
 
 
 	postTypePad: function() { 
-		var username=$('inputTpUsername').value;
-		var password=$('inputTpPassword').value;
-		if ($('typepadRememberMe').checked) {
+		var username=$('post_username').value;
+		var password=$('post_password').value;
+		if ($('post_remember_me').checked) {
 			var rememberme=1;
 		}
 		else {
 			var rememberme=0;
 		}
-		if ($('typepadForgetMe').value === 'true') {
+		if ($('post_forget_me').value === 'true') {
 			var forgetme=1;
 		}
 		else {
@@ -368,8 +368,8 @@ var Widget = new Class({ Implements: Events,
 			widget.validationFailed(err);
 		}
 		else{
-			if(document.getElementById('tpSelect')){
-				var blogid = $('tpSelect').get('value');
+			if(document.getElementById('post_select')){
+				var blogid = $('post_select').get('value');
 			}
 			var data="";
 			var tmpTitle=glo_title;
@@ -3189,14 +3189,6 @@ Widget.implement({
 		post: {
 			id: 'post_page',
 			onShow: function() {
-				$('privacyLink').removeClass('hidden');
-				this.parent();
-			},
-			onHide: function() {
-				$('privacyLink').addClass('hidden');
-				this.parent();
-			},
-			onReady: function() {
 				widget.addEvent('postToServiceRequested', function(serviceTag) {
 					widget.pushModalWorkingSheet(
 						'<span class="' + serviceTag + '">Posting your share to ' + widget.services[serviceTag].title + '</span>'
@@ -3215,12 +3207,24 @@ Widget.implement({
 					widget.popModalWorkingSheet();
 					widget.displayNotification(message);
 				});
+
+				$('privacyLink').removeClass('hidden');
+				this.parent();
+			},
+			onHide: function() {
+				$('privacyLink').addClass('hidden');
+				this.parent();
+			},
+			onReady: function() {
 			},
 			pages: {
 				blogger: {
 					id: 'post_template',
 					desc: 'Post this to your blog.',
 					onReady: function() {
+						this.parent();
+					},
+					onShow: function() {
 						widget.addEvent('postToServiceNeedsMoreInfo', function(serviceTag, message, data) {
 							var blogname = [];
 							var blogid = [];
@@ -3242,10 +3246,7 @@ Widget.implement({
 							$('post_select_container').set('html', blOptions);
 							$('post_select_box').removeClass('hidden');
 						});
-						
-						this.parent();
-					},
-					onShow: function() {
+
 						$('post_draft_btn').addEvent('click', function(){
 							setGlobals("glo_bloggerDraft",0);
 							widget.postBlogger();
@@ -3340,6 +3341,9 @@ Widget.implement({
 					id: 'post_template',
 					desc: 'Post this to your Typepad blog.',
 					onReady: function() {
+						this.parent();
+					},
+					onShow: function() {
 						widget.addEvent('postToServiceNeedsMoreInfo', function(serviceTag, message, data) {
 							if (serviceTag == 'typepad') {
 								var blogname = [];
@@ -3363,9 +3367,7 @@ Widget.implement({
 								$('post_select_box').removeClass('hidden');
 							}
 						});
-						this.parent();
-					},
-					onShow: function() {
+
 						$('post_draft_btn').addEvent('click', function(){
 							setGlobals("glo_tpDraft",0);
 							widget.postTypePad();
@@ -3460,12 +3462,22 @@ Widget.implement({
 		this.unfreezeTextInput($('post_username'));
 		this.unfreezeTextInput($('post_password'));
 
+		$('post_message').removeEvents('focus');
+		$('post_message').removeEvents('keypress');
+		$('post_message').removeEvents('keyup');
+		widget.removeEvents('postToServiceNeedsMoreInfo');
+
 		var postElements = new Array( "post_url_box", "post_message_box", "post_character_counter_div", "post_select_box", 
 									  "post_draft_btn", "post_submit_btn", "post_publish_btn" );
 		postElements.each( function(item) {
 			if( !$(item).hasClass('hidden') ) {
 				$(item).addClass('hidden');
 			}
+		});
+
+		var postBtns = new Array( "post_submit_btn", "post_draft_btn", "post_submit_btn" );
+		postBtns.each( function(item) {
+			$(item).removeEvents('click');
 		});
 
 		$('post_title').set('html', widget.services[page].title);
@@ -3587,7 +3599,9 @@ Widget.implement({
 		cover.setStyles('height', height);
 		smoke.setStyle('height', height);
 		errorContainer.grab(new Element('div', { 'class': type }).set('html', message));
-		errorContainer.grab(new Element('input', { 'class': 'button', 'type': 'button', value:'OK' }).addEvent('click', function(event) {
+			//<div id="btnShareSend" class="button_new_green"><span>Send</span></div>
+			//errorContainer.grab(new Element('input', { 'class': 'button', 'type': 'button', value:'OK' }).addEvent('click', function(event) {
+		errorContainer.grab(new Element('div', { 'class': 'button_new', 'html': '<span>OK</span>' }).addEvent('click', function(event) {
 			widget.popModalSheet();
 			if (typeof callback == 'function') {
 				callback();
@@ -5676,22 +5690,20 @@ window.addEvent('domready', function() {
 		});
 	});
 	
-	$$('.remember_toggle').each(function(input) {
-		input.addEvent('click', function() {
-			if (input.checked == false) {
-				input.form.getElementsByClassName('forgetme')[0].value = 'true';
-				var inputfields = $(input.form.id).getElementsByClassName('text');
-				for (var i in inputfields) {
-					inputfields[i].value = '';
-					inputfields[i].disabled = false;
-				}
-			} else {
-				var inputfields = $(input.form.id).getElementsByClassName('text');
-				for (var i in inputfields) {
-					inputfields[i].disabled = true;
-				}
+	$('post_remember_me').addEvent('click', function() {
+		if ($('post_remember_me').checked == false) {
+			$('post_forget_me').value = 'true';
+			var inputfields = $('post_form').getElementsByClassName('text');
+			for (var i in inputfields) {
+				inputfields[i].value = '';
+				inputfields[i].disabled = false;
 			}
-		});
+		} else {
+			var inputfields = $('post_form').getElementsByClassName('text');
+			for (var i in inputfields) {
+				inputfields[i].disabled = true;
+			}
+		}
 	});
 
 	if (glo_page && (glo_page == "send" || glo_page.match('post|')) ) {
