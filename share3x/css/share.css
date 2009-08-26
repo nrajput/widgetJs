@@ -301,7 +301,7 @@ ul.scroll li.even {
 
 .button_new,
 .button_new_green {
-	background: transparent url('../images/button_a.gif') no-repeat scroll top right;
+	background: transparent url('../images/button_a2.gif') no-repeat scroll top right;
     color: #444;
     float: left;
     font: normal 13px arial, sans-serif;
@@ -313,13 +313,13 @@ ul.scroll li.even {
 }
 
 .button_new_green {
-	background: transparent url('../images/button_green_a.gif') no-repeat scroll top right;
+	background: transparent url('../images/button_green_a2.gif') no-repeat scroll top right;
 	color: #fff;
 }
 
 .button_new span,
 .button_new_green span {
-    background: transparent url('../images/button_span.gif') no-repeat;
+    background: transparent url('../images/button_span2.gif') no-repeat;
     display: block;
     line-height: 14px;
     padding: 3px 0 5px 10px;
@@ -328,7 +328,7 @@ ul.scroll li.even {
 } 
 
 .button_new_green span {
-	background: transparent url('../images/button_green_span.gif') no-repeat;
+	background: transparent url('../images/button_green_span2.gif') no-repeat;
 }
 
 /*
