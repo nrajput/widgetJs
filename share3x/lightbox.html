@@ -222,11 +222,12 @@
 				</div>
 			</div>
 			<div id="post_page" class="panel hidden">
-				<div class="clear"></div>
-				<div id="post_template">
-				  <h1 id="post_title" class="twitter">Twitter</h1>
-				  <div id="post_desc">Post this to your Twitter status.</div>
-				  <div id="post_container">
+			  <div class="clear"></div>
+			  <div id="post_template">
+				<h1 id="post_title" class="twitter">Twitter</h1>
+				<div id="post_desc">Post this to your Twitter status.</div>
+				<div id="post_container">
+				  <form id="post_form">
 					<div id="post_url_box" class="post_box">
 					  <div class="label" id="post_url_label">Blog Url:</div>
 					  <input class="text" id="post_url" type="text"/>
@@ -243,7 +244,8 @@
 					  <div class="label" id="post_message_label">Message:</div>
 					  <textarea id="post_message"></textarea>
 					</div>
-				  </div>
+				  </form>
+				</div>
 				  <div class="character_counter" id="post_character_counter_div"><span id="post_character_counter"></span> characters left</div>
 				  <div id="post_select_box" class="post_box hidden">
 					<div id="post_select_label" class="label"><label for="post_select">Select Blog:</label></div>
