@@ -113,7 +113,7 @@
 				<div class="col_foot">
 					<div class="col_act">
 				      <div id="send_foot_buttons">
-						<div class="button_new" onclick="widget.showPreviousPage();"><span>Cancel</span></div>
+						<div class="button_new" onclick="pageTracker._trackEvent('Send', 'cancel_btn_click');widget.showPreviousPage();"><span>Cancel</span></div>
 						<div id="linkPreview" class="button_new"><span>Preview</span></div>
 						<div id="previewCloseLink" class="button_new hidden"><span>Close Preview</span></div>
 						<div id="btnShareSend" class="button_new_green"><span>Send</span></div>
@@ -156,7 +156,7 @@
 				</ul>
 				<div id="import_foot">
 				    <div id="import_foot_buttons">
-					  <div id="import_contacts_cancel" class="button_new" onclick="widget.showPreviousPage();"><span>Cancel</span></div>
+					  <div id="import_contacts_cancel" class="button_new" onclick="pageTracker._trackEvent('Import', 'cancel_btn_click');widget.showPreviousPage();"><span>Cancel</span></div>
 					  <div id="import_contacts_submit" class="button_new_green"><span>Import</span></div>
 					</div>
 					<div class="hidden opposite_left" id="privacyLink_import"><a target="_blank" href="http://sharethis.com/privacy" onclick='pageTracker._trackEvent("Footer", "privacy_link")'>Privacy Policy</a></div>
@@ -218,7 +218,7 @@
 					<div class="col_act">
 						<input class="button" id="sharebox_submit" value="Save" type="button"/>
 					</div>
-					<span class="link" onclick="widget.showPreviousPage();">Go back</span>
+					<span class="link" onclick="pageTracker._trackEvent('Sharebox', 'cancel_btn_click');widget.showPreviousPage();">Go back</span>
 				</div>
 			</div>
 			<div id="post_page" class="panel hidden">
@@ -257,7 +257,7 @@
 				  </div>
 				  <div class="clear"></div>
 				  <div id="post_foot_buttons">
-					<div class="button_new" onclick="widget.showPreviousPage();"><span>Cancel</span></div>
+					<div class="button_new" onclick="pageTracker._trackEvent('Post', 'cancel_btn_click');widget.showPreviousPage();"><span>Cancel</span></div>
 					<div id="post_draft_btn" class="button_new_green" ><span>Save as Draft</span></div>
 					<div id="post_submit_btn" class="button_new_green" ><span>Post</span></div>
 					<div id="post_publish_btn" class="button_new_green" ><span>Submit</span></div>
@@ -281,17 +281,17 @@
 					<p id="doneRegOther">Drag this <a class="bookmark" onclick="javascript:alert('Drag this to your bookmarks bar.'); return false;" href="javascript:var%20e=document.createElement('script');e.setAttribute('language','javascript');e.setAttribute('src','http://sharethis.com/share/load');document.body.appendChild(e);void(0);">ShareThis</a> link to your browser to share from any website.</p>
 				</div>
 				<div class="doneText guest" id="doneRegister">
-					<span class="link" onclick="window.open('http://sharethis.com/users/register/','register','resizable=1,location=1,status=1,scrollbars=1,toolbar=1'); return false;"><span id="bullet_3"></span></span>
-					<h2><span class="link" onclick="window.open('http://sharethis.com/users/register/','register','resizable=1,location=1,status=1,scrollbars=1,toolbar=1'); return false;">Register Now!</span></h2>
+					<span class="link" onclick="pageTracker._trackEvent('Done', 'register_now_image_click');window.open('http://sharethis.com/users/register/','register','resizable=1,location=1,status=1,scrollbars=1,toolbar=1'); return false;"><span id="bullet_3"></span></span>
+					<h2><span class="link" onclick="pageTracker._trackEvent('Done', 'register_now_link_click');window.open('http://sharethis.com/users/register/','register','resizable=1,location=1,status=1,scrollbars=1,toolbar=1'); return false;">Register Now!</span></h2>
 					<p>Instantly Share with your friends using Email, AIM, MySpace and more.</p>
 				</div>
 				<div class="doneText">
-					<span class="link" onclick="window.open('http://sharethis.com/publishers/getbutton/','getthebutton','resizable=1,location=1,status=1,scrollbars=1,toolbar=1'); return false;"><span id="bullet_2"></span></span>
-					<h2><span class="link" onclick="window.open('http://sharethis.com/publishers/getbutton/ ','getthebutton','resizable=1,location=1,status=1,scrollbars=1,toolbar=1'); return false;">Get the Button!</span></h2>
+					<span class="link" onclick="pageTracker._trackEvent('Done', 'get_the_button_image_click);window.open('http://sharethis.com/publishers/getbutton/','getthebutton','resizable=1,location=1,status=1,scrollbars=1,toolbar=1'); return false;"><span id="bullet_2"></span></span>
+					<h2><span class="link" onclick="pageTracker._trackEvent('Done', 'get_the_button_link_click);window.open('http://sharethis.com/publishers/getbutton/ ','getthebutton','resizable=1,location=1,status=1,scrollbars=1,toolbar=1'); return false;">Get the Button!</span></h2>
 					<p>Put ShareThis on your website or blog in minutes!</p>
 				</div>
 				<div class="col_act">
-					<button onclick="javascript:widget.showPage('home')" id="doneScreenOk" class="button">&#171; Send to more friends</button>
+					<button onclick="javascript:pageTracker._trackEvent('Done', 'send_to_more_friends_btn_click);widget.showPage('home')" id="doneScreenOk" class="button">&#171; Send to more friends</button>
 				</div>
 				<div class="clear"></div>
 			</div>
@@ -312,7 +312,7 @@
 							<dt><label id="labelPassword">Password</label></dt>
 							<dd>
 								<input type="password" name="password" id="textAuthPassword" class="text"/>
-								<div id="textAuthPassword_forgot"><a rel="external" target="_blank" href="http://sharethis.com/account/lostpassword/" id="linkForgotPassword" onclick="if(glo_options_popup==true){popupOpen2(this);return false;}">Forgot?</a></div>
+								<div id="textAuthPassword_forgot"><a rel="external" target="_blank" href="http://sharethis.com/account/lostpassword/" id="linkForgotPassword" onclick="pageTracker._trackEvent('SignIn', 'forgot_click');if(glo_options_popup==true){popupOpen2(this);return false;}">Forgot?</a></div>
 							</dd>
 						</dl>
 						<div class="col_foot" style="margin-right: 22px">
@@ -338,7 +338,7 @@
 							<span class="light" id="linkSignIn">Sign In</span>
 						</div>
 						<div id="signedInFooter" class="opposite_right">
-							<span id="myAcct"><a id="myAccLink" class="link_dark" rel="external" target="_blank" href="http://sharethis.com/account" onclick="if(glo_options_popup==true){popupOpen2(this);return false;}">My Account</a> | <span class="link_dark" id="linkSignOut">Sign Out</span></span>
+							<span id="myAcct"><a id="myAccLink" class="link_dark" rel="external" target="_blank" href="http://sharethis.com/account" onclick="pageTracker._trackEvent('Footer', 'my_account_click');if(glo_options_popup==true){popupOpen2(this);return false;}">My Account</a> | <span class="link_dark" id="linkSignOut">Sign Out</span></span>
 						</div>
 					</div>
 					<div class="clear"></div>

@@ -1500,6 +1500,7 @@ if (!window.console || !console.firebug) {
 		}
 	}
 	function show() {
+		pageTracker._trackEvent("Widget", "widget_open"); 
 		if(glo_initRun==false){
 			return false;
 		}
@@ -2716,6 +2717,7 @@ Widget.implement({
 			id: 'sharebox_page',
 			onReady: function() {
 				$('sharebox_submit').addEvent('click',function(event) {
+					pageTracker._trackEvent("Sharebox", "save_click", $('sharebox_tags').get('value')); 
 					widget.saveToShareBox($('sharebox_tags').get('value'));
 					event.stop();
 				});
@@ -2817,6 +2819,7 @@ Widget.implement({
 					var a = new Element('a', { href: '#', title: recipients[i].address + ' (' + recipients[i].service + ')' });
 					a.set('html', recipients[i].name);
 					a.addEvent('click', (function() {
+						pageTracker._trackEvent("Send", "recents_click", "", i); 
 						var enclosedRecipient = recipients[i];	// peel off a copy for the closure
 						return (function(event) {
 							var existingContact = widget.user.searchContactsExact(
@@ -2938,12 +2941,14 @@ Widget.implement({
 			onReady: function() {
 				this.toField = new Widget.ToField(widget, $('send_to_field'));
 				$('previewCloseLink').addEvent('click',function(event){
+					pageTracker._trackEvent("Send", "preview_close_click"); 
 					$('preview').addClass('hidden');
 					$('linkPreview').removeClass('hidden');
 					$('previewCloseLink').addClass('hidden');
 					event.stop();
 				});
 				$('linkPreview').addEvent('click',function(event){
+					pageTracker._trackEvent("Send", "preview_open_click"); 
 					$('preview').removeClass('hidden');
 					$('previewThumb').set("html","<img width='100' src='"+glo_thumbImageTag+"'/>");
 					$('linkPreview').addClass('hidden');
@@ -2951,6 +2956,7 @@ Widget.implement({
 					event.stop();
 				});
 				$('btnShareSend').addEvent('click', (function(){
+					pageTracker._trackEvent("Send", "send_btn_click"); 
 					var recipients = widget.user.getSelectedContacts();
 					
 					if($('contact_search_field')){
@@ -3034,6 +3040,7 @@ Widget.implement({
 				});
 				
 				$('import_contacts_submit').addEvent('click', (function(event) {
+					pageTracker._trackEvent("Import", "import_btn_click", widget.currentImportContactService); 
 					Cookie.dispose('import', {domain: ".sharethis.com", path: '/'});
 					Cookie.dispose('import_delt', {domain: ".sharethis.com", path: '/'});
 					var service = widget.currentImportContactService;
@@ -3253,14 +3260,17 @@ Widget.implement({
 						});
 
 						$('post_draft_btn').addEvent('click', function(){
+							pageTracker._trackEvent("Post", "draft_btn_click", "blogger"); 
 							setGlobals("glo_bloggerDraft",0);
 							widget.postBlogger();
 						});
 						$('post_submit_btn').addEvent('click', function(){
+							pageTracker._trackEvent("Post", "post_btn_click", "blogger"); 
 							setGlobals("glo_bloggerDraft",1);
 							widget.postBlogger(); 
 						});
 						$('post_publish_btn').addEvent('click', function(){
+							pageTracker._trackEvent("Post", "submit_btn_click", "blogger"); 
 							widget.postBlogger(); 
 						});
 						this.bindReturnKeyToSubmission();
@@ -3281,6 +3291,7 @@ Widget.implement({
 							if($('post_message').value==="optional"){$('post_message').value="";}
 						});
 						$('post_submit_btn').addEvent('click', function(){
+							pageTracker._trackEvent("Post", "post_btn_click", "livejournal"); 
 							widget.postLive_journal(); 
 						});
 						this.bindReturnKeyToSubmission();
@@ -3328,6 +3339,7 @@ Widget.implement({
 							this.updateCharacterCounter();
 						}).bind(this));
 						$('post_submit_btn').addEvent('click', function(){
+							pageTracker._trackEvent("Post", "post_btn_click", "twitter"); 
 							widget.postTwitter(); 
 						});
 						this.bindReturnKeyToSubmission();
@@ -3374,14 +3386,17 @@ Widget.implement({
 						});
 
 						$('post_draft_btn').addEvent('click', function(){
+							pageTracker._trackEvent("Post", "draft_btn_click", "typepad"); 
 							setGlobals("glo_tpDraft",0);
 							widget.postTypePad();
 						});
 						$('post_submit_btn').addEvent('click', function(){
+							pageTracker._trackEvent("Post", "post_btn_click", "typepad"); 
 							setGlobals("glo_tpDraft",1);
 							widget.postTypePad(); 
 						});
 						$('post_publish_btn').addEvent('click', function(){
+							pageTracker._trackEvent("Post", "submit_btn_click", "typepad"); 
 							widget.postTypePad(); 
 						});
 						this.bindReturnKeyToSubmission();
@@ -3399,6 +3414,7 @@ Widget.implement({
 					},
 					onShow: function() {
 						$('post_submit_btn').addEvent('click', function() {
+							pageTracker._trackEvent("Post", "post_btn_click", "wordpress"); 
 							widget.postWordpress(); 
 						});
 						this.bindReturnKeyToSubmission();
@@ -5611,9 +5627,11 @@ window.addEvent('domready', function() {
 	emptyInputs();
 
 	$('linkAuthSignIn').addEvent('click', function(){
+		pageTracker._trackEvent("SignIn", "signin_btn_click"); 
 		widget.signIn();
 	});
 	$('loginClose').addEvent('click', function(){
+		pageTracker._trackEvent("SignIn", "cancel_btn_click"); 
 		widget.closeLoginBox();
 	});
 	$('linkSignIn').addEvent('click', function(){
@@ -5683,6 +5701,7 @@ window.addEvent('domready', function() {
 	}
 
 	$('createAccount').addEvent('click', function(event) {
+		pageTracker._trackEvent("SignIn", "create_account_btn_click"); 
 		widget.closeLoginBox();
 		widget.showPage('register');
 		event.stop();
@@ -5711,12 +5730,14 @@ window.addEvent('domready', function() {
 	$('post_remember_me').addEvent('click', function() {
 		var postFields = new Array( 'post_url', 'post_username', 'post_password' );
 		if ($('post_remember_me').checked == false) {
+			pageTracker._trackEvent("Post", "post_remember_me_click", "forget_me"); 
 			$('post_forget_me').value = 'true';
 			postFields.each( function(item) {
 				widget.unfreezeTextInput($(item));
 				$(item).value = '';
 			});
 		} else {
+			pageTracker._trackEvent("Post", "post_remember_me_click", "remember_me"); 
 			postFields.each( function(item) {
 				widget.freezeTextInput($(item));
 			});
