@@ -1,6 +1,6 @@
 /*
 ShareThis Loader Version 4.0.3-rc1
-8/23/09 ShareThis.com
+8/26/09 ShareThis.com
 */
 
 
@@ -569,6 +569,9 @@ try{
 				var xInt2="";
 				var sendDataInt="";
 				var sendPopupDataInt="";
+				if(this.meta.publisher=="65ab919d-0cc6-44bb-909e-e3db6f8dde10"){ //temp change for candystand to enable mouseover on default
+					o.options.onmouseover=true;
+				}
 		        if(o.options.popup){ 
 					o.options.onmouseover = false;
 					SHARETHIS.popupExists=true;
@@ -974,6 +977,7 @@ try{
 					if (this.options.publisher) {
 						this.meta.publisher = this.options.publisher;
 					}
+	
 					var tmp_css='http://w.sharethis.com/button/css/sharethis.'+STV+'.css';
 					try{
 						if(this.options.css){
