@@ -1083,8 +1083,7 @@ if (!window.console || !console.firebug) {
 				if(value.length>5){
 					glo_thumbImageTag=value;
 				}
-				widget.fireEvent('shareableURLChanged', value);
-				break;			
+			    break;			
 			case "category":
 				glo_category=value;
 				break;
@@ -2726,6 +2725,9 @@ Widget.implement({
 					$('sharebox_tags').set('value', glo_tags_array.join(','));
 				}
 				widget.addEvent('shareableURLChanged', (function(url) {
+					if( url == '' ) {
+						url = glo_url;
+					}
 					var domain = widget.extractDomainFromURL(url);
 					$('sharebox_previewUrl').set('text', domain);
 					if (url.length) {
@@ -3766,12 +3768,14 @@ Widget.implement({
             title: 'Save',
 			onClick: function(event) { 
 				if (widget.userIsSignedIn()) {
+					widget.fireEvent('shareableURLChanged', glo_thumb);
 					widget.showPage('sharebox');
 				} else {
 					widget.showPage('register');
 					widget.displayNotification('You must register to save items to a ShareBox.');
 					var signedIn = leftPage = null;
 					signedIn = function() {
+						widget.fireEvent('shareableURLChanged', glo_thumb);
 						widget.showPage('sharebox');
 						widget.removeEvent('signInComplete', signedIn);
 						widget.removeEvent('pageHidden', leftPage);

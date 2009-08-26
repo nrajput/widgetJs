@@ -1,10 +1,10 @@
 /*
-ShareThis Loader Version 4.0.2-rc2
+ShareThis Loader Version 4.0.3-rc1
 8/23/09 ShareThis.com
 */
 
 
-var STV="4.0.2-rc2";
+var STV="4.0.3-rc1";
 
 ST_JSON = new function(){
 

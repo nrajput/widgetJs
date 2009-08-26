@@ -5,7 +5,7 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title>ShareThis</title>
-		<link rel="stylesheet" href="http://w.sharethis.com/share3x/css/share.4.0.2-rc2.css" type="text/css" media="screen" />
+		<link rel="stylesheet" href="http://w.sharethis.com/share3x/css/share.4.0.3-rc1.css" type="text/css" media="screen" />
 		<script type="text/javascript">
 		<!-- //
 
@@ -22,12 +22,12 @@
 		</script>
 
 		<script src="http://w.sharethis.com/share3x/js/mootools-1.2.1-core-nc.js" type="text/javascript"></script>
-		<script src="http://w.sharethis.com/share3x/js/all.4.0.2-rc2.js" type="text/javascript"></script>
+		<script src="http://w.sharethis.com/share3x/js/all.4.0.3-rc1.js" type="text/javascript"></script>
 		<!--[if IE]>
-			<style type="text/css">/*<![CDATA[*/ @import "http://w.sharethis.com/share3x/css/ie.4.0.2-rc2.css"; /*]]>*/</style>
+			<style type="text/css">/*<![CDATA[*/ @import "http://w.sharethis.com/share3x/css/ie.4.0.3-rc1.css"; /*]]>*/</style>
 		<![endif]-->
 		<!--[if IE 6]>
-			<style type="text/css">/*<![CDATA[*/ @import "http://w.sharethis.com/share3x/css/ie6.4.0.2-rc2.css"; /*]]>*/</style>
+			<style type="text/css">/*<![CDATA[*/ @import "http://w.sharethis.com/share3x/css/ie6.4.0.3-rc1.css"; /*]]>*/</style>
 		<![endif]-->
 	</head>
 	<body id="or">
@@ -200,10 +200,10 @@
 				<p>Stuff this in your ShareBox and check it out whenever you want.</p>
 				<dl class="col">
 					<dt><label for="sharebox_tags">Tags:</label></dt>
-					<dd><input class="text" id="sharebox_tags" type="text" value=""/></dd>
+					<dd><input class="text" id="sharebox_tags" type="text" value="" style="width: 226px"/></dd>
 					<dt><label></label></dt>
 					<dd>
-						<div id="sharebox_preview" class="preview_container hidden">
+						<div id="sharebox_preview" class="preview_container hidden" style="margin: 0 0 0 -9px">
 							<div class="preview_thumb_container"><img id="sharebox_previewThumb" src="" width="100" alt="" /></div>
 							<div id="sharebox_previewTextContainer" class="preview_text_container">
 								<div id="sharebox_previewTitle" class="preview_title"></div>
@@ -215,11 +215,12 @@
 					</dd>
 				</dl>
 				<div class="col_foot">
-					<div class="col_act">
-						<input class="button" id="sharebox_submit" value="Save" type="button"/>
-					</div>
-					<span class="link" onclick="pageTracker._trackEvent('Sharebox', 'cancel_btn_click');widget.showPreviousPage();">Go back</span>
+				  <div class="col_act">
+					<div class="button_new" onclick="pageTracker._trackEvent('Sharebox', 'cancel_btn_click');widget.showPreviousPage();"><span>Cancel</span></div>
+					<div id="sharebox_submit" class="button_new_green" ><span>Save</span></div>
+				  </div>
 				</div>
+				<div class="clear"></div>
 			</div>
 			<div id="post_page" class="panel hidden">
 			  <div class="clear"></div>
@@ -291,7 +292,7 @@
 					<p>Put ShareThis on your website or blog in minutes!</p>
 				</div>
 				<div class="col_act">
-					<button onclick="javascript:pageTracker._trackEvent('Done', 'send_to_more_friends_btn_click);widget.showPage('home')" id="doneScreenOk" class="button">&#171; Send to more friends</button>
+					<div id="doneScreenOk" class="button_new_green" onclick="javascript:pageTracker._trackEvent('Done', 'send_to_more_friends_btn_click');widget.showPage('home');"><span>Share Again</span></div>
 				</div>
 				<div class="clear"></div>
 			</div>
