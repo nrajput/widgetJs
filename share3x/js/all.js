@@ -151,7 +151,7 @@ var Widget = new Class({ Implements: Events,
 			if(resp.errorMessage && resp.errorMessage.toLowerCase()==="auth_failed") {
 				this.fireEvent('postToServiceFailed', [
 					'blogger', 
-					'Invalid Username or Password'
+					'Invalid Blogger Username or Password'
 				]);
 			} 
 			else if (resp.errorMessage && resp.errorMessage.toLowerCase()==="multiple") {
@@ -317,7 +317,7 @@ var Widget = new Class({ Implements: Events,
 					case 'auth_failed':
 						this.fireEvent('postToServiceFailed', [
 							'twitter', 
-							'Invalid Username or Password'
+							'Invalid Twitter Username or Password'
 						]);
 						break;
 					default:
@@ -409,7 +409,7 @@ var Widget = new Class({ Implements: Events,
 			if (resp.errorMessage && resp.errorMessage.toLowerCase() == 'auth_failed') {
 				this.fireEvent('postToServiceFailed', [
 					'typepad', 
-					'Invalid Username or Password'
+					'Invalid Typepad Username or Password'
 				]);
 			}
 			if (resp.errorMessage && resp.errorMessage.toLowerCase() == 'multiple') {
@@ -774,9 +774,6 @@ var Widget = new Class({ Implements: Events,
 		}
 	},
 	freezeTextInput: function(inputElement) {
-		if( inputElement.hasClass('frozen') ){
-			return;
-		}
 		inputElement.addClass('frozen');
 		inputElement.addEvent('focus', this._frozenFocusHandler);
 		inputElement.blur();
@@ -924,6 +921,7 @@ if (!window.console || !console.firebug) {
 	var glo_adtag_header="";
 	var glo_adtag_footer="";
 	var glo_page="";
+var glo_post_page=[];
     var glo_credentials = "";
 	var glo_pUrl="";
 	
@@ -2532,7 +2530,7 @@ if (!window.console || !console.firebug) {
 	}
 	
 function populateSavedCredentials(service) {
-		if (glo_credentials == "") return;
+	if (glo_credentials == "" || typeof(glo_credentials) == "undefined") return;
 		for (var i = 0; i <= glo_credentials.length; i++) {
 			if (glo_credentials[i] && glo_credentials[i].service == service) {
 				try{
@@ -2552,7 +2550,6 @@ function populateSavedCredentials(service) {
 						post_password.value = credentials[i].password;
 					}
 				}catch(err){
-					console.log(err);
 				}
 			}
 		}
@@ -3203,6 +3200,18 @@ Widget.implement({
 		post: {
 			id: 'post_page',
 			onShow: function() {
+					//				widget.addEvent('postToServiceNeedsMoreInfo', function(serviceTag, message) {
+					//	widget.popModalWorkingSheet();
+					//	widget.displayNotification(message);
+					//	});
+				
+				$('privacyLink').removeClass('hidden');
+			},
+			onHide: function() {
+				$('privacyLink').addClass('hidden');
+				this.parent();
+			},
+			onReady: function() {
 				widget.addEvent('postToServiceRequested', function(serviceTag) {
 					widget.pushModalWorkingSheet(
 						'<span class="' + serviceTag + '">Posting your share to ' + widget.services[serviceTag].title + '</span>'
@@ -3217,19 +3226,7 @@ Widget.implement({
 					widget.popModalWorkingSheet();
 					widget.pushModalErrorSheet(error);
 				});
-				widget.addEvent('postToServiceNeedsMoreInfo', function(serviceTag, message) {
-					widget.popModalWorkingSheet();
-					widget.displayNotification(message);
-				});
-
-				$('privacyLink').removeClass('hidden');
 				this.parent();
-			},
-			onHide: function() {
-				$('privacyLink').addClass('hidden');
-				this.parent();
-			},
-			onReady: function() {
 			},
 			pages: {
 				blogger: {
@@ -3259,6 +3256,8 @@ Widget.implement({
 							$('post_submit_btn').addClass('hidden');
 							$('post_select_container').set('html', blOptions);
 							$('post_select_box').removeClass('hidden');
+							widget.popModalWorkingSheet();
+							widget.displayNotification(message);
 						});
 
 						$('post_draft_btn').addEvent('click', function(){
@@ -3482,6 +3481,7 @@ Widget.implement({
 		}
 	},
 	initPost: function(page) {
+		glo_post_page = page;
 		$('post_url').set('value', '');
 		$('post_username').set('value', '');
 		$('post_password').set('value', '');
@@ -3499,6 +3499,10 @@ Widget.implement({
 		$('post_message').removeEvents('keypress');
 		$('post_message').removeEvents('keyup');
 		widget.removeEvents('postToServiceNeedsMoreInfo');
+		
+		if(document.getElementById('post_select')){
+			$('post_select_container').empty();
+		}
 
 		var postElements = new Array( "post_url_box", "post_message_box", "post_character_counter_div", "post_select_box", 
 									  "post_draft_btn", "post_submit_btn", "post_publish_btn" );
@@ -4668,6 +4672,7 @@ Widget.User = new Class({ Implements: Events,
 		this.fireEvent('signInRequested');
 	},
 	signOut: function() {
+		glo_credentials = [];
 		this.contacts = [];
 		this._selectedContacts = [];
 		this.clearShareServiceHistory();
@@ -5734,13 +5739,26 @@ window.addEvent('domready', function() {
 	$('post_remember_me').addEvent('click', function() {
 		var postFields = new Array( 'post_url', 'post_username', 'post_password' );
 		if ($('post_remember_me').checked == false) {
+			for (var i = 0; i <= glo_credentials.length; i++) {
+				if (glo_credentials[i] && glo_credentials[i].service == glo_post_page) {
+					glo_credentials.splice(i,1);
+				}
+			}
 			pageTracker._trackEvent("Post", "post_remember_me_click", "forget_me"); 
 			$('post_forget_me').value = 'true';
 			postFields.each( function(item) {
 				widget.unfreezeTextInput($(item));
 				$(item).value = '';
 			});
+			widget.initPost(glo_post_page);
+			widget.pages.post.pages[glo_post_page].onShow();
 		} else {
+			var new_cred = new Object();
+			new_cred.service = glo_post_page
+			new_cred.url = $('post_url').value;
+			new_cred.username = $('post_username').value
+			new_cred.password = $('post_password').value
+			glo_credentials.push(new_cred);
 			pageTracker._trackEvent("Post", "post_remember_me_click", "remember_me"); 
 			postFields.each( function(item) {
 				widget.freezeTextInput($(item));
