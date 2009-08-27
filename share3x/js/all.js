@@ -2624,6 +2624,17 @@ Widget.Page = new Class({ Implements: Events,
 			}).bind(this));
 		}).bind(this));
 	},
+	post_bindReturnKeyToSubmission: function(page) {
+		$('post_template').getElements('input[type=text], input[type=password]').each((function(input) {
+			input.removeEvents('keyup');
+			// @todo: validation shouldn't really happen in the postXXX method
+			input.addEvent('keyup', (function(event) {
+				if (event.key == 'enter' && !widget.showingAlert) {
+					widget.pages.post.pages[page].submitForm();
+				}
+			}).bind(this));
+		}).bind(this));
+	},
 	submitForm: function() {
 	},
 	bindHelpText: function(input, text) {
@@ -3274,7 +3285,7 @@ Widget.implement({
 							pageTracker._trackEvent("Post", "submit_btn_click", "blogger"); 
 							widget.postBlogger(); 
 						});
-						this.bindReturnKeyToSubmission();
+						this.post_bindReturnKeyToSubmission('blogger');
 					},
 					submitForm: function() {
 						setGlobals("glo_bloggerDraft",1);
@@ -3295,7 +3306,7 @@ Widget.implement({
 							pageTracker._trackEvent("Post", "post_btn_click", "livejournal"); 
 							widget.postLive_journal(); 
 						});
-						this.bindReturnKeyToSubmission();
+						this.post_bindReturnKeyToSubmission('livejournal');
 						this.parent();
 					},
 					submitForm: function() {
@@ -3343,7 +3354,7 @@ Widget.implement({
 							pageTracker._trackEvent("Post", "post_btn_click", "twitter"); 
 							widget.postTwitter(); 
 						});
-						this.bindReturnKeyToSubmission();
+						this.post_bindReturnKeyToSubmission('twitter');
 
 						$('post_message').value = this.statusMessage;
 						this.updateCharacterCounter();
@@ -3400,7 +3411,7 @@ Widget.implement({
 							pageTracker._trackEvent("Post", "submit_btn_click", "typepad"); 
 							widget.postTypePad(); 
 						});
-						this.bindReturnKeyToSubmission();
+						this.post_bindReturnKeyToSubmission('typepad');
 					},
 					submitForm: function() {
 						setGlobals("glo_tpDraft",0);
@@ -3418,7 +3429,7 @@ Widget.implement({
 							pageTracker._trackEvent("Post", "post_btn_click", "wordpress"); 
 							widget.postWordpress(); 
 						});
-						this.bindReturnKeyToSubmission();
+						this.post_bindReturnKeyToSubmission('wordpress');
 					},
 					submitForm: function() {
 						widget.postWordpress();
