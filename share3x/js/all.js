@@ -3050,7 +3050,7 @@ Widget.implement({
 				});
 				
 				$('import_contacts_submit').addEvent('click', (function(event) {
-					pageTracker._trackEvent("Import", "import_btn_click", widget.currentImportContactService); 
+					pageTracker._trackEvent("Import", "import_btn_click", widget.currentImportContactService.protocolName); 
 					Cookie.dispose('import', {domain: ".sharethis.com", path: '/'});
 					Cookie.dispose('import_delt', {domain: ".sharethis.com", path: '/'});
 					var service = widget.currentImportContactService;
