@@ -2829,7 +2829,7 @@ Widget.implement({
 					var a = new Element('a', { href: '#', title: recipients[i].address + ' (' + recipients[i].service + ')' });
 					a.set('html', recipients[i].name);
 					a.addEvent('click', (function() {
-						pageTracker._trackEvent("Send", "recents_click", "", i); 
+						pageTracker._trackEvent("Send", "recents_click", i+1, i+1); 
 						var enclosedRecipient = recipients[i];	// peel off a copy for the closure
 						return (function(event) {
 							var existingContact = widget.user.searchContactsExact(
