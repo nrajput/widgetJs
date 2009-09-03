@@ -1608,6 +1608,14 @@ var glo_post_page=[];
 		$('post_select_container').set('html',"");
 	}
 
+    //Google Analytics tracking wrapper
+    function gaLog(category, action, label, value) {
+		var type = typeof(pageTracker);
+		if( typeof(pageTracker) != "undefined" ) {
+			pageTracker._trackEvent(category, action, label, value);
+		}
+	}
+
 	//creates a social web log event
 	function logSW(network) {
 		var source = "";
@@ -2724,7 +2732,7 @@ Widget.implement({
 			id: 'sharebox_page',
 			onReady: function() {
 				$('sharebox_submit').addEvent('click',function(event) {
-					pageTracker._trackEvent("Sharebox", "save_click", $('sharebox_tags').get('value')); 
+					gaLog("Sharebox", "save_click", $('sharebox_tags').get('value')); 
 					widget.saveToShareBox($('sharebox_tags').get('value'));
 					event.stop();
 				});
@@ -2829,7 +2837,7 @@ Widget.implement({
 					var a = new Element('a', { href: '#', title: recipients[i].address + ' (' + recipients[i].service + ')' });
 					a.set('html', recipients[i].name);
 					a.addEvent('click', (function() {
-						pageTracker._trackEvent("Send", "recents_click", i+1, i+1); 
+						gaLog("Send", "recents_click", i+1, i+1); 
 						var enclosedRecipient = recipients[i];	// peel off a copy for the closure
 						return (function(event) {
 							var existingContact = widget.user.searchContactsExact(
@@ -2951,14 +2959,14 @@ Widget.implement({
 			onReady: function() {
 				this.toField = new Widget.ToField(widget, $('send_to_field'));
 				$('previewCloseLink').addEvent('click',function(event){
-					pageTracker._trackEvent("Send", "preview_close_click"); 
+					gaLog("Send", "preview_close_click"); 
 					$('preview').addClass('hidden');
 					$('linkPreview').removeClass('hidden');
 					$('previewCloseLink').addClass('hidden');
 					event.stop();
 				});
 				$('linkPreview').addEvent('click',function(event){
-					pageTracker._trackEvent("Send", "preview_open_click"); 
+					gaLog("Send", "preview_open_click"); 
 					$('preview').removeClass('hidden');
 					$('previewThumb').set("html","<img width='100' src='"+glo_thumbImageTag+"'/>");
 					$('linkPreview').addClass('hidden');
@@ -2966,7 +2974,7 @@ Widget.implement({
 					event.stop();
 				});
 				$('btnShareSend').addEvent('click', (function(){
-					pageTracker._trackEvent("Send", "send_btn_click"); 
+					gaLog("Send", "send_btn_click"); 
 					var recipients = widget.user.getSelectedContacts();
 					
 					if($('contact_search_field')){
@@ -3050,7 +3058,7 @@ Widget.implement({
 				});
 				
 				$('import_contacts_submit').addEvent('click', (function(event) {
-					pageTracker._trackEvent("Import", "import_btn_click", widget.currentImportContactService.protocolName); 
+					gaLog("Import", "import_btn_click", widget.currentImportContactService.protocolName); 
 					Cookie.dispose('import', {domain: ".sharethis.com", path: '/'});
 					Cookie.dispose('import_delt', {domain: ".sharethis.com", path: '/'});
 					var service = widget.currentImportContactService;
@@ -3272,17 +3280,17 @@ Widget.implement({
 						});
 
 						$('post_draft_btn').addEvent('click', function(){
-							pageTracker._trackEvent("Post", "draft_btn_click", "blogger"); 
+							gaLog("Post", "draft_btn_click", "blogger"); 
 							setGlobals("glo_bloggerDraft",0);
 							widget.postBlogger();
 						});
 						$('post_submit_btn').addEvent('click', function(){
-							pageTracker._trackEvent("Post", "post_btn_click", "blogger"); 
+							gaLog("Post", "post_btn_click", "blogger"); 
 							setGlobals("glo_bloggerDraft",1);
 							widget.postBlogger(); 
 						});
 						$('post_publish_btn').addEvent('click', function(){
-							pageTracker._trackEvent("Post", "submit_btn_click", "blogger"); 
+							gaLog("Post", "submit_btn_click", "blogger"); 
 							widget.postBlogger(); 
 						});
 						this.post_bindReturnKeyToSubmission('blogger');
@@ -3303,7 +3311,7 @@ Widget.implement({
 							if($('post_message').value==="optional"){$('post_message').value="";}
 						});
 						$('post_submit_btn').addEvent('click', function(){
-							pageTracker._trackEvent("Post", "post_btn_click", "livejournal"); 
+							gaLog("Post", "post_btn_click", "livejournal"); 
 							widget.postLive_journal(); 
 						});
 						this.post_bindReturnKeyToSubmission('livejournal');
@@ -3351,7 +3359,7 @@ Widget.implement({
 							this.updateCharacterCounter();
 						}).bind(this));
 						$('post_submit_btn').addEvent('click', function(){
-							pageTracker._trackEvent("Post", "post_btn_click", "twitter"); 
+							gaLog("Post", "post_btn_click", "twitter"); 
 							widget.postTwitter(); 
 						});
 						this.post_bindReturnKeyToSubmission('twitter');
@@ -3398,17 +3406,17 @@ Widget.implement({
 						});
 
 						$('post_draft_btn').addEvent('click', function(){
-							pageTracker._trackEvent("Post", "draft_btn_click", "typepad"); 
+							gaLog("Post", "draft_btn_click", "typepad"); 
 							setGlobals("glo_tpDraft",0);
 							widget.postTypePad();
 						});
 						$('post_submit_btn').addEvent('click', function(){
-							pageTracker._trackEvent("Post", "post_btn_click", "typepad"); 
+							gaLog("Post", "post_btn_click", "typepad"); 
 							setGlobals("glo_tpDraft",1);
 							widget.postTypePad(); 
 						});
 						$('post_publish_btn').addEvent('click', function(){
-							pageTracker._trackEvent("Post", "submit_btn_click", "typepad"); 
+							gaLog("Post", "submit_btn_click", "typepad"); 
 							widget.postTypePad(); 
 						});
 						this.post_bindReturnKeyToSubmission('typepad');
@@ -3426,7 +3434,7 @@ Widget.implement({
 					},
 					onShow: function() {
 						$('post_submit_btn').addEvent('click', function() {
-							pageTracker._trackEvent("Post", "post_btn_click", "wordpress"); 
+							gaLog("Post", "post_btn_click", "wordpress"); 
 							widget.postWordpress(); 
 						});
 						this.post_bindReturnKeyToSubmission('wordpress');
@@ -3729,7 +3737,7 @@ Widget.implement({
 		$('loginBox').get('morph').removeEvents('complete').addEvent('complete', function() {
 			$('loginBox').addClass('hidden');
 			$('linkSignIn').addEvent('click', function() {
-				pageTracker._trackEvent("Footer", "signin_link", "Sign In Link"); 
+				gaLog("Footer", "signin_link", "Sign In Link"); 
 				widget.openLoginBox();
 			});
 		});
@@ -4135,7 +4143,7 @@ Widget.implement({
 			id: 'post_'+serviceTag+'_link'
 		});
 		a.addEvent('click', (function(event) {
-			pageTracker._trackEvent("Home", "chicklet_click", serviceTag);
+			gaLog("Home", "chicklet_click", serviceTag);
 			if ('destination' in service) {
 				logSW(service.destination);
 				if (widget.user) {
@@ -4319,14 +4327,14 @@ Widget.Carousel = new Class({ Implements: Events,
 		}
 		var poppet = this;
 		$('fwd_arrow').addEvent('click', function(event) {
-			pageTracker._trackEvent("Home", "carousel_fwd_arrow", "Carousel Forward Arrow"); 
+			gaLog("Home", "carousel_fwd_arrow", "Carousel Forward Arrow"); 
 			if (poppet.getNumPages() > 1) {
 				poppet.advance();
 			}
 			event.stop();
 		});
 		$('back_arrow').addEvent('click', function(event) {
-			pageTracker._trackEvent("Home", "carousel_back_arrow", "Carousel Backward Arrow"); 
+			gaLog("Home", "carousel_back_arrow", "Carousel Backward Arrow"); 
 			if (poppet.getNumPages() > 1) {
 				poppet.rewind();
 			}
@@ -4484,7 +4492,7 @@ Widget.Carousel = new Class({ Implements: Events,
 		var html= "";
 		for(var i=0;i<pages;i++){
 			var num=i+1;
-			html+='<div class="circles" onclick="pageTracker._trackEvent(\'Home\', \'carousel_paging_dot\', \'Carousel Paging Dot\'); widget.carousel.goToPage('+num+');" title="Go To Page # '+num+'"></div> ';			
+			html+='<div class="circles" onclick="gaLog(\'Home\', \'carousel_paging_dot\', \'Carousel Paging Dot\'); widget.carousel.goToPage('+num+');" title="Go To Page # '+num+'"></div> ';			
 		}
 		
 		$("circle_container").set('html',html);
@@ -5622,6 +5630,23 @@ Widget.ToField.scrollBehavior_scroll = 1;
 //domready.js
 
 window.addEvent('domready', function() {
+
+	var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+
+	var headID = document.getElementsByTagName("head")[0];         
+	var newScript = document.createElement('script');
+	newScript.type = 'text/javascript';
+	newScript.src = gaJsHost + "google-analytics.com/ga.js";
+	headID.appendChild(newScript);
+
+	var newScript = document.createElement('script');
+	newScript.type = 'text/javascript';
+	newScript.set('html',  'try{' +
+        'var pageTracker = _gat._getTracker("UA-1645146-9");' +
+		'pageTracker._trackPageview();' +
+				  '} catch(err) {}');
+	headID.appendChild(newScript);
+	
 	domReady=true;
 	if(glo_options_popup===true && glo_toolbar==false)
 	{
@@ -5647,19 +5672,19 @@ window.addEvent('domready', function() {
 	emptyInputs();
 
 	$('linkAuthSignIn').addEvent('click', function(){
-		pageTracker._trackEvent("SignIn", "signin_btn_click"); 
+		gaLog("SignIn", "signin_btn_click"); 
 		widget.signIn();
 	});
 	$('loginClose').addEvent('click', function(){
-		pageTracker._trackEvent("SignIn", "cancel_btn_click"); 
+		gaLog("SignIn", "cancel_btn_click"); 
 		widget.closeLoginBox();
 	});
 	$('linkSignIn').addEvent('click', function(){
-		pageTracker._trackEvent("Footer", "signin_link", "Sign In Link"); 
+		gaLog("Footer", "signin_link", "Sign In Link"); 
 		widget.openLoginBox();
 	});
 	$('linkSignOut').addEvent('click', function(){
-		pageTracker._trackEvent("Footer", "signout_link", "Sign Out Link"); 
+		gaLog("Footer", "signout_link", "Sign Out Link"); 
 		if (glo_page == "send" || glo_page == "post|twitter") {
 			widget.showPage(glo_page);
 		} else {
@@ -5721,7 +5746,7 @@ window.addEvent('domready', function() {
 	}
 
 	$('createAccount').addEvent('click', function(event) {
-		pageTracker._trackEvent("SignIn", "create_account_btn_click"); 
+		gaLog("SignIn", "create_account_btn_click"); 
 		widget.closeLoginBox();
 		widget.showPage('register');
 		event.stop();
@@ -5755,7 +5780,7 @@ window.addEvent('domready', function() {
 					glo_credentials.splice(i,1);
 				}
 			}
-			pageTracker._trackEvent("Post", "post_remember_me_click", "forget_me"); 
+			gaLog("Post", "post_remember_me_click", "forget_me"); 
 			$('post_forget_me').value = 'true';
 			postFields.each( function(item) {
 				widget.unfreezeTextInput($(item));
@@ -5770,7 +5795,7 @@ window.addEvent('domready', function() {
 			new_cred.username = $('post_username').value
 			new_cred.password = $('post_password').value
 			glo_credentials.push(new_cred);
-			pageTracker._trackEvent("Post", "post_remember_me_click", "remember_me"); 
+			gaLog("Post", "post_remember_me_click", "remember_me"); 
 			postFields.each( function(item) {
 				widget.freezeTextInput($(item));
 			});
