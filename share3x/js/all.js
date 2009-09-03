@@ -1497,7 +1497,7 @@ var glo_post_page=[];
 		}
 	}
 	function show() {
-		pageTracker._trackEvent("Widget", "widget_open"); 
+		gaLog("Widget", "widget_open"); 
 		if(glo_initRun==false){
 			return false;
 		}
@@ -1610,7 +1610,6 @@ var glo_post_page=[];
 
     //Google Analytics tracking wrapper
     function gaLog(category, action, label, value) {
-		var type = typeof(pageTracker);
 		if( typeof(pageTracker) != "undefined" ) {
 			pageTracker._trackEvent(category, action, label, value);
 		}
