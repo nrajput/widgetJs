@@ -330,8 +330,8 @@ try{
 			this.wrapper=null;
 			this.ready=false;
 			this.popupCalled=false;
-			this.sessionID = (new Date()).getTime().toString();
-			this.sessionID += "." + Math.random().toPrecision(5).toString();
+			this.sessionID=(new Date()).getTime();
+			this.sessionID+=Math.random();
 			options['sessionID']=this.sessionID;
 			this.fpc=_stFpc();
 			options['fpc']=this.fpc;
@@ -879,14 +879,6 @@ try{
 				} else {
 					url = document.URL;
 				}
-
-				var session_arr = new Array();
-				var session_int = Math.floor(SHARETHIS.sessionID);
-				session_arr.push( session_int );
-				session_arr.push( SHARETHIS.sessionID - session_int );
-
-				var sts_hash = session_arr[0].toString(36) + '.' + session_arr[1].toString(36);
-				window.location.hash = 'STS=' + sts_hash;
 
 				//new l logger
 				var lurl = "http://l.sharethis.com/log?event=";
