@@ -875,15 +875,36 @@ try{
 		        }
 		    },
 		    this.log=function(event, obj, source) {
+				var referrer_sts = "";
+				var shr_flag = "";
+				var sts_hash = parseFloat(this.sessionID_time).toString(36) + 
+					'.' + parseFloat(this.sessionID_rand).toString(36);
+
+				var url_hash = window.location.hash;
+				var hash_regexp = new RegExp("STS=([^&\\s]+)(&SHR=([^&\\s]+))?", "i");
+				var matches = url_hash.match(hash_regexp);  // elements 1,3
+				if( matches != null ) {
+					var raw_str = matches[1];
+					var temp_arr = raw_str.split('.');
+					if( temp_arr != null) {
+						referrer_sts = parseInt( temp_arr[0], 36 ) + '.' + parseInt( temp_arr[1], 36 );
+						if( matches.length > 2 ) {
+							shr_flag = matches[3];
+						}
+					}
+				}
+
 				if (obj && obj.properties && obj.properties.url) {
 					url = obj.properties.url;
 				} else {
-					url = document.URL;
+					if( matches != null || window.location.hash == "" ) {
+						url = document.URL.split('#')[0];
+						window.location.hash = 'STS=' + sts_hash;
+					} else if( window.location.hash != "" ) {
+						url = document.URL;
+					}
 				}
 
-				var sts_hash = parseFloat(this.sessionID_time).toString(36) + 
-					'.' + parseFloat(this.sessionID_rand).toString(36);
-				window.location.hash = 'STS=' + sts_hash;
 
 				//new l logger
 				var lurl = "http://l.sharethis.com/log?event=";
@@ -899,6 +920,8 @@ try{
 		            + "&location=" + encodeURIComponent(SHARETHIS.meta.location)
 		            + "&url=" + encodeURIComponent(url)
 		            + "&sessionID="+SHARETHIS.sessionID
+		            + "&r_sessionID=" + referrer_sts
+				    + "&shr=" + shr_flag
 		            + "&fpc="+SHARETHIS.fpc
 		            + "&ts" + (new Date()).getTime() + "." + SHARETHIS.counter++;		        		         
 		                    		         
