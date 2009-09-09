@@ -904,6 +904,7 @@ if (!window.console || !console.firebug) {
 	var bufferArgs=[];
 	var bufferValue=[];
 	var bufferRunArgs=[];
+    var glo_hash_flag = false;
 	var glo_sessionID=null;
 	var glo_fpc=null;
 	var glo_thumbImageTag="";
@@ -1173,6 +1174,13 @@ var glo_post_page=[];
 			case "pageURL":
 				glo_page_url=value;
 				break;
+		    case "hash_flag":
+			    if( value == "true" ){
+					glo_hash_flag = true;
+				} else {
+					glo_hash_flag = false;
+				}
+			    break;
 			case "sessionID":
 				glo_sessionID=value;
 				break;
@@ -2433,7 +2441,7 @@ var glo_post_page=[];
 	}
 
     function addHashTracking(url) {
-		if( !url.match('#') && glo_sessionID != null) {
+		if( glo_hash_flag && (!url.match('#') && glo_sessionID != null) ) {
 			var hash_arr = glo_sessionID.split('.');
 			var sts_hash = parseFloat(hash_arr[0]).toString(36) + 
 				'.' + parseFloat(hash_arr[1]).toString(36);

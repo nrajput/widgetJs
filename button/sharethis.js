@@ -374,6 +374,7 @@ try{
 					this.hash_flag = false;
 				}
 			}
+			options['hash_flag'] = this.hash_flag;
 
 			this.sessionID_time = (new Date()).getTime().toString();
 			this.sessionID_rand = Math.random().toPrecision(5).toString().substr(2);
@@ -1220,7 +1221,7 @@ try{
 		}
 		
 		function SHARETHIS_tstOptions(tstStr){
-			var opt_arr=['type','title','summary','content','url','icon','category','updated','published','author','button','onmouseover','buttonText','popup','offsetLeft','offsetTop','embeds','autoclose','publisher','tabs','services','charset','headerbg','inactivebg','inactivefg','linkfg','style','send_services','post_services','headerfg','headerType','headerTitle','sessionID','tracking','fpc','ads','pUrl'];
+			var opt_arr=['type','title','summary','content','url','icon','category','updated','published','author','button','onmouseover','buttonText','popup','offsetLeft','offsetTop','embeds','autoclose','publisher','tabs','services','charset','headerbg','inactivebg','inactivefg','linkfg','style','send_services','post_services','headerfg','headerType','headerTitle','sessionID','tracking','fpc','ads','pUrl', 'hash_flag'];
 			var retVal=false;
 				for(var i=0;i<opt_arr.length;i++){
 					if(tstStr===opt_arr[i]){
