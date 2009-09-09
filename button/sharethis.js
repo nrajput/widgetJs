@@ -345,6 +345,36 @@ try{
 			this.popupCalled=false;
 			this.referrer_sts = "";
 			this.shr_flag = "";
+			this.publisherID = null;
+			if( options['publisher'] ) {
+				this.publisherID = options['publisher'][0];
+			}
+			this.hash_flag = false;
+			if( this.publisherID == '6beba854-ee6d-4ae1-a4f3-b69815c8ef63' ||
+				this.publisherID == 'd775c91e-1adb-499e-919d-de52745e7902' || 
+				this.publisherID == '275c66cf-cb06-447c-aec0-289146e214aa' ||
+				this.publisherID == '61531667-de39-47ee-96fb-a799c77ecc81' ||
+				this.publisherID == '06ef2313-b562-44c3-9e07-cb8ce2076dd4' ||
+				this.publisherID == 'f82262be-2900-45bb-bc4c-a962baead4c0' ||
+				this.publisherID == '1a31d67e-e32a-4e95-94d4-5abe21e6b7a5' ||
+				this.publisherID == '2e79a50d-64c7-419c-9cba-7a8e2f9dc610' ||
+				this.publisherID == '3c393c3e-a5a8-4c2a-9622-050378087434' ||
+				this.publisherID == '5ebf95cb-1249-41fe-b26e-a25ca5528bb0' ||
+				this.publisherID == '14f5174c-5e32-48b4-9cd9-4311b6985d85' ||
+				this.publisherID == '83da16e4-922b-45e3-9333-cc03e7637354' ||
+				this.publisherID == 'eab3790a-5b6e-4a77-b55a-c923d1211107'
+			  ) {
+				this.hash_flag = true;
+			}
+				
+			if( options['hash_flag'] ) {
+				if( options['hash_flag'] == 'true' ) {
+					this.hash_flag = true;
+				} else if( options['hash_flag'] == 'false' ) {
+					this.hash_flag = false;
+				}
+			}
+
 			this.sessionID_time = (new Date()).getTime().toString();
 			this.sessionID_rand = Math.random().toPrecision(5).toString().substr(2);
 			this.sessionID = this.sessionID_time + '.' + this.sessionID_rand;
@@ -912,7 +942,7 @@ try{
 						}
 					}
 
-					if( matches != null || url_str.split('#', 2).length < 2 ) {
+					if( this.hash_flag == true && (matches != null || url_str.split('#', 2).length < 2) ) {
 						var uri_part = url_str.split('#',2)[0];
 						url_str = uri_part + '#STS=' + sts_hash;
 						window.location.hash = 'STS=' + sts_hash;
@@ -948,8 +978,8 @@ try{
 		            + "&location=" + encodeURIComponent(SHARETHIS.meta.location)
 		            + "&url=" + encodeURIComponent(url)
 		            + "&sessionID="+SHARETHIS.sessionID
-		            + "&r_sessionID=" + referrer_sts
-				    + "&shr=" + shr_flag
+		            + "&r_sessionID=" + this.referrer_sts
+				    + "&shr=" + this.shr_flag
 		            + "&fpc="+SHARETHIS.fpc
 		            + "&ts" + (new Date()).getTime() + "." + SHARETHIS.counter++;		        		         
 		                    		         
