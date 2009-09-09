@@ -375,9 +375,8 @@ try{
 				}
 			}
 			options['hash_flag'] = this.hash_flag;
-
 			this.sessionID_time = (new Date()).getTime().toString();
-			this.sessionID_rand = Math.random().toPrecision(5).toString().substr(2);
+			this.sessionID_rand = Number(Math.random().toPrecision(5).toString().substr(2)).toString();
 			this.sessionID = this.sessionID_time + '.' + this.sessionID_rand;
 			options['sessionID']=this.sessionID;
 			this.fpc=_stFpc();
@@ -947,7 +946,7 @@ try{
 					if( this.hash_flag == true && (matches != null || url_str.split('#', 2).length < 2) ) {
 						var uri_part = url_str.split('#',2)[0];
 						url_str = uri_part + '#STS=' + sts_hash;
-						window.location.hash = 'STS=' + sts_hash;
+						window.location.replace(url_str);
 					}
 					
 					return url_str;
