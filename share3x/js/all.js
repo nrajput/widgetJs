@@ -2433,7 +2433,7 @@ var glo_post_page=[];
 	}
 
     function addHashTracking(url) {
-		if( !url.match('#') ) {
+		if( !url.match('#') && glo_sessionID != null) {
 			var hash_arr = glo_sessionID.split('.');
 			var sts_hash = parseFloat(hash_arr[0]).toString(36) + 
 				'.' + parseFloat(hash_arr[1]).toString(36);

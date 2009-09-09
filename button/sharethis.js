@@ -203,6 +203,7 @@ try{
 			return a;
 		}
 
+			//Remove hashtracking from url
 		function cleanURL(url) {
 			var url_hash = window.location.hash;
 			var hash_regexp = new RegExp("STS=", "i");
@@ -342,6 +343,8 @@ try{
 			this.wrapper=null;
 			this.ready=false;
 			this.popupCalled=false;
+			this.referrer_sts = "";
+			this.shr_flag = "";
 			this.sessionID_time = (new Date()).getTime().toString();
 			this.sessionID_rand = Math.random().toPrecision(5).toString().substr(2);
 			this.sessionID = this.sessionID_time + '.' + this.sessionID_rand;
@@ -886,35 +889,48 @@ try{
 		            embeds[i].style.visibility = "visible";
 		        }
 		    },
-		    this.log=function(event, obj, source) {
-				var referrer_sts = "";
-				var shr_flag = "";
-				var sts_hash = parseFloat(this.sessionID_time).toString(36) + 
-					'.' + parseFloat(this.sessionID_rand).toString(36);
-
-				var url_hash = window.location.hash;
-				var hash_regexp = new RegExp("STS=([^&\\s]+)(&SHR=([^&\\s]+))?", "i");
-				var matches = url_hash.match(hash_regexp);  // elements 1,3
-				if( matches != null && matches.length > 1 ) {
-					var raw_str = matches[1];
-					var temp_arr = raw_str.split('.');
-					if( temp_arr != null) {
-						referrer_sts = parseInt( temp_arr[0], 36 ) + '.' + parseInt( temp_arr[1], 36 );
-						if( matches.length > 2 ) {
-							shr_flag = matches[3];
+			
+			this.manageHashTracking = function(url_str) {
+				try {
+					//Parse out referring sts and shr flag if available
+					var sts_hash = parseFloat(this.sessionID_time).toString(36) + 
+						'.' + parseFloat(this.sessionID_rand).toString(36);
+					var url_hash = url_str.split('#', 2)[1];
+					var hash_regexp = new RegExp("STS=([^&\\s]+)(&SHR=([^&\\s]+))?", "i");
+					var matches = null;
+					if( typeof(url_hash) != 'undefined' ) {
+						matches = url_hash.match(hash_regexp);  // elements 1,3
+					}
+					if( matches != null && matches.length > 1 ) {
+						var raw_str = matches[1];
+						var temp_arr = raw_str.split('.');
+						if( temp_arr != null) {
+							this.referrer_sts = parseInt( temp_arr[0], 36 ) + '.' + parseInt( temp_arr[1], 36 );
+							if( matches.length > 2 && matches[3] != null) {
+								this.shr_flag = matches[3];
+							}
 						}
 					}
+
+					if( matches != null || url_str.split('#', 2).length < 2 ) {
+						var uri_part = url_str.split('#',2)[0];
+						url_str = uri_part + '#STS=' + sts_hash;
+						window.location.hash = 'STS=' + sts_hash;
+					}
+					
+					return url_str;
+				} catch (err) {
+					return url_str;
 				}
 
+			},
+
+		    this.log=function(event, obj, source) {
 				if (obj && obj.properties && obj.properties.url) {
-					url = obj.properties.url;
+					url = this.manageHashTracking( obj.properties.url );
 				} else {
-					if( matches != null || window.location.hash == "" ) {
-						url = document.URL.split('#')[0];
-						window.location.hash = 'STS=' + sts_hash;
-					} else if( window.location.hash != "" ) {
-						url = document.URL;
-					}
+						//Here's where we actually append the tracking hash
+					url = this.manageHashTracking( document.URL );
 				}
 
 
