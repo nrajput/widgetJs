@@ -1,6 +1,6 @@
 /*
 ShareThis Loader Version 4.0.3-rc1
-8/23/09 ShareThis.com
+8/26/09 ShareThis.com
 */
 
 
@@ -203,6 +203,19 @@ try{
 			return a;
 		}
 
+			//Remove hashtracking from url
+		function cleanURL(url) {
+			var url_hash = window.location.hash;
+			var hash_regexp = new RegExp("STS=", "i");
+			var matches = url_hash.match(hash_regexp);  // elements 1,3
+			if( matches != null ) {
+				var url_arr = url.split('#');
+				return url_arr[0];
+			} else {
+				return url;
+			}
+		}
+
 		function Shareable(properties,options){
 			this.idx=-1;
 			this.frameUrl="";
@@ -214,7 +227,7 @@ try{
 				title:      encodeURIComponent(document.title),
 				summary:    '',
 				content:    '',
-				url:        document.URL,
+				url:        cleanURL(document.URL),
 				icon:       '',
 				category:   '',
 				updated:    document.lastModified,
@@ -330,8 +343,41 @@ try{
 			this.wrapper=null;
 			this.ready=false;
 			this.popupCalled=false;
-			this.sessionID=(new Date()).getTime();
-			this.sessionID+=Math.random();
+			this.referrer_sts = "";
+			this.shr_flag = "";
+			this.publisherID = null;
+			if( options['publisher'] ) {
+				this.publisherID = options['publisher'][0];
+			}
+			this.hash_flag = false;
+			if( this.publisherID == '6beba854-ee6d-4ae1-a4f3-b69815c8ef63' ||
+				this.publisherID == 'd775c91e-1adb-499e-919d-de52745e7902' || 
+				this.publisherID == '275c66cf-cb06-447c-aec0-289146e214aa' ||
+				this.publisherID == '61531667-de39-47ee-96fb-a799c77ecc81' ||
+				this.publisherID == '06ef2313-b562-44c3-9e07-cb8ce2076dd4' ||
+				this.publisherID == 'f82262be-2900-45bb-bc4c-a962baead4c0' ||
+				this.publisherID == '1a31d67e-e32a-4e95-94d4-5abe21e6b7a5' ||
+				this.publisherID == '2e79a50d-64c7-419c-9cba-7a8e2f9dc610' ||
+				this.publisherID == '3c393c3e-a5a8-4c2a-9622-050378087434' ||
+				this.publisherID == '5ebf95cb-1249-41fe-b26e-a25ca5528bb0' ||
+				this.publisherID == '14f5174c-5e32-48b4-9cd9-4311b6985d85' ||
+				this.publisherID == '83da16e4-922b-45e3-9333-cc03e7637354' ||
+				this.publisherID == 'eab3790a-5b6e-4a77-b55a-c923d1211107'
+			  ) {
+				this.hash_flag = true;
+			}
+				
+			if( options['hash_flag'] ) {
+				if( options['hash_flag'] == 'true' ) {
+					this.hash_flag = true;
+				} else if( options['hash_flag'] == 'false' ) {
+					this.hash_flag = false;
+				}
+			}
+
+			this.sessionID_time = (new Date()).getTime().toString();
+			this.sessionID_rand = Math.random().toPrecision(5).toString().substr(2);
+			this.sessionID = this.sessionID_time + '.' + this.sessionID_rand;
 			options['sessionID']=this.sessionID;
 			this.fpc=_stFpc();
 			options['fpc']=this.fpc;
@@ -569,6 +615,9 @@ try{
 				var xInt2="";
 				var sendDataInt="";
 				var sendPopupDataInt="";
+				if(this.meta.publisher=="65ab919d-0cc6-44bb-909e-e3db6f8dde10"){ //temp change for candystand to enable mouseover on default
+					o.options.onmouseover=true;
+				}
 		        if(o.options.popup){ 
 					o.options.onmouseover = false;
 					SHARETHIS.popupExists=true;
@@ -795,7 +844,7 @@ try{
 			        }
 		            propertylist.push(tmp_prop);
 		        }
-		        var tmp="/pageTitle="+encodeURIComponent(encodeURIComponent(document.title))+"/pageURL="+encodeURIComponent(encodeURIComponent(document.URL))+"/pageHost="+encodeURIComponent(encodeURIComponent(document.location.host))+"/pagePath="+encodeURIComponent(encodeURIComponent(document.location.pathname)); 
+		        var tmp="/pageTitle="+encodeURIComponent(encodeURIComponent(document.title))+"/pageURL="+encodeURIComponent(encodeURIComponent(cleanURL(document.URL)))+"/pageHost="+encodeURIComponent(encodeURIComponent(document.location.host))+"/pagePath="+encodeURIComponent(encodeURIComponent(document.location.pathname)); 
 				SHARETHIS.sendArray.push("#data"+tmp);
 				var jsonstr = ST_JSON.encode(propertylist);
 				var tmp=encodeURIComponent(jsonstr);
@@ -870,12 +919,51 @@ try{
 		            embeds[i].style.visibility = "visible";
 		        }
 		    },
+			
+			this.manageHashTracking = function(url_str) {
+				try {
+					//Parse out referring sts and shr flag if available
+					var sts_hash = parseFloat(this.sessionID_time).toString(36) + 
+						'.' + parseFloat(this.sessionID_rand).toString(36);
+					var url_hash = url_str.split('#', 2)[1];
+					var hash_regexp = new RegExp("STS=([^&\\s]+)(&SHR=([^&\\s]+))?", "i");
+					var matches = null;
+					if( typeof(url_hash) != 'undefined' ) {
+						matches = url_hash.match(hash_regexp);  // elements 1,3
+					}
+					if( matches != null && matches.length > 1 ) {
+						var raw_str = matches[1];
+						var temp_arr = raw_str.split('.');
+						if( temp_arr != null) {
+							this.referrer_sts = parseInt( temp_arr[0], 36 ) + '.' + parseInt( temp_arr[1], 36 );
+							if( matches.length > 2 && matches[3] != null) {
+								this.shr_flag = matches[3];
+							}
+						}
+					}
+
+					if( this.hash_flag == true && (matches != null || url_str.split('#', 2).length < 2) ) {
+						var uri_part = url_str.split('#',2)[0];
+						url_str = uri_part + '#STS=' + sts_hash;
+						window.location.hash = 'STS=' + sts_hash;
+					}
+					
+					return url_str;
+				} catch (err) {
+					return url_str;
+				}
+
+			},
+
 		    this.log=function(event, obj, source) {
 				if (obj && obj.properties && obj.properties.url) {
-					url = obj.properties.url;
+					url = this.manageHashTracking( obj.properties.url );
 				} else {
-					url = document.URL;
+						//Here's where we actually append the tracking hash
+					url = this.manageHashTracking( document.URL );
 				}
+
+
 				//new l logger
 				var lurl = "http://l.sharethis.com/log?event=";
 				if(event=="pview"){
@@ -890,6 +978,8 @@ try{
 		            + "&location=" + encodeURIComponent(SHARETHIS.meta.location)
 		            + "&url=" + encodeURIComponent(url)
 		            + "&sessionID="+SHARETHIS.sessionID
+		            + "&r_sessionID=" + this.referrer_sts
+				    + "&shr=" + this.shr_flag
 		            + "&fpc="+SHARETHIS.fpc
 		            + "&ts" + (new Date()).getTime() + "." + SHARETHIS.counter++;		        		         
 		                    		         
@@ -974,6 +1064,7 @@ try{
 					if (this.options.publisher) {
 						this.meta.publisher = this.options.publisher;
 					}
+	
 					var tmp_css='http://w.sharethis.com/button/css/sharethis.'+STV+'.css';
 					try{
 						if(this.options.css){
