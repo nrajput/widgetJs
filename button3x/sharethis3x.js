@@ -1,10 +1,10 @@
 /*
-ShareThis Loader Version 4.1.0-rc1
+ShareThis Loader Version 4.1.0-rc2
 8/26/09 ShareThis.com
 */
 
 
-var STV="4.1.0-rc1";
+var STV="4.1.0-rc2";
 
 ST_JSON = new function(){
 
@@ -374,9 +374,9 @@ try{
 					this.hash_flag = false;
 				}
 			}
-
+			options['hash_flag'] = this.hash_flag;
 			this.sessionID_time = (new Date()).getTime().toString();
-			this.sessionID_rand = Math.random().toPrecision(5).toString().substr(2);
+			this.sessionID_rand = Number(Math.random().toPrecision(5).toString().substr(2)).toString();
 			this.sessionID = this.sessionID_time + '.' + this.sessionID_rand;
 			options['sessionID']=this.sessionID;
 			this.fpc=_stFpc();
@@ -946,7 +946,7 @@ try{
 					if( this.hash_flag == true && (matches != null || url_str.split('#', 2).length < 2) ) {
 						var uri_part = url_str.split('#',2)[0];
 						url_str = uri_part + '#STS=' + sts_hash;
-						window.location.hash = 'STS=' + sts_hash;
+						window.location.replace(url_str);
 					}
 					
 					return url_str;
@@ -1220,7 +1220,7 @@ try{
 		}
 		
 		function SHARETHIS_tstOptions(tstStr){
-			var opt_arr=['type','title','summary','content','url','icon','category','updated','published','author','button','onmouseover','buttonText','popup','offsetLeft','offsetTop','embeds','autoclose','publisher','tabs','services','charset','headerbg','inactivebg','inactivefg','linkfg','style','send_services','post_services','headerfg','headerType','headerTitle','sessionID','tracking','fpc','ads','pUrl'];
+			var opt_arr=['type','title','summary','content','url','icon','category','updated','published','author','button','onmouseover','buttonText','popup','offsetLeft','offsetTop','embeds','autoclose','publisher','tabs','services','charset','headerbg','inactivebg','inactivefg','linkfg','style','send_services','post_services','headerfg','headerType','headerTitle','sessionID','tracking','fpc','ads','pUrl', 'hash_flag'];
 			var retVal=false;
 				for(var i=0;i<opt_arr.length;i++){
 					if(tstStr===opt_arr[i]){
