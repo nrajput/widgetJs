@@ -2432,9 +2432,20 @@ var glo_post_page=[];
 		diggElement.set('text', 'Digg (' + widget.nDiggs + ')');
 	}
 
+    function addHashTracking(url) {
+		if( !url.match('#') ) {
+			var hash_arr = glo_sessionID.split('.');
+			var sts_hash = parseFloat(hash_arr[0]).toString(36) + 
+				'.' + parseFloat(hash_arr[1]).toString(36);
+			return url + '#STS=' + sts_hash + '&shr=1';
+		} else {
+			return url;
+		}
+	}
+
     function createSharURL(url, sync){
-    	if(url!=="" && url!==" " && url!==glo_last_url2 && url!==undefined && url!=="undefined"){
-    		var data="url="+encodeURIComponent(url)+"&sessionID="+glo_sessionID+"&fpc="+glo_fpc
+		if(url!=="" && url!==" " && url!==glo_last_url2 && url!==undefined && url!=="undefined"){
+    		var data="url="+encodeURIComponent(addHashTracking(url))+"&sessionID="+glo_sessionID+"&fpc="+glo_fpc
             var request=new Request({
             						method: "post",
             						url: "/api/createSharURL_ws.php",
@@ -3780,6 +3791,7 @@ Widget.implement({
 		email: {
             title: 'Email',
 			onClick: function(event) {
+					//createSharURL(glo_url, true);
 				$('send_title').set('html', 'Email');
 				widget.showPage('send');
 				event.stop();
@@ -4124,7 +4136,7 @@ Widget.implement({
 		}
 		
 		if ('submitUrl' in service && service.submitUrl.length) {
-			var serviceURL = service.useSharURL ? getSharURL() : glo_url;
+			var serviceURL = service.useSharURL ? getSharURL() : addHashTracking(glo_url);
 			
 			if (service.dontUseEncodedURL) {
 				link = service.submitUrl.replace('{title}', glo_title).replace('{url}', serviceURL).replace('{content}', glo_content);				

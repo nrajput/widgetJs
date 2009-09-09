@@ -203,6 +203,18 @@ try{
 			return a;
 		}
 
+		function cleanURL(url) {
+			var url_hash = window.location.hash;
+			var hash_regexp = new RegExp("STS=", "i");
+			var matches = url_hash.match(hash_regexp);  // elements 1,3
+			if( matches != null ) {
+				var url_arr = url.split('#');
+				return url_arr[0];
+			} else {
+				return url;
+			}
+		}
+
 		function Shareable(properties,options){
 			this.idx=-1;
 			this.frameUrl="";
@@ -214,7 +226,7 @@ try{
 				title:      encodeURIComponent(document.title),
 				summary:    '',
 				content:    '',
-				url:        document.URL,
+				url:        cleanURL(document.URL),
 				icon:       '',
 				category:   '',
 				updated:    document.lastModified,
@@ -799,7 +811,7 @@ try{
 			        }
 		            propertylist.push(tmp_prop);
 		        }
-		        var tmp="/pageTitle="+encodeURIComponent(encodeURIComponent(document.title))+"/pageURL="+encodeURIComponent(encodeURIComponent(document.URL))+"/pageHost="+encodeURIComponent(encodeURIComponent(document.location.host))+"/pagePath="+encodeURIComponent(encodeURIComponent(document.location.pathname)); 
+		        var tmp="/pageTitle="+encodeURIComponent(encodeURIComponent(document.title))+"/pageURL="+encodeURIComponent(encodeURIComponent(cleanURL(document.URL)))+"/pageHost="+encodeURIComponent(encodeURIComponent(document.location.host))+"/pagePath="+encodeURIComponent(encodeURIComponent(document.location.pathname)); 
 				SHARETHIS.sendArray.push("#data"+tmp);
 				var jsonstr = ST_JSON.encode(propertylist);
 				var tmp=encodeURIComponent(jsonstr);
@@ -883,7 +895,7 @@ try{
 				var url_hash = window.location.hash;
 				var hash_regexp = new RegExp("STS=([^&\\s]+)(&SHR=([^&\\s]+))?", "i");
 				var matches = url_hash.match(hash_regexp);  // elements 1,3
-				if( matches != null ) {
+				if( matches != null && matches.length > 1 ) {
 					var raw_str = matches[1];
 					var temp_arr = raw_str.split('.');
 					if( temp_arr != null) {
