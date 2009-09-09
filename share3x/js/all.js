@@ -1,6 +1,6 @@
 /*
- * ShareThis Widget Version 4.0.3-rc1
- * 8/17/09 ShareThis.com 
+ * ShareThis Widget Version 4.1.0-rc1
+ * 9/09/09 ShareThis.com 
  */
 
 //widget-class.js

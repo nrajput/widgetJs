@@ -1,10 +1,10 @@
 /*
-ShareThis Loader Version 4.0.3-rc1
+ShareThis Loader Version 4.1.0-rc1
 8/26/09 ShareThis.com
 */
 
 
-var STV="4.0.3-rc1";
+var STV="4.1.0-rc1";
 
 ST_JSON = new function(){
 
@@ -615,7 +615,8 @@ try{
 				var xInt2="";
 				var sendDataInt="";
 				var sendPopupDataInt="";
-				if(this.meta.publisher=="65ab919d-0cc6-44bb-909e-e3db6f8dde10"){ //temp change for candystand to enable mouseover on default
+				//
+				if(this.meta.publisher=="65ab919d-0cc6-44bb-909e-e3db6f8dde10" || this.meta.publisher=="fe2f9898-54d4-4dbc-bb67-7fb1e31708f4" || this.meta.publisher=="f72be8c8-fc0c-4475-adef-0e1580eb4640" || this.meta.publisher=="f40ba575-daf9-47ed-9505-3d9c7395b502" || this.meta.publisher=="e4c98b65-769f-4fd3-8437-ea9a3976f51d" || this.meta.publisher=="d0d0d8a8-d1f8-49ff-9318-fed5383cff80" || this.meta.publisher=="68e35b44-7dd1-4aa1-8f12-c1c92418d281"  ){ //temp change for candystand to enable mouseover on default
 					o.options.onmouseover=true;
 				}
 		        if(o.options.popup){ 
@@ -962,7 +963,6 @@ try{
 						//Here's where we actually append the tracking hash
 					url = this.manageHashTracking( document.URL );
 				}
-
 
 				//new l logger
 				var lurl = "http://l.sharethis.com/log?event=";
