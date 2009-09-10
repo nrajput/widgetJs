@@ -5658,12 +5658,11 @@ window.addEvent('domready', function() {
 	newScript.src = gaJsHost + "google-analytics.com/ga.js";
 	headID.appendChild(newScript);
 
+	var html_str =  'try{' + 'var pageTracker = _gat._getTracker("UA-1645146-9");'
+		+ 'pageTracker._trackPageview();' + '} catch(err) {}';
 	var newScript = document.createElement('script');
 	newScript.type = 'text/javascript';
-	newScript.set('html',  'try{' +
-        'var pageTracker = _gat._getTracker("UA-1645146-9");' +
-		'pageTracker._trackPageview();' +
-				  '} catch(err) {}');
+	newScript.text = html_str;
 	headID.appendChild(newScript);
 	
 	domReady=true;
