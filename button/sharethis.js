@@ -979,6 +979,7 @@ try{
 		            + "&url=" + encodeURIComponent(url)
 		            + "&sessionID="+SHARETHIS.sessionID
 		            + "&r_sessionID=" + this.referrer_sts
+				    + "&hash_flag=" + SHARETHIS.hash_flag
 				    + "&shr=" + this.shr_flag
 		            + "&fpc="+SHARETHIS.fpc
 		            + "&ts" + (new Date()).getTime() + "." + SHARETHIS.counter++;		        		         
