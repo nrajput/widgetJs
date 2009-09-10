@@ -978,12 +978,12 @@ try{
 		            + "&location=" + encodeURIComponent(SHARETHIS.meta.location)
 		            + "&url=" + encodeURIComponent(url)
 		            + "&sessionID="+SHARETHIS.sessionID
+		            + "&fpc="+SHARETHIS.fpc
+		            + "&ts" + (new Date()).getTime() + "." + SHARETHIS.counter++
 		            + "&r_sessionID=" + this.referrer_sts
 				    + "&hash_flag=" + SHARETHIS.hash_flag
-				    + "&shr=" + this.shr_flag
-		            + "&fpc="+SHARETHIS.fpc
-		            + "&ts" + (new Date()).getTime() + "." + SHARETHIS.counter++;		        		         
-		                    		         
+				    + "&shr=" + this.shr_flag;
+		        		         
 		        var logger2 = new Image(1,1);
 		        logger2.src = lurl;
 				// N.B. This onload function is required for IE.
