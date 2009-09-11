@@ -653,7 +653,7 @@ try{
 						+ "&destinations=" + dest
 						+ "&ts" + (new Date()).getTime()
 						+ "&title=" + encodeURIComponent(o.properties.title)
-						+ "&url=" + encodeURIComponent(o.properties.url)
+						+ "&url=" + encodeURIComponent(cleanURL(o.properties.url))
 						+ "&sessionID=" + SHARETHIS.options.sessionID
 						+ "&fpc=" + SHARETHIS.options.fpc;
 					var logger = new Image(1,1);
@@ -976,7 +976,7 @@ try{
 		        lurl+="&publisher=" + encodeURIComponent(SHARETHIS.meta.publisher)
 		            + "&hostname=" + encodeURIComponent(SHARETHIS.meta.hostname)
 		            + "&location=" + encodeURIComponent(SHARETHIS.meta.location)
-		            + "&url=" + encodeURIComponent(url)
+		            + "&url=" + encodeURIComponent(cleanURL(url))
 		            + "&sessionID="+SHARETHIS.sessionID
 		            + "&fpc="+SHARETHIS.fpc
 		            + "&ts" + (new Date()).getTime() + "." + SHARETHIS.counter++
