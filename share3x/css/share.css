@@ -258,11 +258,11 @@ ul.scroll li.even {
 	background:#eee;
 }
 
-#import_box {
+#import_box, #login_box{
 	border:0;
 }
 
-#import_box label {
+#import_box label, #login_box label {
 	display: inline;
 	clear: left;
 	float: left;
@@ -272,7 +272,7 @@ ul.scroll li.even {
 	width: 70px;
 }
 
-#import_box input {
+#import_box input, #login_box input {
 	width: 100px;
 	margin: 0 0 8px 0;
 }
@@ -281,23 +281,27 @@ ul.scroll li.even {
 	margin: 12px 0 0 0;
 }
 
-#oauthImport label{
+#oauthImport label, #oauthLogin label{
     margin: 0 0 18px 24px;
 	font-weight: normal;
 	width: 150px;
 }
 
-#import_foot {
+#import_foot, #login_foot {
     clear: both;
 	line-height: 24px;
 	display: block;
 	height: 30px;
 }
 
-#import_foot_buttons {
+#import_foot_buttons, #login_foot_buttons{
     float: right;
 	margin: 10px 5px 10px 0;
 }
+
+
+
+
 
 .button_new,
 .button_new_green {
@@ -352,7 +356,7 @@ ul.scroll li.even {
 }
 */
 
-#import_service_icon {
+#import_service_icon, #login_service_ico {
 	margin: 0 0 0 70px;				 
 	font-weight: bold;
 }
@@ -947,29 +951,29 @@ h1#header_title {
 	height:16px;
 }
 #import_page #import_list, 
-#signin_page #signin_list  {
+#login_page #login_list  {
 	list-style:none;
 	margin:15px 0;
 	height: 100px;
 }
 #import_page #import_list li,
-#sign_page #sign_list li {
+#login_page #login_list li {
 	line-height:18px;
 }
 #import_list a,
-#signin_list a {
+#login_list a {
 	cursor:pointer;
 }
 #import_page #import_list li.selected,
-#signin_page #signin_list li.selected {
+#login_page #login_list li.selected {
 	font-weight: bold;
 }
 #import_page #import_list li.selected a,
-#signin_page #signin_list li.selected a {
+#login_page #login_list li.selected a {
 	text-decoration:none;
 }
 #import_contact_status,
-#signin_status {
+#login_status {
 	margin:0 20px 0 0;
 	position:absolute;
 	right:0;
@@ -1107,7 +1111,7 @@ span.active a#home_button {
 	margin: -12px 0 0 9px;
 }
 
-#privacyLink_import {
+#privacyLink_import, #privacyLink_login {
 	color:#888888;
 	font-size:9px;
 	float: left;

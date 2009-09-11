@@ -30,16 +30,16 @@ var Widget = new Class({ Implements: Events,
 	signIn: function() {
 		var err_set=false;
 		var err="";
-		if($('textAuthUsername').value===""){
+		if($('login_username').value===""){
 			err+="Please enter your username.\n";
 			err_set=true;
 		}
-		if($('textAuthPassword').value===""){
+		if($('login_password').value===""){
 			err+="Please enter your password.";
 			err_set=true;
 		}
 		if(!err_set){
-			this.user.signIn($('textAuthUsername').value,$('textAuthPassword').value);
+			this.user.signIn($('login_username').value,$('login_password').value);
 		}
 		else{
 			widget.validationFailed(err);
@@ -50,7 +50,6 @@ var Widget = new Class({ Implements: Events,
 		forgetUser();
 		this.user.signOut();
 	},
-
 	limitCharacters: function(inputField, maxCharacterCount, counterSpan, event) {
 		var retval = true;
 		if(inputField.value.length >= maxCharacterCount) {
@@ -527,6 +526,10 @@ var Widget = new Class({ Implements: Events,
 		this.currentImportContactService = this.contactSources[serviceTag];
 		this.fireEvent('importContactServiceChanged', serviceTag);
 	},
+	setLoginService: function(serviceTag) {
+		this.currentLoginService = this.loginSources[serviceTag];
+		this.fireEvent('loginServiceChanged', serviceTag);
+	},
 	
 	getQueryParam: function( name, url )
 	{
@@ -541,6 +544,86 @@ var Widget = new Class({ Implements: Events,
 	},
 	
 	importContacts: function(service, username, password, contact_url, delt) {		
+		Cookie.dispose('import', {domain: ".sharethis.com", path: '/'});
+		Cookie.dispose('import_delt', {domain: ".sharethis.com", path: '/'});
+		if(contact_url){
+			widget.popModalWorkingSheet();
+		}
+		var data = "provider=" + service.protocolName + "&username=" + username + "&password=" + password + "&contact_url=" + contact_url
+			+ "&base_url=http://" + window.location.hostname + '/'
+			+ "&referer=share3x/import.php"
+			+ "&delt=" + delt;
+		var request = new Request({
+			method: "post",
+			url: "/api/importContacts_ws.php",
+			data: data,
+			onFailure: function(){logError("import contacts","Ajax Failure");},
+			onSuccess: (function(responseText, responseXML) {
+				try{var resp = JSON.decode(responseText);}
+				catch(err){logError("import contacts",responseText);}
+				if (resp.status==="SUCCESS" && resp.data) {
+
+					// the api does not return the service on some contacts, apparently...
+					for (var i = 0; i < resp.data.contacts.length; i++) {
+						if (!('service' in resp.data.contacts[i])) {
+							var guess = Widget.Contact.guessServiceForAddress(resp.data.contacts[i].address, service.protocolName);
+							if (!guess) {
+								guess = service.protocolName;
+							}
+							resp.data.contacts[i].service = guess;
+						}
+					}
+					if (this.userIsSignedIn()) {
+						// wait to declare success until we successfully add the contacts to our account.
+						var successHandler = null;
+						var failureHandler = null;
+						
+						successHandler = (function() {
+							this.fireEvent('importContactsSucceeded', {
+								nContacts: resp.data.contacts.length,
+								rawData: resp.data.contacts
+							});
+							this.user.removeEvent('addContactsToAccountSucceeded', successHandler);
+							this.user.removeEvent('addContactsToAccountFailed', failureHandler);
+						}).bind(this);
+						this.user.addEvent('addContactsToAccountSucceeded', successHandler);
+						
+						failureHandler = (function() {
+							this.fireEvent('importContactsFailed');
+							this.user.removeEvent('addContactsToAccountSucceeded', successHandler);
+							this.user.removeEvent('addContactsToAccountFailed', failureHandler);
+						}).bind(this);
+						this.user.addEvent('addContactsToAccountFailed', failureHandler);
+
+						this.user.addContactsToAccount(resp.data.contacts);
+					}
+					else {
+						this.user.addContactsLocally(resp.data.contacts);
+						this.fireEvent('importContactsSucceeded', {
+							nContacts: resp.data.contacts.length,
+							rawData: resp.data.contacts
+						});
+					}
+				}
+				else if(resp.errorMessage=="LOGIN_FAILED :: Invalid credentials"){
+					widget.popModalWorkingSheet();
+					widget.pushModalErrorSheet('Invalid Username or password.');
+				}
+				else{
+					logError("import contacts",JSON.encode(resp));
+					this.fireEvent('importContactsFailed');
+				}
+			}).bind(this)
+		});
+		request.send();
+		this.fireEvent('importContactsRequested');
+	},
+	login: function(service, username, password, contact_url, delt) {	
+		console.log("login function");
+		if(service.protocolName=="sharethis"){
+			widget.signIn();
+			return true;
+		}
 		Cookie.dispose('import', {domain: ".sharethis.com", path: '/'});
 		Cookie.dispose('import_delt', {domain: ".sharethis.com", path: '/'});
 		if(contact_url){
@@ -3215,6 +3298,167 @@ Widget.implement({
 				});
 			}
 		},
+		'login': {
+			id: 'login_page',
+			onReady: function() {
+				$('login_list').getElements('li').each(function(item, index) {
+					item.getElement('a').addEvents({
+						click: function(event) {					
+							widget.setLoginService(item.getChildren()[0].get('class'));
+							event.stop();
+						}
+					});
+				});
+				
+				$('login_submit').addEvent('click', (function(event) {
+					//this.processLogin();
+					widget.pages.login.processLogin();
+				}).bind(this));
+				
+				
+				widget.addEvent('loginRequested', function() {
+					//widget.pushModalWorkingSheet('Importing contacts&hellip;'); //manu
+				});
+				widget.addEvent('loginSucceeded', function(contactInfo) {
+					/*widget.popModalWorkingSheet();
+					$('send_title').set('html', 'Email');
+					widget.showPage('send');
+					widget.displayNotification('Success! ' + contactInfo.nContacts + ' contacts imported.');
+					emptyInputs();*/
+				});
+				widget.addEvent('loginFailed', function() {
+					widget.popModalWorkingSheet();
+					widget.pushModalErrorSheet('Unable to Sign In');
+				})
+				
+				widget.addEvent('loginServiceChanged', (function(serviceTag) {
+					if (this.isShown()) {
+						var service = widget.loginSources[serviceTag];
+						$('loginAuth').setStyle('display', 'none');
+						$('oauthLogin').setStyle('display', 'block');
+						switch(serviceTag) {
+							case 'gmail':
+								$('loginAuth').setStyle('display', 'block');
+								$('oauthLogin').setStyle('display', 'none');
+								//$('oauthImport').getElement('label').set('text','We\'ll take you to Gmail where you\'ll be asked to let ShareThis access your address book.');
+								break;	
+							case 'yahoo':
+								//$('regAuth').setStyle('display', 'block');
+								//$('oauthImport').setStyle('display', 'none');
+								$('oauthLogin').getElement('label').set('text','We\'ll take you to Yahoo where you\'ll be asked to let ShareThis access your address book.');
+								break;
+							case 'myspace':
+								$('oauthLogin').getElement('label').set('text','We\'ll take you to Myspace where you\'ll be asked to let ShareThis access your friend list.');
+								break;
+							case 'msn':
+								$('oauthLogin').getElement('label').set('text','We\'ll take you to MSN/Hotmail where you\'ll be asked to let ShareThis access your address book.');
+								break;
+							case 'aol':
+								$('loginAuth').setStyle('display', 'block');
+								$('oauthLogin').setStyle('display', 'none');
+								break;
+							case 'sharethis':
+									$('loginAuth').setStyle('display', 'block');
+									$('oauthLogin').setStyle('display', 'none');
+									//$('oauthImport').getElement('label').set('text','We\'ll take you to Gmail where you\'ll be asked to let ShareThis access your address book.');
+									break;	
+						}
+						var loginBox = this.domContainer.getElement('.mbox');//$$('.mbox')[0];
+						loginBox.getElementById('login_h4').set('html', service.title);
+						loginBox.getElementById('login_h4').set('class', serviceTag);
+						var item = null;
+						$('login_list').getElements('li').each(function(i) {
+							if (i.getElement('a').hasClass(serviceTag)) {
+								item = i;
+							}
+						});
+						if (item) {
+							this.pointImportPointerAt(item);
+						}
+					}
+				}).bind(this));
+				this.bindReturnKeyToSubmission();
+				this.parent();
+			
+				
+			},
+			processLogin: function(){
+				console.log("process login");
+				gaLog("Login", "login_btn_click", widget.currentLoginService.protocolName); 
+				Cookie.dispose('login', {domain: ".sharethis.com", path: '/'});
+				Cookie.dispose('login_delt', {domain: ".sharethis.com", path: '/'});
+				var service = widget.currentLoginService;
+				if( service.protocolName == 'sharethis') {
+					var username = $('login_username').get('value');
+					var password = $('login_password').get('value');
+					this.submitForm();
+				} else {
+					//this.fireEvent('importContactsRequested');
+					widget.pushModalWorkingSheet('Waiting for Authorization&hellip;');
+					window.open('/share3x/login.php?provider=' + service.protocolName,'import_contacts','scrollbars=yes,directories=no,menubar=yes,toolbar=yes,height=600,width=900');
+					this.pollLoginCookie();
+				}
+				return true;
+			},				
+			pollLoginCookie: function() {
+				login_cookie_tid = setInterval('login_cookie = Cookie.read("login");'
+						    + 'if(login_cookie == -1) { clearInterval(login_cookie_tid);'
+							+ 		'widget.popModalWorkingSheet();'
+					        +       'widget.pushModalErrorSheet("Sign In Failed.");'
+					        +		'login_cookie_cycles = 0;'
+					        +       'Cookie.dispose("login", {domain: ".sharethis.com", path: "/"});'
+							+		'Cookie.dispose("login_delt", {domain: ".sharethis.com", path: "/"});'
+							+ '} else if(login_cookie) { clearInterval(login_cookie_tid);'
+							+		'login_cookie_cycles = 0;'	
+							+ 		'contact_url = login_cookie;'
+							+		'delt = Cookie.read("login_delt");'
+							+		'Cookie.dispose("login", {domain: ".sharethis.com", path: "/"});'
+							+		'Cookie.dispose("login_delt", {domain: ".sharethis.com", path: "/"});'
+							+       'widget.login( widget.currentLoginService, "", "", escape(contact_url), delt );'
+							+ '} else if(login_cookie_cycles++ > 120) { clearInterval(login_cookie_tid);'
+							+ 		'widget.popModalWorkingSheet();'
+					        +       'widget.pushModalErrorSheet("Authorization Timed Out.");'
+					        +		'login_cookie_cycles = 0;'
+					        + '}'
+					    , 1000);
+			},
+			
+			submitForm: function() {
+				console.log("submit form");
+				var service = widget.currentLoginService;
+				var username = $('login_username').get('value');
+				var password = $('login_password').get('value');
+				widget.login(widget.currentLoginService, username, password, '', '');
+				//widget.signIn();
+			},
+			onShow: function() {
+				if (this.firstShow) {
+					setTimeout(function() {widget.setLoginService('sharethis')}, 1);
+				}
+				$('privacyLink_login').removeClass('hidden');
+				this.parent();
+			},
+			onHide: function() {
+				$('privacyLink_login').addClass('hidden');
+				this.parent();
+			},
+			pointImportPointerAt: function(pointToItem) {
+				var y = pointToItem.getPosition(pointToItem.getParent()).y;
+				var pointer = $$('.mboxpoint')[1];
+				var loginBox = $$('.mbox')[1];
+				pointer.set('tween', { duration: 0 });
+				pointer.tween('top', y + (pointToItem.getSize().y / 2) - (pointer.getSize().y / 2) + 5);	// random extra 5 pixels. *shrug*
+
+				$('login_list').getElements('li').each(function(selectedItem) {
+					if (selectedItem !== pointToItem) {
+						selectedItem.removeClass('selected');
+					}
+					else {
+						selectedItem.addClass('selected');
+					}
+				});
+			}
+		},
 		done: {
 			id: 'done_page',
 			onReady: function() {
@@ -3750,13 +3994,14 @@ Widget.implement({
 		if (this._workingCovers.length) {
 			this._workingCovers.pop().destroy();
 		}
-	},
+	}
+	/*manu,
 	closeLoginBox: function() {
 		$('loginBox').get('morph').removeEvents('complete').addEvent('complete', function() {
 			$('loginBox').addClass('hidden');
 			$('linkSignIn').addEvent('click', function() {
 				gaLog("Footer", "signin_link", "Sign In Link"); 
-				widget.openLoginBox();
+				widget.showPage('login');
 			});
 		});
 		$('loginBox').morph({
@@ -3775,7 +4020,7 @@ Widget.implement({
 			top: (Browser.Engine.trident ? '-150px' : '-140px')
 		});
 	}
-
+	*/
 });
 
 //services.js
@@ -4120,7 +4365,50 @@ Widget.implement({
 		yahoo: {
 			title: 'Yahoo!',
 			protocolName: 'yahoo'
+		},
+		facebook: {
+			title: 'Facebook',
+			protocolName: 'facebook'
 		}
+	},
+	loginSources: {
+		aim: {
+			title: 'AIM',
+			protocolName: 'aim'
+		},
+		aol: {
+			title: 'AOL',
+			protocolName: 'aol'
+		},
+		gmail: {
+			title: 'GMail',
+			protocolName: 'gmail'
+		},
+		hotmail: {
+			title: 'Hotmail',
+			protocolName: 'hotmail'
+		},
+		msn: {
+			title: 'MSN',
+			protocolName: 'hotmail'
+		},
+		twitter: {
+			title: 'Twitter',
+			protocolName: 'twitter'
+		},
+		yahoo: {
+			title: 'Yahoo!',
+			protocolName: 'yahoo'
+		},
+		facebook: {
+			title: 'Facebook',
+			protocolName: 'facebook'
+		},
+		sharethis: {
+			title: 'ShareThis',
+			protocolName: 'sharethis'
+		}
+		
 	}
 });
 
@@ -5688,19 +5976,34 @@ window.addEvent('domready', function() {
 	}
 	//handleExternalLinks();
 	emptyInputs();
-
-	$('linkAuthSignIn').addEvent('click', function(){
+/*manu
+	$('login_submit').addEvent('click', function(){
 		gaLog("SignIn", "signin_btn_click"); 
 		widget.signIn();
 	});
-	$('loginClose').addEvent('click', function(){
+	$('login_cancel').addEvent('click', function(){
 		gaLog("SignIn", "cancel_btn_click"); 
 		widget.closeLoginBox();
 	});
+	$('login_username').addEvent('keydown', function(event){
+		event = new Event(event); 
+	if (event.key === 'enter'){
+			widget.signIn();	
+		} 
+	});
+	$('login_password').addEvent('keydown', function(event){
+		event = new Event(event); 
+		if (event.key === 'enter') {
+			widget.signIn()
+		};
+	});
+*/	
 	$('linkSignIn').addEvent('click', function(){
 		gaLog("Footer", "signin_link", "Sign In Link"); 
-		widget.openLoginBox();
+		//widget.openLoginBox();
+		widget.showPage('login');
 	});
+	
 	$('linkSignOut').addEvent('click', function(){
 		gaLog("Footer", "signout_link", "Sign Out Link"); 
 		if (glo_page == "send" || glo_page == "post|twitter") {
@@ -5711,19 +6014,6 @@ window.addEvent('domready', function() {
 		widget.signOut();
 	});
 
-	$('textAuthUsername').addEvent('keydown', function(event){
-		event = new Event(event); 
-	if (event.key === 'enter'){
-			widget.signIn();	
-		} 
-	});
-	$('textAuthPassword').addEvent('keydown', function(event){
-		event = new Event(event); 
-		if (event.key === 'enter') {
-			widget.signIn()
-		};
-	});
-	
 	widget.user.addEvent('signedOut', function() {
 		$('colophon').removeClass('signed_in');
 			//		$('greeting').set('text', 'Hello.');
@@ -5738,7 +6028,8 @@ window.addEvent('domready', function() {
 	widget.user.addEvent('signedIn', function() {
 		widget.popModalWorkingSheet();
 		$('colophon').addClass('signed_in');
-		widget.closeLoginBox();
+		///manu widget.closeLoginBox();
+		widget.showPreviousPage();
 		widget.fireEvent('signInComplete');
 	});
 	
@@ -5765,11 +6056,10 @@ window.addEvent('domready', function() {
 
 	$('createAccount').addEvent('click', function(event) {
 		gaLog("SignIn", "create_account_btn_click"); 
-		widget.closeLoginBox();
+		//manu widget.closeLoginBox();
 		widget.showPage('register');
 		event.stop();
 	});
-	
 	widget.addEvent('linkForegroundColorChanged', function(color) {
 		for (var p in widget.pages) {
 			$(widget.pages[p].id).getElements('a').each(function(anchor){ anchor.setStyle('color', color); });
