@@ -3345,10 +3345,12 @@ Widget.implement({
 				})
 				
 				widget.addEvent('loginServiceChanged', (function(serviceTag) {
-					if (this.isShown()) {
+					//if (this.isShown()) {
 						var service = widget.loginSources[serviceTag];
 						$('loginAuth').setStyle('display', 'none');
 						$('oauthLogin').setStyle('display', 'block');
+						$('login_service_box').setStyle('display', 'none');
+						$('createAccount').setStyle('display', 'none');
 						switch(serviceTag) {
 							case 'gmail':
 								$('loginAuth').setStyle('display', 'block');
@@ -3358,7 +3360,10 @@ Widget.implement({
 							case 'yahoo':
 								//$('regAuth').setStyle('display', 'block');
 								//$('oauthImport').setStyle('display', 'none');
-								$('oauthLogin').getElement('label').set('text','We\'ll take you to Yahoo where you\'ll be asked to let ShareThis access your address book.');
+								$('login_service_box').setStyle('display', 'block');
+								$('oauthLogin').getElement('label').set('text','We\'ll take you to Yahoo where you\'ll be asked to link your Yahoo account to ShareThis.');
+								$('login_with').set('text','Sign In with Yahoo');
+							//	$$('.mbox')[1].setStyle('height','125px');
 								break;
 							case 'myspace':
 								$('oauthLogin').getElement('label').set('text','We\'ll take you to Myspace where you\'ll be asked to let ShareThis access your friend list.');
@@ -3371,14 +3376,16 @@ Widget.implement({
 								$('oauthLogin').setStyle('display', 'none');
 								break;
 							case 'sharethis':
+									$('login_with').set('text','Sign In with ShareThis');
 									$('loginAuth').setStyle('display', 'block');
 									$('oauthLogin').setStyle('display', 'none');
+									$('createAccount').setStyle('display', 'block');
 									//$('oauthImport').getElement('label').set('text','We\'ll take you to Gmail where you\'ll be asked to let ShareThis access your address book.');
 									break;	
 						}
-						var loginBox = this.domContainer.getElement('.mbox');//$$('.mbox')[0];
-						loginBox.getElementById('login_h4').set('html', service.title);
-						loginBox.getElementById('login_h4').set('class', serviceTag);
+						var loginBox = this.domContainer.getElement('.mbox2');//$$('.mbox')[0];
+						//loginBox.getElementById('login_h4').set('html', service.title);
+						//loginBox.getElementById('login_h4').set('class', serviceTag);
 						var item = null;
 						$('login_list').getElements('li').each(function(i) {
 							if (i.getElement('a').hasClass(serviceTag)) {
@@ -3386,9 +3393,10 @@ Widget.implement({
 							}
 						});
 						if (item) {
+							console.log(item);
 							this.pointImportPointerAt(item);
 						}
-					}
+					//}
 				}).bind(this));
 				this.bindReturnKeyToSubmission();
 				this.parent();
@@ -3396,7 +3404,6 @@ Widget.implement({
 				
 			},
 			processLogin: function(){
-				console.log("process login");
 				gaLog("Login", "login_btn_click", widget.currentLoginService.protocolName); 
 				Cookie.dispose('login', {domain: ".sharethis.com", path: '/'});
 				Cookie.dispose('login_delt', {domain: ".sharethis.com", path: '/'});
@@ -3446,19 +3453,21 @@ Widget.implement({
 			},
 			onShow: function() {
 				if (this.firstShow) {
-					setTimeout(function() {widget.setLoginService('sharethis')}, 1);
+					//setTimeout(function() {widget.setLoginService('yahoo')}, 1);
 				}
 				$('privacyLink_login').removeClass('hidden');
+				$('footerReg').addClass('hidden');
 				this.parent();
 			},
 			onHide: function() {
 				$('privacyLink_login').addClass('hidden');
+				$('footerReg').removeClass('hidden');
 				this.parent();
 			},
 			pointImportPointerAt: function(pointToItem) {
 				var y = pointToItem.getPosition(pointToItem.getParent()).y;
-				var pointer = $$('.mboxpoint')[1];
-				var loginBox = $$('.mbox')[1];
+				var pointer = $$('.mboxpoint2')[0];
+				var loginBox = $$('.mbox2')[0];
 				pointer.set('tween', { duration: 0 });
 				pointer.tween('top', y + (pointToItem.getSize().y / 2) - (pointer.getSize().y / 2) + 5);	// random extra 5 pixels. *shrug*
 
@@ -4008,32 +4017,6 @@ Widget.implement({
 			this._workingCovers.pop().destroy();
 		}
 	}
-	/*manu,
-	closeLoginBox: function() {
-		$('loginBox').get('morph').removeEvents('complete').addEvent('complete', function() {
-			$('loginBox').addClass('hidden');
-			$('linkSignIn').addEvent('click', function() {
-				gaLog("Footer", "signin_link", "Sign In Link"); 
-				widget.showPage('login');
-			});
-		});
-		$('loginBox').morph({
-			height: '0px',
-			top: '0px'
-		});
-	},
-	openLoginBox: function() {
-		$('loginBox').setStyles({ height: '0px', top: '0px' }).removeClass('hidden');
-		$('loginBox').get('morph').removeEvents('complete').addEvent('complete', function() {
-			$('textAuthUsername').focus();
-			$('linkSignIn').removeEvents();
-		});
-		$('loginBox').morph({
-			height: (Browser.Engine.trident ? '150px' : '140px'),
-			top: (Browser.Engine.trident ? '-150px' : '-140px')
-		});
-	}
-	*/
 });
 
 //services.js
@@ -4042,7 +4025,7 @@ Widget.implement({
 	services: {
 		aim: {
 			title: 'AIM',
-			submitUrl: 'http://share.aim.com/share/?url={url}&title={title}',
+			submitUrl: 'http://connect.aim.com/share/?url={url}&title={title}',
 			destination: 'aim.com'
 		},
 		sms: {
@@ -5989,33 +5972,24 @@ window.addEvent('domready', function() {
 	}
 	//handleExternalLinks();
 	emptyInputs();
-/*manu
-	$('login_submit').addEvent('click', function(){
-		gaLog("SignIn", "signin_btn_click"); 
-		widget.signIn();
-	});
-	$('login_cancel').addEvent('click', function(){
-		gaLog("SignIn", "cancel_btn_click"); 
-		widget.closeLoginBox();
-	});
-	$('login_username').addEvent('keydown', function(event){
-		event = new Event(event); 
-	if (event.key === 'enter'){
-			widget.signIn();	
-		} 
-	});
-	$('login_password').addEvent('keydown', function(event){
-		event = new Event(event); 
-		if (event.key === 'enter') {
-			widget.signIn()
-		};
-	});
-*/	
+
+	
 	$('linkSignIn').addEvent('click', function(){
 		gaLog("Footer", "signin_link", "Sign In Link"); 
-		//widget.openLoginBox();
 		widget.showPage('login');
+		widget.setLoginService('yahoo');
 	});
+	$('sharethis_login').addEvent('click', function(){
+		gaLog("Footer", "signin_link", "ShareThis"); 
+		widget.showPage('login');
+		widget.setLoginService('sharethis');
+	});
+	$('yahoo_login').addEvent('click', function(){
+		gaLog("Footer", "signin_link", "Yahoo"); 
+		widget.showPage('login');
+		widget.setLoginService('yahoo');
+	});
+
 	
 	$('linkSignOut').addEvent('click', function(){
 		gaLog("Footer", "signout_link", "Sign Out Link"); 
@@ -6041,7 +6015,6 @@ window.addEvent('domready', function() {
 	widget.user.addEvent('signedIn', function() {
 		widget.popModalWorkingSheet();
 		$('colophon').addClass('signed_in');
-		///manu widget.closeLoginBox();
 		widget.showPreviousPage();
 		widget.fireEvent('signInComplete');
 	});
@@ -6069,7 +6042,6 @@ window.addEvent('domready', function() {
 
 	$('createAccount').addEvent('click', function(event) {
 		gaLog("SignIn", "create_account_btn_click"); 
-		//manu widget.closeLoginBox();
 		widget.showPage('register');
 		event.stop();
 	});
