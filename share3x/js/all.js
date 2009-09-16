@@ -1,5 +1,5 @@
 /*
- * ShareThis Widget Version 4.1.0-rc2
+ * ShareThis Widget Version 4.1.0-rc3
  * 9/09/09 ShareThis.com 
  */
 
@@ -1706,6 +1706,19 @@ var glo_post_page=[];
 		}
 	}
 
+    //Remove hashtracking from url
+    function cleanURL(url) {
+		var url_hash = window.location.hash;
+		var hash_regexp = new RegExp("STS=", "i");
+		var match_results = url_hash.match(hash_regexp);  // elements 1,3
+		if( match_results != null ) {
+			var url_arr = url.split('#');
+			return url_arr[0];
+		} else {
+			return url;
+		}
+	}
+
 	//creates a social web log event
 	function logSW(network) {
 		var source = "";
@@ -1724,7 +1737,7 @@ var glo_post_page=[];
 				+ "&destinations=" + network
 				+ "&ts" + (new Date()).getTime()
 				+ "&title=" + glo_title
-				+ "&url=" + glo_url
+			    + "&url=" + cleanURL(glo_url)
 				+ "&sessionID="+glo_sessionID
 				+ "&fpc="+glo_fpc
 				+ "&sharURL="+glo_sharURL;
@@ -1769,7 +1782,7 @@ var glo_post_page=[];
 			url2+= "&destinations="+destination1;
 			url2+= "&ts" + (new Date()).getTime();
 			url2+= "&title="+encodeURIComponent(glo_title);
-			url2+= "&url="+encodeURIComponent(glo_url);
+		    url2+= "&url="+encodeURIComponent(cleanURL(glo_url));
 			url2+= "&sessionID="+glo_sessionID;
 			url2+= "&fpc="+glo_fpc;
 			url2+= "&sharURL="+encodeURIComponent(glo_sharURL);
@@ -2669,7 +2682,7 @@ function populateSavedCredentials(service) {
 			+ "&publisher=" + encodeURIComponent(glo_publisher)
 			+ "&ts" + (new Date()).getTime()
 			+ "&title=" + encodeURIComponent(glo_title)
-			+ "&url=" + encodeURIComponent(glo_url)
+			+ "&url=" + encodeURIComponent(cleanURL(glo_url))
 			+ "&pUrl="+encodeURIComponent(glo_pUrl)
 			+ "&error="+encodeURIComponent(error)
 			+ "&sessionID="+glo_sessionID

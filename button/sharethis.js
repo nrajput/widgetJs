@@ -1,10 +1,10 @@
 /*
-ShareThis Loader Version 4.1.0-rc2
+ShareThis Loader Version 4.1.0-rc4
 8/26/09 ShareThis.com
 */
 
 
-var STV="4.1.0-rc2";
+var STV="4.1.0-rc4";
 
 ST_JSON = new function(){
 
@@ -653,7 +653,7 @@ try{
 						+ "&destinations=" + dest
 						+ "&ts" + (new Date()).getTime()
 						+ "&title=" + encodeURIComponent(o.properties.title)
-						+ "&url=" + encodeURIComponent(o.properties.url)
+						+ "&url=" + encodeURIComponent(cleanURL(o.properties.url))
 						+ "&sessionID=" + SHARETHIS.options.sessionID
 						+ "&fpc=" + SHARETHIS.options.fpc;
 					var logger = new Image(1,1);
@@ -976,13 +976,14 @@ try{
 		        lurl+="&publisher=" + encodeURIComponent(SHARETHIS.meta.publisher)
 		            + "&hostname=" + encodeURIComponent(SHARETHIS.meta.hostname)
 		            + "&location=" + encodeURIComponent(SHARETHIS.meta.location)
-		            + "&url=" + encodeURIComponent(url)
+		            + "&url=" + encodeURIComponent(cleanURL(url))
 		            + "&sessionID="+SHARETHIS.sessionID
-		            + "&r_sessionID=" + this.referrer_sts
-				    + "&shr=" + this.shr_flag
 		            + "&fpc="+SHARETHIS.fpc
-		            + "&ts" + (new Date()).getTime() + "." + SHARETHIS.counter++;		        		         
-		                    		         
+		            + "&ts" + (new Date()).getTime() + "." + SHARETHIS.counter++
+		            + "&r_sessionID=" + this.referrer_sts
+				    + "&hash_flag=" + SHARETHIS.hash_flag
+				    + "&shr=" + this.shr_flag;
+		        		         
 		        var logger2 = new Image(1,1);
 		        logger2.src = lurl;
 				// N.B. This onload function is required for IE.
