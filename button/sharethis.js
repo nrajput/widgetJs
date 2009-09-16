@@ -616,9 +616,33 @@ try{
 				var sendDataInt="";
 				var sendPopupDataInt="";
 				//
-				if(this.meta.publisher=="65ab919d-0cc6-44bb-909e-e3db6f8dde10" || this.meta.publisher=="fe2f9898-54d4-4dbc-bb67-7fb1e31708f4" || this.meta.publisher=="f72be8c8-fc0c-4475-adef-0e1580eb4640" || this.meta.publisher=="f40ba575-daf9-47ed-9505-3d9c7395b502" || this.meta.publisher=="e4c98b65-769f-4fd3-8437-ea9a3976f51d" || this.meta.publisher=="d0d0d8a8-d1f8-49ff-9318-fed5383cff80" || this.meta.publisher=="68e35b44-7dd1-4aa1-8f12-c1c92418d281"  ){ //temp change for candystand to enable mouseover on default
+				if(
+						this.meta.publisher=="65ab919d-0cc6-44bb-909e-e3db6f8dde10" || 
+						this.meta.publisher=="fe2f9898-54d4-4dbc-bb67-7fb1e31708f4" || 
+						this.meta.publisher=="f72be8c8-fc0c-4475-adef-0e1580eb4640" || 
+						this.meta.publisher=="f40ba575-daf9-47ed-9505-3d9c7395b502" || 
+						this.meta.publisher=="e4c98b65-769f-4fd3-8437-ea9a3976f51d" || 
+						this.meta.publisher=="d0d0d8a8-d1f8-49ff-9318-fed5383cff80" || 
+						this.meta.publisher=="68e35b44-7dd1-4aa1-8f12-c1c92418d281" ||
+						this.meta.publisher=="aecb031f-6ebb-42df-b39b-b24889f081f3" ||
+						this.meta.publisher=="3931b05c-0a1a-4502-b191-5cc59416aefc" ||
+						this.meta.publisher=="c9a3afcc-97a1-44be-b188-df04c180892d" ||
+						this.meta.publisher=="3a120d3c-ef3a-4ba3-8d88-36fbcad4690b" ||
+						this.meta.publisher=="5e4c2d22-ba7d-4550-9e5c-6a3f0c812fc2" ||
+						this.meta.publisher=="4fa1282f-c1e4-4b3b-8a32-3952b1efad84" ||
+						this.meta.publisher=="a5c90e3a-1cbd-44fc-a491-28f6729a38f4"
+				){ //temp change for on hover
 					o.options.onmouseover=true;
 				}
+				if( SHARETHIS.options['onmouseover'] ) {
+					if( SHARETHIS.options['onmouseover'] == 'true' ) {
+						o.options.onmouseover=true;
+					} else if( SHARETHIS.options['onmouseover'] == 'false' ) {
+						o.options.onmouseover=false;
+					}
+				}
+				
+				
 		        if(o.options.popup){ 
 					o.options.onmouseover = false;
 					SHARETHIS.popupExists=true;
