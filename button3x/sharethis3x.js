@@ -1,10 +1,10 @@
 /*
-ShareThis Loader Version 4.1.0-rc2
+ShareThis Loader Version 4.1.0-rc4
 8/26/09 ShareThis.com
 */
 
 
-var STV="4.1.0-rc2";
+var STV="4.1.0-rc4";
 
 ST_JSON = new function(){
 
@@ -207,8 +207,8 @@ try{
 		function cleanURL(url) {
 			var url_hash = window.location.hash;
 			var hash_regexp = new RegExp("STS=", "i");
-			var matches = url_hash.match(hash_regexp);  // elements 1,3
-			if( matches != null ) {
+			var match_results = url_hash.match(hash_regexp);  // elements 1,3
+			if( match_results != null ) {
 				var url_arr = url.split('#');
 				return url_arr[0];
 			} else {
@@ -653,7 +653,7 @@ try{
 						+ "&destinations=" + dest
 						+ "&ts" + (new Date()).getTime()
 						+ "&title=" + encodeURIComponent(o.properties.title)
-						+ "&url=" + encodeURIComponent(o.properties.url)
+						+ "&url=" + encodeURIComponent(cleanURL(o.properties.url))
 						+ "&sessionID=" + SHARETHIS.options.sessionID
 						+ "&fpc=" + SHARETHIS.options.fpc;
 					var logger = new Image(1,1);
@@ -928,22 +928,22 @@ try{
 						'.' + parseFloat(this.sessionID_rand).toString(36);
 					var url_hash = url_str.split('#', 2)[1];
 					var hash_regexp = new RegExp("STS=([^&\\s]+)(&SHR=([^&\\s]+))?", "i");
-					var matches = null;
+					var match_results = null;
 					if( typeof(url_hash) != 'undefined' ) {
-						matches = url_hash.match(hash_regexp);  // elements 1,3
+						match_results = url_hash.match(hash_regexp);  // elements 1,3
 					}
-					if( matches != null && matches.length > 1 ) {
-						var raw_str = matches[1];
+					if( match_results != null && match_results.length > 1 ) {
+						var raw_str = match_results[1];
 						var temp_arr = raw_str.split('.');
 						if( temp_arr != null) {
 							this.referrer_sts = parseInt( temp_arr[0], 36 ) + '.' + parseInt( temp_arr[1], 36 );
-							if( matches.length > 2 && matches[3] != null) {
-								this.shr_flag = matches[3];
+							if( match_results.length > 2 && match_results[3] != null) {
+								this.shr_flag = match_results[3];
 							}
 						}
 					}
 
-					if( this.hash_flag == true && (matches != null || url_str.split('#', 2).length < 2) ) {
+					if( this.hash_flag == true && (match_results != null || url_str.split('#', 2).length < 2) ) {
 						var uri_part = url_str.split('#',2)[0];
 						url_str = uri_part + '#STS=' + sts_hash;
 						window.location.replace(url_str);
@@ -976,13 +976,14 @@ try{
 		        lurl+="&publisher=" + encodeURIComponent(SHARETHIS.meta.publisher)
 		            + "&hostname=" + encodeURIComponent(SHARETHIS.meta.hostname)
 		            + "&location=" + encodeURIComponent(SHARETHIS.meta.location)
-		            + "&url=" + encodeURIComponent(url)
+		            + "&url=" + encodeURIComponent(cleanURL(url))
 		            + "&sessionID="+SHARETHIS.sessionID
-		            + "&r_sessionID=" + this.referrer_sts
-				    + "&shr=" + this.shr_flag
 		            + "&fpc="+SHARETHIS.fpc
-		            + "&ts" + (new Date()).getTime() + "." + SHARETHIS.counter++;		        		         
-		                    		         
+		            + "&ts" + (new Date()).getTime() + "." + SHARETHIS.counter++
+		            + "&r_sessionID=" + this.referrer_sts
+				    + "&hash_flag=" + SHARETHIS.hash_flag
+				    + "&shr=" + this.shr_flag;
+		        		         
 		        var logger2 = new Image(1,1);
 		        logger2.src = lurl;
 				// N.B. This onload function is required for IE.
