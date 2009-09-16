@@ -999,8 +999,11 @@ if (!window.console || !console.firebug) {
 	var glo_omnitureURL="";
 	var glo_sharURL="";
 	var import_cookie="";
+	var signin_cookie="";
 	var import_cookie_tid;
+	var signin_cookie_tid;
 	var import_cookie_cycles = 0;
+	var signin_cookie_cycles = 0;
 	var glo_ads=false;
 	var glo_adtag_header="";
 	var glo_adtag_footer="";
@@ -3262,7 +3265,7 @@ Widget.implement({
 					        + '}'
 					    , 1000);
 			},
-			
+
 			submitForm: function() {
 				var service = widget.currentImportContactService;
 				var username = $('import_contacts_username').get('value');
@@ -3395,30 +3398,27 @@ Widget.implement({
 				} else {
 					//this.fireEvent('importContactsRequested');
 					widget.pushModalWorkingSheet('Waiting for Authorization&hellip;');
-					window.open('/share3x/login.php?provider=' + service.protocolName,'import_contacts','scrollbars=yes,directories=no,menubar=yes,toolbar=yes,height=600,width=900');
-					this.pollLoginCookie();
+					window.open('/auth.php?provider=' + service.protocolName,'3rd_party_signin','scrollbars=yes,directories=no,menubar=yes,toolbar=yes,height=600,width=900');
+					this.pollSigninCookie();
 				}
 				return true;
 			},				
-			pollLoginCookie: function() {
-				login_cookie_tid = setInterval('login_cookie = Cookie.read("login");'
-						    + 'if(login_cookie == -1) { clearInterval(login_cookie_tid);'
+
+			pollSigninCookie: function() {
+				signin_cookie_tid = setInterval('signin_cookie = Cookie.read("signin");'
+						    + 'if(signin_cookie == -1) { clearInterval(signin_cookie_tid);'
 							+ 		'widget.popModalWorkingSheet();'
-					        +       'widget.pushModalErrorSheet("Sign In Failed.");'
-					        +		'login_cookie_cycles = 0;'
-					        +       'Cookie.dispose("login", {domain: ".sharethis.com", path: "/"});'
-							+		'Cookie.dispose("login_delt", {domain: ".sharethis.com", path: "/"});'
-							+ '} else if(login_cookie) { clearInterval(login_cookie_tid);'
-							+		'login_cookie_cycles = 0;'	
-							+ 		'contact_url = login_cookie;'
-							+		'delt = Cookie.read("login_delt");'
-							+		'Cookie.dispose("login", {domain: ".sharethis.com", path: "/"});'
-							+		'Cookie.dispose("login_delt", {domain: ".sharethis.com", path: "/"});'
-							+       'widget.login( widget.currentLoginService, "", "", escape(contact_url), delt );'
-							+ '} else if(login_cookie_cycles++ > 120) { clearInterval(login_cookie_tid);'
+					        +       'widget.pushModalErrorSheet("Signin Failed.");'
+					        +		'signin_cookie_cycles = 0;'
+					        +       'Cookie.dispose("signin", {domain: ".sharethis.com", path: "/"});'
+							+ '} else if(signin_cookie) { clearInterval(signin_cookie_tid);'
+							+		'signin_cookie_cycles = 0;'	
+												//Query signin api
+							+		'Cookie.dispose("signin", {domain: ".sharethis.com", path: "/"});'
+							+ '} else if(signin_cookie_cycles++ > 120) { clearInterval(signin_cookie_tid);'
 							+ 		'widget.popModalWorkingSheet();'
 					        +       'widget.pushModalErrorSheet("Authorization Timed Out.");'
-					        +		'login_cookie_cycles = 0;'
+					        +		'signin_cookie_cycles = 0;'
 					        + '}'
 					    , 1000);
 			},
