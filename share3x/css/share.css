@@ -356,9 +356,33 @@ ul.scroll li.even {
 }
 */
 
-#import_service_icon, #login_service_ico {
-	margin: 0 0 0 70px;				 
+#import_service_icon, #login_service_icon  {
+	margin: 0 0 20px 70px;				 
 	font-weight: bold;
+}
+#login_service_box{
+	margin-left:14px;
+	margin-top:3px;
+	display:none;
+	clear:both;	
+}
+
+#login_with{
+	font-weight:bold;
+	text-align:center;
+	margin-top:3px;
+	margin-bottom:3px;
+}
+
+#createAccount{
+	display:none;
+	float:right;
+	margin-top:15px;
+	margin-right:8px;
+}
+#sharethis_login,#yahoo_login{
+	margin-left:3px;
+	margin-right:3px;
 }
 
 .col,
@@ -689,17 +713,32 @@ a.addressbook_button {
 	position:absolute;
 	right:0;
 	width:190px;
-    /**
-     * This height needs to change with the re-implementation of
-     * Twitter contact importing. -- KJW
-     * height:113px;
-     */
-	height:110px;
+
+}
+.mbox2 {
+	background:#fff;
+	border:1px solid #ccc;
+	margin-right:20px;
+	margin-bottom: 10px;
+	padding:0px 8px 0 8px;
+	position:absolute;
+	right:0;
+	width:190px;
 }
 .mboxcontent {
 	margin-left:10px;
 }
 .mboxpoint {
+	/*background:url(http://w.sharethis.com/share3x/images/pointer.gif) right top;*/
+	background-image:url(http://w.sharethis.com/share3x/images/sprite_main_1.gif);
+	background-position: 0 -159px;
+	height:16px;
+	left:-16px;
+	position:absolute;
+	top:6px;
+	width:16px;
+}
+.mboxpoint2 {
 	/*background:url(http://w.sharethis.com/share3x/images/pointer.gif) right top;*/
 	background-image:url(http://w.sharethis.com/share3x/images/sprite_main_1.gif);
 	background-position: 0 -159px;
