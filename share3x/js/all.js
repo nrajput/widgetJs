@@ -1768,6 +1768,43 @@ var glo_post_page=[];
 		sendDestination(network); //for doing createDestination
 	}
 
+    function postYahooUpdate( title, link ) {
+		if( widget.user.thirdparty_token != '' ) {
+			var request = new Request({
+				method: "post",
+			url: "/api/postYahooUpdate.php",
+				asynch: true,
+				data: {
+					yahoo_token: widget.user.thirdparty_token,
+					title: title,
+					link: link,
+					description: 'Shared using ShareThis',
+					'return': 'JSON',
+				},
+				onFailure: function(){logError("post yahoo update","Ajax Failure");},
+				onSuccess: (function(responseText, responseXML) {
+					try{var response = JSON.decode(responseText);}
+					catch(err){logError("post yahoo update",responseText);}
+					if (response.status) {
+						switch (response.status) {
+						case 'SUCCESS':
+							break;
+						case 'FAILURE':
+							logError("post yahoo update",response);
+						default:
+							
+							break;
+						}
+					}
+					else {
+						logError("poost yahoo update",JSON.encode(response));
+					}
+				}).bind(this)
+			});
+			request.send();
+		}
+	}
+
 	function logEvent(destination1,eventType) {
 		var source = "";
 		if (glo_toolbar != false) {
@@ -2651,6 +2688,8 @@ var glo_post_page=[];
 		var logger = new Image(1,1);
 		logger.src = url;
 		logger.onload = function(){return;};
+		
+		postYahooUpdate( tmpTitle, glo_url );
 	
 	}
 	
@@ -3412,6 +3451,7 @@ Widget.implement({
 					//this.fireEvent('importContactsRequested');
 					widget.pushModalWorkingSheet('Waiting for Authorization&hellip;');
 					window.open('/auth.php?provider=' + service.protocolName,'3rd_party_signin','scrollbars=yes,directories=no,menubar=yes,toolbar=yes,height=600,width=900');
+					Cookie.dispose('signin', {domain: ".sharethis.com", path: '/'});
 					this.pollSigninCookie();
 				}
 				return true;
@@ -3426,7 +3466,7 @@ Widget.implement({
 					        +       'Cookie.dispose("signin", {domain: ".sharethis.com", path: "/"});'
 							+ '} else if(signin_cookie) { clearInterval(signin_cookie_tid);'
 							+		'signin_cookie_cycles = 0;'	
-							+		'this.acquireAuth(signin_cookie);'
+							+		'widget.user.acquireAuth(signin_cookie);'
 							+		'Cookie.dispose("signin", {domain: ".sharethis.com", path: "/"});'
 							+ '} else if(signin_cookie_cycles++ > 120) { clearInterval(signin_cookie_tid);'
 							+ 		'widget.popModalWorkingSheet();'
@@ -4912,6 +4952,7 @@ Widget.User = new Class({ Implements: Events,
 	name: '',
 	authToken: '',
 	userID: '',
+    thirdparty_token: '',
 	shareHistory: {
 		services: {},
 		recipients: []
@@ -5020,6 +5061,7 @@ Widget.User = new Class({ Implements: Events,
 		this.email = '';
 		this.name = '';
 		this.userID = '';
+		this.thirdparty_token = '';
 		this.fireEvent('contactsChanged');
 		this.fireEvent('contactSelectionChanged');
 		this.authToken = '';
@@ -5042,6 +5084,7 @@ Widget.User = new Class({ Implements: Events,
 						this.email = response.data.email;
 						this.userID = response.data.userID;
 						this.credentials = response.data.credentials;
+						this.thirdparty_token = response.data.thirdparty_token;
 						
 						glo_credentials = this.credentials;
 							//populateSavedCredentials(this.credentials);

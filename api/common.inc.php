@@ -30,7 +30,7 @@ function call_api($method, $params)
  * @param array $data
  * @returns mixed Formatted data string; FALSE on failure;
  */
-public static function formatOutputArray($data, $format='' ) {
+function formatOutputArray($data, $format='' ) {
 	$retval = FALSE;
 
 	// Generate properly encoded return data
