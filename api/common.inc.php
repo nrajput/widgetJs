@@ -25,4 +25,32 @@ function call_api($method, $params)
 		return $retval;
 	}
 
+/**
+ * Returns hostname for read server
+ * @param array $data
+ * @returns mixed Formatted data string; FALSE on failure;
+ */
+public static function formatOutputArray($data, $format='' ) {
+	$retval = FALSE;
+
+	// Generate properly encoded return data
+	switch ($format) {
+	case "json":
+		$retval = json_encode($data);
+		break;
+	case "xml":
+		$xmlParser = new ShareThis_API_XMLGen;
+		$xmlParser->loadArray($data, "response");
+		$retval = $xmlParser->getXML();
+		break;
+	case "php":
+		$retval = serialize($data);
+		break;
+	default:
+		$retval = json_encode($data);
+	}
+
+	return $retval;
+}
+
 ?>

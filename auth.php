@@ -169,11 +169,6 @@ header('Pragma: no-cache');
 </head>
 <body>
 
-<?php if(isset($_SESSION['yahoo_oauth_request_token'])): ?>
-<div id="ysimpleauth-logout" class="authbar"><a href="auth.php?openid_mode=cancel">Logout</a></div>
-<?php endif; ?>
-
-
 <?php if(isset($_REQUEST['close'])): ?>
 <script type="text/javascript">
 // close popup window and refresh page for access token
