@@ -42,10 +42,8 @@ $oauthapp = new YahooOAuthApplication(OAUTH_CONSUMER_KEY, OAUTH_CONSUMER_SECRET,
 
 // restore access token from session
 $oauthapp->token = YahooOAuthAccessToken::from_string($yahoo_token);
-error_log(print_r($oauthapp->token,1));
 
 $suid = md5($title.$description.$link.time());
-error_log( "$suid\n\n$description\n\n$title\n\n$link\n\n");
 $retval = $oauthapp->insertUpdate(null, $description, $title, $link);
 
 if( $retval ) {
