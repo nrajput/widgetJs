@@ -3426,7 +3426,7 @@ Widget.implement({
 					        +       'Cookie.dispose("signin", {domain: ".sharethis.com", path: "/"});'
 							+ '} else if(signin_cookie) { clearInterval(signin_cookie_tid);'
 							+		'signin_cookie_cycles = 0;'	
-												//Query signin api
+							+		'this.acquireAuth(signin_cookie);'
 							+		'Cookie.dispose("signin", {domain: ".sharethis.com", path: "/"});'
 							+ '} else if(signin_cookie_cycles++ > 120) { clearInterval(signin_cookie_tid);'
 							+ 		'widget.popModalWorkingSheet();'

@@ -17,6 +17,14 @@ require_once "Auth/OpenID/OAuth.php";
 require_once 'OpenSocial/osapi.php';
 require_once 'Yahoo/YahooOAuthApplication.class.php';
 
+function setSigninCookie($token) {
+	setcookie('signin', $token, (time()+3600)*24, '/', '.sharethis.com');
+}
+
+function setSigninFailedCookie() {
+	setcookie('signin', -1, (time()+3600)*24, '/', '.sharethis.com');
+}
+
 
 $oauthapp = new YahooOAuthApplication(OAUTH_CONSUMER_KEY, OAUTH_CONSUMER_SECRET, OAUTH_APP_ID, OAUTH_DOMAIN);
 
@@ -52,23 +60,21 @@ if(isset($_REQUEST['openid_mode']))
 
     // store access token for later
     $_SESSION['yahoo_oauth_access_token'] = $oauthapp->token->to_string();
+	$auth_token = $oauthapp->token->to_string();
 
     break;
 
     case 'cancel':
-
       unset($_SESSION['yahoo_oauth_access_token']);
       unset($_REQUEST['openid_mode']);
 
       header('Location: '.$oauthapp->callback_url); exit;
 
       // openid cancelled
-    break;
-
+	  break;
     case 'associate':
       // openid associate user
-    break;
-
+	  break;
     default:
   }
 }
@@ -112,9 +118,49 @@ else
   }
 }
 
+
+// fetch latest user data
+$profile  = $oauthapp->getProfile();
+$nickname = $profile->nickname;
+$fullname = $profile->givenName . " " . $profile->familyName;
+
+if( !empty($email_address) && !empty($nickname) ) {
+	$response = call_api( "updateThirdPartyAuth", array( 'email' => $email_address,
+														 'type' => 'yahoo',
+														 'thirdparty_token' => $auth_token) );
+
+	if($response == FALSE || $response["status"] != "SUCCESS") {
+		$params = array( 'email' => $email_address,
+						 'name' => $fullname,
+						 'nickname' => $nickname . "-yahoo",
+						 'type' => 'yahoo',
+						 'thirdparty_token' => $auth_token 
+						 );
+		$response = call_api("createUser", $params);
+		if( $response == FALSE || $response["status"] != "SUCCESS" ) {
+			setSigninFailedCookie();
+		} else {
+			setSigninCookie($response['data']['token']);
+		}
+	} else {
+		error_log(print_r($response,1));
+		setSigninCookie($response['data']['token']);
+	}
+}
+
+//$updates  = $oauthapp->getUpdates(null, 0, 20);
+//$connections = $oauthapp->getConnections(null, 0, 1000);
+
 header('Cache-Control: Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
 header('Pragma: no-cache');
+
+
+//echo "$email_address<zp/>";
+//echo "$nickname<p/>";
+//echo "$fullname<p/>";
+//print_r($auth_token);
 ?>
+
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
@@ -126,20 +172,6 @@ header('Pragma: no-cache');
 <?php if(isset($_SESSION['yahoo_oauth_request_token'])): ?>
 <div id="ysimpleauth-logout" class="authbar"><a href="auth.php?openid_mode=cancel">Logout</a></div>
 <?php endif; ?>
-
-<?php
-
-// fetch latest user data
-$profile  = $oauthapp->getProfile();
-$nickname = $profile->nickname;
-$fullname = $profile->givenName . " " . $profile->familyName;
-$updates  = $oauthapp->getUpdates(null, 0, 20);
-$connections = $oauthapp->getConnections(null, 0, 1000);
-
-echo "$email_address<p/>";
-echo "$nickname<p/>";
-echo "$fullname<p/>";
-?>
 
 
 <?php if(isset($_REQUEST['close'])): ?>
