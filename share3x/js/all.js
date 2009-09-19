@@ -3447,8 +3447,7 @@ Widget.implement({
 			},
 			processLogin: function(){
 				gaLog("Login", "login_btn_click", widget.currentLoginService.protocolName); 
-				Cookie.dispose('login', {domain: ".sharethis.com", path: '/'});
-				Cookie.dispose('login_delt', {domain: ".sharethis.com", path: '/'});
+				Cookie.dispose('signin', {domain: ".sharethis.com", path: '/'});
 				var service = widget.currentLoginService;
 				if( service.protocolName == 'sharethis') {
 					var username = $('login_username').get('value');
@@ -3458,7 +3457,6 @@ Widget.implement({
 					//this.fireEvent('importContactsRequested');
 					widget.pushModalWorkingSheet('Waiting for Authorization&hellip;');
 					window.open('/auth.php?provider=' + service.protocolName,'3rd_party_signin','scrollbars=yes,directories=no,menubar=yes,toolbar=yes,height=600,width=900');
-					Cookie.dispose('signin', {domain: ".sharethis.com", path: '/'});
 					this.pollSigninCookie();
 				}
 				return true;
