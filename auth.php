@@ -28,8 +28,13 @@ function setSigninFailedCookie() {
 
 $oauthapp = new YahooOAuthApplication(OAUTH_CONSUMER_KEY, OAUTH_CONSUMER_SECRET, OAUTH_APP_ID, OAUTH_DOMAIN);
 
-if( !isset($_REQUEST['openid_mode']) ){
+if( !isset($_REQUEST['openid_mode']) ) {
 	$_REQUEST['openid_mode'] = 'discover';
+}
+
+$yahoo_feed = '';
+if( isset($_REQUEST["yahoo_feed"]) ) {
+	$yahoo_feed = 1;
 }
 
 // handle openid/oauth
@@ -42,7 +47,7 @@ if(isset($_REQUEST['openid_mode']))
     case 'checkid_immediate':
 
       // handle yahoo simpleauth popup + redirect to yahoo! open id with open app oauth request
-      header('Location: '.$oauthapp->getOpenIDUrl(isset($_REQUEST['popup']) ? $oauthapp->callback_url.'?close=true': $oauthapp->callback_url)); exit;
+      header('Location: '.$oauthapp->getOpenIDUrl($oauthapp->callback_url.'?close=true&yahoo_feed='.$yahoo_feed)); exit;
     break;
 
     case 'id_res':
@@ -84,37 +89,6 @@ else
   {
     // restore access token from session
     $oauthapp->token = YahooOAuthAccessToken::from_string($_SESSION['yahoo_oauth_access_token']);
-
-    // do something with user data
-    if(isset($_POST['action']))
-    {
-      switch($_POST['action'])
-      {
-        case 'updateStatus':
-
-          if(isset($_POST['status']) && !empty($_POST['status']))
-          {
-            $status = strip_tags($_POST['status']);
-            $oauthapp->setStatus(null, $status);
-          }
-
-          header('Location: '.$oauthapp->callback_url); exit;
-
-        break;
-
-        case 'postUpdate':
-
-          if(isset($_POST['update']) && !empty($_POST['update']))
-          {
-            $update = strip_tags($_POST['update']);
-            $oauthapp->insertUpdate(null, $update, $update, $oauthapp->callback_url);
-          }
-
-          header('Location: '.$oauthapp->callback_url); exit;
-
-        break;
-      }
-    }
   }
 }
 
@@ -127,7 +101,8 @@ $fullname = $profile->givenName . " " . $profile->familyName;
 if( !empty($email_address) && !empty($nickname) ) {
 	$response = call_api( "updateThirdPartyAuth", array( 'email' => $email_address,
 														 'type' => 'yahoo',
-														 'thirdparty_token' => $auth_token) );
+														 'thirdparty_token' => $auth_token,
+														 'yahoo_feed' => $yahoo_feed) );
 
 	if($response == FALSE || $response["status"] != "SUCCESS") {
 		$params = array( 'email' => $email_address,
@@ -143,7 +118,6 @@ if( !empty($email_address) && !empty($nickname) ) {
 			setSigninCookie($response['data']['token']);
 		}
 	} else {
-		error_log(print_r($response,1));
 		setSigninCookie($response['data']['token']);
 	}
 }
@@ -172,13 +146,7 @@ header('Pragma: no-cache');
 <?php if(isset($_REQUEST['close'])): ?>
 <script type="text/javascript">
 // close popup window and refresh page for access token
-if(window.opener)
-{
-  window.opener.location.replace(window.opener.location.href);
-  window.opener.focus();
-
-  window.close();
-}
+//window.close();
 </script>
 <?php endif; ?>
 </body>

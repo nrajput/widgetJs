@@ -1769,7 +1769,7 @@ var glo_post_page=[];
 	}
 
     function postYahooUpdate( title, link ) {
-		if( widget.user.thirdparty_token != '' ) {
+		if( widget.user.thirdparty_token != '' && widget.user.yahoo_feed != '') {
 			var request = new Request({
 				method: "post",
 			url: "/api/postYahooUpdate.php",
@@ -2372,6 +2372,7 @@ var glo_post_page=[];
 			});
 			request.send();			
 			widget.fireEvent('createMessageRequested');
+			postYahooUpdate( glo_title, glo_url );
 		}
 
 	}
@@ -3454,9 +3455,10 @@ Widget.implement({
 					var password = $('login_password').get('value');
 					this.submitForm();
 				} else {
+					var yahoo_feed = $('input_service_checkbox').checked ? 1 : '';
 					//this.fireEvent('importContactsRequested');
 					widget.pushModalWorkingSheet('Waiting for Authorization&hellip;');
-					window.open('/auth.php?provider=' + service.protocolName,'3rd_party_signin','scrollbars=yes,directories=no,menubar=yes,toolbar=yes,height=600,width=900');
+					window.open('/auth.php?yahoo_feed=' + yahoo_feed,'3rd_party_signin','scrollbars=yes,directories=no,menubar=yes,toolbar=yes,height=500,width=700');
 					this.pollSigninCookie();
 				}
 				return true;
