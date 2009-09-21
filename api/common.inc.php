@@ -1,5 +1,11 @@
 <?php
 
+
+define('YAHOO_OAUTH_CONSUMER_KEY', 'dj0yJmk9WHlFa0dYYnFvVVh5JmQ9WVdrOVZUUmxZelJaTXpRbWNHbzlOVEE0TVRZM016RTEmcz1jb25zdW1lcnNlY3JldCZ4PTJi');
+define('YAHOO_OAUTH_CONSUMER_SECRET', '08ee1b648ca2b4286a126534419103e472b133ba');
+define('YAHOO_OAUTH_DOMAIN', 'http://wd.sharethis.com/auth.php');
+define('YAHOO_OAUTH_APP_ID', 'U4ec4Y34');
+
 function call_api($method, $params)
 	{
 		$url = "http://" . API_SERVER . "/" . $method . ".php";

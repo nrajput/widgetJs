@@ -3458,7 +3458,7 @@ Widget.implement({
 					var yahoo_feed = $('input_service_checkbox').checked ? 1 : '';
 					//this.fireEvent('importContactsRequested');
 					widget.pushModalWorkingSheet('Waiting for Authorization&hellip;');
-					window.open('/auth.php?yahoo_feed=' + yahoo_feed,'3rd_party_signin','scrollbars=yes,directories=no,menubar=yes,toolbar=yes,height=500,width=700');
+					window.open('/auth.php?provider=' + service.protocolName + '&yahoo_feed=' + yahoo_feed,'3rd_party_signin','scrollbars=yes,directories=no,menubar=yes,toolbar=yes,height=500,width=700');
 					this.pollSigninCookie();
 				}
 				return true;
