@@ -1779,7 +1779,7 @@ var glo_post_page=[];
 					title: title,
 					link: link,
 					description: 'Shared using ShareThis',
-					'return': 'JSON',
+					'return': 'JSON'
 				},
 				onFailure: function(){logError("post yahoo update","Ajax Failure");},
 				onSuccess: (function(responseText, responseXML) {
@@ -1792,7 +1792,6 @@ var glo_post_page=[];
 						case 'FAILURE':
 							logError("post yahoo update",response);
 						default:
-							
 							break;
 						}
 					}
