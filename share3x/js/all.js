@@ -619,7 +619,6 @@ var Widget = new Class({ Implements: Events,
 		this.fireEvent('importContactsRequested');
 	},
 	login: function(service, username, password, contact_url, delt) {	
-		console.log("login function");
 		if(service.protocolName=="sharethis"){
 			widget.signIn();
 			return true;
@@ -3435,7 +3434,6 @@ Widget.implement({
 							}
 						});
 						if (item) {
-							console.log(item);
 							this.pointImportPointerAt(item);
 						}
 					//}
@@ -3483,7 +3481,6 @@ Widget.implement({
 			},
 			
 			submitForm: function() {
-				console.log("submit form");
 				var service = widget.currentLoginService;
 				var username = $('login_username').get('value');
 				var password = $('login_password').get('value');

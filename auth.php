@@ -43,7 +43,7 @@ if( isset($_REQUEST['provider']) ) {
 				case 'checkid_immediate':
 
 					// handle yahoo simpleauth popup + redirect to yahoo! open id with open app oauth request
-					header('Location: '.$oauthapp->getOpenIDUrl($oauthapp->callback_url.'?close=true&yahoo_feed='.$yahoo_feed)); exit;
+					header('Location: '.$oauthapp->getOpenIDUrl($oauthapp->callback_url.'?provider=yahoo&close=true&yahoo_feed='.$yahoo_feed)); exit;
 					break;
 
 				case 'id_res':
