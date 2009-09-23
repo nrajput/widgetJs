@@ -13,11 +13,11 @@ require_once 'OpenSocial/osapi.php';
 require_once 'Yahoo/YahooOAuthApplication.class.php';
 
 function setSigninCookie($token) {
-	setcookie('signin', $token, (time()+3600)*24, '/', '.sharethis.com');
+	setcookie('signin', $token, time()+3600*24, '/', '.sharethis.com');
 }
 
 function setSigninFailedCookie() {
-	setcookie('signin', -1, (time()+3600)*24, '/', '.sharethis.com');
+	setcookie('signin', -1, time()+3600*24, '/', '.sharethis.com');
 }
 
 if( isset($_REQUEST['provider']) ) {
