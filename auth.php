@@ -88,34 +88,38 @@ if( isset($_REQUEST['provider']) ) {
 				}
 		}
 
-
-	// fetch latest user data
-	$profile  = $oauthapp->getProfile();
-	$nickname = $profile->nickname;
-	$fullname = $profile->givenName . " " . $profile->familyName;
-
-	if( !empty($email_address) && !empty($nickname) ) {
-		$response = call_api( "updateThirdPartyAuth", array( 'email' => $email_address,
-															 'type' => 'yahoo',
-															 'thirdparty_token' => $auth_token,
-															 'yahoo_feed' => $yahoo_feed) );
-
-		if($response == FALSE || $response["status"] != "SUCCESS") {
-			$params = array( 'email' => $email_address,
-							 'name' => $fullname,
-							 'nickname' => $nickname . "-yahoo",
-							 'type' => 'yahoo',
-							 'thirdparty_token' => $auth_token 
-							 );
-			$response = call_api("createUser", $params);
-			if( $response == FALSE || $response["status"] != "SUCCESS" ) {
-				setSigninFailedCookie();
+	try {
+		// fetch latest user data
+		$profile  = $oauthapp->getProfile();
+		$nickname = $profile->nickname;
+		$fullname = $profile->givenName . " " . $profile->familyName;
+		
+		if( !empty($email_address) && !empty($nickname) ) {
+			$response = call_api( "updateThirdPartyAuth", array( 'email' => $email_address,
+																 'type' => 'yahoo',
+																 'thirdparty_token' => $auth_token,
+																 'yahoo_feed' => $yahoo_feed) );
+			
+			if($response == FALSE || $response["status"] != "SUCCESS") {
+				$nickname = preg_replace('/([^@]+)@.*/','\1', $email_address);
+				$params = array( 'email' => $email_address,
+								 'name' => $fullname,
+								 'nickname' => $nickname . "-y-" . rand(0,10000),
+								 'type' => 'yahoo',
+								 'thirdparty_token' => $auth_token 
+								 );
+				$response = call_api("createUser", $params);
+				if( $response == FALSE || $response["status"] != "SUCCESS" ) {
+					setSigninFailedCookie();
+				} else {
+					setSigninCookie($response['data']['token']);
+				}
 			} else {
 				setSigninCookie($response['data']['token']);
 			}
-		} else {
-			setSigninCookie($response['data']['token']);
 		}
+	} catch (Exception $e) {
+		setSigninFailedCooie();
 	}
 
 }
