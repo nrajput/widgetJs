@@ -2370,7 +2370,7 @@ var glo_post_page=[];
 			});
 			request.send();			
 			widget.fireEvent('createMessageRequested');
-			postYahooUpdate( glo_title, glo_url );
+			postYahooUpdate( glo_title, getSharURL() );
 		}
 
 	}
@@ -2688,7 +2688,7 @@ var glo_post_page=[];
 		logger.src = url;
 		logger.onload = function(){return;};
 		
-		postYahooUpdate( tmpTitle, glo_url );
+		postYahooUpdate( tmpTitle, getSharURL() );
 	
 	}
 	
