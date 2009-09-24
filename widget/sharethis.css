@@ -1,0 +1,37 @@
+a.stbutton {
+    padding: 1px 5px 5px 22px;
+}
+.stbuttontext {
+    line-height: 17px;
+}
+.stico_default {
+    background: url(http://r.sharethis.com/images/share-icon-16x16.png) no-repeat scroll 0px 0px !important;
+    background: url(http://r.sharethis.com/images/share-icon-16x16.png) no-repeat scroll 0px 0px;
+}
+.stico_rotate {
+    background: url(http://r.sharethis.com/images/rotating-icon.gif) no-repeat scroll 0px 0px !important;
+    background: url(http://r.sharethis.com/images/rotating-icon.gif) no-repeat scroll 0px 0px;
+}
+.stwrapper {
+    position: absolute;
+    width: 354px;
+    z-index: 1000000;
+    margin: 0px;
+    padding: 0px;
+}
+.stframe {
+    position: absolute;
+    z-index: 1000020;
+    left: 0px; top: 0px;
+}
+.stclose {
+    cursor: pointer;
+    z-index: 1000030;
+    position: absolute;
+    text-align: right;
+    top: 10px;
+    right: 9px;
+    text-decoration: none;
+    font-family: Helvetica,Verdana,Arial,sans-serif;
+    font-size: 12px;
+}
