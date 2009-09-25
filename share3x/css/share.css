@@ -127,10 +127,6 @@ textarea {
 	text-decoration:none;
 	cursor:default;
 }
-.to_field .token_x:hover {
-	background-position: -7px -124px;	
-	cursor:pointer;
-}
 .to_field .token span {
 	margin:0;
 	padding-bottom:1px;
@@ -138,13 +134,18 @@ textarea {
 }
 
 .to_field .token_x {
-	background-image: url(http://w.sharethis.com/share3x/images/sprite_main_1.gif);
+	background-image: url(http://w.sharethis.com/share3x/images/close-token.gif);
 	background-repeat:no-repeat;
-	background-position: 0 -137px;	
 	height: 13px;
 	width: 16px;
 	float:right;
 	margin: 2px 0px 0px 4px;
+}
+
+.to_field .token_x:hover {
+	background-image: url(http://w.sharethis.com/share3x/images/close-token-active.gif);
+	background-repeat:no-repeat;
+	cursor:pointer;
 }
 
 .to_field #contact_search_field_container {
@@ -299,13 +300,9 @@ ul.scroll li.even {
 	margin: 10px 5px 10px 0;
 }
 
-
-
-
-
 .button_new,
 .button_new_green {
-	background: transparent url('../images/button_a2.gif') no-repeat scroll top right;
+	background: transparent url('../images/button_a2.gif') no-repeat scroll top right; 
     color: #444;
     float: left;
     font: normal 13px arial, sans-serif;
@@ -445,7 +442,9 @@ ul.scroll li.even {
 }
 
 #import_blurb {
-	background-image:url(http://w.sharethis.com/share3x/images/import.gif);
+/*	background-image:url(http://w.sharethis.com/share3x/images/import.gif); */
+	background-image:url(http://w.sharethis.com/share3x/images/sprite_main_2.gif); 
+	background-position:0px -143px;
 	background-repeat:no-repeat;
 	margin: 2px 0 0 70px;
 	cursor: pointer;
@@ -510,17 +509,6 @@ ul.scroll li.even {
 .col dd .addresses textarea{
 	width:205px;
 }
-a.addressbook_button {
-	/*background:url(http://w.sharethis.com/share3x/images/address-book.gif) no-repeat;*/
-	background-image:url(http://w.sharethis.com/share3x/images/sprite_main_1.gif);
-	background-repeat:no-repeat;
-	background-position: 0 0;
-	float:right;
-	height:24px;
-	text-indent:-32000px;
-	width:24px;
-	margin-right:2px;
-}
 
 .col_foot {
 	clear:both;
@@ -573,21 +561,11 @@ a.addressbook_button {
 	right:0;
 	top:0;
 }
-.carousel .back,
-.carousel .fwd {
-/*
-	background-image:url(http://w.sharethis.com/share3x/images/sprite_main_1.gif);
-	background-position:0 -196px;
-	background-repeat:no-repeat;
-*/
-}
 
 .circles{
-/*	
-	background-image:url(http://w.sharethis.com/share3x/images/sprite_main_1.gif); 
-	background-position:0 -124px;
-*/
-	background-image:url(../images/dotUnselected.png);
+/*	background-image:url(../images/dotUnselected.png); */
+	background-image:url(http://w.sharethis.com/share3x/images/sprite_main_2.gif); 
+	background-position:0px -65px;
 	background-repeat:no-repeat;	
 	height:10px;
 	width:10px;
@@ -596,15 +574,12 @@ a.addressbook_button {
 	float:left;
 	cursor:pointer;
 	display:inline;
-	
 }
 
 .circles-selected{
-/*
-	background-image:url(http://w.sharethis.com/share3x/images/sprite_main_1.gif);
-	background-position: -120px -69px;
-*/
-	background-image:url(../images/dotSelected.png);
+/*	background-image:url(../images/dotSelected.png); */
+	background-image:url(http://w.sharethis.com/share3x/images/sprite_main_2.gif); 
+	background-position:0px -51px;
 	background-repeat:no-repeat;
 	height:10px;
 	width:10px;
@@ -622,13 +597,14 @@ a.addressbook_button {
 }
 
 #back_arrow {
-/*	background-position:0 0; */
-	background: url(../images/leftArrow.png) no-repeat;
+/*	background: url(../images/leftArrow.png) no-repeat; */
+	background-image:url(http://w.sharethis.com/share3x/images/sprite_main_2.gif); 
+	background-position:0px -30px;
 }
 #fwd_arrow {
-	/*background-position:-13px 0;*/
-/*	background-position: -13px -196px; */
-	background: url(../images/rightArrow.png) no-repeat;
+/*	background: url(../images/rightArrow.png) no-repeat; */
+	background-image:url(http://w.sharethis.com/share3x/images/sprite_main_2.gif); 
+	background-position:0px -79px;
 }
 .carousel .back:hover {
 	/*background-position:0 -175px;*/
@@ -730,9 +706,9 @@ a.addressbook_button {
 	margin-left:10px;
 }
 .mboxpoint {
-	/*background:url(http://w.sharethis.com/share3x/images/pointer.gif) right top;*/
-	background-image:url(http://w.sharethis.com/share3x/images/sprite_main_1.gif);
-	background-position: 0 -159px;
+/*	background:url(http://w.sharethis.com/share3x/images/pointer.gif) right top; */
+	background-image:url(http://w.sharethis.com/share3x/images/sprite_main_2.gif); 
+	background-position:0px -159px;
 	height:16px;
 	left:-16px;
 	position:absolute;
@@ -740,9 +716,9 @@ a.addressbook_button {
 	width:16px;
 }
 .mboxpoint2 {
-	/*background:url(http://w.sharethis.com/share3x/images/pointer.gif) right top;*/
-	background-image:url(http://w.sharethis.com/share3x/images/sprite_main_1.gif);
-	background-position: 0 -159px;
+/*	background:url(http://w.sharethis.com/share3x/images/pointer.gif) right top; */
+	background-image:url(http://w.sharethis.com/share3x/images/sprite_main_2.gif); 
+	background-position:0px -159px;
 	height:16px;
 	left:-16px;
 	position:absolute;
@@ -1026,21 +1002,7 @@ h1#header_title {
 	float:right;
 	margin-right:9px;
 }
-a#home_button {
-	/* background: url(http://w.sharethis.com/share3x/images/home-icon.gif) no-repeat 0 0; */
-	background-image:url(http://w.sharethis.com/share3x/images/sprite_main_1.gif);
-	background-position: -19px -137px;
-	background-repeat:no-repeat;
-	float:left;
-	height:11px;
-	margin-right:6px;
-	text-indent:-32000px;
-	width:12px;
-}
-a#home_button:hover,
-span.active a#home_button {
-	background-position:-19px -148px;
-}
+
 .doneText {
 	clear:both;
 }
@@ -1049,9 +1011,8 @@ span.active a#home_button {
 }
 
 #bullet_2 {
-	background-image:url(http://w.sharethis.com/share3x/images/sprite_main_1.gif);
+	background-image:url(http://w.sharethis.com/share3x/images/bullet_2.gif);
 	background-repeat:no-repeat;
-	background-position: 0 -24px;
 	float:left;
 	display:inline;
 	width: 120px;
@@ -1059,18 +1020,16 @@ span.active a#home_button {
 }
 
 #bullet_3 {
-	background-image:url(http://w.sharethis.com/share3x/images/sprite_main_1.gif);
+	background-image:url(http://w.sharethis.com/share3x/images/bullet_3.gif);
 	background-repeat:no-repeat;
-	background-position: -120px -24px;
 	float:left;
 	display:inline;
 	width: 120px;
 	height: 45px;
 }
 #bullet_6 {
-	background-image:url(http://w.sharethis.com/share3x/images/sprite_main_1.gif);
+	background-image:url(http://w.sharethis.com/share3x/images/bullet_6.gif);
 	background-repeat:no-repeat;
-	background-position: 0 -69px;
 	float:left;
 	display:inline;
 	width: 120px;
@@ -1230,9 +1189,9 @@ span.active a#home_button {
 }
 
 .sharebox {
-	/* background:url(http://w.sharethis.com/share3x/images/sharebox_logo.gif) no-repeat; */
-	background-image:url(http://w.sharethis.com/share3x/images/sprite_main_1.gif);
-	background-position: -16px -177px;
+/*	background:url(http://w.sharethis.com/share3x/images/sharebox_logo.gif) no-repeat; */
+	background-image:url(http://w.sharethis.com/share3x/images/sprite_main_2.gif); 
+	background-position:0px -120px;
 	background-repeat:no-repeat;
 	padding:3px 4px 2px 24px;
 	white-space:nowrap;
@@ -1309,7 +1268,9 @@ span.active a#home_button {
 	height: 14px;
 }
 .sharethis {
-	background:url(http://w.sharethis.com/share3x/images/share-icon.gif) no-repeat left center;
+/*	background:url(http://w.sharethis.com/share3x/images/share-icon.gif) no-repeat left center; */
+	background-image:url(http://w.sharethis.com/share3x/images/sprite_main_2.gif); 
+	background-position:0px -99px;
 }
 
 .bebo {
@@ -1513,9 +1474,10 @@ span.active a#home_button {
 	background-position:0 -1300px;
 }
 #close_button{
-	background-image:url(http://w.sharethis.com/share3x/images/sprite_main_1.gif);
+/*	background-image:url(http://w.sharethis.com/share3x/images/close-button.gif); */
+	background-image:url(http://w.sharethis.com/share3x/images/sprite_main_2.gif); 
+	background-position:0px -2px;
 	background-repeat:no-repeat;
-	background-position: -26px -196px;
 	height:12px;
 	width:12px;
 	z-index:10000;
@@ -1529,6 +1491,10 @@ span.active a#home_button {
     display: none;
 }
 #closeX{
+/*	background-image:url(http://w.sharethis.com/share3x/images/closeX4.gif); */
+	background-image:url(http://w.sharethis.com/share3x/images/sprite_main_2.gif); 
+	background-position:0px -18px;
+	background-repeat:no-repeat;
 	top:3px !important;
 	top:4px;
 	left:334px;
@@ -1536,6 +1502,4 @@ span.active a#home_button {
 	z-index:10000;
 	height:8px;
 	width:8px;
-	background-image:url(http://w.sharethis.com/share3x/images/closeX4.gif);
-	background-repeat:no-repeat;
 }

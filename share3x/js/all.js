@@ -5787,9 +5787,6 @@ Widget.ToField = new Class({ Implements: Events,
 	},
 
 	_createToken: function(contact, method) {
-		
-		
-		
 		var retVal='<a class="token" href="javascript:void(0);" >';
 		retVal+='<span title= "' + contact.name + '<' + contact.address + '>' + '" class="' + (contact.service.length ? contact.service : 'email') + '">';
 		retVal+='<img class="token_x" id="token_img" src="">' + widget.truncateText(contact.name, 130);
