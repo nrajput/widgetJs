@@ -321,6 +321,12 @@ try{
 						for(var i=0;i<children.length;i++){var child=children[i];try{child.setAttribute("st_dest", "aim.com");}catch(err){}}
 						chicklet.onclick = this.chicklet;
 						break;	
+					case "mixx":
+						chicklet.setAttribute("st_dest", "mixx.com");
+						var children=chicklet.childNodes;
+						for(var i=0;i<children.length;i++){var child=children[i];try{child.setAttribute("st_dest", "mixx.com");}catch(err){}}
+						chicklet.onclick = this.chicklet;
+						break;	
 				}
 			}
 		}

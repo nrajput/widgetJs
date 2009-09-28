@@ -62,7 +62,10 @@
 			case "aim.com":
 				$url = "http://share.aim.com/share/?url={url}&title={title}";
 				break;		
-				
+		    case "mixx.com":
+				$url = "http://www.mixx.com/submit?page_url={url}";
+				break;		
+
 		}
 		if ($url !== "") {
 			$url = str_replace("{sharurl}", urlencode($properties->sharURL), $url);
