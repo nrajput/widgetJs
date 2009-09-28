@@ -856,11 +856,13 @@ var Widget = new Class({ Implements: Events,
 		}
 	},
 	freezeTextInput: function(inputElement) {
+		inputElement.disabled = true;
 		inputElement.addClass('frozen');
 		inputElement.addEvent('focus', this._frozenFocusHandler);
 		inputElement.blur();
 	},
 	unfreezeTextInput: function(inputElement) {
+		inputElement.disabled = false;
 		inputElement.removeClass('frozen');
 		inputElement.removeEvent('focus', this._frozenFocusHandler);
 	},
