@@ -19,16 +19,6 @@
 		Header unset Expires
 	</FilesMatch>
 
-#sharethis.css /button  
-	<FilesMatch sharethis.css>
-		Header set Cache-Control "public"
-		Header unset Last-Modified
-		Header set Cache-Control "public"
-		Header set Expires "Thu, 15 Apr 2010 20:00:00 GMT"
-		Header unset Pragma
-		Header unset ETag
-	</FilesMatch>
-
 	<FilesMatch "\.(ico)$">
 		Header set Cache-Control "public"
 		Header set Expires "Thu, 15 Apr 2010 20:00:00 GMT"
@@ -53,7 +43,6 @@
 	RewriteRule ^share3x/css/share.(\d{1}.\d{1}.\d{1}.[0-9a-zA-Z]{3}).css$ /share3x/css/share.css [L]
 	RewriteRule ^share3x/css/ie.(\d{1}.\d{1}.\d{1}.[0-9a-zA-Z]{3}).css$ /share3x/css/share.css [L]
 	RewriteRule ^share3x/css/ie6.(\d{1}.\d{1}.\d{1}.[0-9a-zA-Z]{3}).css$ /share3x/css/share.css [L]
-	RewriteRule ^share3x/css/override.(\d{1}.\d{1}.\d{1}.[0-9a-zA-Z]{3}).css$ /share3x/css/share.css [L]
 	
 	RewriteRule ^button/css/sharethis.([0-9a-zA-Z]{32}).css$ /button/css/sharethis.css [L]
 	RewriteRule ^share3x/lightbox.([0-9a-zA-Z]{32}).html$ /share3x/lightbox.html [L]
@@ -61,7 +50,6 @@
 	RewriteRule ^share3x/css/share.([0-9a-zA-Z]{32}).css$ /share3x/css/share.css [L]
 	RewriteRule ^share3x/css/ie.([0-9a-zA-Z]{32}).css$ /share3x/css/share.css [L]
 	RewriteRule ^share3x/css/ie6.([0-9a-zA-Z]{32}).css$ /share3x/css/share.css [L]
-	RewriteRule ^share3x/css/override.([0-9a-zA-Z]{32}).css$ /share3x/css/share.css [L]
 	
 </IfModule>
 
