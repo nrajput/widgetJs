@@ -4,6 +4,8 @@
  */
 
 //widget-class.js
+
+
 var Widget = new Class({ Implements: Events,
 	shareables: [],
 	shareablesKey: "",
@@ -1541,26 +1543,96 @@ var glo_post_page=[];
 	}
 
 	// frag pump start	
-	var FragmentPump = new Class({
-		Extends: Events,
-		fragTimer: "",
-		initialize: function(interval) {
-			FragmentPump.fragTimer=setInterval(this.checkFragment.bind(this),5);
-		},
-		startint: function(){
+	function FragmentPump(){
+		//Extends: Events,
+		var fragTimer="";
+		this.initialize= function() {
+			FragmentPump.fragTimer=setInterval("fragmentPump.checkFragment()",10);
+		}
+		this.startint=function(){
 			setInterval(this.checkFragment.bind(this), 250);
-		},
-		checkFragment: function() {
+		}
+		this.checkFragment=function() {
 			var hash = document.location.hash.substring(1);
 			if (hash.length > 0 && hash!==glo_oldQS) {
 				var args = hash.split("/");
 				glo_oldQS=hash;
 				var cmd = args.shift();
-				this.fireEvent(cmd, args);		
+				cmd="fragmentPump."+cmd;
+				args=args.toSource();
+				args=args.replace(/\[/,"");
+				args=args.replace(/\]/,"");
+				var evStr=cmd+"("+args+")";
+				//console.log(evStr);
+				 var tempFucn = new Function(evStr);
+				 tempFucn();
 			}
 		}
-	});
+		this.init=function(){
+			if(glo_initRun===false){
+				glo_initRun=true;
+				for(var i=0;i<arguments.length;i++) {
+					var num=i+1;
+					//console.log(arguments[i]);
+					if(arguments[i]!="" && arguments[i]!=" "){addToOptionsBuffer(arguments[i]);}
+				}
+				glo_pageOptions=true;
+				if(domReady===true){
+					processBuffer();
+				}
+				glo_initRun=true;
+			}
+		}
+		this.test=function() {
+			readyTest();
+		}
+		this.data=function() {
+			for (var i=0; i < arguments.length; i++) {
+				addToOptions2(arguments[i]);
+			}
+		}
+		this.show=function() {
+			gaLog("Widget", "widget_open"); 
+			if(glo_initRun==false){
+				return false;
+			}
+			for(var i=0; i < arguments.length; i++) {
+				addToOptions(arguments[i]);
+			}
+		}
+		this.popup=function(){
+			clearInterval(fragmentPump.fragTimer);
+			clearInterval(FragmentPump.fragTimer);
+			fragmentPump.startint();
+			glo_options_popup=true;  
+			displayNum=24;
+			for(var i=0;i<arguments.length;i++) {
+				var num=i+1;
+				addToOptionsBuffer(arguments[i]);
+			}
+			if(domReady===true){
+				processBuffer();
+			}
+			glo_initRun=true;
+		}
+		this.widget=function() {
+			if (arguments.length) {
+				var kvPairs = arguments[0].split('=');
+				for (var i = 0; i < kvPairs.length; i += 2) {
+					switch (kvPairs[i]) {
+						case 'screen':
+							widget.showPage(kvPairs[i + 1]);
+							$('header_ad').empty();
+							$('footer_ad_body').empty();
+						break;
+					}
+				}
+			}
+		}
+		this.initialize();
+	};
 	var fragmentPump = new FragmentPump();
+/*
 	function bindEvents() {
 		fragmentPump.addEvent("init", init.bind(this));
 		fragmentPump.addEvent("show", show.bind(this));	
@@ -1569,69 +1641,10 @@ var glo_post_page=[];
 		fragmentPump.addEvent("test",test.bind(this));  //for testing	calls readyTest
 		fragmentPump.addEvent("widget", widget.bind(this));
 	}	
-	function init(){
-		if(glo_initRun===false){
-			glo_initRun=true;
-			for(var i=0;i<arguments.length;i++) {
-				var num=i+1;
-				if(arguments[i]!="" && arguments[i]!=" "){addToOptionsBuffer(arguments[i]);}
-			}
-			glo_pageOptions=true;
-			if(domReady===true){
-				processBuffer();
-			}
-			glo_initRun=true;
-		}
-	}
-	function test() {
-		readyTest();
-	}
-	function data() {
-		for (var i=0; i < arguments.length; i++) {
-			addToOptions2(arguments[i]);
-		}
-	}
-	function show() {
-		gaLog("Widget", "widget_open"); 
-		if(glo_initRun==false){
-			return false;
-		}
-		for(var i=0; i < arguments.length; i++) {
-			addToOptions(arguments[i]);
-		}
-	}
-	function popup(){
-		clearInterval(fragmentPump.fragTimer);
-		clearInterval(FragmentPump.fragTimer);
-		fragmentPump.startint();
-		glo_options_popup=true;  
-		displayNum=24;
-		for(var i=0;i<arguments.length;i++) {
-			var num=i+1;
-			addToOptionsBuffer(arguments[i]);
-		}
-		if(domReady===true){
-			processBuffer();
-		}
-		glo_initRun=true;
-	}
-	function widget() {
-		if (arguments.length) {
-			var kvPairs = arguments[0].split('=');
-			for (var i = 0; i < kvPairs.length; i += 2) {
-				switch (kvPairs[i]) {
-					case 'screen':
-						widget.showPage(kvPairs[i + 1]);
-						$('header_ad').empty();
-						$('footer_ad_body').empty();
-					break;
-				}
-			}
-		}
-	}
+	
 	bindEvents();
 	// frag pump end
-
+*/
 	function addToOptions2(a){
 		var temp=[];
 		temp=a.split("=");	
@@ -1652,10 +1665,23 @@ var glo_post_page=[];
 		tstArray.push(new fragObj(temp[0],temp[1]));
 		if(temp[1]=="done"){
 			if(glo_initRun===false){document.location.hash=glo_initFrag;}
-			clearInterval(fragmentPump.fragTimer);
-			clearInterval(FragmentPump.fragTimer); 
-			fragmentPump.startint();         
+			//clearInterval(fragmentPump.fragTimer);
+			//clearInterval(FragmentPump.fragTimer); 
+			//fragmentPump.startint();         
 			glo_jsonStr=glo_jsonArray.join('');
+			glo_jsonArray=[];
+			glo_title_array=[];
+			glo_type_array=[];
+			glo_summary_array=[];
+			glo_content_array=[];
+			glo_url_array=[];
+			glo_icon_array=[];
+			glo_category_array=[];
+			glo_updated_array=[];
+			glo_published_array=[];
+			glo_author_array=[];
+			glo_thumb_array=[];
+			
 			try{
 				/*glo_jsonStr=decodeURIComponent(glo_jsonStr);
 				glo_jsonStr=decodeURIComponent(glo_jsonStr);
@@ -1979,6 +2005,7 @@ var glo_post_page=[];
 		if(glo_browser.test("ff")==false){
 		try{glo_jsonStr=decodeURIComponent(glo_jsonStr);}catch(err){}
 		}
+
 		var tmp=glo_jsonStr;
 		var newResp=[];
 		try{newResp=eval(tmp);}catch(err){tmp=decodeURIComponent(tmp);newResp=eval(tmp);}

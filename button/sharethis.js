@@ -1,49 +1,13 @@
 /*
-ShareThis Loader Version 4.2.0-rc1
-8/26/09 ShareThis.com
+ShareThis Loader Version 4.3.0-rc1
+9/29/09 ShareThis.com
 */
+
 
 
 var STV="4.2.0-rc1";
 
 ST_JSON = new function(){
-
-	this.decode = function(){
-		var	filter, result, self, tmp;
-		if($$("toString")) {
-			switch(arguments.length){
-				case	2:
-					self = arguments[0];
-					filter = arguments[1];
-					break;
-				case	1:
-					if($[typeof arguments[0]](arguments[0]) === Function) {
-						self = this;
-						filter = arguments[0];
-					}
-					else
-						self = arguments[0];
-					break;
-				default:
-					self = this;
-					break;
-			};
-			if(rc.test(self)){
-				try{
-					result = e("(".concat(self, ")"));
-					if(filter && result !== null && (tmp = $[typeof result](result)) && (tmp === Array || tmp === Object)){
-						for(self in result)
-							result[self] = v(self, result) ? filter(self, result[self]) : result[self];
-					}
-				}
-				catch(z){}
-			}
-			else {
-				throw new JSONError("bad data");
-			}
-		};
-		return result;
-	};
 	this.encode = function(){
 		var	self = arguments.length ? arguments[0] : this,
 			result, tmp;
@@ -136,9 +100,9 @@ ST_JSON = new function(){
 	catch(z){rc=/^(true|false|null|\[.*\]|\{.*\}|".*"|\d+|\d+\.\d+)$/}
 };
 
-
+/*
 try{
-
+*/
 	if (!SHARETHIS) {
 		if(!SHARETHIS_TOOLBAR){
 			var SHARETHIS_TOOLBAR=false;
@@ -146,11 +110,6 @@ try{
 		var SHARETHIS=null;
 		/* parseQueryString.js - a function to parse and decode query strings -- The author of this program, Safalra (Stephen Morley), irrevocably releases all rights to this program, with the intention of it becoming part of the public domain. Because this program is released into the public domain, it comes with no warranty either expressed or implied, to the extent permitted by law.  For more public domain JavaScript code by the same author, visit: http://www.safalra.com/web-design/javascript/ */
 		function parseQueryString(G){var E={};if(G==undefined){G=location.search?location.search:""}if(G.charAt(0)=="?"){G=G.substring(1)}var C=G.indexOf("?");if(C){G=G.substring(C+1)}C=G.indexOf("#");if(C){G=G.substring(C+1)}G=G.replace("+"," ");var B=G.split(/[&;]/g);for(var C=0;C<B.length;C++){var F=B[C].split("=");var A=decodeURIComponent(F[0]);var D=decodeURIComponent(F[1]);if(!E[A]){E[A]=[]}E[A].push((F.length==1)?"":D)}return E};//var D=decodeURIComponent(F[1]);E[A]=((F.length==1)?"":D)}return E};
-
-		/* A JavaScript implementation of the Secure Hash Algorithm, SHA-1, as defined in FIPS PUB 180-1 -- Version 2.1a Copyright Paul Johnston 2000 - 2002. -- Other contributors: Greg Holt, Andrew Kepert, Ydnar, Lostinet -- Distributed under the BSD License -- See http://pajhome.org.uk/crypt/md5 for details. */
-		var hexcase=0;var b64pad="";var chrsz=8;function hex_sha1(A){return binb2hex(core_sha1(str2binb(A),A.length*chrsz))}function core_sha1(M,H){M[H>>5]|=128<<(24-H%32);M[((H+64>>9)<<4)+15]=H;var O=Array(80);var N=1732584193;var L=-271733879;var K=-1732584194;var J=271733878;var I=-1009589776;for(var E=0;E<M.length;E+=16){var G=N;var F=L;var D=K;var C=J;var A=I;for(var B=0;B<80;B++){if(B<16){O[B]=M[E+B]}else{O[B]=rol(O[B-3]^O[B-8]^O[B-14]^O[B-16],1)}var P=safe_add(safe_add(rol(N,5),sha1_ft(B,L,K,J)),safe_add(safe_add(I,O[B]),sha1_kt(B)));I=J;J=K;K=rol(L,30);L=N;N=P}N=safe_add(N,G);L=safe_add(L,F);K=safe_add(K,D);J=safe_add(J,C);I=safe_add(I,A)}return Array(N,L,K,J,I)}function sha1_ft(B,A,D,C){if(B<20){return(A&D)|((~A)&C)}if(B<40){return A^D^C}if(B<60){return(A&D)|(A&C)|(D&C)}return A^D^C}function sha1_kt(A){return(A<20)?1518500249:(A<40)?1859775393:(A<60)?-1894007588:-899497514}function safe_add(A,D){var C=(A&65535)+(D&65535);var B=(A>>16)+(D>>16)+(C>>16);return(B<<16)|(C&65535)}function rol(A,B){return(A<<B)|(A>>>(32-B))}function str2binb(D){var C=Array();var A=(1<<chrsz)-1;for(var B=0;B<D.length*chrsz;B+=chrsz){C[B>>5]|=(D.charCodeAt(B/chrsz)&A)<<(32-chrsz-B%32)}return C}function binb2hex(C){var B=hexcase?"0123456789ABCDEF":"0123456789abcdef";var D="";for(var A=0;A<C.length*4;A++){D+=B.charAt((C[A>>2]>>((3-A%4)*8+4))&15)+B.charAt((C[A>>2]>>((3-A%4)*8))&15)}return D};
-		function hash_page(A) {return hex_sha1(A);}
-
 
 		var stVisibleInterval=null;
 		var readyTestInterval=null;
@@ -269,72 +228,14 @@ try{
 					newbutton.onclick = this.popup;
 				}
 			}
-			this.attachChicklet=function(type, chicklet) {
-				switch (type) {
-					case "facebook":
-						chicklet.setAttribute("st_dest", "facebook.com");
-						var children=chicklet.childNodes;
-						for(var i=0;i<children.length;i++){var child=children[i];try{child.setAttribute("st_dest", "facebook.com");}catch(err){}}
-					    chicklet.onclick = this.chicklet;
-						break;
-					case "digg":
-						chicklet.setAttribute("st_dest", "digg.com");
-						var children=chicklet.childNodes;
-						for(var i=0;i<children.length;i++){var child=children[i];try{child.setAttribute("st_dest", "digg.com");}catch(err){}}
-						chicklet.onclick = this.chicklet;
-						break;
-					case "yahoo_buzz":
-						chicklet.setAttribute("st_dest", "buzz.yahoo.com");
-						var children=chicklet.childNodes;
-						for(var i=0;i<children.length;i++){var child=children[i];try{child.setAttribute("st_dest", "buzz.yahoo.com");}catch(err){}}
-						chicklet.onclick = this.chicklet;
-						break;
-					case "email":
-						chicklet.setAttribute("st_page", "send");
-						var children=chicklet.childNodes;
-						for(var i=0;i<children.length;i++){var child=children[i];try{child.setAttribute("st_page", "send");}catch(err){}}
-						if(this.options.onmouseover) {
-							chicklet.onmouseover = this.popup;
-						} else {
-							chicklet.onclick = this.popup;
-						}
-						break;
-					case "twitter":
-						chicklet.setAttribute("st_page", "post|twitter");
-						var children=chicklet.childNodes;
-						for(var i=0;i<children.length;i++){var child=children[i];try{child.setAttribute("st_page", "post|twitter");}catch(err){}}
-						if(this.options.onmouseover) {
-							chicklet.onmouseover = this.popup;
-						} else {
-							chicklet.onclick = this.popup;
-						}
-						break;
-					case "myspace":
-						chicklet.setAttribute("st_dest", "myspace.com");
-						var children=chicklet.childNodes;
-						for(var i=0;i<children.length;i++){var child=children[i];try{child.setAttribute("st_dest", "myspace.com");}catch(err){}}
-						chicklet.onclick = this.chicklet;
-						break;
-					case "aim":
-						chicklet.setAttribute("st_dest", "aim.com");
-						var children=chicklet.childNodes;
-						for(var i=0;i<children.length;i++){var child=children[i];try{child.setAttribute("st_dest", "aim.com");}catch(err){}}
-						chicklet.onclick = this.chicklet;
-						break;	
-					case "mixx":
-						chicklet.setAttribute("st_dest", "mixx.com");
-						var children=chicklet.childNodes;
-						for(var i=0;i<children.length;i++){var child=children[i];try{child.setAttribute("st_dest", "mixx.com");}catch(err){}}
-						chicklet.onclick = this.chicklet;
-						break;	
-				}
-			}
+			
 		}
 
 		function ShareThis(options){
 			this.version=2.03;
 			this.tmpSendData="";
 			this.sendArray=[];
+			this.sendInit=[];
 			this.sendNum=0;
 			this.guid=null;
 			this.popExists=false;
@@ -543,47 +444,15 @@ try{
 				pScroll={scrX:scX,scrY:scY,width:winX,height:winY};
 		        return pScroll;
 		    }
-			this.postPopup=function(){
-		        field = function(k, v) {
-		            var f   = document.createElement("input");
-		            f.type  = "hidden";
-		            f.name  = k;
-		            f.value = v;
-		            return f;
-		        }
-		        normalize = function(s){
-		            if (s == null) return '';
-		            return encodeURIComponent(s);
-		        }
-		        var f    = document.createElement("form");
-		        f.method = "post";
-		        f.action = SHARETHIS.postUrl;
-		        f.target = "stpostframe";
-
-		        var urls = '';
-		        var propertylist = [];
-		        
-
-		        for (var i=0; i<this.shareables.length; i++){
-		        	var tmp_prop={};
-		            var o = this.shareables[i];
-		            urls = urls+o.properties.url;
-			        for (p in o.properties){
-			        	if(SHARETHIS_tstOptions(p)==true){
-							tmp_prop[p]=o.properties[p];
-			        	}
-			        }
-		            propertylist.push(tmp_prop);
-		        }
-		        
-		        var jsonstr = ST_JSON.encode(propertylist);
-		        this.guid = hash_page(urls);
-		        f.appendChild(field('key', this.guid));
-		        f.appendChild(field('data', normalize(jsonstr)));
-		        document.body.appendChild(f);
-		        f.submit();
-		    }
+			
 		    this.addEntry=function(properties, options){
+		    	//console.log("addentry");
+		    	/*if(typeof(document.body)!=undefined || typeof(document.body)!="undefined" || document.body!=null){
+		    		console.log(document.body);
+		    		console.log(typeof(document.body));
+		    		document.write("FALE");
+		    		SHARETHIS.onReady();
+		    	}*/
 		    	if(_thisScript===null){
 		    		var tmpScr=getShareThisScript();
 		    		SHARETHIS.options=parseQueryString(tmpScr.src);
@@ -699,6 +568,7 @@ try{
 				}
 		        o.popup = function(e){
 		        	o.options.autoclose=true;
+		        	SHARETHIS.postEntries(o);	//manu	        	
 		        	//o.options.onmouseover=true;//setting to true for default...
 		        	if(SHARETHIS_TOOLBAR===true){
 		        		if(st_showing===false){
@@ -712,7 +582,8 @@ try{
 						if(SHARETHIS.page!=null){
 							pgval="/page="+SHARETHIS.page;
 						}
-						SHARETHIS.mainstframe.src = SHARETHIS.frameUrl + SHARETHIS.newwinfrag +"/guid_index=" + oidx +"/guid=" + SHARETHIS.guid+added_tool+pgval;	
+						
+						SHARETHIS.mainstframe.src = SHARETHIS.frameUrl + SHARETHIS.newwinfrag +"/guid_index=0"+"/guid=" + SHARETHIS.guid+added_tool+pgval;	
 						SHARETHIS.wrapper.style.visibility="visible";
 						SHARETHIS.mainstframe.style.visibility = 'visible';
 		        	} else {
@@ -766,7 +637,7 @@ try{
 					        		if(res == false) return false;
 							}
 					        if(o.options.popup) {
-					        	var newwinurl = SHARETHIS.frameUrl + SHARETHIS.newwinfrag +"/guid_index=" + oidx +"/guid=" + SHARETHIS.guid + pageFrag;	
+					        	var newwinurl = SHARETHIS.frameUrl + SHARETHIS.newwinfrag +"/guid_index=0" +"/guid=" + SHARETHIS.guid + pageFrag;	
 					        	window.open(newwinurl, "newstframe","status=1,toolbar=0,width=353,height=598");
 					        }
 					        else{
@@ -776,7 +647,7 @@ try{
 									}
 									stautoclose = o.options.autoclose;
 									if(SHARETHIS.sendNum<SHARETHIS.sendArray.length){
-										SHARETHIS.sendArray.push("#show" + "/guid_index=" + oidx + pageFrag);
+										SHARETHIS.sendArray.push("#show" + "/guid_index=0" + pageFrag);
 										if(SHARETHIS.delayShow===true){
 											sendDataInt=setTimeout(SHARETHIS.sendData,1000);
 										}
@@ -786,7 +657,7 @@ try{
 									}
 									else{
 										//SHARETHIS.mainstframe.src = SHARETHIS.frameUrl + "#show" + "/guid_index=" + oidx;
-										window.frames['stframe'].location.replace(SHARETHIS.frameUrl + "#show" + "/guid_index=" + oidx + pageFrag);
+										window.frames['stframe'].location.replace(SHARETHIS.frameUrl + "#show" + "/guid_index=0" + pageFrag);
 										if(SHARETHIS.delayShow===true){
 											sendDataInt=setTimeout(SHARETHIS.sendData,1000);
 										}
@@ -848,33 +719,20 @@ try{
 		        return o;
 		    },
 		
-		    this.postEntries=function(){
-		        field = function(k, v) {
-		            var f   = document.createElement("input");
-		            f.type  = "hidden";
-		            f.name  = k;
-		            f.value = v;
-		            return f;
-		        }
-		        normalize = function(s){
-		            if (s == null) return '';
-		            return encodeURIComponent(s);
-		        }
+		    this.postEntries=function(o){
+		    	SHARETHIS.sendNum=0;
 		        var urls = '';
-		        var propertylist = [];
-		        
-		        for (var i=0; i<this.shareables.length; i++){
-		            var tmp_prop={};
-		            var o = this.shareables[i];
-		            urls = urls+o.properties.url;
-		            for (p in o.properties){
-			        	if(SHARETHIS_tstOptions(p)==true){
-			        		tmp_prop[p]=null;
-							tmp_prop[p]=o.properties[p];
-						}
-			        }
-		            propertylist.push(tmp_prop);
+		        var propertylist = [];		        
+	            var tmp_prop={};
+	            //var o = this.shareables[i];
+	            urls = urls+o.properties.url;
+	            for (p in o.properties){
+		        	if(SHARETHIS_tstOptions(p)==true){
+		        		tmp_prop[p]=null;
+						tmp_prop[p]=o.properties[p];
+					}
 		        }
+	            propertylist.push(tmp_prop);
 		        var tmp="/pageTitle="+encodeURIComponent(encodeURIComponent(document.title))+"/pageURL="+encodeURIComponent(encodeURIComponent(cleanURL(document.URL)))+"/pageHost="+encodeURIComponent(encodeURIComponent(document.location.host))+"/pagePath="+encodeURIComponent(encodeURIComponent(document.location.pathname)); 
 				SHARETHIS.sendArray.push("#data"+tmp);
 				var jsonstr = ST_JSON.encode(propertylist);
@@ -904,7 +762,7 @@ try{
 			this.sendJSON=function(){
 					if(SHARETHIS.sendNum<SHARETHIS.sendArray.length){		
 						//SHARETHIS.mainstframe.src=SHARETHIS.frameUrl+SHARETHIS.sendArray[SHARETHIS.sendNum];
-							//console.log(SHARETHIS.frameUrl+SHARETHIS.sendArray[SHARETHIS.sendNum]);
+						//	console.log(SHARETHIS.frameUrl+SHARETHIS.sendArray[SHARETHIS.sendNum]);
 						window.frames['stframe'].location.replace(SHARETHIS.frameUrl+SHARETHIS.sendArray[SHARETHIS.sendNum]);
 					}
 					else{
@@ -1052,7 +910,7 @@ try{
 		    		
 			this.onStFrameLoad=function(){
 				if(SHARETHIS.frameLoaded===false){	
-					SHARETHIS.postEntries();
+					//SHARETHIS.postEntries();
 					SHARETHIS.widgetCalled=true;
 					SHARETHIS.frameLoaded=true;
 					if(SHARETHIS.st_clicked==true){
@@ -1161,9 +1019,9 @@ try{
 					}
 					
 					this.initstr = init;
-					this.sendArray.push(this.initstr);
-					this.mainstframe.src=this.frameUrl+this.sendArray[0];
-					this.sendNum++;
+					this.sendInit.push(this.initstr);
+					this.mainstframe.src=this.frameUrl+this.sendInit[0];
+				//	this.sendNum++;
 					this.wrapper= document.createElement('div');
 					this.wrapper.id = 'stwrapper';
 					this.wrapper.className = 'stwrapper';
@@ -1395,7 +1253,7 @@ try{
 	if (_thisScript2 && _thisScript2.parentNode.tagName != "HEAD" && typeof(_sttoolbar) == "undefined") {
 		var obj = SHARETHIS.addEntry();
 	}
-
+/*
 }
 catch(err){
-}
+}*/
