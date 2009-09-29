@@ -4,7 +4,7 @@ ShareThis Loader Version 4.2.0-rc1
 */
 
 
-var STV="4.2.0-rc1";
+
 
 ST_JSON = new function(){
 
@@ -582,7 +582,7 @@ try{
 		    		var tmpScr=getShareThisScript();
 		    		SHARETHIS.options=parseQueryString(tmpScr.src);
 						
-					this.frameUrl="http://wd.sharethis.com/share3x/lightbox."+STV+".html";	
+					this.frameUrl="http://wd.sharethis.com/share3x/lightbox.html";	
 					this.postUrl="http://wd.sharethis.com/api/setCache_ws.php"
 
 					if(SHARETHIS.options["button"]){SHARETHIS.options["button"]=SHARETHIS.getBool(SHARETHIS.options["button"].toString());}
@@ -1080,7 +1080,7 @@ try{
 						var ST_script_src=_thisScript.src;
 					}
 					
-					this.frameUrl="http://wd.sharethis.com/share3x/lightbox."+STV+".html";	
+					this.frameUrl="http://wd.sharethis.com/share3x/lightbox.html";	
 					this.postUrl="http://wd.sharethis.com/api/setCache_ws.php"	
 					this.options = options || {};
 					if(this.options["button"]){this.options["button"]=this.getBool(this.options["button"].toString());}
@@ -1090,7 +1090,7 @@ try{
 						this.meta.publisher = this.options.publisher;
 					}
 	
-					var tmp_css='http://w.sharethis.com/button/css/sharethis.'+STV+'.css';
+					var tmp_css='http://w.sharethis.com/button/css/sharethis.css';
 					try{
 						if(this.options.css){
 						tmp_css=this.options.css.toString();

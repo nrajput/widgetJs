@@ -13,7 +13,7 @@
 
 #only for loader cache for a day	
 	<FilesMatch sharethis.js>
-		Header set ETag "4.0.3"
+		Header set ETag "SHARETHISMD5"
 		Header set Cache-Control "max-age=86400, public"
 		Header unset Last-Modified
 		Header unset Expires
@@ -54,6 +54,15 @@
 	RewriteRule ^share3x/css/ie.(\d{1}.\d{1}.\d{1}.[0-9a-zA-Z]{3}).css$ /share3x/css/share.css [L]
 	RewriteRule ^share3x/css/ie6.(\d{1}.\d{1}.\d{1}.[0-9a-zA-Z]{3}).css$ /share3x/css/share.css [L]
 	RewriteRule ^share3x/css/override.(\d{1}.\d{1}.\d{1}.[0-9a-zA-Z]{3}).css$ /share3x/css/share.css [L]
+	
+	RewriteRule ^button/css/sharethis.([0-9a-zA-Z]{32}).css$ /button/css/sharethis.css [L]
+	RewriteRule ^share3x/lightbox.([0-9a-zA-Z]{32}).html$ /share3x/lightbox.html [L]
+	RewriteRule ^share3x/js/all.([0-9a-zA-Z]{32}).js$ /share3x/js/all.js [L]
+	RewriteRule ^share3x/css/share.([0-9a-zA-Z]{32}).css$ /share3x/css/share.css [L]
+	RewriteRule ^share3x/css/ie.([0-9a-zA-Z]{32}).css$ /share3x/css/share.css [L]
+	RewriteRule ^share3x/css/ie6.([0-9a-zA-Z]{32}).css$ /share3x/css/share.css [L]
+	RewriteRule ^share3x/css/override.([0-9a-zA-Z]{32}).css$ /share3x/css/share.css [L]
+	
 </IfModule>
 
 
