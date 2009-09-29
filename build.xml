@@ -49,25 +49,6 @@ ant git-archive -Dversion=3.8.0-rc7
 		<delete dir="${build.dir}" />		
 	</target>
 
-<target name="replace-cond">
-	<condition property="replace-cond-is-true">
-		<and>
-			<isset property="dHostName" />
-			<isset property="ddHostName" />
-		</and>
-	</condition>
-</target>
-
-	<target name="replace" depends="replace-cond" if="replace-cond-is-true">
-		<replace file="${build.dir}/disc/index.html" token="d.sharethis.com" value="${dHostName}"/>
-		<replace file="${build.dir}/discovery/usweekly.html" token="d.sharethis.com" value="${dHostName}"/>
-		<replace file="${build.dir}/discovery/usweekly.html" token="loader.sharethis.com" value="${dHostName}"/>
-		<replace file="${build.dir}/discovery/test_discovery.html" token="loader.sharethis.com" value="${dHostName}"/>
-		<replace file="${build.dir}/loader.js" token="dd.sharethis.com" value="${ddHostName}"/>	
-		<replace file="${build.dir}/loader.js" token="ad.sharethis.com" value="${ddHostName}" />
-		<replace file="${build.dir}/disc/js/core.js" token="ad.sharethis.com" value="${ddHostName}" />
-	</target>
-	
 	<target name="minify-js">
 	    <echo message="The base directory is:${build.dir}"/>
 	    <apply executable="java" dir="${build.dir}" relative="true" verbose="false" force="true" parallel="false">
@@ -94,26 +75,25 @@ ant git-archive -Dversion=3.8.0-rc7
 	</target>
 
     <target name="checksum">
-    	<checksum file="${build.dir}/disc/css/discovery.css" property="discovery.css.MD5"/>    
-		<checksum file="${build.dir}/disc/js/lib/ext-contrib/src/ux/data/PagingStore.js" property="PagingStore.js.MD5"/>
-		<checksum file="${build.dir}/disc/js/lib/ext-contrib/src/ux/CustomPagingToolbar.js" property="CustomPagingToolbar.js.MD5"/>
-		<checksum file="${build.dir}/disc/js/lib/ext-contrib/src/ux/TagCloud.js" property="TagCloud.js.MD5"/>
-	   	<checksum file="${build.dir}/disc/js/core.js" property="core.js.MD5"/>	
-	   	<checksum file="${build.dir}/disc/js/harness.js" property="harness.js.MD5"/>	
+    	<checksum file="${build.dir}/share3x/css/share.css" property="share.css.MD5"/>    
+		<checksum file="${build.dir}/share3x/js/all.js" property="all.js.MD5"/>
+		<checksum file="${build.dir}/share3x/css/ie.css" property="ie.css.MD5"/>
+		<checksum file="${build.dir}/share3x/css/ie6.css" property="ie6.css.MD5"/>
+		<checksum file="${build.dir}/button/css/sharethis.css" property="sharethis.css.MD5"/>	
 				
-	   	<replace file="${build.dir}/disc/index.html" token="discovery.css" value="discovery.${discovery.css.MD5}.css"/>
-   		<replace file="${build.dir}/disc/index.html" token="PagingStore.js" value="PagingStore.${PagingStore.js.MD5}.js"/>
-	   	<replace file="${build.dir}/disc/index.html" token="CustomPagingToolbar.js" value="CustomPagingToolbar.${CustomPagingToolbar.js.MD5}.js"/>
-	   	<replace file="${build.dir}/disc/index.html" token="TagCloud.js" value="TagCloud.${TagCloud.js.MD5}.js"/>
-	   	<replace file="${build.dir}/disc/index.html" token="core.js" value="core.${core.js.MD5}.js"/>	
-	   	<replace file="${build.dir}/.htaccess" token="HARNESSMD5" value="${harness.js.MD5}"/>
+	   	<replace file="${build.dir}/share3x/lightbox.html" token="share.css" value="share.${share.css.MD5}.css"/>
+   		<replace file="${build.dir}/share3x/lightbox.html" token="all.js" value="all.${all.js.MD5}.js"/>
+	   	<replace file="${build.dir}/share3x/lightbox.html" token="ie.css" value="ie.${ie.css.MD5}.css"/>
+	   	<replace file="${build.dir}/share3x/lightbox.html" token="ie6.css" value="ie6.${ie6.css.MD5}.css"/>
+	   		   	
+	   	<checksum file="${build.dir}/share3x/lightbox.html" property="lightbox.html.MD5"/>
+	   	<replace file="${build.dir}/button/sharethis.js" token="lightbox.html" value="lightbox.${lightbox.html.MD5}.html"/>	
+		<replace file="${build.dir}/button/sharethis.js" token="sharethis.css" value="sharethis.${sharethis.css.MD5}.css"/>	
+	   	<replace file="${build.dir}/button3x/sharethis3x.js" token="lightbox.html" value="lightbox.${lightbox.html.MD5}.html"/>	
+		<replace file="${build.dir}/button3x/sharethis3x.js" token="sharethis.css" value="sharethis.${sharethis.css.MD5}.css"/>	
 	   	
-	   	<checksum file="${build.dir}/disc/index.html" property="index.html.MD5"/>
-	   	<replace file="${build.dir}/loader.js" token="index.html" value="index.${index.html.MD5}.html"/>	
-	   	
-	   	<checksum file="${build.dir}/loader.js" property="loader.js.MD5"/>	
-	    <replace file="${build.dir}/.htaccess" token="LOADERMD5" value="${loader.js.MD5}"/>	   	
-	   	 
+	    <checksum file="${build.dir}/button/sharethis.js" property="sharethis.js.MD5"/>	
+	    <replace file="${build.dir}/.htaccess" token="SHARETHISMD5" value="${sharethis.js.MD5}"/>	   		   	
     </target>
     
     
@@ -121,7 +101,7 @@ ant git-archive -Dversion=3.8.0-rc7
 		<echo file="${build.dir}/version" message="${version}" />
 	</target>
 	
-	<target name="tarball" depends="clean,getsource,replace,minify-js,minify-css,version-file,checksum">
+	<target name="tarball" depends="clean,getsource,minify-js,minify-css,version-file,checksum">
 		<tar destfile="sharethis.${module}.${version}.tar.gz" basedir="${build.dir}" compression="gzip" excludes="tools/**, **/ext*.zip **/*.tar" />
 	</target>
 </project>
