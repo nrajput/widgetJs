@@ -18,7 +18,7 @@ ant git-archive -Dversion=3.8.0-rc7
 
 <project name="discovery_build" basedir="./" default="tarball">
 
-	<property name="version" value="demo"/>
+	<property name="version" value="HEAD"/>
 	<property name="build.basedir" value = "./build" />
 	<property name="module" value = "w"/>
 	<property name="build.dir" value = "${build.basedir}/${version}"/>
