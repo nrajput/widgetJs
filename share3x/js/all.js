@@ -1888,7 +1888,7 @@ var glo_post_page=[];
 		}
 		
 		// switch for using user prefs (disabled in initial v3 release):
-		var respectUserPrefs = false;
+		var respectUserPrefs = true;
 		
 		$each(defaultServices, function(name, i) {
 			var link = widget.getServiceLink(defaultServices[i]);
@@ -4777,7 +4777,7 @@ Widget.Carousel = new Class({ Implements: Events,
 		else {
 			var data = [];
 			var itemsPerPage = (this.nRows * this.nCols);
-			var startsWithPref = (this.data.length && (this.data[0].hasPublisherPref || this.data[0].hasUserPref));
+			var startsWithPref = (this.data.length && (this.data[0].hasPublisherPref ));
 			var dummiesDeployed = false;
 			this.totalDummies=0;
 			
