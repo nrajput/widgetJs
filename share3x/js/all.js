@@ -380,10 +380,10 @@ var Widget = new Class({ Implements: Events,
 			atag=encodeURIComponent(atag);
 		
 			if(!blogid){
-				data="username="+username+"&password="+password+"&d="+glo_content+atag+"&draft="+glo_tpDraft+"&t="+"glo_title"+"&return=json&rememberme="+rememberme+"&forgetme="+forgetme;
+				data="username="+username+"&password="+password+"&d="+glo_content+atag+"&draft="+glo_tpDraft+"&t="+glo_title+"&return=json&rememberme="+rememberme+"&forgetme="+forgetme;
 			}
 			else{
-				data="blogid="+blogid+"&d="+glo_content+atag+"&draft="+glo_tpDraft+"&password="+password+"&t="+"glo_title"+"&username="+username+"&return=json&rememberme="+rememberme+"&forgetme="+forgetme;
+				data="blogid="+blogid+"&d="+glo_content+atag+"&draft="+glo_tpDraft+"&password="+password+"&t="+glo_title+"&username="+username+"&return=json&rememberme="+rememberme+"&forgetme="+forgetme;
 			}
 
 			var request=new Request({
@@ -3724,6 +3724,8 @@ Widget.implement({
 								$('post_submit_btn').addClass('hidden');
 								$('post_select_container').set('html', tpOptions);
 								$('post_select_box').removeClass('hidden');
+								widget.popModalWorkingSheet();
+								widget.displayNotification(message);
 							}
 						});
 

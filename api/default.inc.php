@@ -38,7 +38,8 @@ if ( !empty($ipAddress) ) {
 
 if ( !empty($postdata) ) {
 	list($output,$info) = AjaxProxy::makePostRequest($url,$postdata);
-	header("Content-Type: ".$info["content_type"]);
+//	header("Content-Type: ".$info["content_type"]);
+	header("Content-Type: text/html");
 	echo $output;
 }
 else {
