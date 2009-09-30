@@ -1559,11 +1559,12 @@ var glo_post_page=[];
 				glo_oldQS=hash;
 				var cmd = args.shift();
 				cmd="fragmentPump."+cmd;
-				args=args.toSource();
-				args=args.replace(/\[/,"");
-				args=args.replace(/\]/,"");
+				//console.log(args);
+				args=args.toString();
+				args='"'+args+'"';
+				args=args.replace(/,/,'","');
 				var evStr=cmd+"("+args+")";
-				//console.log(evStr);
+			//	console.log(evStr);
 				 var tempFucn = new Function(evStr);
 				 tempFucn();
 			}
