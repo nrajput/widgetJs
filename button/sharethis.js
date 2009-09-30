@@ -361,6 +361,7 @@ try{
 			this.referrer_sts = "";
 			this.shr_flag = "";
 			this.publisherID = null;
+			this.bodyLoaded=false;
 			if( options['publisher'] ) {
 				this.publisherID = options['publisher'][0];
 			}
@@ -841,8 +842,8 @@ try{
 		        a.appendChild(t);
 		        o.button = a;
 		 		try{
-					if(o.options.button==true){
-		        document.write('<span id="' + id + '"></span>');
+					if(o.options.button==true && SHARETHIS.bodyLoaded==false){
+						document.write('<span id="' + id + '"></span>');
 					}
 				}
 				catch(err){
@@ -1176,6 +1177,7 @@ try{
 
 					this.defer(function(){
 						//make button count call
+						SHARETHIS.bodyLoaded=true;
 						var burl = "http://l.sharethis.com/log?event=bview";
 				        var additional=dbrInfo();
 				        if(additional==false){
@@ -1190,9 +1192,6 @@ try{
 				            + "&ts" + (new Date()).getTime() + "." + SHARETHIS.counter++
 				            + "&count="+SHARETHIS.buttonCount
 				            +	additional;
-				        
-				        
-				       				        
 				        
 				        var logger3 = new Image(1,1);
 				        logger3.src = burl;
