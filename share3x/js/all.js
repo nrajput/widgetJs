@@ -258,7 +258,7 @@ var Widget = new Class({ Implements: Events,
 		else {
 			var rememberme=0;
 		}
-		if ($('post_forget_me').value === 'true') {
+		if ($('post_forget_me').value == 'true') {
 			var forgetme=1;
 		}
 		else {
@@ -349,7 +349,7 @@ var Widget = new Class({ Implements: Events,
 		else {
 			var rememberme=0;
 		}
-		if ($('post_forget_me').value === 'true') {
+		if ($('post_forget_me').value == 'true') {
 			var forgetme=1;
 		}
 		else {
@@ -441,7 +441,7 @@ var Widget = new Class({ Implements: Events,
 		else {
 			var rememberme=0;
 		}
-		if ($('post_forget_me').value === 'true') {
+		if ($('post_forget_me').value == 'true') {
 			var forgetme=1;
 		}
 		else {
@@ -2727,20 +2727,14 @@ function populateSavedCredentials(service) {
 			if (glo_credentials[i] && glo_credentials[i].service == service) {
 				try{
 					$('post_remember_me').checked = true;
-					var inputfields = $('post_form').getElementsByClassName('text');
 					if( !$('post_url').hasClass('hidden') ) {
 						widget.freezeTextInput($('post_url'));
-						widget.freezeTextInput($('post_username'));
-						widget.freezeTextInput($('post_password'));
 						$('post_url').value = glo_credentials[i].url;
-						$('post_username').value = glo_credentials[i].username;
-						$('post_password').value = glo_credentials[i].password;
-					} else {
-						widget.freezeTextInput($('post_username'));
-						widget.freezeTextInput($('post_password'));
-						post_username.value = credentials[i].username;
-						post_password.value = credentials[i].password;
 					}
+					widget.freezeTextInput($('post_username'));
+					widget.freezeTextInput($('post_password'));
+					$('post_username').value = glo_credentials[i].username;
+					$('post_password').value = glo_credentials[i].password;
 				}catch(err){
 				}
 			}
