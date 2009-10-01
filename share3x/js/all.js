@@ -1039,7 +1039,7 @@ var glo_post_page=[];
 		if(value===1){answer="Yes";}
 		try{value=decodeURIComponent(value);}catch(err){}
 		try{value=decodeURIComponent(value);}catch(err){}
-		//console.log(strArg+":"+value);
+		//console.log(strArg+":"+value);//manu
 		switch(strArg) {
 			case "tabs":
 				glo_tabs=value;
@@ -1559,12 +1559,11 @@ var glo_post_page=[];
 				glo_oldQS=hash;
 				var cmd = args.shift();
 				cmd="fragmentPump."+cmd;
-				//console.log(args);
 				args=args.toString();
 				args='"'+args+'"';
-				args=args.replace(/,/,'","');
+				args=args.replace(/,/g,'","');
 				var evStr=cmd+"("+args+")";
-			//	console.log(evStr);
+				//console.log(evStr);
 				 var tempFucn = new Function(evStr);
 				 tempFucn();
 			}
@@ -1602,13 +1601,15 @@ var glo_post_page=[];
 			}
 		}
 		this.popup=function(){
+			//console.log("popup");
 			clearInterval(fragmentPump.fragTimer);
 			clearInterval(FragmentPump.fragTimer);
-			fragmentPump.startint();
+			//fragmentPump.startint();
 			glo_options_popup=true;  
 			displayNum=24;
 			for(var i=0;i<arguments.length;i++) {
 				var num=i+1;
+				//console.log(arguments[i]);//manu
 				addToOptionsBuffer(arguments[i]);
 			}
 			if(domReady===true){
