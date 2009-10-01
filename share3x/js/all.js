@@ -3380,17 +3380,21 @@ Widget.implement({
 		'login': {
 			id: 'login_page',
 			onReady: function() {
-				$('login_list').getElements('li').each(function(item, index) {
-					item.getElement('a').addEvents({
-						click: function(event) {					
-							widget.setLoginService(item.getChildren()[0].get('class'));
-							event.stop();
-						}
-					});
+				$each(widget.loginSources, function(item, index){
+					var login_item = new Element('li').grab( new Element('a', { 'href': 'javascript:void(0)',
+																				'class': item.protocolName,
+																				'html': item.title,
+																				'events': { 
+																					'click': function(event) {
+																						widget.setLoginService(item.protocolName);
+																						event.stop();
+																					}
+																				}
+																			  }));
+					$('login_list').grab(login_item);
 				});
 				
 				$('login_submit').addEvent('click', (function(event) {
-					//this.processLogin();
 					widget.pages.login.processLogin();
 				}).bind(this));
 				
@@ -3398,6 +3402,7 @@ Widget.implement({
 				widget.addEvent('loginRequested', function() {
 					//widget.pushModalWorkingSheet('Importing contacts&hellip;'); //manu
 				});
+
 				widget.addEvent('loginSucceeded', function(contactInfo) {
 					/*widget.popModalWorkingSheet();
 					$('send_title').set('html', 'Email');
@@ -3405,69 +3410,51 @@ Widget.implement({
 					widget.displayNotification('Success! ' + contactInfo.nContacts + ' contacts imported.');
 					emptyInputs();*/
 				});
+
 				widget.addEvent('loginFailed', function() {
 					widget.popModalWorkingSheet();
 					widget.pushModalErrorSheet('Unable to Sign In');
 				})
 				
 				widget.addEvent('loginServiceChanged', (function(serviceTag) {
-					//if (this.isShown()) {
-						var service = widget.loginSources[serviceTag];
-						$('loginAuth').setStyle('display', 'none');
-						$('oauthLogin').setStyle('display', 'block');
-						$('login_service_box').setStyle('display', 'none');
-						$('createAccount').setStyle('display', 'none');
-						switch(serviceTag) {
-							case 'gmail':
-								$('loginAuth').setStyle('display', 'block');
-								$('oauthLogin').setStyle('display', 'none');
-								//$('oauthImport').getElement('label').set('text','We\'ll take you to Gmail where you\'ll be asked to let ShareThis access your address book.');
-								break;	
-							case 'yahoo':
-								//$('regAuth').setStyle('display', 'block');
-								//$('oauthImport').setStyle('display', 'none');
-								$('login_service_box').setStyle('display', 'block');
-								$('oauthLogin').getElement('label').set('text','We\'ll take you to Yahoo where you\'ll be asked to link your Yahoo account to ShareThis.');
-								$('login_with').set('text','Sign In with Yahoo');
-							//	$$('.mbox')[1].setStyle('height','125px');
-								break;
-							case 'myspace':
-								$('oauthLogin').getElement('label').set('text','We\'ll take you to Myspace where you\'ll be asked to let ShareThis access your friend list.');
-								break;
-							case 'msn':
-								$('oauthLogin').getElement('label').set('text','We\'ll take you to MSN/Hotmail where you\'ll be asked to let ShareThis access your address book.');
-								break;
-							case 'aol':
-								$('loginAuth').setStyle('display', 'block');
-								$('oauthLogin').setStyle('display', 'none');
-								break;
-							case 'sharethis':
-									$('login_with').set('text','Sign In with ShareThis');
-									$('loginAuth').setStyle('display', 'block');
-									$('oauthLogin').setStyle('display', 'none');
-									$('createAccount').setStyle('display', 'block');
-									//$('oauthImport').getElement('label').set('text','We\'ll take you to Gmail where you\'ll be asked to let ShareThis access your address book.');
-									break;	
+					var service = widget.loginSources[serviceTag];
+					$('loginAuth').setStyle('display', 'none');
+					$('oauthLogin').setStyle('display', 'block');
+					$('login_service_box').setStyle('display', 'none');
+					$('createAccount').setStyle('display', 'none');
+					switch(serviceTag) {
+					case 'yahoo':
+						//$('regAuth').setStyle('display', 'block');
+						//$('oauthImport').setStyle('display', 'none');
+						$('login_service_box').setStyle('display', 'block');
+						$('oauthLogin').getElement('label').set('text','We\'ll take you to Yahoo where you\'ll be asked to link your Yahoo account to ShareThis.');
+						$('login_with').set('text','Sign In with Yahoo');
+						//	$$('.mbox')[1].setStyle('height','125px');
+						break;
+					case 'sharethis':
+						$('login_with').set('text','Sign In with ShareThis');
+						$('loginAuth').setStyle('display', 'block');
+						$('oauthLogin').setStyle('display', 'none');
+						$('createAccount').setStyle('display', 'block');
+						break;	
+					}
+					var loginBox = this.domContainer.getElement('.mbox2');//$$('.mbox')[0];
+					//loginBox.getElementById('login_h4').set('html', service.title);
+					//loginBox.getElementById('login_h4').set('class', serviceTag);
+					var item = null;
+					$('login_list').getElements('li').each(function(i) {
+						if (i.getElement('a').hasClass(serviceTag)) {
+							item = i;
 						}
-						var loginBox = this.domContainer.getElement('.mbox2');//$$('.mbox')[0];
-						//loginBox.getElementById('login_h4').set('html', service.title);
-						//loginBox.getElementById('login_h4').set('class', serviceTag);
-						var item = null;
-						$('login_list').getElements('li').each(function(i) {
-							if (i.getElement('a').hasClass(serviceTag)) {
-								item = i;
-							}
-						});
-						if (item) {
-							this.pointImportPointerAt(item);
-						}
-					//}
+					});
+					if (item) {
+						this.pointImportPointerAt(item);
+					}
 				}).bind(this));
 				this.bindReturnKeyToSubmission();
 				this.parent();
-			
-				
 			},
+
 			processLogin: function(){
 				gaLog("Login", "login_btn_click", widget.currentLoginService.protocolName); 
 				Cookie.dispose('signin', {domain: ".sharethis.com", path: '/'});
@@ -3516,12 +3503,12 @@ Widget.implement({
 				if (this.firstShow) {
 					//setTimeout(function() {widget.setLoginService('yahoo')}, 1);
 				}
-				$('privacyLink_login').removeClass('hidden');
+				$('privacyLink').removeClass('hidden');
 				$('footerReg').addClass('hidden');
 				this.parent();
 			},
 			onHide: function() {
-				$('privacyLink_login').addClass('hidden');
+				$('privacyLink').addClass('hidden');
 				$('footerReg').removeClass('hidden');
 				this.parent();
 			},
@@ -4431,43 +4418,14 @@ Widget.implement({
 		}
 	},
 	loginSources: {
-		aim: {
-			title: 'AIM',
-			protocolName: 'aim'
-		},
-		aol: {
-			title: 'AOL',
-			protocolName: 'aol'
-		},
-		gmail: {
-			title: 'GMail',
-			protocolName: 'gmail'
-		},
-		hotmail: {
-			title: 'Hotmail',
-			protocolName: 'hotmail'
-		},
-		msn: {
-			title: 'MSN',
-			protocolName: 'hotmail'
-		},
-		twitter: {
-			title: 'Twitter',
-			protocolName: 'twitter'
-		},
 		yahoo: {
 			title: 'Yahoo!',
 			protocolName: 'yahoo'
-		},
-		facebook: {
-			title: 'Facebook',
-			protocolName: 'facebook'
 		},
 		sharethis: {
 			title: 'ShareThis',
 			protocolName: 'sharethis'
 		}
-		
 	}
 });
 
