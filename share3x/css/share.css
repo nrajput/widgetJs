@@ -263,7 +263,7 @@ ul.scroll li.even {
 	border:0;
 }
 
-#import_box label, #login_box label {
+#import_box label, #login_box .login_label {
 	display: inline;
 	clear: left;
 	float: left;
@@ -273,9 +273,13 @@ ul.scroll li.even {
 	width: 70px;
 }
 
-#import_box input, #login_box input {
+#import_box input, #login_box .text {
 	width: 100px;
 	margin: 0 0 8px 0;
+}
+
+#input_service_checkbox, #input_contacts_checkbox {
+	margin-right: 3px;					
 }
 
 .mbox .col_foot {
@@ -283,6 +287,15 @@ ul.scroll li.even {
 }
 
 #oauthImport label, #oauthLogin label{
+    margin: 0 0 18px 24px;
+	font-weight: normal;
+	width: 150px;
+}
+
+#oauth_label {
+	clear:left;	 
+    display:block;
+    float:left;
     margin: 0 0 18px 24px;
 	font-weight: normal;
 	width: 150px;
@@ -357,10 +370,9 @@ ul.scroll li.even {
 	margin: 0 0 20px 70px;				 
 	font-weight: bold;
 }
-#login_service_box{
+#login_service_box, #login_contacts_box {
 	margin-left:14px;
 	margin-top:3px;
-	display:none;
 	clear:both;	
 }
 

@@ -3418,23 +3418,53 @@ Widget.implement({
 				
 				widget.addEvent('loginServiceChanged', (function(serviceTag) {
 					var service = widget.loginSources[serviceTag];
-					$('loginAuth').setStyle('display', 'none');
-					$('oauthLogin').setStyle('display', 'block');
-					$('login_service_box').setStyle('display', 'none');
+					$('login_details').empty();
+					//					$('loginAuth').setStyle('display', 'none');
+						//					$('oauthLogin').setStyle('display', 'block');
+					//					$('login_service_box').setStyle('display', 'none');
 					$('createAccount').setStyle('display', 'none');
 					switch(serviceTag) {
 					case 'yahoo':
-						//$('regAuth').setStyle('display', 'block');
+						$('login_details').grab( new Element('div', { 'id': 'login_with', 'text': 'Sign In with Yahoo' }), 'top' );
+						$('login_details').grab( new Element('label', 
+															 { 'id': 'oauth_label',
+															   'text': 'We\'ll take you to Yahoo where you\'ll be asked '
+															   + 'to link your Yahoo account to ShareThis.' }) );
+
+						var feed_checkbox = new Element('div', { 'id': 'login_service_box' });
+						feed_checkbox.grab( new Element('input', { 'type': 'checkbox',
+																   'name': 'input_service_checkbox',
+																   'id': 'input_service_checkbox',
+																   'checked': 'yes' }) );
+						feed_checkbox.appendText('Include shares in my Y! feed');
+						$('login_details').grab(feed_checkbox);
+
+						var contacts = new Element('div', { 'id': 'login_contacts_box' });
+						contacts.grab( new Element('input', { 'type': 'checkbox',
+																   'name': 'input_contacts_checkbox',
+																   'id': 'input_contacts_checkbox',
+																   'checked': 'yes' }) );
+						contacts.appendText('Import my Yahoo! contacts');
+						$('login_details').grab(contacts);
+
+
 						//$('oauthImport').setStyle('display', 'none');
 						$('login_service_box').setStyle('display', 'block');
-						$('oauthLogin').getElement('label').set('text','We\'ll take you to Yahoo where you\'ll be asked to link your Yahoo account to ShareThis.');
-						$('login_with').set('text','Sign In with Yahoo');
 						//	$$('.mbox')[1].setStyle('height','125px');
 						break;
 					case 'sharethis':
-						$('login_with').set('text','Sign In with ShareThis');
-						$('loginAuth').setStyle('display', 'block');
-						$('oauthLogin').setStyle('display', 'none');
+						$('login_details').grab( new Element('div', { 'id': 'login_with', 'text': 'Sign In with ShareThis' }), 'top' );
+						$('login_details').grab( new Element('label', { 'class': 'login_label', 'text': 'Username:' }) );
+						$('login_details').grab( new Element('input', { 'id': "login_username",
+																  'type': 'text',
+																  'class': 'text',
+																  'value': '' }) );
+						$('login_details').grab( new Element('label', { 'class': 'login_label', 'text': 'Password:' }) );
+						$('login_details').grab( new Element('input', { 'id': "login_password",
+																  'type': 'text',
+																  'class': 'text',
+																  'value': '' }) );
+
 						$('createAccount').setStyle('display', 'block');
 						break;	
 					}
