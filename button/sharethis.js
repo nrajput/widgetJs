@@ -1245,6 +1245,7 @@ try{
 			SHARETHIS.wrapper.style.left = "-999px";
 			SHARETHIS.showEmbeds();
 			SHARETHIS.sendEvent("screen","home");
+			
 		}
 		
 		function SHARETHIS_tstOptions(tstStr){
