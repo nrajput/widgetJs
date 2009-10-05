@@ -1547,7 +1547,7 @@ var glo_post_page=[];
 		//Extends: Events,
 		var fragTimer="";
 		this.initialize= function() {
-			FragmentPump.fragTimer=setInterval("fragmentPump.checkFragment()",10);
+			FragmentPump.fragTimer=setInterval("fragmentPump.checkFragment()",5);
 		}
 		this.startint=function(){
 			setInterval(this.checkFragment.bind(this), 250);
@@ -1559,11 +1559,16 @@ var glo_post_page=[];
 				glo_oldQS=hash;
 				var cmd = args.shift();
 				cmd="fragmentPump."+cmd;
-				args=args.toString();
-				args='"'+args+'"';
-				args=args.replace(/,/g,'","');
-				var evStr=cmd+"("+args+")";
-				//console.log(evStr);
+	//			console.log(args);
+				var temp="";
+				for(var i=0;i<args.length;i++){
+				    temp=temp+'"'+args[i]+'"';
+				    if(i<(args.length-1)){
+					    temp=temp+",";
+					}					
+				}
+				var evStr=cmd+"("+temp+")";
+//				console.log(evStr);
 				 var tempFucn = new Function(evStr);
 				 tempFucn();
 			}
