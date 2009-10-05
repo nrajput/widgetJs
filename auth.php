@@ -12,6 +12,8 @@ require_once "Auth/OpenID/OAuth.php";
 require_once 'OpenSocial/osapi.php';
 require_once 'Yahoo/YahooOAuthApplication.class.php';
 
+$error_flag = FALSE;
+
 function setSigninCookie($token) {
 	setcookie('signin', $token, time()+3600*24, '/', '.sharethis.com');
 }
@@ -41,24 +43,20 @@ if( isset($_REQUEST['provider']) ) {
 				case 'discover':
 				case 'checkid_setup':
 				case 'checkid_immediate':
-
 					// handle yahoo simpleauth popup + redirect to yahoo! open id with open app oauth request
 					header('Location: '.$oauthapp->getOpenIDUrl($oauthapp->callback_url.'?provider=yahoo&close=true&yahoo_feed='.$yahoo_feed)); exit;
 					break;
 
 				case 'id_res':
-
 					// validate claimed open id
 
 					// extract approved request token from open id response
 					$request_token = new YahooOAuthRequestToken($_REQUEST['openid_oauth_request_token'], '');
 					$email_address = $_REQUEST['openid_ax_value_email'];
-
 					$_SESSION['yahoo_oauth_request_token'] = $request_token->to_string();
 
 					// exchange request token for access token
 					$oauthapp->token = $oauthapp->getAccessToken($request_token);
-
 					// store access token for later
 					$_SESSION['yahoo_oauth_access_token'] = $oauthapp->token->to_string();
 					$auth_token = $oauthapp->token->to_string();
@@ -93,13 +91,11 @@ if( isset($_REQUEST['provider']) ) {
 		$profile  = $oauthapp->getProfile();
 		$nickname = $profile->nickname;
 		$fullname = $profile->givenName . " " . $profile->familyName;
-		
 		if( !empty($email_address) && !empty($nickname) ) {
 			$response = call_api( "updateThirdPartyAuth", array( 'email' => $email_address,
 																 'type' => 'yahoo',
 																 'thirdparty_token' => $auth_token,
 																 'yahoo_feed' => $yahoo_feed) );
-			
 			if($response == FALSE || $response["status"] != "SUCCESS") {
 				$nickname = preg_replace('/([^@]+)@.*/','\1', $email_address);
 				$params = array( 'email' => $email_address,
@@ -110,6 +106,7 @@ if( isset($_REQUEST['provider']) ) {
 								 );
 				$response = call_api("createUser", $params);
 				if( $response == FALSE || $response["status"] != "SUCCESS" ) {
+					$error_flag = TRUE;
 					setSigninFailedCookie();
 				} else {
 					setSigninCookie($response['data']['token']);
@@ -117,6 +114,8 @@ if( isset($_REQUEST['provider']) ) {
 			} else {
 				setSigninCookie($response['data']['token']);
 			}
+
+			//do contact importing
 		}
 	} catch (Exception $e) {
 		setSigninFailedCooie();
@@ -130,7 +129,7 @@ header('Cache-Control: Cache-Control: no-store, no-cache, must-revalidate, post-
 header('Pragma: no-cache');
 header('X-XRDS-Location: http://wd.sharethis.com/xrds.xml');
 
-
+print_r(count($oauthapp->getContacts(null,0,5000)));
 //echo "$email_address<zp/>";
 //echo "$nickname<p/>";
 //echo "$fullname<p/>";

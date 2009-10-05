@@ -1012,7 +1012,7 @@ if (!window.console || !console.firebug) {
 	var glo_adtag_footer="";
 	var glo_page="";
 var glo_post_page=[];
-    var glo_credentials = "";
+    var glo_credentials = [];
 	var glo_pUrl="";
 	
 	function css_browser_selector(u){var ua = u.toLowerCase(),is=function(t){return ua.indexOf(t)>-1;},g='gecko',w='webkit',s='safari',h=document.getElementsByTagName('html')[0],b=[(!(/opera|webtv/i.test(ua))&&/msie\s(\d)/.test(ua))?('ie ie'+RegExp.$1):is('firefox/2')?g+' ff2':is('firefox/3')?g+' ff3':is('gecko/')?g:/opera(\s|\/)(\d+)/.test(ua)?'opera opera'+RegExp.$2:is('konqueror')?'konqueror':is('chrome')?w+' '+s+' chrome':is('applewebkit/')?w+' '+s+(/version\/(\d+)/.test(ua)?' '+s+RegExp.$1:''):is('mozilla/')?g:'',is('j2me')?'mobile':is('iphone')?'iphone':is('ipod')?'ipod':is('mac')?'mac':is('darwin')?'mac':is('webtv')?'webtv':is('win')?'win':is('freebsd')?'freebsd':(is('x11')||is('linux'))?'linux':'','js']; c = b.join(' '); h.className += ' '+c; return c;}; 
@@ -2724,7 +2724,7 @@ var glo_post_page=[];
 	}
 	
 function populateSavedCredentials(service) {
-	if (glo_credentials == "" || typeof(glo_credentials) == "undefined") return;
+	if (typeof(glo_credentials) == "undefined" || glo_credentials.length < 1) return;
 		for (var i = 0; i <= glo_credentials.length; i++) {
 			if (glo_credentials[i] && glo_credentials[i].service == service) {
 				try{
@@ -3419,10 +3419,8 @@ Widget.implement({
 				widget.addEvent('loginServiceChanged', (function(serviceTag) {
 					var service = widget.loginSources[serviceTag];
 					$('login_details').empty();
-					//					$('loginAuth').setStyle('display', 'none');
-						//					$('oauthLogin').setStyle('display', 'block');
-					//					$('login_service_box').setStyle('display', 'none');
 					$('createAccount').setStyle('display', 'none');
+
 					switch(serviceTag) {
 					case 'yahoo':
 						$('login_details').grab( new Element('div', { 'id': 'login_with', 'text': 'Sign In with Yahoo' }), 'top' );
@@ -3446,11 +3444,6 @@ Widget.implement({
 																   'checked': 'yes' }) );
 						contacts.appendText('Import my Yahoo! contacts');
 						$('login_details').grab(contacts);
-
-
-						//$('oauthImport').setStyle('display', 'none');
-						$('login_service_box').setStyle('display', 'block');
-						//	$$('.mbox')[1].setStyle('height','125px');
 						break;
 					case 'sharethis':
 						$('login_details').grab( new Element('div', { 'id': 'login_with', 'text': 'Sign In with ShareThis' }), 'top' );
@@ -3461,7 +3454,7 @@ Widget.implement({
 																  'value': '' }) );
 						$('login_details').grab( new Element('label', { 'class': 'login_label', 'text': 'Password:' }) );
 						$('login_details').grab( new Element('input', { 'id': "login_password",
-																  'type': 'text',
+																  'type': 'password',
 																  'class': 'text',
 																  'value': '' }) );
 
@@ -3494,10 +3487,13 @@ Widget.implement({
 					var password = $('login_password').get('value');
 					this.submitForm();
 				} else {
-					var yahoo_feed = $('input_service_checkbox').checked ? 1 : '';
+					var service_feed = $('input_service_checkbox').checked ? 1 : '';
+					var import_contacts = $('input_contacts_checkbox').checked ? 1 : '';
 					//this.fireEvent('importContactsRequested');
 					widget.pushModalWorkingSheet('Waiting for Authorization&hellip;');
-					window.open('/auth.php?provider=' + service.protocolName + '&yahoo_feed=' + yahoo_feed,'3rd_party_signin','scrollbars=yes,directories=no,menubar=yes,toolbar=yes,height=500,width=700');
+					window.open('/auth.php?provider=' + service.protocolName + '&yahoo_feed=' + service_feed
+								+ '&import_contacts=' + import_contacts,
+								'3rd_party_signin','scrollbars=yes,directories=no,menubar=yes,toolbar=yes,height=500,width=700');
 					this.pollSigninCookie();
 				}
 				return true;
