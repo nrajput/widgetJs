@@ -1012,7 +1012,7 @@ if (!window.console || !console.firebug) {
 	var glo_adtag_footer="";
 	var glo_page="";
 var glo_post_page=[];
-    var glo_credentials = "";
+    var glo_credentials = [];
 	var glo_pUrl="";
 	
 	function css_browser_selector(u){var ua = u.toLowerCase(),is=function(t){return ua.indexOf(t)>-1;},g='gecko',w='webkit',s='safari',h=document.getElementsByTagName('html')[0],b=[(!(/opera|webtv/i.test(ua))&&/msie\s(\d)/.test(ua))?('ie ie'+RegExp.$1):is('firefox/2')?g+' ff2':is('firefox/3')?g+' ff3':is('gecko/')?g:/opera(\s|\/)(\d+)/.test(ua)?'opera opera'+RegExp.$2:is('konqueror')?'konqueror':is('chrome')?w+' '+s+' chrome':is('applewebkit/')?w+' '+s+(/version\/(\d+)/.test(ua)?' '+s+RegExp.$1:''):is('mozilla/')?g:'',is('j2me')?'mobile':is('iphone')?'iphone':is('ipod')?'ipod':is('mac')?'mac':is('darwin')?'mac':is('webtv')?'webtv':is('win')?'win':is('freebsd')?'freebsd':(is('x11')||is('linux'))?'linux':'','js']; c = b.join(' '); h.className += ' '+c; return c;}; 
@@ -1547,7 +1547,7 @@ var glo_post_page=[];
 		//Extends: Events,
 		var fragTimer="";
 		this.initialize= function() {
-			FragmentPump.fragTimer=setInterval("fragmentPump.checkFragment()",10);
+			FragmentPump.fragTimer=setInterval("fragmentPump.checkFragment()",5);
 		}
 		this.startint=function(){
 			setInterval(this.checkFragment.bind(this), 250);
@@ -1559,11 +1559,16 @@ var glo_post_page=[];
 				glo_oldQS=hash;
 				var cmd = args.shift();
 				cmd="fragmentPump."+cmd;
-				args=args.toString();
-				args='"'+args+'"';
-				args=args.replace(/,/g,'","');
-				var evStr=cmd+"("+args+")";
-				//console.log(evStr);
+	//			console.log(args);
+				var temp="";
+				for(var i=0;i<args.length;i++){
+				    temp=temp+'"'+args[i]+'"';
+				    if(i<(args.length-1)){
+					    temp=temp+",";
+					}					
+				}
+				var evStr=cmd+"("+temp+")";
+//				console.log(evStr);
 				 var tempFucn = new Function(evStr);
 				 tempFucn();
 			}
@@ -2724,7 +2729,7 @@ var glo_post_page=[];
 	}
 	
 function populateSavedCredentials(service) {
-	if (glo_credentials == "" || typeof(glo_credentials) == "undefined") return;
+	if (typeof(glo_credentials) == "undefined" || glo_credentials.length < 1) return;
 		for (var i = 0; i <= glo_credentials.length; i++) {
 			if (glo_credentials[i] && glo_credentials[i].service == service) {
 				try{
@@ -3380,17 +3385,21 @@ Widget.implement({
 		'login': {
 			id: 'login_page',
 			onReady: function() {
-				$('login_list').getElements('li').each(function(item, index) {
-					item.getElement('a').addEvents({
-						click: function(event) {					
-							widget.setLoginService(item.getChildren()[0].get('class'));
-							event.stop();
-						}
-					});
+				$each(widget.loginSources, function(item, index){
+					var login_item = new Element('li').grab( new Element('a', { 'href': 'javascript:void(0)',
+																				'class': item.protocolName,
+																				'html': item.title,
+																				'events': { 
+																					'click': function(event) {
+																						widget.setLoginService(item.protocolName);
+																						event.stop();
+																					}
+																				}
+																			  }));
+					$('login_list').grab(login_item);
 				});
 				
 				$('login_submit').addEvent('click', (function(event) {
-					//this.processLogin();
 					widget.pages.login.processLogin();
 				}).bind(this));
 				
@@ -3398,6 +3407,7 @@ Widget.implement({
 				widget.addEvent('loginRequested', function() {
 					//widget.pushModalWorkingSheet('Importing contacts&hellip;'); //manu
 				});
+
 				widget.addEvent('loginSucceeded', function(contactInfo) {
 					/*widget.popModalWorkingSheet();
 					$('send_title').set('html', 'Email');
@@ -3405,69 +3415,74 @@ Widget.implement({
 					widget.displayNotification('Success! ' + contactInfo.nContacts + ' contacts imported.');
 					emptyInputs();*/
 				});
+
 				widget.addEvent('loginFailed', function() {
 					widget.popModalWorkingSheet();
 					widget.pushModalErrorSheet('Unable to Sign In');
 				})
 				
 				widget.addEvent('loginServiceChanged', (function(serviceTag) {
-					//if (this.isShown()) {
-						var service = widget.loginSources[serviceTag];
-						$('loginAuth').setStyle('display', 'none');
-						$('oauthLogin').setStyle('display', 'block');
-						$('login_service_box').setStyle('display', 'none');
-						$('createAccount').setStyle('display', 'none');
-						switch(serviceTag) {
-							case 'gmail':
-								$('loginAuth').setStyle('display', 'block');
-								$('oauthLogin').setStyle('display', 'none');
-								//$('oauthImport').getElement('label').set('text','We\'ll take you to Gmail where you\'ll be asked to let ShareThis access your address book.');
-								break;	
-							case 'yahoo':
-								//$('regAuth').setStyle('display', 'block');
-								//$('oauthImport').setStyle('display', 'none');
-								$('login_service_box').setStyle('display', 'block');
-								$('oauthLogin').getElement('label').set('text','We\'ll take you to Yahoo where you\'ll be asked to link your Yahoo account to ShareThis.');
-								$('login_with').set('text','Sign In with Yahoo');
-							//	$$('.mbox')[1].setStyle('height','125px');
-								break;
-							case 'myspace':
-								$('oauthLogin').getElement('label').set('text','We\'ll take you to Myspace where you\'ll be asked to let ShareThis access your friend list.');
-								break;
-							case 'msn':
-								$('oauthLogin').getElement('label').set('text','We\'ll take you to MSN/Hotmail where you\'ll be asked to let ShareThis access your address book.');
-								break;
-							case 'aol':
-								$('loginAuth').setStyle('display', 'block');
-								$('oauthLogin').setStyle('display', 'none');
-								break;
-							case 'sharethis':
-									$('login_with').set('text','Sign In with ShareThis');
-									$('loginAuth').setStyle('display', 'block');
-									$('oauthLogin').setStyle('display', 'none');
-									$('createAccount').setStyle('display', 'block');
-									//$('oauthImport').getElement('label').set('text','We\'ll take you to Gmail where you\'ll be asked to let ShareThis access your address book.');
-									break;	
+					var service = widget.loginSources[serviceTag];
+					$('login_details').empty();
+					$('createAccount').setStyle('display', 'none');
+
+					switch(serviceTag) {
+					case 'yahoo':
+						$('login_details').grab( new Element('div', { 'id': 'login_with', 'text': 'Sign In with Yahoo' }), 'top' );
+						$('login_details').grab( new Element('label', 
+															 { 'id': 'oauth_label',
+															   'text': 'We\'ll take you to Yahoo where you\'ll be asked '
+															   + 'to link your Yahoo account to ShareThis.' }) );
+
+						var feed_checkbox = new Element('div', { 'id': 'login_service_box' });
+						feed_checkbox.grab( new Element('input', { 'type': 'checkbox',
+																   'name': 'input_service_checkbox',
+																   'id': 'input_service_checkbox',
+																   'checked': 'yes' }) );
+						feed_checkbox.appendText('Include shares in my Y! feed');
+						$('login_details').grab(feed_checkbox);
+
+						var contacts = new Element('div', { 'id': 'login_contacts_box' });
+						contacts.grab( new Element('input', { 'type': 'checkbox',
+																   'name': 'input_contacts_checkbox',
+																   'id': 'input_contacts_checkbox',
+																   'checked': 'yes' }) );
+						contacts.appendText('Import my Yahoo! contacts');
+						$('login_details').grab(contacts);
+						break;
+					case 'sharethis':
+						$('login_details').grab( new Element('div', { 'id': 'login_with', 'text': 'Sign In with ShareThis' }), 'top' );
+						$('login_details').grab( new Element('label', { 'class': 'login_label', 'text': 'Username:' }) );
+						$('login_details').grab( new Element('input', { 'id': "login_username",
+																  'type': 'text',
+																  'class': 'text',
+																  'value': '' }) );
+						$('login_details').grab( new Element('label', { 'class': 'login_label', 'text': 'Password:' }) );
+						$('login_details').grab( new Element('input', { 'id': "login_password",
+																  'type': 'password',
+																  'class': 'text',
+																  'value': '' }) );
+
+						$('createAccount').setStyle('display', 'block');
+						break;	
+					}
+					var loginBox = this.domContainer.getElement('.mbox2');//$$('.mbox')[0];
+					//loginBox.getElementById('login_h4').set('html', service.title);
+					//loginBox.getElementById('login_h4').set('class', serviceTag);
+					var item = null;
+					$('login_list').getElements('li').each(function(i) {
+						if (i.getElement('a').hasClass(serviceTag)) {
+							item = i;
 						}
-						var loginBox = this.domContainer.getElement('.mbox2');//$$('.mbox')[0];
-						//loginBox.getElementById('login_h4').set('html', service.title);
-						//loginBox.getElementById('login_h4').set('class', serviceTag);
-						var item = null;
-						$('login_list').getElements('li').each(function(i) {
-							if (i.getElement('a').hasClass(serviceTag)) {
-								item = i;
-							}
-						});
-						if (item) {
-							this.pointImportPointerAt(item);
-						}
-					//}
+					});
+					if (item) {
+						this.pointImportPointerAt(item);
+					}
 				}).bind(this));
 				this.bindReturnKeyToSubmission();
 				this.parent();
-			
-				
 			},
+
 			processLogin: function(){
 				gaLog("Login", "login_btn_click", widget.currentLoginService.protocolName); 
 				Cookie.dispose('signin', {domain: ".sharethis.com", path: '/'});
@@ -3477,10 +3492,13 @@ Widget.implement({
 					var password = $('login_password').get('value');
 					this.submitForm();
 				} else {
-					var yahoo_feed = $('input_service_checkbox').checked ? 1 : '';
+					var service_feed = $('input_service_checkbox').checked ? 1 : '';
+					var import_contacts = $('input_contacts_checkbox').checked ? 1 : '';
 					//this.fireEvent('importContactsRequested');
 					widget.pushModalWorkingSheet('Waiting for Authorization&hellip;');
-					window.open('/auth.php?provider=' + service.protocolName + '&yahoo_feed=' + yahoo_feed,'3rd_party_signin','scrollbars=yes,directories=no,menubar=yes,toolbar=yes,height=500,width=700');
+					window.open('/auth.php?provider=' + service.protocolName + '&yahoo_feed=' + service_feed
+								+ '&import_contacts=' + import_contacts,
+								'3rd_party_signin','scrollbars=yes,directories=no,menubar=yes,toolbar=yes,height=500,width=700');
 					this.pollSigninCookie();
 				}
 				return true;
@@ -3516,12 +3534,12 @@ Widget.implement({
 				if (this.firstShow) {
 					//setTimeout(function() {widget.setLoginService('yahoo')}, 1);
 				}
-				$('privacyLink_login').removeClass('hidden');
+				$('privacyLink').removeClass('hidden');
 				$('footerReg').addClass('hidden');
 				this.parent();
 			},
 			onHide: function() {
-				$('privacyLink_login').addClass('hidden');
+				$('privacyLink').addClass('hidden');
 				$('footerReg').removeClass('hidden');
 				this.parent();
 			},
@@ -4431,43 +4449,14 @@ Widget.implement({
 		}
 	},
 	loginSources: {
-		aim: {
-			title: 'AIM',
-			protocolName: 'aim'
-		},
-		aol: {
-			title: 'AOL',
-			protocolName: 'aol'
-		},
-		gmail: {
-			title: 'GMail',
-			protocolName: 'gmail'
-		},
-		hotmail: {
-			title: 'Hotmail',
-			protocolName: 'hotmail'
-		},
-		msn: {
-			title: 'MSN',
-			protocolName: 'hotmail'
-		},
-		twitter: {
-			title: 'Twitter',
-			protocolName: 'twitter'
-		},
 		yahoo: {
 			title: 'Yahoo!',
 			protocolName: 'yahoo'
-		},
-		facebook: {
-			title: 'Facebook',
-			protocolName: 'facebook'
 		},
 		sharethis: {
 			title: 'ShareThis',
 			protocolName: 'sharethis'
 		}
-		
 	}
 });
 
