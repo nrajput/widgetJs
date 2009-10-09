@@ -2,38 +2,6 @@
  * ShareThis Widget Version 4.2.0-rc1
  * 9/09/09 ShareThis.com 
  */
-
-/*Code for langauge detection from browser */
-
-//array of language supported by application
-var langArray=new Array("en","es","fr","de","it");
-
-//default langauge
-var lang='en';
-
-//get browser laguage
-var languageVar = (navigator.language) ? navigator.language: navigator.browserLanguage;
-
-languageVar=languageVar.substr(0,2).toLowerCase();
-
-//check for language
-for (i in langArray)
-{
-	if(langArray[i]==languageVar){
-		lang=langArray[i];
-		break;
-	}
- }
-
-//file to include
-jsFile="js/local/"+lang+"/messages.js";
-
-document.write('<script type="text/javascript" src="'
-    + jsFile + '"></scr' + 'ipt>');
-
-/*code for langauge detection end */
-
-
 //widget-class.js
 var Widget = new Class({ Implements: Events,
 	shareables: [],
@@ -6181,10 +6149,66 @@ window.addEvent('domready', function() {
 	} else {
 		widget.showPage('home');
 	}
-	//replace all IDs with language stinggs
-	document.getElementById("top_services_title").innerHTML =langTextArray['mostPopularServ'];
-	document.getElementById("to_friend").innerHTML =langTextArray['toFriend'];
-	document.getElementById("import_contacts_link").innerHTML =langTextArray['importContact'];
+
 });
 
 
+var languageVar="noLang";
+
+//default langauge
+var lang='en';
+
+var xmlHttp=null;
+	try
+	 {
+	 // Firefox, Opera 8.0+, Safari
+	 xmlHttp=new XMLHttpRequest();
+	 }
+	catch (e)
+	 {
+	 //Internet Explorer
+	 try
+	  {
+	  xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
+	  }
+	 catch (e)
+	  {
+	  xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	 }
+
+
+xmlHttp.open("GET","index.php",false);
+xmlHttp.send("");
+
+languageVar=xmlHttp.responseText; 
+
+
+/*Code for langauge detection from browser */
+//array of language supported by application
+var langArray=new Array("en","es","fr","de","it");
+
+
+if(languageVar=="noLang" || languageVar=="")
+{
+	//get browser laguage
+	languageVar = (navigator.language) ? navigator.language: navigator.browserLanguage;
+	languageVar=languageVar.substr(0,2).toLowerCase();
+}
+
+//check for language
+for (i in langArray)
+{
+	if(langArray[i]==languageVar){
+		lang=langArray[i];
+		break;
+	}
+ }
+
+//file to include
+var jsFile="js/local/"+lang+"/messages.js";
+
+document.write('<script type="text/javascript" src="'
+    + jsFile + '"></scr' + 'ipt>');
+
+/*code for langauge end*/
